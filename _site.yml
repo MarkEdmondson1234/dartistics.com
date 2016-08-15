@@ -1,4 +1,5 @@
 name: "r-masterclass"
+output_dir: "."
 navbar:
   title: "R Masterclass"
   left:
