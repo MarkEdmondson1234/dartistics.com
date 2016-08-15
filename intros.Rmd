@@ -1,0 +1,32 @@
+---
+title: "Introduction"
+output: 
+  html_document:
+    theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introductions
+
+### Mark Edmondson
+
+* "Better than Google" <-- according to Tim
+* Heavy user of R
+* Blah blah
+
+### Tim Wilson
+
+* Dove into R in earnest in December 2015
+* On a mission..
+* Blah blah blah
+
+
+## And you...?
+
+* Name
+* Company
+* Favorite Excel function
+* (Optional) Favorite R package
