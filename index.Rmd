@@ -1,0 +1,54 @@
+---
+title: "Welcome"
+author: "Tim Wilson and Mark Edmondson"
+output: 
+  html_document:
+    theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Welcome to the R Workshop website, where you will learn to do fantastic things like this!
+
+```{r, message=FALSE, warning=FALSE}
+library(highcharter)
+library(googleAnalyticsR)
+library(reshape2)
+library(forecast)
+library(zoo)
+
+ga_auth()
+gadata <- google_analytics_4(81416156, 
+                             date_range = c(Sys.Date() - 400, Sys.Date()),
+                             metrics = "sessions", 
+                             dimensions = c("date","hour"),
+                             max = -1)
+gadata$weekday <- ordered(weekdays(gadata$date), 
+                          levels = c("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday")) 
+
+heatmap_data <- gadata[, c("weekday","hour","sessions")]
+heatmap_recast <- dcast(heatmap_data, weekday ~ hour, sum)
+heatmap_matrix <- as.matrix(heatmap_recast[-1])
+row.names(heatmap_matrix) <- c("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday")
+
+## heatmap of weekdays per hour
+hchart(heatmap_matrix, type = "heatmap")
+
+gadata2 <- google_analytics_4(81416156, 
+                             date_range = c("2013-08-01", "2016-07-31"),
+                             metrics = "sessions", 
+                             dimensions = c("yearMonth"),
+                             max = -1)
+
+ga_ts <- ts(gadata2$sessions, start = c(2013,08), end = c(2016,07), frequency = 12)
+
+forecast1 <- HoltWinters(ga_ts)
+
+## forecast for next 12 months of the blog sessions
+hchart(forecast(forecast1, h = 12))
+
+```
+
+
