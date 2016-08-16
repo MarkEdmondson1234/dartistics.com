@@ -1,5 +1,5 @@
 ---
-title: "Welcome"
+title: "R Masterclass - Welcome"
 author: "Mark Edmondson and Tim Wilson"
 ---
 
@@ -14,7 +14,6 @@ library(highcharter)
 library(googleAnalyticsR)
 library(reshape2)
 library(forecast)
-library(zoo)
 
 ga_auth()
 gadata <- google_analytics_4(81054104, 
@@ -22,13 +21,19 @@ gadata <- google_analytics_4(81054104,
                              metrics = "sessions", 
                              dimensions = c("date","hour"),
                              max = -1)
+
 gadata$weekday <- ordered(weekdays(gadata$date), 
-                          levels = c("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday")) 
+                          levels = c("Monday","Tuesday","Wednesday",
+                                     "Thursday","Friday","Saturday","Sunday")) 
 
 heatmap_data <- gadata[, c("weekday","hour","sessions")]
+
 heatmap_recast <- dcast(heatmap_data, weekday ~ hour, sum)
+
 heatmap_matrix <- as.matrix(heatmap_recast[-1])
-row.names(heatmap_matrix) <- c("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday")
+
+row.names(heatmap_matrix) <- c("Monday","Tuesday","Wednesday",
+                               "Thursday","Friday","Saturday","Sunday")
 
 ## heatmap of weekdays per hour
 hchart(heatmap_matrix, type = "heatmap")
