@@ -2,8 +2,13 @@
 # Add those to a .csv that is just open in RSTudio. Then, run a script that pulls the
 # last 30 days of tweets from all of the students and generates a word cloud.
 
+# To get the Twitter data
 library(twitteR)
-library(dplyr)
+
+# To generate the wordcloud
+library(tm)
+library(SnowballC)
+library(wordcloud)
 
 # Authorize Twitter
 consumerKey <- "PBZ1OOC61Fa4Rvu00weipJcHH"
@@ -15,8 +20,8 @@ setup_twitter_oauth(consumerKey,consumerSecret,accessToken,accessTokenSecret)
 # Get the list of usernames
 usernames <- read.csv("intros_twitter_wordcloud_usernames.csv", stringsAsFactors = FALSE)
 
-# Set the start date as the last 30 days
-startDate <- as.character(Sys.Date()-30)
+# Set the start date as the last 90 days
+startDate <- as.character(Sys.Date()-90)
 
 # Initialize a data frame that we'll append tweets to. We only want the 
 # username and the tweet.
@@ -34,3 +39,19 @@ for (i in 1:nrow(usernames)){
 }
 
 # Make a word cloud from the tweets
+
+# Create a corpus of the tweet text
+tweetCorpus <- Corpus(VectorSource(tweetData$tweet))
+
+# Convert the corpus to a plain text document.
+tweetCorpus <- tm_map(tweetCorpus, PlainTextDocument)
+
+# Remove all punctuation and stopwords. 
+tweetCorpus <- tm_map(tweetCorpus, removePunctuation)
+tweetCorpus <- tm_map(tweetCorpus, removeWords, stopwords('english'))
+
+# Perform stemming
+tweetCorpus <- tm_map(tweetCorpus, stemDocument)
+
+#Plot the wordcloud
+wordcloud(tweetCorpus, max.words = 200, random.order = FALSE)
