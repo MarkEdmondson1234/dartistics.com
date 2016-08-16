@@ -1,8 +1,0 @@
-name: "r-masterclass"
-navbar:
-  title: "R Masterclass"
-  left:
-    - text: "Introductions"
-      href: intros.html
-    - text: "What Is R?"
-      href: whatisr.html
