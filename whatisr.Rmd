@@ -1,8 +1,5 @@
 ---
 title: "What is R? Why use it?"
-output: 
-  html_document:
-    theme: flatly
 ---
 
 ```{r setup, include=FALSE}

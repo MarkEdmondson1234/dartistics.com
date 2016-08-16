@@ -1,0 +1,9 @@
+---
+title: "Google Analytics Data Explorer"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Example 2: Google Analytics 2-D data explorer

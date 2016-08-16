@@ -1,0 +1,9 @@
+---
+title: "Trending Google Analytics sessions"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Example 1: Trending Google Analytics sessions

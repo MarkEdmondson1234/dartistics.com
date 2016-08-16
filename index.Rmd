@@ -1,9 +1,6 @@
 ---
 title: "Welcome"
 author: "Mark Edmondson and Tim Wilson"
-output: 
-  html_document:
-    theme: flatly
 ---
 
 ```{r setup, include=FALSE}

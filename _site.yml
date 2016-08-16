@@ -1,5 +1,8 @@
 name: "r-masterclass"
 output_dir: "."
+output: 
+  html_document:
+    theme: flatly
 navbar:
   title: "R Masterclass"
   left:
@@ -7,3 +10,13 @@ navbar:
       href: intros.html
     - text: "What Is R?"
       href: whatisr.html
+    - text: "Examples"
+      menu:
+        - text: "1. Trending"
+          href: example1.html
+        - text: "2. Data Explorer"
+          href: example2.html
+        - text: "3. Venn Diagram"
+          href: example3.html
+        - text: "4. GA Effect"
+          href: example4.html
