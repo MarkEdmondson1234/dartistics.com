@@ -177,11 +177,20 @@ $(document).ready(function () {
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="intros.html">Introductions</a>
-</li>
-<li>
-  <a href="whatisr.html">What Is R?</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Introduction
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="intros.html">Hellos</a>
+    </li>
+    <li>
+      <a href="whatisr.html">What Is R?</a>
+    </li>
+  </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -202,6 +211,96 @@ $(document).ready(function () {
     <li>
       <a href="example4.html">4. GA Effect</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Basics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">RStudio</li>
+    <li class="dropdown-header">Packages</li>
+    <li class="dropdown-header">Good habits</li>
+    <li class="dropdown-header">Excercise 1</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    I/O
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">CSV import</li>
+    <li class="dropdown-header">Analytics APIs</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Munging
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">R Classes</li>
+    <li class="dropdown-header">Accessing elements</li>
+    <li class="dropdown-header">BaseR vs Tidyverse</li>
+    <li class="dropdown-header">BaseR Tips</li>
+    <li class="dropdown-header">Tidy data</li>
+    <li class="dropdown-header">dplyr()</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Introduction</li>
+    <li class="dropdown-header">Correlation</li>
+    <li class="dropdown-header">Regression</li>
+    <li class="dropdown-header">Time-series</li>
+    <li class="dropdown-header">Categorisation</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Visualisation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Options</li>
+    <li class="dropdown-header">Base Plots</li>
+    <li class="dropdown-header">ggplot2()</li>
+    <li class="dropdown-header">htmlwidgets()</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Presentation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">RMarkdown</li>
+    <li class="dropdown-header">Shiny</li>
+    <li class="dropdown-header">RMarkdown + Shiny</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Summary
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Key topics</li>
+    <li class="dropdown-header">Best practices</li>
+    <li class="dropdown-header">Additional Resources</li>
   </ul>
 </li>
       </ul>

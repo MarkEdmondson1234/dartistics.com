@@ -6,10 +6,12 @@ output:
 navbar:
   title: "R Masterclass"
   left:
-    - text: "Introductions"
-      href: intros.html
-    - text: "What Is R?"
-      href: whatisr.html
+    - text: "Introduction"
+      menu:
+      - text: "Hellos"
+        href: intros.html
+      - text: "What Is R?"
+        href: whatisr.html
     - text: "Examples"
       menu:
         - text: "1. Trending"
@@ -20,3 +22,44 @@ navbar:
           href: example3.html
         - text: "4. GA Effect"
           href: example4.html
+    - text: "Basics"
+      menu:
+      - text: "RStudio"
+      - text: "Packages"
+      - text: "Good habits"
+      - text: "Excercise 1"
+    - text: "I/O"
+      menu:
+      - text: "CSV import"
+      - text: "Analytics APIs"
+    - text: "Munging"
+      menu: 
+      - text: "R Classes"
+      - text: "Accessing elements"
+      - text: "BaseR vs Tidyverse"
+      - text: "BaseR Tips"
+      - text: "Tidy data"
+      - text: "dplyr()"
+    - text: "Modelling"
+      menu:
+      - text: "Introduction"
+      - text: "Correlation"
+      - text: "Regression"
+      - text: "Time-series"
+      - text: "Categorisation"
+    - text: "Visualisation"
+      menu:
+      - text: "Options"
+      - text: "Base Plots"
+      - text: "ggplot2()"
+      - text: "htmlwidgets()"
+    - text: "Presentation"
+      menu:
+      - text: "RMarkdown"
+      - text: "Shiny"
+      - text: "RMarkdown + Shiny"
+    - text: "Summary"
+      menu:
+      - text: "Key topics"
+      - text: "Best practices"
+      - text: "Additional Resources"
