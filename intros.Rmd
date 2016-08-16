@@ -9,20 +9,18 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Introductions
-
-### Mark Edmondson
+## Mark Edmondson
 
 * "Better than Google" <-- according to Tim
 * Heavy user of R
-* Blah blah
+* Creator of the googleAnalyticsR package (and others!)
+* Englishman living in Denmark
 
-### Tim Wilson
+## Tim Wilson
 
 * Dove into R in earnest in December 2015
-* On a mission..
-* Blah blah blah
-
+* On a mission to make digital analysts more data science-y
+* American living in America (but, within the country, a Texan living in Ohio)
 
 ## And you...?
 
@@ -30,3 +28,4 @@ knitr::opts_chunk$set(echo = TRUE)
 * Company
 * Favorite Excel function
 * (Optional) Favorite R package
+* Your Twitter username
