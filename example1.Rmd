@@ -7,3 +7,19 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Example 1: Trending Google Analytics sessions
+
+
+```{r}
+library(googleAnalyticsR)
+ga_auth()
+
+## replace with your own Google Analytics View Id
+view_id <- 81054104
+
+trend_data <- google_analytics_4(view_id,
+                                 date_range = c(Sys.Date() - 400, Sys.Date()),
+                                 dimensions = c("date"),
+                                 metrics = "sessions",
+                                 pivots = pivot_ga4("medium","sessions"),
+                                 max = -1)
+```
