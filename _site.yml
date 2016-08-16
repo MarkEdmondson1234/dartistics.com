@@ -25,8 +25,11 @@ navbar:
     - text: "Basics"
       menu:
       - text: "RStudio"
+        href: rstudio.html
       - text: "Packages"
+        href: packages.html
       - text: "Good habits"
+        href: habits.html
       - text: "Excercise 1"
     - text: "I/O"
       menu:

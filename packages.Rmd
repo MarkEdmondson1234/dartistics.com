@@ -1,0 +1,22 @@
+---
+title: "Package Ecosystem"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+A large part of R's success is the ecosystem of open-sourced packages that add extra functionality to what R comes with, referre to as "base R".
+
+## CRAN
+
+CRAN is the official central repository for R packages, where human reviewed packages go through quality checks for publishing on the CRAN network around the world.  It is through CRAN that you install packages with the `install.package()` function, or via the Packages pane in the bottom left of RStudio.
+
+## Github
+
+There are also thousands of more experimental packages that are only available through Github.  These packages have come much easier to work with since the introduction of the package `devtools`, which via its function `install_github` means access to this universe.
+
+Beware though that the packages on Github are by their nature more experimental, so due care should be excercised to ensure they are trustworthy.
+
+
+

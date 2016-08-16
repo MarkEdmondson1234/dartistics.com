@@ -1,0 +1,28 @@
+---
+title: "Good habits"
+---
+
+Here are some good habits to get into learnt from experience to make working with R easier.
+
+## Project structure
+
+1. For every new task, client or project, create an RStudio project (top right)
+2. Create a `script` and `data` folder in the project straight away
+3. Put your R scripts `./scripts/your-script.R` in the script folder, and raw or processed data written to the data folder (`./data/your_data.csv`)
+4. Never change your working directory in the scripts.
+
+## Code style
+
+1. Follow a code style - we suggest this one:
+2. Be verbose but concise with your function and varaible names
+3. Comment everything - you can even start with comments
+4. Pretend the reader of your code is a homicidal maniac who will axe you if they don't understand it
+5. Avoid copy-pasting, if you repeat yourself more than twice, write a function
+6. Fail fast - use `stop()` to write informative error messages
+7. Check the types of your input and output variables are what you expected
+
+## Always check the type
+
+1. 4 times out of 10 the errors in code is you copying something wrong `rowname` instead of `row.name` etc.
+2. 4 times out of 10 the errors in code is expecting the wrong type e.g. `class(obj) == "list"` not `class(obj) == "data.frame"`
+3. Use `str()` a lot.

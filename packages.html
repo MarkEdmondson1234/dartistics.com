@@ -11,7 +11,7 @@
 
 
 
-<title>Venn Diagram</title>
+<title>Package Ecosystem</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -321,13 +321,20 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Venn Diagram</h1>
+<h1 class="title toc-ignore">Package Ecosystem</h1>
 
 </div>
 
 
-<div id="example-3-venn-diagram" class="section level2">
-<h2>Example 3: Venn Diagram</h2>
+<p>A large part of R’s success is the ecosystem of open-sourced packages that add extra functionality to what R comes with, referre to as “base R”.</p>
+<div id="cran" class="section level2">
+<h2>CRAN</h2>
+<p>CRAN is the official central repository for R packages, where human reviewed packages go through quality checks for publishing on the CRAN network around the world. It is through CRAN that you install packages with the <code>install.package()</code> function, or via the Packages pane in the bottom left of RStudio.</p>
+</div>
+<div id="github" class="section level2">
+<h2>Github</h2>
+<p>There are also thousands of more experimental packages that are only available through Github. These packages have come much easier to work with since the introduction of the package <code>devtools</code>, which via its function <code>install_github</code> means access to this universe.</p>
+<p>Beware though that the packages on Github are by their nature more experimental, so due care should be excercised to ensure they are trustworthy.</p>
 </div>
 
 

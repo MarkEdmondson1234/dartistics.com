@@ -11,7 +11,7 @@
 
 
 
-<title>Venn Diagram</title>
+<title>Good habits</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -321,13 +321,40 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Venn Diagram</h1>
+<h1 class="title toc-ignore">Good habits</h1>
 
 </div>
 
 
-<div id="example-3-venn-diagram" class="section level2">
-<h2>Example 3: Venn Diagram</h2>
+<p>Here are some good habits to get into learnt from experience to make working with R easier.</p>
+<div id="project-structure" class="section level2">
+<h2>Project structure</h2>
+<ol style="list-style-type: decimal">
+<li>For every new task, client or project, create an RStudio project (top right)</li>
+<li>Create a <code>script</code> and <code>data</code> folder in the project straight away</li>
+<li>Put your R scripts <code>./scripts/your-script.R</code> in the script folder, and raw or processed data written to the data folder (<code>./data/your_data.csv</code>)</li>
+<li>Never change your working directory in the scripts.</li>
+</ol>
+</div>
+<div id="code-style" class="section level2">
+<h2>Code style</h2>
+<ol style="list-style-type: decimal">
+<li>Follow a code style - we suggest this one:</li>
+<li>Be verbose but concise with your function and varaible names</li>
+<li>Comment everything - you can even start with comments</li>
+<li>Pretend the reader of your code is a homicidal maniac who will axe you if they don’t understand it</li>
+<li>Avoid copy-pasting, if you repeat yourself more than twice, write a function</li>
+<li>Fail fast - use <code>stop()</code> to write informative error messages</li>
+<li>Check the types of your input and output variables are what you expected</li>
+</ol>
+</div>
+<div id="always-check-the-type" class="section level2">
+<h2>Always check the type</h2>
+<ol style="list-style-type: decimal">
+<li>4 times out of 10 the errors in code is you copying something wrong <code>rowname</code> instead of <code>row.name</code> etc.</li>
+<li>4 times out of 10 the errors in code is expecting the wrong type e.g. <code>class(obj) == &quot;list&quot;</code> not <code>class(obj) == &quot;data.frame&quot;</code></li>
+<li>Use <code>str()</code> a lot.</li>
+</ol>
 </div>
 
 

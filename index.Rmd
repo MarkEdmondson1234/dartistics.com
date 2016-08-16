@@ -15,8 +15,9 @@ library(googleAnalyticsR)
 library(reshape2)
 library(forecast)
 
+view_id <- 81416156
 ga_auth()
-gadata <- google_analytics_4(81054104, 
+gadata <- google_analytics_4(view_id, 
                              date_range = c(Sys.Date() - 400, Sys.Date()),
                              metrics = "sessions", 
                              dimensions = c("date","hour"),
@@ -38,7 +39,7 @@ row.names(heatmap_matrix) <- c("Monday","Tuesday","Wednesday",
 ## heatmap of weekdays per hour
 hchart(heatmap_matrix, type = "heatmap")
 
-gadata2 <- google_analytics_4(81054104, 
+gadata2 <- google_analytics_4(view_id, 
                              date_range = c("2013-08-01", "2016-07-31"),
                              metrics = "sessions", 
                              dimensions = c("yearMonth"),
