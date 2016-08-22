@@ -40,6 +40,10 @@ for (i in 1:nrow(usernames)){
 
 # Make a word cloud from the tweets
 
+# Special characters in the tweets will bork the tm_map stuff later on, so
+# find all of those and replace them with ""
+tweetData$tweet <- lapply(tweetData$tweet, function(x) iconv(x, from = "latin1", to = "ASCII", sub=""))
+
 # Create a corpus of the tweet text
 tweetCorpus <- Corpus(VectorSource(tweetData$tweet))
 
