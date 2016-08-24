@@ -1,10 +1,15 @@
 ---
 title: "Exercise 1 -- The Basic Basics"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+
 ---
 
 Let's start with getting familiar with the basics of moving around RStudio and some of the basics of R itself. Go ahead and launch RStudio!
 
-## Get Familiar with the Different Panes and the Basics of R
+## Get Familiar the Basics
 
 We're going to walk through some basics so you get a good sense of the different areas of the environment:
 
@@ -72,7 +77,7 @@ length(myVector)
 
 5. We've now worked with `c()`, `typeof()`, and `length()`. That's just the beginning. There will be countless functions that we start to use, and it's often handy to quickly see the documentation for a function. The `?` provides quick access on that front. Type `?length()` and, in the lower right pane in RStudio, the help file for the `length()` function will appear. As we start to use more complicated functions, the help files are often a very handy reference. Unfortunately, the quality of that documentation can vary, so, with functions embedded in specialized packages, the `?` help may just be a jumping off point, after which more digging online is required to get workable code examples. Function help files often use a lot of shortcuts that assume a moderate level of R knowledge on the part of the reader, so they can seem like Greek at first. The more you use R and get comfortable with the style of the help files, though, the easier they become to read.
 
-## Data Frames and Web Analytics Data!
+## Data Frames!
 
 _We're going to do a few things here that wouldn't exactly be how you would work typically. But, that's okay:_
 * _We'll get to accessing web analytics data via APIs in a bit, but we're going to just work with a static data export for now._
@@ -101,7 +106,7 @@ We can go ahead and run this script. It's only one line long, but this gets us t
 
 **Run** comes in handy when, for instance, you already have data loaded into your environment (possibly through API calls that took a little time to run), and you just want to debug and add to additional code.
 
-6. For now, go ahead and click **Source**. It doesn't look like much happened, but, if you now check your **Environment** window, you will see a new object called **gaData**. Double-click on that, and the **gaData* data frame will load in a new tab next to your script.
+6. For now, go ahead and click **Source**. It doesn't look like much happened, but, if you now check your **Environment** window, you will see a new object called **gaData**. Double-click on that, and the **gaData** data frame will load in a new tab next to your script.
 
 7. We're going to hop back down to the console to explore some of the most common ways we can access data in a data frame. 
 
@@ -109,7 +114,7 @@ Type in `gaData` in the console. This will simply quickly scroll all of the cont
 
 Sometimes, we just want to see the basic structure of an object -- we don't need to see _all_ of the data. For that, try `head(gaData)`. This shows just the first few rows (and `head()` is a function; type `?head()` to read the help for it!).
 
-Let's look at just the **sessions** column. We do that using **$** notation: try `gaData$sessions`.
+Let's look at just the **sessions** column. We do that using **\$** notation: try `gaData$sessions`.
 
 Since the data frame is made up of rows and columns, we can also access values using a row/column notation (similar to R1C1 notation in Excel). To view the value in the 5th row and the 3rd column of the data, type `gaData[5,3]`.
 

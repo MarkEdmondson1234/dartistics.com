@@ -8,19 +8,19 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Importing CSV
 
-The most universal data format is `.csv` (comma seperated variables). 
+The most universal data format is `.csv` (comma-separated variables). 
 
-`.csv` is a format that almost every program can open, and also has the advantage of being human readable if you open it for examination with say notepad. 
+`.csv` is a format that almost every program can open, and also has the advantage of being human-readable if you open it for examination with, say, notepad. 
 
 ### read.csv()
 
 See `?read.csv` to get an overview of the arguments for importing csv.
 
-When you do, you see that `read.csv` is a derived function from the more general `read.table` that can read other formats such as tab seperated (`.tsv`).  
+When you do, you see that `read.csv` is a derived function from the more general `read.table` function that can read other formats such as tab seperated (`.tsv`).  
 
 `read.csv()` basically hardcodes defaults suitable for `.csv` in the UK/US, whilst `read.csv2()` has defaults set for European formats where currency uses a comma, `,`, which to avoid confusion means a semi-colon `;` is used instead to seperate values.
 
-A helpful argument to also include is `stringsAsFactors = FALSE` - a classic R quirk, it stops future problems where R treats strings are factors that may cause unexpected results.
+A helpful argument to also include is `stringsAsFactors = FALSE` - a classic R quirk, it stops future problems where R treats strings as factors that may cause unexpected results.
 
 
 ### Example import csv

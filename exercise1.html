@@ -19,6 +19,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -94,6 +97,7 @@ button.code-folding-btn:focus {
 }
 </style>
 
+
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -160,6 +164,100 @@ $(document).ready(function () {
 <!-- code folding -->
 
 
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.9em;
+  padding-left: 5px;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -336,8 +434,8 @@ $(document).ready(function () {
 
 
 <p>Let’s start with getting familiar with the basics of moving around RStudio and some of the basics of R itself. Go ahead and launch RStudio!</p>
-<div id="get-familiar-with-the-different-panes-and-the-basics-of-r" class="section level2">
-<h2>Get Familiar with the Different Panes and the Basics of R</h2>
+<div id="get-familiar-the-basics" class="section level2">
+<h2>Get Familiar the Basics</h2>
 <p>We’re going to walk through some basics so you get a good sense of the different areas of the environment:</p>
 <ol style="list-style-type: decimal">
 <li>Create a new script by selecting <strong>File&gt;&gt;New File</strong> (we’ll cover projects in a bit).</li>
@@ -394,8 +492,8 @@ $(document).ready(function () {
 <li>We’ve now worked with <code>c()</code>, <code>typeof()</code>, and <code>length()</code>. That’s just the beginning. There will be countless functions that we start to use, and it’s often handy to quickly see the documentation for a function. The <code>?</code> provides quick access on that front. Type <code>?length()</code> and, in the lower right pane in RStudio, the help file for the <code>length()</code> function will appear. As we start to use more complicated functions, the help files are often a very handy reference. Unfortunately, the quality of that documentation can vary, so, with functions embedded in specialized packages, the <code>?</code> help may just be a jumping off point, after which more digging online is required to get workable code examples. Function help files often use a lot of shortcuts that assume a moderate level of R knowledge on the part of the reader, so they can seem like Greek at first. The more you use R and get comfortable with the style of the help files, though, the easier they become to read.</li>
 </ol>
 </div>
-<div id="data-frames-and-web-analytics-data" class="section level2">
-<h2>Data Frames and Web Analytics Data!</h2>
+<div id="data-frames" class="section level2">
+<h2>Data Frames!</h2>
 <p><em>We’re going to do a few things here that wouldn’t exactly be how you would work typically. But, that’s okay:</em> * <em>We’ll get to accessing web analytics data via APIs in a bit, but we’re going to just work with a static data export for now.</em> * <em>We’re working in a web-based environment rather than your local machine, which makes things a little different.</em></p>
 <ol style="list-style-type: decimal">
 <li><p>Type <code>getwd()</code>. This will return your “working directory.” This is just “where R is doing stuff.” Tutorials tend to make a big deal about your working directly (not just <code>getwd()</code>, but its companion, <code>setwd()</code>). Generally, you won’t really need to worry about these. If your working directory gets out of whack, it will cause your scripts to have issues, so it’s just good to file the concept of a working directory away.</p></li>
@@ -413,12 +511,12 @@ $(document).ready(function () {
 </ul>
 <p><strong>Run</strong> comes in handy when, for instance, you already have data loaded into your environment (possibly through API calls that took a little time to run), and you just want to debug and add to additional code.</p>
 <ol start="6" style="list-style-type: decimal">
-<li><p>For now, go ahead and click <strong>Source</strong>. It doesn’t look like much happened, but, if you now check your <strong>Environment</strong> window, you will see a new object called <strong>gaData</strong>. Double-click on that, and the **gaData* data frame will load in a new tab next to your script.</p></li>
+<li><p>For now, go ahead and click <strong>Source</strong>. It doesn’t look like much happened, but, if you now check your <strong>Environment</strong> window, you will see a new object called <strong>gaData</strong>. Double-click on that, and the <strong>gaData</strong> data frame will load in a new tab next to your script.</p></li>
 <li><p>We’re going to hop back down to the console to explore some of the most common ways we can access data in a data frame.</p></li>
 </ol>
 <p>Type in <code>gaData</code> in the console. This will simply quickly scroll all of the contents of the data frame.</p>
 <p>Sometimes, we just want to see the basic structure of an object – we don’t need to see <em>all</em> of the data. For that, try <code>head(gaData)</code>. This shows just the first few rows (and <code>head()</code> is a function; type <code>?head()</code> to read the help for it!).</p>
-<p>Let’s look at just the <strong>sessions</strong> column. We do that using **<span class="math inline">\(** notation: try `gaData\)</span>sessions`.</p>
+<p>Let’s look at just the <strong>sessions</strong> column. We do that using <strong>$</strong> notation: try <code>gaData$sessions</code>.</p>
 <p>Since the data frame is made up of rows and columns, we can also access values using a row/column notation (similar to R1C1 notation in Excel). To view the value in the 5th row and the 3rd column of the data, type <code>gaData[5,3]</code>.</p>
 <p>We can <em>also</em> use this notation to grab an <em>entire</em> row or an <em>entire</em> column simply by using the row or column index blank. To grab the entire 5th row, type <code>gaData[5,]</code>.</p>
 <p>Using this same notation, we can also add conditions to pull subsets of the data. For instance, to view all of the rows where there were greater than 100 sessions, enter <code>gaData[gaData$sessions &gt; 100,]</code>.</p>
@@ -453,6 +551,8 @@ $(document).ready(function () {
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -462,6 +562,7 @@ $(document).ready(function () {
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 
