@@ -94,6 +94,7 @@ button.code-folding-btn:focus {
 }
 </style>
 
+
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -337,14 +338,14 @@ $(document).ready(function () {
 
 <div id="importing-csv" class="section level2">
 <h2>Importing CSV</h2>
-<p>The most universal data format is <code>.csv</code> (comma seperated variables).</p>
-<p><code>.csv</code> is a format that almost every program can open, and also has the advantage of being human readable if you open it for examination with say notepad.</p>
+<p>The most universal data format is <code>.csv</code> (comma-separated variables).</p>
+<p><code>.csv</code> is a format that almost every program can open, and also has the advantage of being human-readable if you open it for examination with, say, notepad.</p>
 <div id="read.csv" class="section level3">
 <h3>read.csv()</h3>
 <p>See <code>?read.csv</code> to get an overview of the arguments for importing csv.</p>
-<p>When you do, you see that <code>read.csv</code> is a derived function from the more general <code>read.table</code> that can read other formats such as tab seperated (<code>.tsv</code>).</p>
+<p>When you do, you see that <code>read.csv</code> is a derived function from the more general <code>read.table</code> function that can read other formats such as tab seperated (<code>.tsv</code>).</p>
 <p><code>read.csv()</code> basically hardcodes defaults suitable for <code>.csv</code> in the UK/US, whilst <code>read.csv2()</code> has defaults set for European formats where currency uses a comma, <code>,</code>, which to avoid confusion means a semi-colon <code>;</code> is used instead to seperate values.</p>
-<p>A helpful argument to also include is <code>stringsAsFactors = FALSE</code> - a classic R quirk, it stops future problems where R treats strings are factors that may cause unexpected results.</p>
+<p>A helpful argument to also include is <code>stringsAsFactors = FALSE</code> - a classic R quirk, it stops future problems where R treats strings as factors that may cause unexpected results.</p>
 </div>
 <div id="example-import-csv" class="section level3">
 <h3>Example import csv</h3>
@@ -435,6 +436,7 @@ write.xlsx(mydata, &quot;c:/mydata.xlsx&quot;) </code></pre>
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 
