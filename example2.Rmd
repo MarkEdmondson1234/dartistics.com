@@ -14,7 +14,7 @@ This was Tim's first web-based, interactive R applications. In hindsight...it wa
 
 Some keys to the underlying functionality used to build this:
 
-* The `rga` package -- one of several packages available for pulling data from Google Analytics 
+* The `RGA` package -- one of several packages available for pulling data from Google Analytics 
 * The `shiny` package -- Shiny is a package that makes R scripts interactive and web-based.
 * The `ggplot2` package -- the visualizations are all built using the plotting capabilities of ggplot2
 
