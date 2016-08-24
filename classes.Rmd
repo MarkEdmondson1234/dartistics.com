@@ -1,0 +1,226 @@
+---
+title: "R Classes"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+We've touched on this subject already through the previous chapters, but a more detailed look at the type of objects R uses e.g. an object's `class` is useful.
+
+# Useful class functions
+
+When working with classes, its good to know these functions:
+
+```r
+## str() gives you the "Structure" of an object, including its class
+str(mtcars)
+
+## class() lets you query an objects class directly
+class(mtcars)
+
+```
+
+# Atomic classes
+
+There are many different types of `class`, and you can make your own, so this is not a definitive list, but will help in 95% of cases:
+
+* `numeric` - a number like `1 2 3`
+* `character` - a character string like `hello`
+* `logical` - `TRUE` or `FALSE`
+* `Date` - an object that represents date.  Note this is where it gets tricky, since when you print a `Date` object and a `character` with the same format, they look the same, but are different!
+
+```{r}
+a_date <- Sys.Date()
+a_date
+class(a_date)
+
+a_character <- "2016-08-24"
+a_character
+class(a_character)
+
+```
+
+Things like finding date ranges or weekdays will work on a `Date` object, but not on a `character`
+
+* `factor` - A categorical varaible.  
+
+This is another tricky one, as they look the same as `character` when printed but act quite differently.
+
+```{r}
+a_factor <- factor("hello", levels = c("hello","goodbye"))
+a_factor
+class(a_factor)
+
+a_string <- "hello"
+a_string
+class(a_string)
+```
+
+As an example, see what happens when we try to add a string and a factor together in the same vector:
+```{r}
+## an unexpected result??
+c(a_factor, a_string)
+```
+
+Whats going on?  Since `a_factor` is a factor, it is actually represented as a number out of the choice of levels it could possibly be (`c("hello","goodbye")`).  When it is added to the character the factor is **coerced** into a character via `as.numeric`, and then into a character `as.character`.
+
+Upshot of this all is to be very careful in making sure your variables are the class you expect them to be.
+
+A classic mistake is to use `data.frame()` or `read.csv()` to make a data.frame from your data, but to not set the `stringsAsFactors = FALSE` argument, which if not used will default to using factors instead.
+
+# Multi-classes
+
+There are also objects in R that work with combinations of the classes above.
+
+## Vector
+
+A vector is a combination of the atomic elements above.  You can only combine elements of the same type in a vector.
+
+You create a vector using `c()`
+
+```{r}
+a_vector <- c("a","b","c","d")
+a_vector
+class(a_vector)
+str(a_vector)
+```
+
+Note that the class of the vector is the same as the element.  This hints at a powerful feature of R, namely **vectorisation**.  The atomic elements above are actually a one-length vector.  This means that anything you can do to one element, will also work on an entire vector of the same `class`.
+
+An example of this:
+
+```{r}
+## sum individual elements
+sum(1,2,3,3,4,5,6)
+
+## sum a vector
+a_vector <- c(1,2,3,3,4,5,6)
+sum(a_vector)
+
+```
+
+Some useful shortcuts with vectors are below:
+
+```{r}
+## make a sequence
+1:10
+
+## the lowercase letters
+letters
+
+## uppercase
+LETTERS
+
+```
+
+
+## data.frame
+
+The most common and useful R class is the `data.frame`
+
+```{r}
+class(mtcars)
+str(mtcars)
+```
+
+This is most often used to represent tabular data, and very often used in R functions.  
+
+You make a data.frame using the `data.frame()` function:
+
+```{r}
+## names before equals, values after
+my_data_frame <- data.frame(numbers = 1:5, 
+                            letters = c("a","b","c","d","e"), 
+                            logic = c(TRUE, FALSE, FALSE, TRUE, TRUE))
+class(my_data_frame)
+str(my_data_frame)
+
+```
+
+Note that each column can only be one class, but the class of the columns can be different types.
+
+Also see that by default it will turn characters into `factors`.  Turn this off via the `stringsAsFactors = FALSE` argument:
+
+```{r}
+## names before equals, values after
+my_data_frame <- data.frame(numbers = 1:5, 
+                            letters = c("a","b","c","d","e"), 
+                            logic = c(TRUE, FALSE, FALSE, TRUE, TRUE),
+                            stringsAsFactors = FALSE)
+class(my_data_frame)
+str(my_data_frame)
+
+```
+
+You can access the individual columns of a `data.frame` via the `$` notation:
+
+```{r}
+## the column of numbers
+my_data_frame$numbers
+class(my_data_frame$numbers)
+```
+
+`data.frame`'s are a special case of the next object, `lists()` where all the columns are equal length.
+
+## list
+
+A list is like a data.frame, but can carry variable lengths of objects.  List elements can be anything, including `data.frames` or other `lists`
+
+```{r}
+
+my_list <- list(letters = letters,
+                numbers = 1:5,
+                all_data = my_data_frame,
+                nested = list(LETTERS))
+class(my_list)
+str(my_list)
+```
+
+Like `data.frames` you can reach individual items via the `$` symbol:
+
+```{r}
+extract <- my_list$all_data
+class(extract)
+str(extract)
+```
+
+# Coercing
+
+If you find an R object the wrong class for the function you need, what can you do?  This is where **corecian** comes into play.
+
+All the class have an `as.this` function, which when you pass an R object in will try to change it to what you need.  It will usually error if this is impossible (which is much better than failing silently!)
+
+Some coercing functions as shown below:
+
+```{r}
+## quotes indicate characters
+as.character(-1:3)
+
+## 0 is FALSE, everything else is TRUE
+as.logical(-1:3)
+
+## character to date
+as.Date("2015-01-02")
+
+## If your dates are in a different format to YYYY-MM-DD then you need to supply format argument
+as.Date("20150102", format = "%Y%m%d")
+as.Date("12-24-2016", format = "%m-%d-%Y")
+
+## to change factors to numeric, be careful to go via as.character first
+numeric_factor <- factor(1, levels = 5:1)
+numeric_factor
+
+## it gives answer as 5, as thats the first factor
+wrong_factor <- as.numeric(numeric_factor)
+wrong_factor
+
+## we go via as.character, to get whats expected
+right_factor <- as.numeric(as.character(numeric_factor))
+right_factor
+
+```

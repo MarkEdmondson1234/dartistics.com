@@ -1,0 +1,64 @@
+---
+title: "Good habits"
+---
+
+Here are some good habits to get into learnt from experience to make working with R easier.
+
+## Project structure
+
+1. For every new task, client or project, create an RStudio project (top right)
+2. Create a `script` and `data` folder in the project straight away
+3. Put your R scripts `./scripts/your-script.R` in the script folder, and raw or processed data written to the data folder (`./data/your_data.csv`)
+4. Never change your working directory (`setwd()`) in the scripts, it ruins portability
+
+## Code style
+
+1. Follow a code style - any will do, just be consistent.  Here is [Google](https://google.github.io/styleguide/Rguide.xml)'s, I am closer to [this one](http://adv-r.had.co.nz/Style.html)
+2. Descriptivly name your function and variables
+3. Comment everything - you can even start code with comments
+4. Pretend the reader of your code is a homicidal maniac who will axe you if they don't understand it
+5. Avoid copy-pasting, if you repeat yourself more than twice, write a function
+6. Fail fast - use `stop()` to write informative error messages
+7. Check the types of your input and output variables are what you expected
+8. "Clever" code or "code golf" makes you feel good short-term, but confused long term. 
+9. Clarity is most important.
+10. If you write functions, document them using the `roxygen` format (`#' lines above function`). 
+
+## Always check the type
+
+1. 4 times out of 10 the errors in code is you copying something wrong `rowname` instead of `row.name` etc.
+2. 4 times out of 10 the errors in code is expecting the wrong type e.g. `class(obj) == "list"` not `class(obj) == "data.frame"`.  Read the function documentation carefully. 
+3. Use `str()` a lot.
+
+## Useful functions to know
+
+1. `str()`
+2. Get help via `?ggplot`
+3. `paste0` - shortcut for `paste("blah", "blah", sep = "")`
+4. Learn to love `list()` - its a way to group related objects
+
+```r
+stuff = list(mydata = data, 
+             the_author = "Bob",
+             created = Sys.Date())
+
+## can then access items via $
+stuff$mydata
+stuff$the_author
+stuff$created
+```
+5. Once you love lists, you will adore `lapply()`, `apply()` etc.
+6. `data.frames` are special lists, with equal length objects.
+7. You can do lookups via subsetting of named vectors e.g.
+
+```{r}
+## example with some user Ids
+lookup <- c("Bill","Ben","Sue","Linda","Gerry")
+names(lookup) <- c("1231","2323","5353","3434","9999")
+lookup
+
+## this is a big vector of Ids you want to lookup
+big_list_of_ids <- c("2323","2323","3434","9999","9999","1231","5353","9999","2323","1231","9999")
+
+lookup[big_list_of_ids]
+```

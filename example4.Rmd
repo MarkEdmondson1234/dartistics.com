@@ -1,0 +1,17 @@
+---
+title: "GA Effect"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Shiny app to test if an event has a statistically significant effect.
+
+Using shinydashboard, Google Analytics, CausalImpact and dygraphs.
+
+[Shiny App](https://gallery.shinyapps.io/ga-effect/)
+
+[Intro blog post](http://online-behavior.com/analytics/statistical-significance)
+
+[How I made GA Effect](http://markedmondson.me/how-i-made-ga-effect-creating-an-online-statistics-dashboard-using-reais)

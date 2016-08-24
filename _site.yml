@@ -1,0 +1,73 @@
+name: "r-masterclass"
+output_dir: "."
+output: 
+  html_document:
+    theme: flatly
+navbar:
+  title: "R Masterclass"
+  left:
+    - text: "Introduction"
+      menu:
+      - text: "Hellos"
+        href: intros.html
+      - text: "What Is R?"
+        href: whatisr.html
+    - text: "Examples"
+      menu:
+        - text: "1. Trending"
+          href: example1.html
+        - text: "2. Data Explorer"
+          href: example2.html
+        - text: "3. Venn Diagram"
+          href: example3.html
+        - text: "4. GA Effect"
+          href: example4.html
+    - text: "Basics"
+      menu:
+      - text: "RStudio"
+        href: rstudio.html
+      - text: "Packages"
+        href: packages.html
+      - text: "Good habits"
+        href: habits.html
+      - text: "Exercise 1"
+        href: exercise1.html
+    - text: "I/O"
+      menu:
+      - text: "CSV import"
+        href: import-csv-excel.html
+      - text: "Analytics APIs"
+        href: analytics-apis.html
+    - text: "Munging"
+      menu: 
+      - text: "R Classes"
+        href: classes.html
+      - text: "Accessing elements"
+        href: accessing.html
+      - text: "BaseR vs Tidyverse"
+      - text: "BaseR Tips"
+      - text: "Tidy data"
+      - text: "dplyr()"
+    - text: "Modelling"
+      menu:
+      - text: "Introduction"
+      - text: "Correlation"
+      - text: "Regression"
+      - text: "Time-series"
+      - text: "Categorisation"
+    - text: "Visualisation"
+      menu:
+      - text: "Options"
+      - text: "Base Plots"
+      - text: "ggplot2()"
+      - text: "htmlwidgets()"
+    - text: "Presentation"
+      menu:
+      - text: "RMarkdown"
+      - text: "Shiny"
+      - text: "RMarkdown + Shiny"
+    - text: "Summary"
+      menu:
+      - text: "Key topics"
+      - text: "Best practices"
+      - text: "Additional Resources"

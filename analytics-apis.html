@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Analytics APIs</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="site_libs/highlight/default.css"
+      type="text/css" />
+<script src="site_libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.9em;
+  padding-left: 5px;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R Masterclass</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Introduction
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="intros.html">Hellos</a>
+    </li>
+    <li>
+      <a href="whatisr.html">What Is R?</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="example1.html">1. Trending</a>
+    </li>
+    <li>
+      <a href="example2.html">2. Data Explorer</a>
+    </li>
+    <li>
+      <a href="example3.html">3. Venn Diagram</a>
+    </li>
+    <li>
+      <a href="example4.html">4. GA Effect</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Basics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="rstudio.html">RStudio</a>
+    </li>
+    <li>
+      <a href="packages.html">Packages</a>
+    </li>
+    <li>
+      <a href="habits.html">Good habits</a>
+    </li>
+    <li>
+      <a href="exercise1.html">Exercise 1</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    I/O
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="import-csv-excel.html">CSV import</a>
+    </li>
+    <li>
+      <a href="analytics-apis.html">Analytics APIs</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Munging
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="classes.html">R Classes</a>
+    </li>
+    <li>
+      <a href="accessing.html">Accessing elements</a>
+    </li>
+    <li class="dropdown-header">BaseR vs Tidyverse</li>
+    <li class="dropdown-header">BaseR Tips</li>
+    <li class="dropdown-header">Tidy data</li>
+    <li class="dropdown-header">dplyr()</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Introduction</li>
+    <li class="dropdown-header">Correlation</li>
+    <li class="dropdown-header">Regression</li>
+    <li class="dropdown-header">Time-series</li>
+    <li class="dropdown-header">Categorisation</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Visualisation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Options</li>
+    <li class="dropdown-header">Base Plots</li>
+    <li class="dropdown-header">ggplot2()</li>
+    <li class="dropdown-header">htmlwidgets()</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Presentation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">RMarkdown</li>
+    <li class="dropdown-header">Shiny</li>
+    <li class="dropdown-header">RMarkdown + Shiny</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Summary
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Key topics</li>
+    <li class="dropdown-header">Best practices</li>
+    <li class="dropdown-header">Additional Resources</li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Analytics APIs</h1>
+
+</div>
+
+
+<p>One of the most compelling reasons to use R for web analysts is access to the variety of libraries for importing data from Google Analytics and Adobe Analytics.</p>
+<p>Calling from the API can get around limitations in the web UI’s such as sampling and querying certain dimensions and metrics.</p>
+<div id="google-analytics" class="section level1">
+<h1>Google Analytics</h1>
+<p>There are several R packages for reaching the Google Analytics API, but the one chosen to show today is <code>googleAnalyticsR</code> as its the one the author wrote! However you may prefer the syntax of one of the others, which are listed on the <a href="http://code.markedmondson.me/googleAnalyticsR/"><code>googleAnalyticsR</code> homepage</a>.</p>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
+<pre class="r"><code>## This installs googleAnalyticsR if you haven&#39;t got it already
+if(!require(googleAnalyticsR)) install.packages(&quot;googleAnalyticsR&quot;)</code></pre>
+<pre><code>## Loading required package: googleAnalyticsR</code></pre>
+</div>
+<div id="authentication" class="section level2">
+<h2>Authentication</h2>
+<p>By default you can authenticate using googleAnalyticsR default project:</p>
+<pre class="r"><code>library(googleAnalyticsR)
+ga_auth()</code></pre>
+<p>Pause here, as the first time it should open a web browser the first time to your Google login.</p>
+<div class="figure">
+<img src="images/google_auth_login.png" />
+
+</div>
+<p>Sign in to give access for your session.</p>
+<p>This will create a <code>.httr-oauth</code> file in your working directory folder that contains your authentication details. Keep this file safe as people could access your data if they have access to it.</p>
+</div>
+<div id="getting-your-view-id" class="section level2">
+<h2>Getting your View Id</h2>
+<p>To get your data, you need to specify which Google Analytics View you want to pull it from.</p>
+<p>The easiest way to find this is to use <code>google_analytics_account_list()</code> to list your Views, then read the number in the <code>viewId</code> column:</p>
+<pre class="r"><code>my_accounts &lt;- google_analytics_account_list()
+
+head(my_accounts)</code></pre>
+<pre><code>##   accountId         accountName webPropertyId          webPropertyName
+## 1  79301104             cloudyr UA-79301104-1      the cloudyr project
+## 2  27488374       Copenhagenish UA-27488374-1            Copenhagenish
+## 3  27488374       Copenhagenish UA-27488374-1            Copenhagenish
+## 4  27488374       Copenhagenish UA-27488374-2                 Test App
+## 5  27488374       Copenhagenish UA-27488374-2                 Test App
+## 6  54516992 Demo Account (Beta) UA-54516992-1 Google Merchandise Store
+##   internalWebPropertyId    level                              websiteUrl
+## 1             118427305 STANDARD                http://cloudyr.github.io
+## 2              52792508 STANDARD                 http://copenhagenish.me
+## 3              52792508 STANDARD                 http://copenhagenish.me
+## 4             107212771 STANDARD                                      --
+## 5             107212771 STANDARD                                      --
+## 6              87479473 STANDARD https://shop.googlemerchandisestore.com
+##      viewId            viewName type starred
+## 1 123875646   All Web Site Data  WEB    &lt;NA&gt;
+## 2 111689181        a mobile app  APP    &lt;NA&gt;
+## 3  53589656       Copenhagenish  WEB    &lt;NA&gt;
+## 4 111672280 All Mobile App Data  APP    &lt;NA&gt;
+## 5 111715378        new view app  APP    &lt;NA&gt;
+## 6  92320289       1 Master View  WEB    &lt;NA&gt;</code></pre>
+<pre class="r"><code>## The account viewIds
+head(my_accounts$viewId)</code></pre>
+<pre><code>## [1] &quot;123875646&quot; &quot;111689181&quot; &quot;53589656&quot;  &quot;111672280&quot; &quot;111715378&quot; &quot;92320289&quot;</code></pre>
+</div>
+<div id="querying-your-data" class="section level2">
+<h2>Querying your data</h2>
+<p>You can then download your data via the <a href="https://developers.google.com/analytics/devguides/reporting/core/v4/"><code>v4 reporting API</code></a> with the <code>google_analytics_4()</code> function. See <code>?google_analytics_4</code> and the website for complete details and examples.</p>
+<pre class="r"><code>## change this to your own ViewId
+## this one will only work if you have access to Mark&#39;s blog!
+my_id &lt;- 81416156 
+some_data &lt;- google_analytics_4(my_id, 
+                                date_range = c(&quot;2016-01-01&quot;, &quot;2016-08-01&quot;),
+                                metrics = c(&quot;sessions&quot;,&quot;users&quot;,&quot;pageviews&quot;),
+                                dimensions = c(&quot;date&quot;,&quot;medium&quot;))</code></pre>
+<pre><code>## Downloaded [644] rows from a total of [644].</code></pre>
+<pre class="r"><code>head(some_data)</code></pre>
+<pre><code>##         date   medium sessions users pageviews
+## 1 2016-01-01   (none)        8     8         9
+## 2 2016-01-01  organic       22    20        25
+## 3 2016-01-01 referral        5     5         7
+## 4 2016-01-02   (none)        9     8        16
+## 5 2016-01-02  organic       28    26        29
+## 6 2016-01-02 referral        3     3         4</code></pre>
+</div>
+</div>
+<div id="adobe-analytics" class="section level1">
+<h1>Adobe Analytics</h1>
+<p>Adobe Analytics access is supplied via Randy Zwitch’s <a href="http://randyzwitch.com/rsitecatalyst/">RSiteCatalyst</a> library.</p>
+<p>Authentication is a little harder to configure for Adobe so a live example is not shown here, but steps to download data are shown below.</p>
+<div id="installation-1" class="section level2">
+<h2>Installation</h2>
+<pre class="r"><code>## This installs a package for downloading Adobe Analytics data
+if(!require(RSiteCatalyst)) install.packages(&quot;RSiteCatalyst&quot;)</code></pre>
+</div>
+<div id="authentication-new" class="section level2">
+<h2>Authentication (New)</h2>
+<p>This is the new OAuth2 method of authentication. Use this one if you can.</p>
+<p>Link your Adobe Analytics login to the Adobe ID account to use this method of signin.</p>
+<div id="create-application" class="section level3">
+<h3>Create Application</h3>
+<p>If you have no application for your Adobe Analytics account, here is how to make one:</p>
+<ol style="list-style-type: decimal">
+<li>Create an app by visiting developer console and navigating to <a href="https://marketing.adobe.com/developer/applications">Developer &gt; Applications</a></li>
+<li>Select “Web Server (Authorization Code)”</li>
+<li>Name the application</li>
+<li>Leave the Redirect Uri field blank.</li>
+</ol>
+<div class="figure">
+<img src="images/setting-up-adobe-application.png" />
+
+</div>
+<p>You should then see this screen to grant permission after running <code>SCAuth</code></p>
+<div class="figure">
+<img src="images/adobe-app-oauth-permission.png" />
+
+</div>
+</div>
+</div>
+<div id="authentication-old" class="section level2">
+<h2>Authentication (Old)</h2>
+<p>This is the deprecated method and will dissappear ‘soon’.</p>
+<p>Get the Web Service key under the Adobe Analytics Account Information page.</p>
+<ul>
+<li>User Name is used as the key</li>
+<li>Sharted Secret is used as the secret</li>
+</ul>
+<div class="figure">
+<img src="images/legacy-authentication-adobe.png" />
+
+</div>
+<p>If you use this method, then you authenticate via:</p>
+<pre class="r"><code>library(RSiteCatalyst)
+
+key &lt;- Sys.getenv(&quot;ADOBE_KEY_OLD&quot;)
+secret &lt;- Sys.getenv(&quot;ADOBE_SECRET_OLD&quot;)
+
+SCAuth(key, secret)</code></pre>
+</div>
+<div id="recording-secret-keys" class="section level2">
+<h2>Recording secret keys</h2>
+<p>I save these values to a <code>.Renviron</code> file in my home directory to keep them safe and call then via the commands below (this stops them being accidently put on github for example)</p>
+<div id="example-.renviron-file" class="section level3">
+<h3>Example .Renviron file</h3>
+<p>This is in my root directory: <code>~/.Renviron</code></p>
+<pre><code>ADOBE_KEY=&quot;a7xxxxx639-iih-nordic-r&quot;
+ADOBE_SECRET=&quot;2eadxxxxx1495ea49&quot;
+ADOBE_KEY_OLD=&quot;mark:XXXXXX&quot;
+ADOBE_SECRET_OLD=&quot;74b46625xxxxx7e89dbe6e0&quot;</code></pre>
+</div>
+</div>
+<div id="calling-adobe-analytics" class="section level2">
+<h2>Calling Adobe Analytics</h2>
+<p>Once you have setup your authentication method, you can call data using the below.</p>
+<p>The <code>SCAuth()</code> function will open your browser or read the existing <code>auth-adobe</code> file if using the newer OAuth2 method, or return <code>[1] &quot;Credentials Saved in RSiteCatalyst Namespace.&quot;</code> if using legacy.</p>
+<pre class="r"><code>library(RSiteCatalyst)
+
+## New OAuth method
+key    &lt;- Sys.getenv(&quot;ADOBE_KEY&quot;)
+secret &lt;- Sys.getenv(&quot;ADOBE_SECRET&quot;)
+
+SCAuth(key, secret, 
+       company = &quot;XXXXX&quot;, 
+       token.file = &quot;auth-adobe&quot;, 
+       auth.method = &quot;OAUTH2&quot;)
+
+## Old legacy method
+key &lt;- Sys.getenv(&quot;ADOBE_KEY_OLD&quot;)
+secret &lt;- Sys.getenv(&quot;ADOBE_SECRET_OLD&quot;)
+
+SCAuth(key, secret)
+</code></pre>
+<p>You should be then able to see the report suites via:</p>
+<pre class="r"><code>suites &lt;- GetReportSuites()
+head(suites)</code></pre>
+</div>
+<div id="pulling-data-reports" class="section level2">
+<h2>Pulling Data Reports</h2>
+<p>There are 5 different types of Adobe Analytics reports that can be pulled out via the API:</p>
+<ul>
+<li>Overtime - <code>QueueOvertime()</code></li>
+<li>Ranked - <code>QueueRanked()</code></li>
+<li>Trended - <code>QueueTrended()</code></li>
+<li>Pathing - <code>QueuePathing()</code></li>
+<li>Fallout - <code>QueueFallout()</code></li>
+</ul>
+<p>See the characteristics of the <a href="https://marketing.adobe.com/developer/documentation/sitecatalyst-reporting/r-queueovertime">reports here</a></p>
+<p>We set some common parameters here:</p>
+<pre class="r"><code>date.from &lt;- &quot;2016-03-01&quot;
+date.to &lt;- &quot;2016-03-29&quot;
+reportsuite.id &lt;- &quot;xxxxxxx&quot;</code></pre>
+<div id="overtime" class="section level3">
+<h3>Overtime</h3>
+<p>Returns an overtime report. This is similar to the key metrics report in that the only granularity allowed is time.</p>
+<p>QueueOvertime requires a start and end date, a reportsuite ID, and a character vector of metrics.</p>
+<pre class="r"><code>metrics &lt;- c(&quot;visits&quot;,&quot;uniquevisitors&quot;,&quot;pageviews&quot;)
+
+report.data &lt;- QueueOvertime(reportsuite.id, date.from, date.to, metrics)
+head(report.data)</code></pre>
+<p>You may also wish to set any of the 5 optional named parameters.</p>
+<pre class="r"><code>report.data &lt;- QueueOvertime(reportsuite.id, 
+                             date.from, date.to, 
+                             metrics,
+                             date.granularity = &quot;hour&quot;,
+                             segment.id = &quot;Visit_Natural_Search&quot;,
+                             anomaly.detection = FALSE,
+                             data.current = TRUE,
+                             expedite = FALSE)  ## only if you have permission
+
+head(report.data)</code></pre>
+<p>A similar workflow is available for the other report types.</p>
+</div>
+</div>
+</div>
+<div id="other-apis" class="section level1">
+<h1>Other APIs</h1>
+<p>Some noteable other APIs useful for digital marketing are described below:</p>
+<div id="search-console" class="section level2">
+<h2>Search Console</h2>
+<p>Get your SEO keywords back after <code>(not provided)</code> via Google’s Search Console.</p>
+<pre class="r"><code>## This installs searchConsoleR if you haven&#39;t got it already
+if(!require(searchConsoleR)) install.packages(&quot;searchConsoleR&quot;)
+library(searchConsoleR)
+
+## authentication similar to googleAnalyticsR
+scr_auth()
+
+seo_data &lt;- search_analytics(&quot;your-website.com&quot;, dimensions = c(&quot;date&quot;,&quot;query&quot;))</code></pre>
+</div>
+<div id="bigquery" class="section level2">
+<h2>BigQuery</h2>
+<p>Useful if you have Big Query exports from Google Analytics 360. See <a href="http://code.markedmondson.me/googleAnalyticsR/big-query.html">BigQuery section</a> of <code>googleAnalyticsR</code>.</p>
+<pre class="r"><code>## This installs bigQueryR if you haven&#39;t got it already
+if(!require(bigQueryR)) install.packages(&quot;bigQueryR&quot;)
+
+library(googleAnalyticsR)
+
+## authentication similar to googleAnalyticsR
+bqr_auth()
+
+## this function turns GA dimensions/metrics into BigQuery SQL
+
+bq &lt;- google_analytics_bq(&quot;project-id&quot;, &quot;dataset-id-ga-viewid&quot;, 
+                           start = &quot;2016-01-01&quot;, end = &quot;2016-02-01&quot;, 
+                           metrics = &quot;users&quot;, 
+                           dimensions = c(&quot;source&quot;,&quot;medium&quot;))
+head(bq)
+             source   medium  users
+1   mavas|blahbs.ru  display  47837
+2          examp.ae referral   6090
+3   lm.facebook.com referral    335
+4       ghtie_yahoo  display 133900
+5      fjsfs_inmobi  display  19887
+6 tripadvisor.co.dk referral    307 
+</code></pre>
+<p>For more general BigQuery extracts, it may be better to use the more developed <a href="https://github.com/rstats-db/bigrquery">bigrquery()</a> instead.</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+---
+title: "Introduction"
+output: 
+  html_document:
+    theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Mark Edmondson
+
+* "Better than Google" <-- according to Tim
+* Heavy user of R
+* Creator of the googleAnalyticsR package (and others!)
+* Englishman living in Denmark
+
+## Tim Wilson
+
+* Dove into R in earnest in December 2015
+* On a mission to make digital analysts more data science-y
+* American living in America (but, within the country, a Texan living in Ohio)
+
+## And you...?
+
+* Name
+* Company
+* Favorite Excel function
+* (Optional) Favorite R package
+* Your Twitter username

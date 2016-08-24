@@ -1,0 +1,24 @@
+---
+title: "What is R? Why use it?"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### What is R?
+
+* **Programming Language**: scripted language that can run both "as a full program" (like an Excel macro) as well as one command at a time
+* **Built of/for/by statisticians**: "working with data" is at the core of the platform
+* **Open Source (Free\*)**: while ancillary services/support are available for a fee, the core platform (and an IDE with which to work with it) does not require any internal budget approval -- just download it!
+* **Supported by a Large Community**: the user base of R has, in some respects, outpaced that of SPSS and SAS (but not yet Excel!); the community of *digital analyst* R users is rapidly growing (Congratulations! You're joining a great group!). Go to [http://join.measure.chat](http://join.measure.chat) to join the #measure Slack team (and the coolest channel there: #r-and-statistics)
+* **Connectable to digital analytics (and other!) data sources**: multiple "packages" have been created for connecting to digital analytics platforms via their APIs. And to Google Sheets. And to you-name-it. We'll be using some of them today!
+
+\* TANSTAAFL
+
+### Why use R (instead of Excel)?
+
+* **Reproducability**: write a function for one project/client and then reuse it for others
+* **Flexibility**: many *many* open source packages to enable powerful operations
+* **Scalability**: copes easily beyond Excel limits; can scale up in cloud using same code
+* **Interoperability**: can run (almost) same code on Linux, Mac, and Windows

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Exercise 1 – The Basic Basics</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="site_libs/highlight/default.css"
+      type="text/css" />
+<script src="site_libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R Masterclass</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Introduction
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="intros.html">Hellos</a>
+    </li>
+    <li>
+      <a href="whatisr.html">What Is R?</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="example1.html">1. Trending</a>
+    </li>
+    <li>
+      <a href="example2.html">2. Data Explorer</a>
+    </li>
+    <li>
+      <a href="example3.html">3. Venn Diagram</a>
+    </li>
+    <li>
+      <a href="example4.html">4. GA Effect</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Basics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="rstudio.html">RStudio</a>
+    </li>
+    <li>
+      <a href="packages.html">Packages</a>
+    </li>
+    <li>
+      <a href="habits.html">Good habits</a>
+    </li>
+    <li>
+      <a href="exercise1.html">Exercise 1</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    I/O
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="import-csv-excel.html">CSV import</a>
+    </li>
+    <li>
+      <a href="analytics-apis.html">Analytics APIs</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Munging
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="classes.html">R Classes</a>
+    </li>
+    <li>
+      <a href="accessing.html">Accessing elements</a>
+    </li>
+    <li class="dropdown-header">BaseR vs Tidyverse</li>
+    <li class="dropdown-header">BaseR Tips</li>
+    <li class="dropdown-header">Tidy data</li>
+    <li class="dropdown-header">dplyr()</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Introduction</li>
+    <li class="dropdown-header">Correlation</li>
+    <li class="dropdown-header">Regression</li>
+    <li class="dropdown-header">Time-series</li>
+    <li class="dropdown-header">Categorisation</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Visualisation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Options</li>
+    <li class="dropdown-header">Base Plots</li>
+    <li class="dropdown-header">ggplot2()</li>
+    <li class="dropdown-header">htmlwidgets()</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Presentation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">RMarkdown</li>
+    <li class="dropdown-header">Shiny</li>
+    <li class="dropdown-header">RMarkdown + Shiny</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Summary
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Key topics</li>
+    <li class="dropdown-header">Best practices</li>
+    <li class="dropdown-header">Additional Resources</li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Exercise 1 – The Basic Basics</h1>
+
+</div>
+
+
+<p>Let’s start with getting familiar with the basics of moving around RStudio and some of the basics of R itself. Go ahead and launch RStudio!</p>
+<div id="get-familiar-with-the-different-panes-and-the-basics-of-r" class="section level2">
+<h2>Get Familiar with the Different Panes and the Basics of R</h2>
+<p>We’re going to walk through some basics so you get a good sense of the different areas of the environment:</p>
+<ol style="list-style-type: decimal">
+<li>Create a new script by selecting <strong>File&gt;&gt;New File</strong> (we’ll cover projects in a bit).</li>
+<li>Let’s start with some simple math. In the console, type <code>12^2</code> and press <Enter>. You should get:</li>
+</ol>
+<pre><code>## [1] 144</code></pre>
+<p>That’s just simple math. It’s not too impressive, I realize, but it shows executing commands directly in the console.</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Now, let’s actually assign a value to a variable from the console by typing <code>myVar &lt;- 12^2</code>. _In R, assignment of values uses <code>&lt;-</code>. In some cases, <code>=</code> will work, too, and there <em>are</em> cases where you use <code>=</code> in R, but <code>&lt;-</code> is very common, and it should quickly become second nature. When you type this in, you won’t see anything else in the console. But, if you look in the <strong>Environment</strong> tab in the top right pane, you should now see your variable:</li>
+</ol>
+<div style="text-align:center" markdown="1">
+<div class="figure">
+<img src="exercise1_files/figure_html/ex1_environment.png" />
+
+</div>
+</div>
+<p>You’ve just created a variable and stored it in your working space…even though you haven’t actually created a script! So, let’s do some work with our script.</p>
+<ol start="4" style="list-style-type: decimal">
+<li>In the top left pane, enter <code>myVar &lt;- mVar * 10</code>. Nothing will happen, because this is just a script. It hasn’t been executed yet. Click <strong>Source</strong> to run the script. Now, check out the <strong>Environment</strong> tab:</li>
+</ol>
+<div style="text-align:center" markdown="1">
+<div class="figure">
+<img src="exercise1_files/figure_html/ex1_environment2.png" />
+
+</div>
+</div>
+<p>This is a simple illustration of working in both the console <em>and</em> the script to work on the same environment.</p>
+</div>
+<div id="vectors-and-c" class="section level2">
+<h2>Vectors and c()</h2>
+<p>In the first part of this exercise we assigned a single <strong>numeric</strong> value to an <strong>object</strong>. We can also (and often will) want to work with multiple values. We don’t need a 1:1 relationship for each value and an object. We can use a <strong>vector</strong> to store multiple values in a single object.</p>
+<p>Two key concepts here: * <strong>Vectors</strong> get used quite a bit, but, with much of the data we work with, we actually work with <strong>data frames</strong>, which will look much more familiar, in that they are, essentially like Excel sheets on steroids. Wrapping your head around the differences between <strong>vectors</strong>, <strong>data frames</strong>, and a few other types of objects (<strong>lists</strong> and *matrices**) is both critical…and confusing. * Vectors get created using the <code>c()</code> function. The “c” is for “combine,” because we’re combining multiple values into a single vector.</p>
+<p>So, let’s do a little work with vectors:</p>
+<ol style="list-style-type: decimal">
+<li><p>In the <strong>Console</strong>, type <code>myVector &lt;- c(1,2,3,4)</code>. You will see <code>myVector</code> appear in the <strong>Environment</strong> pane.</p></li>
+<li><p>Type <code>myVector</code> in the <strong>Console</strong> to display the vector in the console.</p></li>
+</ol>
+<pre class="r"><code>myVector</code></pre>
+<pre><code>## [1] 1 2 3 4</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li><p>What if we wanted to cube each of these values? Type <code>myVector^3</code>. This is an operation performed on an <em>entire vector</em>. It’s not particularly exciting in this example, but it shows one of the fundamental aspects of R that we will come back to again and again. What we did <strong>not</strong> have to do was “loop through the vector and cube each value.” Rather, we performed an operation on the <em>entire vector</em> and we did it <em>all at once</em>.</p></li>
+<li>In R’s mind, both <code>myVar</code> and <code>myVector</code> are actually vectors. <code>myVar</code> is simply a vector of length <code>1</code>, while <code>myVector</code> is a vector of length <code>4</code>. Let’s illustrate that and pick up a few more basics of the R/RStudio environment:</li>
+</ol>
+<ul>
+<li>Type <code>typeof(myVar)</code>. <code>typeof</code> is a function that returns the <em>type</em> of an object.</li>
+<li>Type <code>typeof(myVector)</code>. Note that it is the identical <em>type</em> as <code>myVar</code>.</li>
+<li>Now, type <code>length(myVar)</code> and then <code>length(myVector)</code>. Note that this is where the two objects differ.</li>
+</ul>
+<pre class="r"><code>length(myVar)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>length(myVector)</code></pre>
+<pre><code>## [1] 4</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>We’ve now worked with <code>c()</code>, <code>typeof()</code>, and <code>length()</code>. That’s just the beginning. There will be countless functions that we start to use, and it’s often handy to quickly see the documentation for a function. The <code>?</code> provides quick access on that front. Type <code>?length()</code> and, in the lower right pane in RStudio, the help file for the <code>length()</code> function will appear. As we start to use more complicated functions, the help files are often a very handy reference. Unfortunately, the quality of that documentation can vary, so, with functions embedded in specialized packages, the <code>?</code> help may just be a jumping off point, after which more digging online is required to get workable code examples. Function help files often use a lot of shortcuts that assume a moderate level of R knowledge on the part of the reader, so they can seem like Greek at first. The more you use R and get comfortable with the style of the help files, though, the easier they become to read.</li>
+</ol>
+</div>
+<div id="data-frames-and-web-analytics-data" class="section level2">
+<h2>Data Frames and Web Analytics Data!</h2>
+<p><em>We’re going to do a few things here that wouldn’t exactly be how you would work typically. But, that’s okay:</em> * <em>We’ll get to accessing web analytics data via APIs in a bit, but we’re going to just work with a static data export for now.</em> * <em>We’re working in a web-based environment rather than your local machine, which makes things a little different.</em></p>
+<ol style="list-style-type: decimal">
+<li><p>Type <code>getwd()</code>. This will return your “working directory.” This is just “where R is doing stuff.” Tutorials tend to make a big deal about your working directly (not just <code>getwd()</code>, but its companion, <code>setwd()</code>). Generally, you won’t really need to worry about these. If your working directory gets out of whack, it will cause your scripts to have issues, so it’s just good to file the concept of a working directory away.</p></li>
+<li><p>Download the .csv file at <a href="http://bit.ly/rSampleGA" class="uri">http://bit.ly/rSampleGA</a>. Pay attention to to where this file – td.csv – gets stored.</p></li>
+<li><p>Click <strong>Upload File</strong> in the lower right pane in RStudio and upload td.csv. You should now see it in the <strong>Files</strong> tab.</p></li>
+<li><p>We’re going to create an actual script now, so select <strong>New&gt;&gt;File&gt;&gt;R Script</strong> and then <strong>File&gt;&gt;Save</strong> and name the file <strong>myFirstScript</strong>. The script is being saved in your <em>working directory</em> and now appears – along with <strong>td.csv</strong> in the <strong>Files</strong> tab. Now, let’s start writing some script!</p></li>
+<li><p>The first thing we want to do is load our data into a <strong>data frame</strong>. A data frame is, essentially, just a table. Let’s call our data frame <strong>gaData</strong> and load the data from <strong>td.csv</strong> into it. We use the <code>read.csv()</code> function for this, so add the following line of code to your script:</p></li>
+</ol>
+<pre class="r"><code>gaData &lt;- read.csv(&quot;td.csv&quot;, stringsAsFactors = FALSE)</code></pre>
+<p>That <code>stringsAsFactors = FALSE</code> is something you will run into quite a bit in various functions. Let’s just ignore it for now.</p>
+<p>We can go ahead and run this script. It’s only one line long, but this gets us to another handy aspect of RStudio: <strong>Run</strong> and <strong>Source</strong>. These are similar, but they do two different things:</p>
+<ul>
+<li><strong>Source</strong> – when you click <strong>Source</strong>, the <em>entire</em> script runs.</li>
+<li><strong>Run</strong> – when you click <strong>Run</strong>, only the <em>selected portion</em> of the script runs.</li>
+</ul>
+<p><strong>Run</strong> comes in handy when, for instance, you already have data loaded into your environment (possibly through API calls that took a little time to run), and you just want to debug and add to additional code.</p>
+<ol start="6" style="list-style-type: decimal">
+<li><p>For now, go ahead and click <strong>Source</strong>. It doesn’t look like much happened, but, if you now check your <strong>Environment</strong> window, you will see a new object called <strong>gaData</strong>. Double-click on that, and the **gaData* data frame will load in a new tab next to your script.</p></li>
+<li><p>We’re going to hop back down to the console to explore some of the most common ways we can access data in a data frame.</p></li>
+</ol>
+<p>Type in <code>gaData</code> in the console. This will simply quickly scroll all of the contents of the data frame.</p>
+<p>Sometimes, we just want to see the basic structure of an object – we don’t need to see <em>all</em> of the data. For that, try <code>head(gaData)</code>. This shows just the first few rows (and <code>head()</code> is a function; type <code>?head()</code> to read the help for it!).</p>
+<p>Let’s look at just the <strong>sessions</strong> column. We do that using **<span class="math inline">\(** notation: try `gaData\)</span>sessions`.</p>
+<p>Since the data frame is made up of rows and columns, we can also access values using a row/column notation (similar to R1C1 notation in Excel). To view the value in the 5th row and the 3rd column of the data, type <code>gaData[5,3]</code>.</p>
+<p>We can <em>also</em> use this notation to grab an <em>entire</em> row or an <em>entire</em> column simply by using the row or column index blank. To grab the entire 5th row, type <code>gaData[5,]</code>.</p>
+<p>Using this same notation, we can also add conditions to pull subsets of the data. For instance, to view all of the rows where there were greater than 100 sessions, enter <code>gaData[gaData$sessions &gt; 100,]</code>.</p>
+<p>Let’s say we actually want to use that subset of data for something else. We want to add it to our script to get that subset of data and assign it to a new object. We can use the console and the script window together:</p>
+<ol style="list-style-type: decimal">
+<li><p>Press the up arrow to get <code>gaData[gaData$sessions &gt; 100,]</code> to reappear.</p></li>
+<li><p>Now, highlight it and cut or copy it.</p></li>
+<li><p>Click into the next line in your script and enter <code>gaDataOver100 &lt;-</code> and then paste in <code>gaData[gaData$sessions &gt;100,]</code>.</p></li>
+<li><p>Highlight <em>just</em> that row and click <strong>Run</strong>. You now have a new object in your <strong>Environment</strong> that you can inspect.</p></li>
+</ol>
+<p>Now, can you:</p>
+<ul>
+<li>Find the total sessions in this data set (hint: use the <code>sum()</code> function)?</li>
+<li>Find the mean of the sessions in this data set?</li>
+<li>Find the quartiles for the sessions in this data set (hint: use the <code>summary()</code> function)?</li>
+</ul>
+</div>
+<div id="a-basic-visualization" class="section level2">
+<h2>A Basic Visualization</h2>
+<p>We will come back to visualizations later in the day, but let’s at least add a simple line chart of sessions by adding two lines of code to our script.</p>
+<p>The first line converts the <strong>date</strong> values to, well, actual <em>date</em> values. Dates can be tricky, but there are a lot of tips and tools (and even a package called <code>lubridate()</code> to help with that):</p>
+<pre class="r"><code>gaData$date &lt;- as.Date(gaData$date)</code></pre>
+<p>The second line we’ll add will actually plot the data. There are shorter ways to write this out, but let’s go with this:</p>
+<pre class="r"><code>plot(x = gaData$date, y = gaData$sessions, type = &quot;l&quot;)</code></pre>
+<p>Now, you can either highlight just the two new rows and click <strong>Run</strong>, or you can click <strong>Source</strong> to run the entire script. The end result will be a barely-formatted, ugly label line chart:</p>
+<div class="figure">
+<img src="exercise1_files/figure_html/ex1_chart.png" />
+
+</div>
+<p>Don’t judge a platform by your first visualization. Even with the basics of <code>plot()</code>, this chart can be a lot better, but we’re actually going to primarily focus on <code>ggplot2()</code> when it comes to visualizations. So, let’s call this initial exercise a wrap! Congratulations! You’ve loaded, manipulated, and plotted data with R!</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

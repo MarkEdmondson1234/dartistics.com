@@ -1,0 +1,119 @@
+---
+title: "Importing data - Excel and CSV"
+---
+  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Importing CSV
+
+The most universal data format is `.csv` (comma seperated variables). 
+
+`.csv` is a format that almost every program can open, and also has the advantage of being human readable if you open it for examination with say notepad. 
+
+### read.csv()
+
+See `?read.csv` to get an overview of the arguments for importing csv.
+
+When you do, you see that `read.csv` is a derived function from the more general `read.table` that can read other formats such as tab seperated (`.tsv`).  
+
+`read.csv()` basically hardcodes defaults suitable for `.csv` in the UK/US, whilst `read.csv2()` has defaults set for European formats where currency uses a comma, `,`, which to avoid confusion means a semi-colon `;` is used instead to seperate values.
+
+A helpful argument to also include is `stringsAsFactors = FALSE` - a classic R quirk, it stops future problems where R treats strings are factors that may cause unexpected results.
+
+
+### Example import csv
+
+A demo .csv file is available from [http://bit.ly/rSampleGA](http://bit.ly/rSampleGA).
+
+Saving it to the `./data/` folder of the project then allows you to import the data via below:
+
+```r
+## a csv available from the data folder
+filename <- "./data/td.csv"
+mydata <- read.csv(filename, stringsAsFactors = FALSE)
+head(mydata)
+      X       date sessions bounceRate      ratio
+1     1 2015-01-01        6   83.33333 0.07200000
+2     2 2015-01-02       15   93.33333 0.16071429
+3     3 2015-01-03        7  100.00000 0.07000000
+4     4 2015-01-04        8   75.00000 0.10666667
+5     5 2015-01-05       21   76.19048 0.27562500
+6     6 2015-01-06       20   95.00000 0.21052632
+```
+
+I then often use `str()` on the data.frame to check the types and possibly change them, and `names()` to change the column names to more descriptive or useful names.
+
+In this example the redundant `X` column (row number) and `ratio` (useless) is also deleted by setting it to NULL:
+
+```r
+str(mydata)
+'data.frame':	545 obs. of  5 variables:
+ $ X         : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ date      : chr  "2015-01-01" "2015-01-02" "2015-01-03" "2015-01-04" ...
+ $ sessions  : int  6 15 7 8 21 20 13 23 16 13 ...
+ $ bounceRate: num  83.3 93.3 100 75 76.2 ...
+ $ ratio     : num  0.072 0.161 0.07 0.107 0.276 ...
+ 
+## get rid of X and ratio column
+mydata$X <- NULL
+mydata$ratio <- NULL
+
+## change the names
+names(mydata) <- c("Date", "Visits", "BounceRate")
+
+## see top 6 rows
+head(mydata)
+        Date Visits BounceRate
+1 2015-01-01      6   83.33333
+2 2015-01-02     15   93.33333
+3 2015-01-03      7  100.00000
+4 2015-01-04      8   75.00000
+5 2015-01-05     21   76.19048
+6 2015-01-06     20   95.00000
+```
+
+
+## Importing Excel
+
+Importing from Excel can be problematic, as its not a fixed format.  For example, a Danish workbook can hold different date and currency formats and use characters (ø, å etc.) that aren't available.  Here are a few strategies:
+
+### Import a csv instead
+
+By far the most simple and reliable way for tabular Excel data is to avoid importing it at all, and instead save your worksheet as a `.csv`.
+
+In Excel, this is achieved by clicking `File > Save As` and selecting the CSV format.
+
+You can then import this to R via `read.csv()`.
+
+### Import using RStudio's Import Dataset
+
+The second easiest option is to use the `Import Dataset` button in the `Environment` tab of RStudio.  In the latest versions of RStudio this calls `library(readxl)` to import the Excel data in for you.
+
+### library(readxl)
+
+If you have an older version of RStudio or importing non-interactivly via a script, you can call `library(readxl)` yourself once installed.  This Hadley Wickham library has presets to handle Excel data for you.  There are other libraries out there to read from Excel, but some require Java or similar to work.  `readxl` is the best and quickest one the author has found so far.
+
+## Exporting to Excel
+
+Note none of the above lets you write or save files to Excel - the author would prefer you use one of R's superior formats instead. ;-)  
+
+But if you need it, then there are some options:
+
+### Import a csv into Excel
+
+This is the one used the most - export as a CSV then use Excel's `Import Data` option in the top ribbon to import the file.  Set the delimiter to "," or ";" as necessary, and you are good to go.
+
+### Use a write to Excel library
+
+There are other options to write to Excel using R libraries:
+
+```r
+## need to install Java
+library(xlsx)
+write.xlsx(mydata, "c:/mydata.xlsx") 
+```
+
+
+
