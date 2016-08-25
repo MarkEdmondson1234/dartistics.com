@@ -94,6 +94,7 @@ button.code-folding-btn:focus {
 }
 </style>
 
+
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -214,6 +215,24 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Exercises
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="exercise1-thebasics.html">1. The Basic Basics</a>
+    </li>
+    <li>
+      <a href="exercise2-io.html">2. I/O</a>
+    </li>
+    <li>
+      <a href="exercise3-munging.html">3. Munging</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Basics
      
     <span class="caret"></span>
@@ -227,9 +246,6 @@ $(document).ready(function () {
     </li>
     <li>
       <a href="habits.html">Good habits</a>
-    </li>
-    <li>
-      <a href="exercise1.html">Exercise 1</a>
     </li>
   </ul>
 </li>
@@ -337,7 +353,30 @@ $(document).ready(function () {
 <div id="rworkshopcopenhagen" class="section level1">
 <h1>RWorkshopCopenhagen</h1>
 <p>Files for the R Workshop with Tim</p>
-<p>A change to trigger page creation</p>
+<div id="workflow" class="section level2">
+<h2>Workflow</h2>
+<ol style="list-style-type: decimal">
+<li>Pull from github</li>
+<li>Make your changes</li>
+<li>Build website in RStudio</li>
+<li>Commit your changes</li>
+<li>Push</li>
+</ol>
+<div id="build-website" class="section level3">
+<h3>Build website</h3>
+<p>This will only succeed if you have a <code>.httr-oauth</code> file in the same directory - this is not uploaded to github as it holds auth data for all the websites you have access to (e.g. the <code>.httr-oauth</code> file is specified in the <code>.gitignore</code> file and ignored by Git)</p>
+<p>You may make a local <code>.httr-oauth</code> file via <code>googleAnalyticsR::ga_auth()</code>. This will sit in your local folder and take care of auth for your local version. I also have my own auth file sitting in my local folder. If you don’t do this before building the website the error <code>interactive environment needed</code> will show as its trying to get you to login to Google in the script without you there to say its ok.</p>
+<p>A demo in the website uses Mark’s blog GA account, which is rebuilt everytime the website is built (e.g. it downloads data etc.)</p>
+<p>If the Google account that you authenticated with doesn’t have access, it won’t work with a <code>you don’t have sufficient permissions</code> error.</p>
+<p>E-mail Mark to get access with your Google email that you will authenticate with, and once added, <code>Build Website</code> should now succeed.</p>
+</div>
+<div id="if-conflict" class="section level3">
+<h3>If conflict</h3>
+<p>Potentially, if we make a change to the same bit of a file, git will say “conflict detected” in one of the files.</p>
+<p>Don’t panic.</p>
+<p>Open the file, and it will have “&gt;&gt;&gt;&gt;&gt;&gt;HEAD” and “&gt;&gt;&gt;&gt; MASTER” etc. inserted in the file. Delete out all the stuff you don’t want (e.g. you choose which version wins the conflict), then recommit/push.</p>
+</div>
+</div>
 </div>
 
 
@@ -351,6 +390,7 @@ $(document).ready(function () {
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 

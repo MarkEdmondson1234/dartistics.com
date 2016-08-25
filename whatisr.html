@@ -94,6 +94,7 @@ button.code-folding-btn:focus {
 }
 </style>
 
+
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -214,6 +215,24 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Exercises
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="exercise1-thebasics.html">1. The Basic Basics</a>
+    </li>
+    <li>
+      <a href="exercise2-io.html">2. I/O</a>
+    </li>
+    <li>
+      <a href="exercise3-munging.html">3. Munging</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Basics
      
     <span class="caret"></span>
@@ -227,9 +246,6 @@ $(document).ready(function () {
     </li>
     <li>
       <a href="habits.html">Good habits</a>
-    </li>
-    <li>
-      <a href="exercise1.html">Exercise 1</a>
     </li>
   </ul>
 </li>
@@ -367,6 +383,7 @@ $(document).ready(function () {
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 
