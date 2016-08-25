@@ -11,7 +11,7 @@
 
 
 
-<title>Accessing elements</title>
+<title></title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,9 +19,6 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -166,100 +163,6 @@ $(document).ready(function () {
 
 
 
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
-
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.9em;
-  padding-left: 5px;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
-
-
 
 
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
@@ -312,6 +215,24 @@ div.tocify {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Exercises
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="exercise1-thebasics.html">1. The Basic Basics</a>
+    </li>
+    <li>
+      <a href="exercise2-io.html">2. I/O</a>
+    </li>
+    <li>
+      <a href="exercise3-munging.html">3. Munging</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Basics
      
     <span class="caret"></span>
@@ -325,9 +246,6 @@ div.tocify {
     </li>
     <li>
       <a href="habits.html">Good habits</a>
-    </li>
-    <li>
-      <a href="exercise1.html">Exercise 1</a>
     </li>
   </ul>
 </li>
@@ -428,14 +346,14 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Accessing elements</h1>
 
 </div>
 
 
+<p>(– title: “Accessing elements” output: html_document: toc: true toc_float: true —</p>
 <p>This chapter looks at how to most easily access your data once they are in R objects.</p>
-<p>Note this uses “Base R” but you may prefer using <code>dplyr()</code> when workign with data.frames, which does similar in an arguably easier to understand syntax.</p>
-<p>But its worth knowing how to do this without relying on a package if possible.</p>
+<p>Note this uses “Base R” but you may prefer using <code>dplyr()</code> when workign with data.frames, which does similar in an (arguably) easier to understand syntax.</p>
+<p>But, it’s worth knowing how to do this without relying on a package if possible.</p>
 <div id="subsetting-using" class="section level2">
 <h2>Subsetting using [ ]</h2>
 <p>Most R objects can have their individual elements reached via their numeric position. These can be reached by using square brackets <code>[ ]</code></p>
@@ -454,6 +372,7 @@ a_vector[1]</code></pre>
 <li>The position before the <code>,</code> indicates which row</li>
 <li>The position after the <code>,</code> indicates which column</li>
 </ul>
+<p><em>Note: This is sort of like R1C1 notation in Excel…except with a comma!</em></p>
 <pre class="r"><code>my_data &lt;- mtcars
 
 ## the second row
@@ -496,15 +415,16 @@ my_data[1:5, &quot;mpg&quot;]</code></pre>
 ## Datsun 710           4 22.8  22.8
 ## Hornet 4 Drive       3 21.4  21.4
 ## Hornet Sportabout    3 18.7  18.7</code></pre>
-<p>Note that if you subset <code>lists()</code> or <code>data.frames()</code> with <code>[ ]</code> it will be default return a list or data.frame back.</p>
+<p>Note that if you subset <code>lists()</code> or <code>data.frames()</code> with <code>[ ]</code> it will, by default, return a list or data.frame back.</p>
 <p>If you want to instead return the column vector, then use <code>[[ ]]</code> which returns whats in the list/data.frame column.</p>
+<p><em>This is confusing topic. It’s right up there with <code>StringsAsFactors = FALSE</code>. This is where the console comes in handy when you’re trying to make sure you have your syntax correct.</em></p>
 <pre class="r"><code>my_data[[&quot;mpg&quot;]]</code></pre>
 <pre><code>##  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2
 ## [15] 10.4 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4
 ## [29] 15.8 19.7 15.0 21.4</code></pre>
 <div id="lookup-tables" class="section level3">
-<h3>Lookup tables</h3>
-<p>Character subsetting is how the lookup examples work, the only different being that this time its not a <code>data.frame</code> but a <code>vector</code> that is named using the <code>names()</code> function.</p>
+<h3>Lookup Tables</h3>
+<p>Character subsetting is how the lookup examples work, the only differences being that, this time, it’s not a <code>data.frame</code> but a <code>vector</code> that is named using the <code>names()</code> function.</p>
 <pre class="r"><code>## example with some user Ids
 lookup &lt;- c(&quot;Bill&quot;,&quot;Ben&quot;,&quot;Sue&quot;,&quot;Linda&quot;,&quot;Gerry&quot;)
 names(lookup) &lt;- c(&quot;1231&quot;,&quot;2323&quot;,&quot;5353&quot;,&quot;3434&quot;,&quot;9999&quot;)
@@ -541,7 +461,7 @@ my_data$mpg[1:5]</code></pre>
 </div>
 <div id="subsetting-using-logical" class="section level2">
 <h2>Subsetting using logical</h2>
-<p>You can also subset using TRUE and FALSE. This is a good way to select rows.</p>
+<p>You can also subset using <code>TRUE</code> and <code>FALSE</code>. This is a good way to select rows.</p>
 <p>For instance, to select all rows that are over 24 in the <code>mpg</code> column of <code>mtcars</code>.</p>
 <p>We first construct the logical vector:</p>
 <pre class="r"><code>## we first make a TRUE or FALSE vector for every mpg element over 24
@@ -550,7 +470,7 @@ over_24</code></pre>
 <pre><code>##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
 ## [12] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE FALSE
 ## [23] FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE</code></pre>
-<p>We can then pass this into mycars row selector</p>
+<p>We can then pass this into the row selector for mycars:</p>
 <pre class="r"><code>## all rows over 24 and all columns
 mtcars[over_24, ]</code></pre>
 <pre><code>##                 mpg cyl  disp  hp drat    wt  qsec vs am gear carb
@@ -581,10 +501,17 @@ mtcars[over_24, ]</code></pre>
 ## Fiat X1-9      27.3 1.935
 ## Porsche 914-2  26.0 2.140
 ## Lotus Europa   30.4 1.513</code></pre>
+<p>These can start to look pretty confusing, but, once you get comfortable with the basic syntax, you will see how things break down. And, it can be useful to build up the final syntax iteratively, much as was done in the example above.</p>
+<p>A couple of additional notes on the conditional selections (the use of <code>&gt;</code> above):</p>
+<ul>
+<li>To set “equals to,” use a double equals sign: <code>==</code></li>
+<li>To set “not equals to,” it is <em>not</em> “&lt;&gt;” like you might think: it’s <code>!=</code>.</li>
+</ul>
 </div>
 <div id="other-methods" class="section level2">
 <h2>Other methods</h2>
 <p>There is also the function <code>which()</code> that you may see around, but in general I would recommend not using this since it relies on numeric subsetting and can be difficult to debug.</p>
+<p>And, if you are regular expression junkie, you can use <code>grepl()</code> in your row or column selections (typically, it’s in your row selection). There is a <code>grep()</code> function that actually returns the matched values, but, if you’re doing a selection, you actually want to return a <em>logical vector</em> (<code>TRUE</code>s and <code>FALSE</code>s) for your condition as to which rows you want to match…and that is what <code>grepl()</code> does.</p>
 <p>If you have loaded <code>dplyr()</code> then it makes sense to use its <code>select()</code> for columns and <code>filter()</code> for rows instead.</p>
 </div>
 <div id="munging-data" class="section level2">
@@ -608,15 +535,9 @@ my_new_data[my_new_data$mpg &gt; 24, &quot;mpg&quot;] &lt;- 24
 max(my_new_data[, &quot;mpg&quot;])</code></pre>
 <pre><code>## [1] 24</code></pre>
 </div>
-<div id="munging-excercise" class="section level2">
-<h2>Munging Excercise</h2>
-<p>Critical to using good data analysis so a good excercise here.</p>
-</div>
 
 
 
-</div>
-</div>
 
 </div>
 

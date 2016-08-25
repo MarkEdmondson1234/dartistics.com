@@ -1,0 +1,10 @@
+---
+title: "Exercise 2 -- I/O"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+
+---
+
+Exercise to be added...

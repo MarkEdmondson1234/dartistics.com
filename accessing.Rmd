@@ -1,4 +1,4 @@
----
+ (--
 title: "Accessing elements"
 output: 
   html_document:
@@ -12,9 +12,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This chapter looks at how to most easily access your data once they are in R objects.  
 
-Note this uses "Base R" but you may prefer using `dplyr()` when workign with data.frames, which does similar in an arguably easier to understand syntax.  
+Note this uses "Base R" but you may prefer using `dplyr()` when workign with data.frames, which does similar in an (arguably) easier to understand syntax.  
 
-But its worth knowing how to do this without relying on a package if possible.
+But, it's worth knowing how to do this without relying on a package if possible.
 
 ## Subsetting using [ ]
 
@@ -34,6 +34,8 @@ In this case, the `[ ]` notation is extended to include a comma: `[ , ]`.
 
 * The position before the `,` indicates which row
 * The position after the `,` indicates which column
+
+_Note: This is sort of like R1C1 notation in Excel...except with a comma!_
 
 ```{r}
 my_data <- mtcars
@@ -73,17 +75,19 @@ And reorder or repeat columns (but it will rename them to avoid clashes via `mak
 my_data[1:5, c("gear","mpg", "mpg")]
 ```
 
-Note that if you subset `lists()` or `data.frames()` with `[ ]` it will be default return a list or data.frame back.  
+Note that if you subset `lists()` or `data.frames()` with `[ ]` it will, by default, return a list or data.frame back.  
 
 If you want to instead return the column vector, then use `[[ ]]` which returns whats in the list/data.frame column.
+
+_This is confusing topic. It's right up there with `StringsAsFactors = FALSE`. This is where the console comes in handy when you're trying to make sure you have your syntax correct._
 
 ```{r}
 my_data[["mpg"]]
 ```
 
-### Lookup tables
+### Lookup Tables
 
-Character subsetting is how the lookup examples work, the only different being that this time its not a `data.frame` but a `vector` that is named using the `names()` function.
+Character subsetting is how the lookup examples work, the only differences being that, this time, it's not a `data.frame` but a `vector` that is named using the `names()` function.
 
 ```{r}
 ## example with some user Ids
@@ -119,10 +123,9 @@ You can then apply subsetting to the result to get a specific number(s):
 my_data$mpg[1:5]
 ```
 
-
 ## Subsetting using logical
 
-You can also subset using TRUE and FALSE.  This is a good way to select rows.
+You can also subset using `TRUE` and `FALSE`.  This is a good way to select rows.
 
 For instance, to select all rows that are over 24 in the `mpg` column of `mtcars`.
 
@@ -134,7 +137,7 @@ over_24 <- mtcars$mpg > 24
 over_24
 ```
 
-We can then pass this into mycars row selector
+We can then pass this into the row selector for mycars:
 
 ```{r}
 ## all rows over 24 and all columns
@@ -153,9 +156,18 @@ And if you only wanted certain columns, you can add that to the line too:
 mtcars[mtcars$mpg > 24, c("mpg","wt")]
 ```
 
+These can start to look pretty confusing, but, once you get comfortable with the basic syntax, you will see how things break down. And, it can be useful to build up the final syntax iteratively, much as was done in the example above.
+
+A couple of additional notes on the conditional selections (the use of `>` above):
+
+* To set "equals to," use a double equals sign: `==`
+* To set "not equals to," it is _not_ "<>" like you might think: it's `!=`.
+
 ## Other methods
 
 There is also the function `which()` that you may see around, but in general I would recommend not using this since it relies on numeric subsetting and can be difficult to debug.
+
+And, if you are regular expression junkie, you can use `grepl()` in your row or column selections (typically, it's in your row selection). There is a `grep()` function that actually returns the matched values, but, if you're doing a selection, you actually want to return a _logical vector_ (`TRUE`s and `FALSE`s) for your condition as to which rows you want to match...and that is what `grepl()` does.
 
 If you have loaded `dplyr()` then it makes sense to use its `select()` for columns and `filter()` for rows instead.
 
@@ -186,7 +198,3 @@ my_new_data <- mtcars
 my_new_data[my_new_data$mpg > 24, "mpg"] <- 24
 max(my_new_data[, "mpg"])
 ```
-
-## Munging Excercise 
-
-Critical to using good data analysis so a good excercise here.

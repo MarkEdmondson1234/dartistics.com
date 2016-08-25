@@ -22,6 +22,14 @@ navbar:
           href: example3.html
         - text: "4. GA Effect"
           href: example4.html
+    - text: "Exercises"
+      menu:
+        - text: "1. The Basic Basics"
+          href: exercise1-thebasics.html
+        - text: "2. I/O"
+          href: exercise2-io.html
+        - text: "3. Munging"
+          href: exercise3-munging.html
     - text: "Basics"
       menu:
       - text: "RStudio"
@@ -30,8 +38,6 @@ navbar:
         href: packages.html
       - text: "Good habits"
         href: habits.html
-      - text: "Exercise 1"
-        href: exercise1.html
     - text: "I/O"
       menu:
       - text: "CSV import"
