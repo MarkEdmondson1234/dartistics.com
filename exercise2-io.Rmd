@@ -7,4 +7,36 @@ output:
 
 ---
 
-Exercise to be added...
+## Load Up Sample Data
+
+Structure -- "typical" data coming out of Google Analytics or Adobe Analytics:
+
+date   |    defaultChannelGrouping     |   deviceCategory  | sessions  | pageviews | entrances | bounces
+-------|-------------------------------|-------------------|-----------|-----------|-----------|---------
+xx     |                               |                   |           |           |           |
+
+Point out that this is "tidy" data. If you're comfortable with pivot tables, then you see this as an easily-pivotable data set. We'll munge this into some non-tidy formats later, but let's keep it like this for now.
+
+## Inspect the data
+
+`head()`
+
+## Use Row/Column Indices
+* First row, first column [1,1]
+* Second column only [,2]
+* Second row only [2,]
+* First 10 rows [1:10,]
+
+## Use Column Names
+
+* $sessions
+* First 10 rows of sessions $sessions[1:10]
+
+## Filter
+* All mobile rows [deviceCategory=="mobile",]
+* All mobile rows with greater than X visits
+* All mobile rows but ONLY date, channel grouping, deviceCategory, and pageviews
+
+## Rename the Columns
+* Get the colnames - `colnames()`
+* Change the colnames - `colnames() <- c(...)`
