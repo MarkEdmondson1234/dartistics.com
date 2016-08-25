@@ -11,11 +11,15 @@ Files for the R Workshop with Tim
 
 ### Build website
 
-This will only succedd if you have a `.httr-oauth` file in the same directory - this is not uploaded to github as it holds auth data. (e.g. the `.httr-oauth` file is specified in the `.gitignore`file to not be uploaded)
+This will only succeed if you have a `.httr-oauth` file in the same directory - this is not uploaded to github as it holds auth data for all the websites you have access to (e.g. the `.httr-oauth` file is specified in the `.gitignore` file and ignored by Git)
 
-You may make a local `.httr-oauth` file via `googleAnalyticsR::ga_auth()`.  This will sit in your local folder and take care of auth for your local version.  I also have my own locally in my folder.
+You may make a local `.httr-oauth` file via `googleAnalyticsR::ga_auth()`.  This will sit in your local folder and take care of auth for your local version.  I also have my own auth file sitting in my local folder.
 
-The demo uses Mark's blog GA account for some demos.  If your Google account that you authenticated with doesn't have access, it won't work.  Email Mark to get access with your Google email that you will authenticate with, and once added, `Build Website` should now succeed.
+A demo in the website uses Mark's blog GA account, which is rebuilt everytime the website is built (e..g it downloads data etc.)  
+
+If the Google account that you authenticated with doesn't have access, it won't work with a `you don’t have sufficient permissions` error. 
+
+Email Mark to get access with your Google email that you will authenticate with, and once added, `Build Website` should now succeed.
 
 ### If conflict
 
