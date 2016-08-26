@@ -476,9 +476,9 @@ ga_auth()</code></pre>
 <h2>Getting your View Id</h2>
 <p>To get your data, you need to specify which Google Analytics View you want to pull it from.</p>
 <p>The easiest way to find this is to use <code>google_analytics_account_list()</code> to list your Views, then read the number in the <code>viewId</code> column:</p>
-<pre class="r"><code>my_accounts &lt;- google_analytics_account_list()</code></pre>
-<pre><code>## Auto-refreshing stale OAuth token.</code></pre>
-<pre class="r"><code>head(my_accounts)</code></pre>
+<pre class="r"><code>my_accounts &lt;- google_analytics_account_list()
+
+head(my_accounts)</code></pre>
 <pre><code>##   accountId        accountName webPropertyId    webPropertyName
 ## 1  51323256       African Stay UA-51323256-1       African Stay
 ## 2  27778354 Beggin&#39; YT Channel UA-27778354-1 Beggin&#39; YT Channel

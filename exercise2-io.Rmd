@@ -11,6 +11,8 @@ output:
 
 Structure -- "typical" data coming out of Google Analytics or Adobe Analytics:
 
+The plan is to use data/gadata_example_2.csv for this.
+
 date   |    defaultChannelGrouping     |   deviceCategory  | sessions  | pageviews | entrances | bounces
 -------|-------------------------------|-------------------|-----------|-----------|-----------|---------
 xx     |                               |                   |           |           |           |
