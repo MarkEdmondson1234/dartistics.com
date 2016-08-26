@@ -9,36 +9,105 @@ output:
 
 ## Load Up Sample Data
 
-Structure -- "typical" data coming out of Google Analytics or Adobe Analytics:
+Again, we're going to skip the step of actually pulling data directly using an API (for now), so just download the file at [http://bit.ly/r_webData](bit.ly/r_webData). Upload that file to your working directory, and then load that file into your R environment as an object (data frame) named `webData`:
 
-The plan is to use data/gadata_example_2.csv for this.
+```{r eval=FALSE}
+webData <- read.csv("gadata_example_2.csv", stringsAsFactors = FALSE)
+```
 
-date   |    defaultChannelGrouping     |   deviceCategory  | sessions  | pageviews | entrances | bounces
--------|-------------------------------|-------------------|-----------|-----------|-----------|---------
-xx     |                               |                   |           |           |           |
+We're not going to dive into why we're including `stringsAsFactors = FALSE` at this point. The more comfortable you are with statistics, the more likely the phrase "this factor has three levels" will intuitively mean something to you. Let's just put it aside for now.
 
-Point out that this is "tidy" data. If you're comfortable with pivot tables, then you see this as an easily-pivotable data set. We'll munge this into some non-tidy formats later, but let's keep it like this for now.
+```{r echo=FALSE}
+# Load the data for building this file -- it's not in exactly the same spot
+webData <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE)
+```
+
+Double-click on `webData` in the **Environment** window to view the data like a spreadsheet.
+
+Note that the data, if it _were_ in Excel, would be primed and ready to have a pivot table made out of it: each row contains a value for each dimension and for each metric. Put (overly) simply, this is what is referred to as a "tidy" data structure, and conventional wisdom is that this structure is, in the words of Keanu Reeves and Alex Winter, _most excellent_.
+
+There are situations where we may want to move a dimension into the columns, certainly, and there are very quick and easy ways to do this, but, if we aim for tidy data as the default, we'll be in good shape. Luckily, when pulling data from the Google Analytics or Adobe Analytics API, that's the format the data arrives in.
 
 ## Inspect the data
+Instead of clicking on the object in the **Environment** tab, we can just type the object's name in the console. Go ahead and do that:
+```{r eval=FALSE}
+webData
+```
+Whoa! We're not showing the results of that here, as it's 10,000 rows of material quickly flashing past your eyes. But, often, we just want to get a basic sense of the data structure, so just viewing the first few rows of the data will suffice. We can do that with the `head()` function (remember: `?head()` will give you documentation on the function):
 
-`head()`
+```{r}
+head(webData)
+```
+
+The above will likely look a bit better in your console than it does here. If you have a lot of columns, R will actually wrap the data in the console. It tends to be hard to digest that way, but that's why we need to get comfortable with other ways of referencing subsets of a data frame!
 
 ## Use Row/Column Indices
-* First row, first column [1,1]
-* Second column only [,2]
-* Second row only [2,]
-* First 10 rows [1:10,]
+
+Let's look at a single value from this data set: the value in the second row and the fifth column:
+```{r}
+webData[2,5]
+```
+Find this value in the data frame that you opened up from the environment (or just find it in the `head()` data you pulled above). Make sense?
+
+Now, let's look at the _entire_ second row.
+```{r}
+webData[2,]
+```
+
+Or, we could look at the entire 5th column (not shown here, but feel free to give it a try):
+```{r eval=FALSE}
+webData[,5]
+```
+
+We can also look at ranges using these indices. To mimic `head(webData)`, we can simply specify we want to see all columns for the first six rows of the data:
+```{r}
+webData[1:6,]
+```
+
+Or, if we wanted to look at just the second through fifth columns for the first six rows of data:
+```{r}
+webData[1:6,2:5]
+```
 
 ## Use Column Names
+The dicey thing about using numeric indices is that, if the structure of the data changes (e.g., the query of the API gets updated to add a dimension or a metric), the indices may suddenly start referencing the wrong thing.
 
-* $sessions
-* First 10 rows of sessions $sessions[1:10]
+Happily, we can use column _names_ to prevent this. If you've worked with Excel tables, this will seem somewhat familiar.
 
-## Filter
-* All mobile rows [deviceCategory=="mobile",]
-* All mobile rows with greater than X visits
-* All mobile rows but ONLY date, channel grouping, deviceCategory, and pageviews
+Let's look at _just_ the **sessions** column:
 
-## Rename the Columns
-* Get the colnames - `colnames()`
-* Change the colnames - `colnames() <- c(...)`
+```{r eval=FALSE}
+webData$sessions
+```
+
+Or, we can combine column names and indices. If we use a column name, then we don't need to specify a column index, so there is only one value inside the `[ ]`s:
+
+```{r}
+webData$sessions[1:5]
+```
+
+## Filter/Subset the Data
+It's generally more efficient to do as few API calls as possible. That means that, often, we're pulling a master data set, even though we only want to work on pieces of it at once. In this example, what if we wanted to look at _just_ the mobile data. And, as a small twist, let's not only isolate the mobile data, but let's put that data into its own data frame calle `mobileData`:
+```{r}
+mobileData <- webData[webData$deviceCategory=="mobile",]
+```
+Double-click on the **mobileData* object in your **Environment** to check out this data. (Or, perhaps, view the `head()` of this new object in your console!)
+
+What if we wanted to quickly get a list of dates and channels where the channel's sessions for the day were greater than 2.000 (or 2,000, depending on which continent you are on)? We can perform this on our new `mobileData` object:
+
+```{r}
+mobileData[mobileData$sessions>2000,]
+```
+
+Could we have gotten this same result from our base `webData` data set? We could -- by combining criteria:
+```{r}
+webData[(webData$sessions>2000 & webData$deviceCategory=="mobile"),]
+```
+
+So far, we've been pulling _all_ columns. But, we can also pull a subset of columns by passing a "vector" of column name values that we've "combined" with the `c()` function:
+
+```{r}
+webData[(webData$sessions>2000 & webData$deviceCategory=="mobile"),c("date","channelGrouping","sessions")]
+```
+
+Believe it or not, we've only scratched the surface of the different ways we can access data within a data frame. Just from looking at the last example, you can see that the syntax can get loaded in a hurry. That's where the console can come in very handy: experimenting with the different aspects of the data you're trying to filter down to, and then combining them as warranted in your actual script.
