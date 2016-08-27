@@ -19,9 +19,6 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -166,100 +163,6 @@ $(document).ready(function () {
 
 
 
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
-
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.9em;
-  padding-left: 5px;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
-
-
 
 
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
@@ -340,6 +243,9 @@ div.tocify {
     </li>
     <li>
       <a href="packages.html">Packages</a>
+    </li>
+    <li>
+      <a href="basics-base_r.html">Basic of Base R</a>
     </li>
     <li>
       <a href="habits.html">Good habits</a>
@@ -448,200 +354,19 @@ div.tocify {
 </div>
 
 
-<div id="load-up-sample-data" class="section level2">
-<h2>Load Up Sample Data</h2>
-<p>Again, we’re going to skip the step of actually pulling data directly using an API (for now), so just download the file at <a href="bit.ly/r_webData">http://bit.ly/r_webData</a>. Upload that file to your working directory, and then load that file into your R environment as an object (data frame) named <code>webData</code>:</p>
+<div id="load-up-some-sample-data" class="section level2">
+<h2>Load Up Some Sample Data</h2>
+<p>We’re going to skip the step of actually pulling data directly using an API (for now), so just download the file at <a href="bit.ly/r_webData">http://bit.ly/r_webData</a>. Upload that file to your working directory, and then load that file into your R environment as an object (data frame) named <code>webData</code>:</p>
 <pre class="r"><code>webData &lt;- read.csv(&quot;gadata_example_2.csv&quot;, stringsAsFactors = FALSE)</code></pre>
 <p>We’re not going to dive into why we’re including <code>stringsAsFactors = FALSE</code> at this point. The more comfortable you are with statistics, the more likely the phrase “this factor has three levels” will intuitively mean something to you. Let’s just put it aside for now.</p>
 <p>Double-click on <code>webData</code> in the <strong>Environment</strong> window to view the data like a spreadsheet.</p>
 <p>Note that the data, if it <em>were</em> in Excel, would be primed and ready to have a pivot table made out of it: each row contains a value for each dimension and for each metric. Put (overly) simply, this is what is referred to as a “tidy” data structure, and conventional wisdom is that this structure is, in the words of Keanu Reeves and Alex Winter, <em>most excellent</em>.</p>
 <p>There are situations where we may want to move a dimension into the columns, certainly, and there are very quick and easy ways to do this, but, if we aim for tidy data as the default, we’ll be in good shape. Luckily, when pulling data from the Google Analytics or Adobe Analytics API, that’s the format the data arrives in.</p>
-</div>
-<div id="inspect-the-data" class="section level2">
-<h2>Inspect the data</h2>
-<p>Instead of clicking on the object in the <strong>Environment</strong> tab, we can just type the object’s name in the console. Go ahead and do that:</p>
-<pre class="r"><code>webData</code></pre>
-<p>Whoa! We’re not showing the results of that here, as it’s 10,000 rows of material quickly flashing past your eyes. But, often, we just want to get a basic sense of the data structure, so just viewing the first few rows of the data will suffice. We can do that with the <code>head()</code> function (remember: <code>?head()</code> will give you documentation on the function):</p>
-<pre class="r"><code>head(webData)</code></pre>
-<pre><code>##   X       date channelGrouping deviceCategory sessions pageviews entrances
-## 1 1 2016-01-01         (Other)        desktop       19        23        19
-## 2 2 2016-01-01         (Other)         mobile      112       162       112
-## 3 3 2016-01-01         (Other)         tablet       24        41        24
-## 4 4 2016-01-01          Direct        desktop      133       423       133
-## 5 5 2016-01-01          Direct         mobile      345       878       344
-## 6 6 2016-01-01          Direct         tablet      126       237       126
-##   bounces
-## 1      15
-## 2      82
-## 3      19
-## 4      61
-## 5     172
-## 6      77</code></pre>
-<p>The above will likely look a bit better in your console than it does here. If you have a lot of columns, R will actually wrap the data in the console. It tends to be hard to digest that way, but that’s why we need to get comfortable with other ways of referencing subsets of a data frame!</p>
-</div>
-<div id="use-rowcolumn-indices" class="section level2">
-<h2>Use Row/Column Indices</h2>
-<p>Let’s look at a single value from this data set: the value in the second row and the fifth column:</p>
-<pre class="r"><code>webData[2,5]</code></pre>
-<pre><code>## [1] 112</code></pre>
-<p>Find this value in the data frame that you opened up from the environment (or just find it in the <code>head()</code> data you pulled above). Make sense?</p>
-<p>Now, let’s look at the <em>entire</em> second row.</p>
-<pre class="r"><code>webData[2,]</code></pre>
-<pre><code>##   X       date channelGrouping deviceCategory sessions pageviews entrances
-## 2 2 2016-01-01         (Other)         mobile      112       162       112
-##   bounces
-## 2      82</code></pre>
-<p>Or, we could look at the entire 5th column (not shown here, but feel free to give it a try):</p>
-<pre class="r"><code>webData[,5]</code></pre>
-<p>We can also look at ranges using these indices. To mimic <code>head(webData)</code>, we can simply specify we want to see all columns for the first six rows of the data:</p>
-<pre class="r"><code>webData[1:6,]</code></pre>
-<pre><code>##   X       date channelGrouping deviceCategory sessions pageviews entrances
-## 1 1 2016-01-01         (Other)        desktop       19        23        19
-## 2 2 2016-01-01         (Other)         mobile      112       162       112
-## 3 3 2016-01-01         (Other)         tablet       24        41        24
-## 4 4 2016-01-01          Direct        desktop      133       423       133
-## 5 5 2016-01-01          Direct         mobile      345       878       344
-## 6 6 2016-01-01          Direct         tablet      126       237       126
-##   bounces
-## 1      15
-## 2      82
-## 3      19
-## 4      61
-## 5     172
-## 6      77</code></pre>
-<p>Or, if we wanted to look at just the second through fifth columns for the first six rows of data:</p>
-<pre class="r"><code>webData[1:6,2:5]</code></pre>
-<pre><code>##         date channelGrouping deviceCategory sessions
-## 1 2016-01-01         (Other)        desktop       19
-## 2 2016-01-01         (Other)         mobile      112
-## 3 2016-01-01         (Other)         tablet       24
-## 4 2016-01-01          Direct        desktop      133
-## 5 2016-01-01          Direct         mobile      345
-## 6 2016-01-01          Direct         tablet      126</code></pre>
-</div>
-<div id="use-column-names" class="section level2">
-<h2>Use Column Names</h2>
-<p>The dicey thing about using numeric indices is that, if the structure of the data changes (e.g., the query of the API gets updated to add a dimension or a metric), the indices may suddenly start referencing the wrong thing.</p>
-<p>Happily, we can use column <em>names</em> to prevent this. If you’ve worked with Excel tables, this will seem somewhat familiar.</p>
-<p>Let’s look at <em>just</em> the <strong>sessions</strong> column:</p>
-<pre class="r"><code>webData$sessions</code></pre>
-<p>Or, we can combine column names and indices. If we use a column name, then we don’t need to specify a column index, so there is only one value inside the <code>[ ]</code>s:</p>
-<pre class="r"><code>webData$sessions[1:5]</code></pre>
-<pre><code>## [1]  19 112  24 133 345</code></pre>
-</div>
-<div id="filtersubset-the-data" class="section level2">
-<h2>Filter/Subset the Data</h2>
-<p>It’s generally more efficient to do as few API calls as possible. That means that, often, we’re pulling a master data set, even though we only want to work on pieces of it at once. In this example, what if we wanted to look at <em>just</em> the mobile data. And, as a small twist, let’s not only isolate the mobile data, but let’s put that data into its own data frame calle <code>mobileData</code>:</p>
-<pre class="r"><code>mobileData &lt;- webData[webData$deviceCategory==&quot;mobile&quot;,]</code></pre>
-<p>Double-click on the <strong>mobileData* object in your </strong>Environment** to check out this data. (Or, perhaps, view the <code>head()</code> of this new object in your console!)</p>
-<p>What if we wanted to quickly get a list of dates and channels where the channel’s sessions for the day were greater than 2.000 (or 2,000, depending on which continent you are on)? We can perform this on our new <code>mobileData</code> object:</p>
-<pre class="r"><code>mobileData[mobileData$sessions&gt;2000,]</code></pre>
-<pre><code>##         X       date channelGrouping deviceCategory sessions pageviews
-## 8       8 2016-01-01         Display         mobile     3266      3772
-## 33     33 2016-01-02         Display         mobile     2375      2745
-## 42     42 2016-01-02     Paid Search         mobile     2270      4405
-## 59     59 2016-01-03         Display         mobile     2377      2697
-## 86     86 2016-01-04         Display         mobile     2535      2821
-## 113   113 2016-01-05         Display         mobile     2067      2386
-## 1200 1200 2016-02-14     Paid Search         mobile     2225      4361
-## 1227 1227 2016-02-15     Paid Search         mobile    10216     15883
-## 1242 1242 2016-02-16          Direct         mobile     2352     13527
-## 1251 1251 2016-02-16  Organic Search         mobile     3063     17671
-## 1254 1254 2016-02-16     Paid Search         mobile     7151     12634
-## 1281 1281 2016-02-17     Paid Search         mobile     3039      5357
-## 3471 3471 2016-05-09          Direct         mobile     2694     17043
-## 3582 3582 2016-05-13         Display         mobile     7955     13157
-## 3608 3608 2016-05-14         Display         mobile     3151      4462
-## 3635 3635 2016-05-15         Display         mobile     2459      3257
-## 4540 4540 2016-06-17          Social         mobile     2088      2769
-## 4567 4567 2016-06-18          Social         mobile     2112      3243
-##      entrances bounces
-## 8         3253    2904
-## 33        2366    2118
-## 42        2257    1405
-## 59        2369    2145
-## 86        2522    2304
-## 113       2059    1841
-## 1200      2214    1428
-## 1227     10155    7359
-## 1242      2344     682
-## 1251      3048     632
-## 1254      7126    4936
-## 1281      3028    2115
-## 3471      2681    1149
-## 3582      7946    7121
-## 3608      3145    2855
-## 3635      2453    2234
-## 4540      2073    1809
-## 4567      2098    1720</code></pre>
-<p>Could we have gotten this same result from our base <code>webData</code> data set? We could – by combining criteria:</p>
-<pre class="r"><code>webData[(webData$sessions&gt;2000 &amp; webData$deviceCategory==&quot;mobile&quot;),]</code></pre>
-<pre><code>##         X       date channelGrouping deviceCategory sessions pageviews
-## 8       8 2016-01-01         Display         mobile     3266      3772
-## 33     33 2016-01-02         Display         mobile     2375      2745
-## 42     42 2016-01-02     Paid Search         mobile     2270      4405
-## 59     59 2016-01-03         Display         mobile     2377      2697
-## 86     86 2016-01-04         Display         mobile     2535      2821
-## 113   113 2016-01-05         Display         mobile     2067      2386
-## 1200 1200 2016-02-14     Paid Search         mobile     2225      4361
-## 1227 1227 2016-02-15     Paid Search         mobile    10216     15883
-## 1242 1242 2016-02-16          Direct         mobile     2352     13527
-## 1251 1251 2016-02-16  Organic Search         mobile     3063     17671
-## 1254 1254 2016-02-16     Paid Search         mobile     7151     12634
-## 1281 1281 2016-02-17     Paid Search         mobile     3039      5357
-## 3471 3471 2016-05-09          Direct         mobile     2694     17043
-## 3582 3582 2016-05-13         Display         mobile     7955     13157
-## 3608 3608 2016-05-14         Display         mobile     3151      4462
-## 3635 3635 2016-05-15         Display         mobile     2459      3257
-## 4540 4540 2016-06-17          Social         mobile     2088      2769
-## 4567 4567 2016-06-18          Social         mobile     2112      3243
-##      entrances bounces
-## 8         3253    2904
-## 33        2366    2118
-## 42        2257    1405
-## 59        2369    2145
-## 86        2522    2304
-## 113       2059    1841
-## 1200      2214    1428
-## 1227     10155    7359
-## 1242      2344     682
-## 1251      3048     632
-## 1254      7126    4936
-## 1281      3028    2115
-## 3471      2681    1149
-## 3582      7946    7121
-## 3608      3145    2855
-## 3635      2453    2234
-## 4540      2073    1809
-## 4567      2098    1720</code></pre>
-<p>So far, we’ve been pulling <em>all</em> columns. But, we can also pull a subset of columns by passing a “vector” of column name values that we’ve “combined” with the <code>c()</code> function:</p>
-<pre class="r"><code>webData[(webData$sessions&gt;2000 &amp; webData$deviceCategory==&quot;mobile&quot;),c(&quot;date&quot;,&quot;channelGrouping&quot;,&quot;sessions&quot;)]</code></pre>
-<pre><code>##            date channelGrouping sessions
-## 8    2016-01-01         Display     3266
-## 33   2016-01-02         Display     2375
-## 42   2016-01-02     Paid Search     2270
-## 59   2016-01-03         Display     2377
-## 86   2016-01-04         Display     2535
-## 113  2016-01-05         Display     2067
-## 1200 2016-02-14     Paid Search     2225
-## 1227 2016-02-15     Paid Search    10216
-## 1242 2016-02-16          Direct     2352
-## 1251 2016-02-16  Organic Search     3063
-## 1254 2016-02-16     Paid Search     7151
-## 1281 2016-02-17     Paid Search     3039
-## 3471 2016-05-09          Direct     2694
-## 3582 2016-05-13         Display     7955
-## 3608 2016-05-14         Display     3151
-## 3635 2016-05-15         Display     2459
-## 4540 2016-06-17          Social     2088
-## 4567 2016-06-18          Social     2112</code></pre>
-<p>Believe it or not, we’ve only scratched the surface of the different ways we can access data within a data frame. Just from looking at the last example, you can see that the syntax can get loaded in a hurry. That’s where the console can come in very handy: experimenting with the different aspects of the data you’re trying to filter down to, and then combining them as warranted in your actual script.</p>
+<p>That’s really it for this exercise. Now that we have some data loaded up into our environment, though, we can start working with it, which we’ll do in the <a href="exercise3-munging.html">next exercise</a>.</p>
 </div>
 
 
 
-</div>
-</div>
 
 </div>
 

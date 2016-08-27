@@ -1,5 +1,5 @@
 ---
-title: "Exercise 2 -- I/O"
+title: "Exercise 3 -- Munging"
 output:
   html_document:
     toc: true
@@ -7,4 +7,114 @@ output:
 
 ---
 
-Exercise to be added...
+```{r echo=FALSE}
+# We need to load the file behind the scenes to work with it.
+webData <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE)
+```
+
+This exercise is dependent on the successful completion of [Exercise 2](exercise2-io.html).The step-by-step instructions for each of the components of this exercised are below. But, what we want to do is:
+
+1. Inspect the entire data set:
+  + View the data as its own tab in RStudio by double-clicking `webData` in the **Environment** pane
+  + View the data in the console by typing `webData`
+  + View just the first six rows of data using the `head()` function
+2. Use row/column indices to inspect specific values/sets in the data frame:
+  + Display the element in the 2nd row and 5th column of `webData`
+  + Display the entire 2nd row of `webData`
+  + Display the entire 5th column of `webData`
+  + Mimic the `head()` function using indices to display the first 6 rows of data in `webData`
+  + Display the 1st through 6th rows and 2nd through 5th columns of `webData`
+3. Use column names (and indices) to inspect specific values/sets in the data frame:
+  + Display the entire `sessions` column using `$` notation
+  + Display the first five values in the `sessions` column using both `$` and indices
+4. Filter/subset the data:
+  + Create an object called `mobileData` that includes only the rows from `webData` where the `deviceCategory` value is `mobile`
+  + Display all of the rows from `mobileData` where the `sessions` are greater than 2.000
+  + Display the same result as in the previous task, but do so using _only_ `webData` (don't create an intermediate `mobileData` object)
+  + Display rows where `mobile` is the `deviceCategory`, `sessions` is greater than 2000, but only display three columns: `date`, `channelGrouping`, and `sessions`
+  
+-------------
+
+## 1. Inspect the data
+Instead of clicking on the object in the **Environment** tab, we can just type the object's name in the console. Go ahead and do that:
+```{r eval=FALSE}
+webData
+```
+Whoa! We're not showing the results of that here, as it's 10,000 rows of material quickly flashing past your eyes. But, often, we just want to get a basic sense of the data structure, so just viewing the first few rows of the data will suffice. We can do that with the `head()` function (remember: `?head()` will give you documentation on the function):
+
+```{r}
+head(webData)
+```
+
+The above will likely look a bit better in your console than it does here. If you have a lot of columns, R will actually wrap the data in the console. It tends to be hard to digest that way, but that's why we need to get comfortable with other ways of referencing subsets of a data frame!
+
+## 2. Use Row/Column Indices
+
+Let's look at a single value from this data set: the value in the second row and the fifth column:
+```{r}
+webData[2,5]
+```
+Find this value in the data frame that you opened up from the environment (or just find it in the `head()` data you pulled above). Make sense?
+
+Now, let's look at the _entire_ second row.
+```{r}
+webData[2,]
+```
+
+Or, we could look at the entire 5th column (not shown here, but feel free to give it a try):
+```{r eval=FALSE}
+webData[,5]
+```
+
+We can also look at ranges using these indices. To mimic `head(webData)`, we can simply specify we want to see all columns for the first six rows of the data:
+```{r}
+webData[1:6,]
+```
+
+Or, if we wanted to look at just the second through fifth columns for the first six rows of data:
+```{r}
+webData[1:6,2:5]
+```
+
+## 3. Use Column Names
+The dicey thing about using numeric indices is that, if the structure of the data changes (e.g., the query of the API gets updated to add a dimension or a metric), the indices may suddenly start referencing the wrong thing.
+
+Happily, we can use column _names_ to prevent this. If you've worked with Excel tables, this will seem somewhat familiar.
+
+Let's look at _just_ the **sessions** column:
+
+```{r eval=FALSE}
+webData$sessions
+```
+
+Or, we can combine column names and indices. If we use a column name, then we don't need to specify a column index, so there is only one value inside the `[ ]`s:
+
+```{r}
+webData$sessions[1:5]
+```
+
+## 4. Filter/Subset the Data
+It's generally more efficient to do as few API calls as possible. That means that, often, we're pulling a master data set, even though we only want to work on pieces of it at once. In this example, what if we wanted to look at _just_ the mobile data. And, as a small twist, let's not only isolate the mobile data, but let's put that data into its own data frame calle `mobileData`:
+```{r}
+mobileData <- webData[webData$deviceCategory=="mobile",]
+```
+Double-click on the **mobileData* object in your **Environment** to check out this data. (Or, perhaps, view the `head()` of this new object in your console!)
+
+What if we wanted to quickly get a list of dates and channels where the channel's sessions for the day were greater than 2.000 (or 2,000, depending on which continent you are on)? We can perform this on our new `mobileData` object:
+
+```{r}
+mobileData[mobileData$sessions>2000,]
+```
+
+Could we have gotten this same result from our base `webData` data set? We could -- by combining criteria:
+```{r}
+webData[(webData$sessions>2000 & webData$deviceCategory=="mobile"),]
+```
+
+So far, we've been pulling _all_ columns. But, we can also pull a subset of columns by passing a "vector" of column name values that we've "combined" with the `c()` function:
+
+```{r}
+webData[(webData$sessions>2000 & webData$deviceCategory=="mobile"),c("date","channelGrouping","sessions")]
+```
+
+Believe it or not, we've only scratched the surface of the different ways we can access data within a data frame. Just from looking at the last example, you can see that the syntax can get loaded in a hurry. That's where the console can come in very handy: experimenting with the different aspects of the data you're trying to filter down to, and then combining them as warranted in your actual script.

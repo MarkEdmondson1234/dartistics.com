@@ -36,6 +36,8 @@ navbar:
         href: rstudio.html
       - text: "Packages"
         href: packages.html
+      - text: "Basic of Base R"
+        href: basics-base_r.html
       - text: "Good habits"
         href: habits.html
     - text: "I/O"

@@ -20,7 +20,6 @@ Let's start with some simple math. In the console, type `12^2` and press <Enter>
 ```{r}
 12^2
 ```
-That's just simple math. It's not too impressive, but it shows executing commands directly in the console.
 
 Now, let's actually assign a value to a variable from the console by typing `myVar <- 12^2`. 
 ```{r}
@@ -29,7 +28,7 @@ myVar <- 12^2
 
 _In R, assignment of values uses `<-`._
 
-In some cases, `=` will work, too, and there _are_ cases where you use `=` in R, but `<-` is very common, and it should quickly become second nature. When you type this in, you won't see anything else in the console. But, if you look in the **Environment** tab in the top right pane, you should now see your variable:
+Look in the **Environment** tab in the top right pane, you should now see your variable:
 
 <div style="text-align:center" markdown="1">
 ![](exercise1_files/figure_html/ex1_environment.png)
@@ -96,16 +95,13 @@ length(myVar)
 length(myVector)
 ```
 
-We've now worked with `c()`, `typeof()`, and `length()`. That's just the beginning. There will be countless functions that we start to use, and it's often handy to quickly see the documentation for a function. The `?` provides quick access on that front. Type `?length` and, in the lower right pane in RStudio, the help file for the `length()` function will appear. As we start to use more complicated functions, the help files are often a very handy reference. Unfortunately, the quality of that documentation can vary, so, with functions embedded in specialized packages, the `?` help may just be a jumping off point, after which more digging online is required to get workable code examples. Function help files often use a lot of shortcuts that assume a moderate level of R knowledge on the part of the reader, so they can seem like Greek at first. The more you use R and get comfortable with the style of the help files, though, the easier they become to read.
+We've now worked with `c()`, `typeof()`, and `length()`. That's just the beginning!
 
 ## Our First Real Script
 
 _We're going to do a few things here that wouldn't exactly be how you would work typically. But, that's okay:_
 * _We'll get to accessing web analytics data via APIs in a bit, but we're going to just work with a static data export for now._
 * _We're working in a web-based environment rather than your local machine, which makes things a little different._
-
-### The Working Directory
-Type `getwd()` in the console. This will return your "working directory." This is just "where R is doing stuff." Tutorials tend to make a big deal about your working directly (not just `getwd()`, but its companion, `setwd()`). Generally, you won't really need to worry about these. If your working directory gets out of whack, it will cause your scripts to have issues, so it's just good to file the concept of a working directory away.
 
 ### Get Our Sample Data
 Download the .csv file at [http://bit.ly/rSampleGA](http://bit.ly/rSampleGA). Pay attention to to where this file -- td.csv -- gets stored.
@@ -122,18 +118,15 @@ The first thing we want to do is load our data into a **data frame**. A data fra
 gaData <- read.csv("td.csv", stringsAsFactors = FALSE)
 ```
 
+```{r echo=FALSE, eval=TRUE}
+gaData <- read.csv("data/td.csv", stringsAsFactors = FALSE)
+```
+
 That `stringsAsFactors = FALSE` is something you will run into quite a bit in various functions. Let's just ignore it for now.
 
 ### Run the Script
 
-We can go ahead and run this script. It's only one line long, but this gets us to another handy aspect of RStudio: **Run** and **Source**. These are similar, but they do two different things:
-
-* **Source** -- when you click **Source**, the _entire_ script runs.
-* **Run** -- when you click **Run**, only the _selected portion_ of the script runs. 
-
-**Run** comes in very handy when, for instance, you already have data loaded into your environment (possibly through API calls that took a little time to run), and you just want to debug and add to additional code. Or, when you're trying to figure out the exact syntax for getting to the subset of data you're looking for and want to repeatedly run the same small section of a script as you tweak it.
-
-For now, go ahead and click **Source**. It doesn't look like much happened, but, if you now check your **Environment** window, you will see a new object called **gaData**. Double-click on that, and the **gaData** data frame will load in a new tab next to your script.
+We can go ahead and run this script. Go ahead and click **Source**. It doesn't look like much happened, but, if you now check your **Environment** window, you will see a new object called **gaData**. Double-click on that, and the **gaData** data frame will load in a new tab next to your script.
 
 ## Explore the Data
 We're going to hop back down to the console to explore some of the most common ways we can access data in a data frame. 
@@ -174,7 +167,7 @@ We will come back to visualizations later in the day, but let's at least add a s
 
 The first line converts the **date** values to, well, actual _date_ values. Dates can be tricky, but there are a lot of tips and tools (and even a package called `lubridate()` to help with that):
 
-```{r echo=TRUE, eval=FALSE}
+```{r echo=TRUE, eval=TRUE}
 gaData$date <- as.Date(gaData$date)
 ```
 
@@ -186,6 +179,8 @@ plot(x = gaData$date, y = gaData$sessions, type = "l")
 
 Now, you can either highlight just the two new rows and click **Run**, or you can click **Source** to run the entire script. The end result will be a barely-formatted, ugly label line chart:
 
-![](exercise1_files/figure_html/ex1_chart.png)
+```{r echo=FALSE, eval=TRUE}
+plot(x = gaData$date, y = gaData$sessions, type = "l")
+```
 
 Don't judge a platform by your first visualization. Even with the basics of `plot()`, this chart can be a lot better, but we're actually going to primarily focus on `ggplot2()` when it comes to visualizations. So, let's call this initial exercise a wrap! Congratulations! You've loaded, manipulated, and plotted data with R!

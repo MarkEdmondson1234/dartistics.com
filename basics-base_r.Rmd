@@ -1,0 +1,108 @@
+---
+title: "Base R"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+There are some basics of using R that will quickly become second nature. But, it seems worth running through them first as a starting point.
+
+## Basic Operations
+At its most basic, R can perform operations (like math) simply by typing an expression in the console and pressing <Enter>:
+```{r}
+12^2
+```
+When an expression is entered in the RStudio console, it simply executes and returns the result. In the example above, the results returned is the result is the square of 12.
+
+## <-
+As a programming language, R has variables (or "objects") that "things" get assigned to (values, functions, other variables). These assignments use the `<-` operator. For instance, to assign the value `1` to a variable called `x`, we write:
+```{r}
+x <- 5
+```
+You may wonder why this isn't `x=5`...and a real programmer could probably give you a great explanation. The `=` does get used in R, and it _can_ often be used instead of `<-`, but that's not generally a good idea. When we _define_ functions and when we _call_ functions, we _do_ use the `=` sign to assign or pass values into the function. But, that will become clear later.
+
+We now have an object `x` that is stored with a value of `5` in our environment, so we can perform operations on x:
+```{r}
+x * 1000
+```
+
+Or, we can use x in an expression that creates another object:
+```{r}
+y <- x^3
+```
+
+We now have an object named `y`, which we can inspect by typing `y` at the prompt:
+```{r}
+y
+```
+
+## Functions
+Functions are fundamental to any programming language, and R is no different. There are three main sources for functions.
+
+### Defined in Base R
+There are many-many of these, and we will touch on some common ones throughout this class. Consider the code below:
+```{r}
+sum(c(1,2,2,3,3,3,4,4,4,4,5,5,5,5,5))
+```
+
+This code uses two functions:
+* `c()` -- this is the Base R "combine" function. In this example, it's creating a "vector" of numeric values
+* `sum()` -- this is just like the `SUM()` function in Excel. It finds the sum of the values within it
+As shown, the result is the sum of the combined values.
+
+### Defined in Packages
+When you install a package, what you're really doing is adding more functions to the universe in which you are working. These work _exactly_ like the Base R functions described above. Although, as described in the [packages](packages.html) section, you have to have the package installed (using the Base R function `install.packages()` to install the package and then the `library()` function -- within your script -- to load the package).
+
+### Defined in Your Script
+Both to organize your code and, more importantly, to prevent repeating the same code within a single script, you can define functions within your script that you then call from elsewhere in the script. This can be a little confusing, but it's also extremely handy.
+
+```{r}
+
+# Define a function called 'cubeValue'
+cubeValue <- function(x){
+  cat("The cube of ",x," is ",x^3,".\n",sep="")
+}
+
+# Loop through the numbers 1 through 3 and print the cube of each.
+for (i in 1:3){
+  cubeValue(i)
+}
+
+```
+
+The example above should look very familiar if you've worked in almost any programming language:
+* We defined a function named `cubeValue` (using the `<-` assignment operator)
+* That function was set up to take in a single value (functions can take multiple parameters, and those parameters can be assigned names, but we're keeping it simple here), and that value is then used in the function as `x`.
+* A loop goes through and successfully calls the function with the values `1`, `2`, and then `3`.
+
+One thing that is fairly unique to R is that, in general, loops should be avoided. R has the ability to "apply" a function to an entire list of values at once. Consider the code below:
+```{r}
+
+# Define a function called 'cubeValue'
+cubeValue <- function(x){
+  cat("The cube of ",x," is ",x^3,".\n",sep="")
+}
+
+# Apply the function to a list of values: 1 through 3.
+  sapply(c(1:3), cubeValue)
+```
+
+We're not going to delve into the [[X ]]/NULL stuff just yet (unless Mark manages to edit this to remove them before the class!). But, you will become familiar with the `apply` functions (mainly `sapply()` and `lapply()`).
+
+### Function Help
+There will be countless functions that we start to use, and it's often handy to quickly see the documentation for a function. The `?` provides quick access on that front. Type `?cat` and, in the lower right pane in RStudio, the help file for the `cat()` function will appear. As we start to use more complicated functions, the help files are often a very handy reference. Unfortunately, the quality of that documentation can vary, so, with functions embedded in specialized packages, the `?` help may just be a jumping off point, after which more digging online is required to get workable code examples. Function help files often use a lot of shortcuts that assume a moderate level of R knowledge on the part of the reader, so they can seem like Greek at first. The more you use R and get comfortable with the style of the help files, though, the easier they become to read.
+
+## The Working Directory
+Typing `getwd()` in the console returns your "working directory." This is just "where R is doing stuff." Tutorials tend to make a big deal about your working directly (not just `getwd()`, but its companion, `setwd()`). Generally, you won't really need to worry about these. If your working directory gets out of whack, it will cause your scripts to have issues, so it's just good to file the concept of a working directory away.
+
+## Working with Scripts
+Scripts are actually "programs" that get saved as text files so they can be used over time. New scripts are created by selecting **File>>New File>>R Script** (we'll cover projects in a bit).
+
+## 'Run' vs. 'Source'
+There are two main ways to _execute_ scripts. You will use both of them:
+
+* **Source** -- when you click **Source**, the _entire_ script runs.
+* **Run** -- when you click **Run**, only the _selected portion_ of the script runs. 
+
+**Run** comes in very handy when, for instance, you already have data loaded into your environment (possibly through API calls that took a little time to run), and you just want to debug and add to additional code. Or, when you're trying to figure out the exact syntax for getting to the subset of data you're looking for and want to repeatedly run the same small section of a script as you tweak it.
