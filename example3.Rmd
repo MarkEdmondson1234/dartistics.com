@@ -16,6 +16,7 @@ The first example, shown below, is available at [https://gilligan.shinyapps.io/e
 
 `shiny` apps historically required two files, although the package has been updated to enable using a single file. 
 
+## The Code {.tabset}
 ### server.R
 The code that runs behind the scenes (note that _most_ of the code is really just setting up the formatting options for the Venn diagram itself):
 ```{r eval=FALSE}
@@ -80,7 +81,7 @@ shinyUI(fluidPage(
 )
 ```
 
-### Repurposing to Use Segments
+## Repurposing to Use Segments
 The example above, obviously, was just a demo for a conference presentation. But, the demo was actually inspired by a real-world use case, which is the visualization of two different segments of traffic to a site.
 
 This example is available at [https://gilligan.shinyapps.io/segmentsVenn/](https://gilligan.shinyapps.io/segmentsVenn/).

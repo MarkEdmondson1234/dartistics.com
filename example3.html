@@ -363,6 +363,9 @@ $(document).ready(function () {
 
 </div>
 <p><code>shiny</code> apps historically required two files, although the package has been updated to enable using a single file.</p>
+</div>
+<div id="the-code" class="section level2 tabset">
+<h2>The Code</h2>
 <div id="server.r" class="section level3">
 <h3>server.R</h3>
 <p>The code that runs behind the scenes (note that <em>most</em> of the code is really just setting up the formatting options for the Venn diagram itself):</p>
@@ -425,15 +428,15 @@ shinyUI(fluidPage(
   )
 )</code></pre>
 </div>
-<div id="repurposing-to-use-segments" class="section level3">
-<h3>Repurposing to Use Segments</h3>
+</div>
+<div id="repurposing-to-use-segments" class="section level2">
+<h2>Repurposing to Use Segments</h2>
 <p>The example above, obviously, was just a demo for a conference presentation. But, the demo was actually inspired by a real-world use case, which is the visualization of two different segments of traffic to a site.</p>
 <p>This example is available at <a href="https://gilligan.shinyapps.io/segmentsVenn/" class="uri">https://gilligan.shinyapps.io/segmentsVenn/</a>.</p>
 <p>It shows the volume of sessions from each segment and the degree to which traffic fell in both segments (the overlapping area), and provides the user with two settings that trigger a re-query of the data and an update of the diagram: * Changing the date range * Choosing a channel</p>
 <div class="figure">
 <img src="example3_files/figure_html/ex3_vennSegments.png" />
 
-</div>
 </div>
 </div>
 
