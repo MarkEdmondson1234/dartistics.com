@@ -129,9 +129,9 @@ But, in our example above, we simply used `round(0)`. That's because the first a
 # We'll start to need the dplyr library
 library(dplyr)
 
-webData %>% filter(.,Channel == "Display"
-                   ,Device == "mobile"
-                   ,Sessions > 2000) %>%
+webData %>% filter(.,Channel == "Display",
+                   Device == "mobile",
+                   Sessions > 2000) %>%
   summarise(.,mean(Sessions)) %>%
   round(.,0)
 

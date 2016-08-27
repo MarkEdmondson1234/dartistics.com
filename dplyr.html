@@ -551,9 +551,9 @@ webData %&gt;% filter(Channel == &quot;Display&quot;,
 <pre class="r"><code># We&#39;ll start to need the dplyr library
 library(dplyr)
 
-webData %&gt;% filter(.,Channel == &quot;Display&quot;
-                   ,Device == &quot;mobile&quot;
-                   ,Sessions &gt; 2000) %&gt;%
+webData %&gt;% filter(.,Channel == &quot;Display&quot;,
+                   Device == &quot;mobile&quot;,
+                   Sessions &gt; 2000) %&gt;%
   summarise(.,mean(Sessions)) %&gt;%
   round(.,0)</code></pre>
 <pre><code>##   mean(Sessions)
