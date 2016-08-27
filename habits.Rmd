@@ -1,5 +1,10 @@
 ---
 title: "Good habits"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+
 ---
 
 Here are some good habits to get into learnt from experience to make working with R easier.
