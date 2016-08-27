@@ -285,7 +285,9 @@ $(document).ready(function () {
     <li class="dropdown-header">BaseR vs Tidyverse</li>
     <li class="dropdown-header">BaseR Tips</li>
     <li class="dropdown-header">Tidy data</li>
-    <li class="dropdown-header">dplyr()</li>
+    <li>
+      <a href="dplyr.html">dplyr()</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -386,49 +388,52 @@ list.files()</code></pre>
 ##  [9] &quot;classes.html&quot;                          
 ## [10] &quot;classes.Rmd&quot;                           
 ## [11] &quot;data&quot;                                  
-## [12] &quot;example1_files&quot;                        
-## [13] &quot;example1.html&quot;                         
-## [14] &quot;example1.Rmd&quot;                          
-## [15] &quot;example2_files&quot;                        
-## [16] &quot;example2.html&quot;                         
-## [17] &quot;example2.Rmd&quot;                          
-## [18] &quot;example3.html&quot;                         
-## [19] &quot;example3.Rmd&quot;                          
-## [20] &quot;example4.html&quot;                         
-## [21] &quot;example4.Rmd&quot;                          
-## [22] &quot;exercise1-thebasics_files&quot;             
-## [23] &quot;exercise1-thebasics.html&quot;              
-## [24] &quot;exercise1-thebasics.Rmd&quot;               
-## [25] &quot;exercise2-io.html&quot;                     
-## [26] &quot;exercise2-io.Rmd&quot;                      
-## [27] &quot;exercise3-munging.html&quot;                
-## [28] &quot;exercise3-munging.Rmd&quot;                 
-## [29] &quot;habits.html&quot;                           
-## [30] &quot;habits.Rmd&quot;                            
-## [31] &quot;images&quot;                                
-## [32] &quot;import-csv-excel.html&quot;                 
-## [33] &quot;import-csv-excel.Rmd&quot;                  
-## [34] &quot;index.html&quot;                            
-## [35] &quot;index.Rmd&quot;                             
-## [36] &quot;intros_twitter_wordcloud_usernames.csv&quot;
-## [37] &quot;intros_twitter_wordcloud.R&quot;            
-## [38] &quot;intros.html&quot;                           
-## [39] &quot;intros.Rmd&quot;                            
-## [40] &quot;introToR_donalPhipps_files&quot;            
-## [41] &quot;introToR_donalPhipps.html&quot;             
-## [42] &quot;introToR_donalPhipps.R&quot;                
-## [43] &quot;introToR_donalPhipps.Rmd&quot;              
-## [44] &quot;packages.html&quot;                         
-## [45] &quot;packages.Rmd&quot;                          
-## [46] &quot;pullGAData.R&quot;                          
-## [47] &quot;README.html&quot;                           
-## [48] &quot;README.md&quot;                             
-## [49] &quot;rstudio.html&quot;                          
-## [50] &quot;rstudio.Rmd&quot;                           
-## [51] &quot;RWorkshopCopenhagen.Rproj&quot;             
-## [52] &quot;site_libs&quot;                             
-## [53] &quot;whatisr.html&quot;                          
-## [54] &quot;whatisr.Rmd&quot;</code></pre>
+## [12] &quot;dplyr.html&quot;                            
+## [13] &quot;dplyr.Rmd&quot;                             
+## [14] &quot;example1_files&quot;                        
+## [15] &quot;example1.html&quot;                         
+## [16] &quot;example1.Rmd&quot;                          
+## [17] &quot;example2_files&quot;                        
+## [18] &quot;example2.html&quot;                         
+## [19] &quot;example2.Rmd&quot;                          
+## [20] &quot;example3_files&quot;                        
+## [21] &quot;example3.html&quot;                         
+## [22] &quot;example3.Rmd&quot;                          
+## [23] &quot;example4.html&quot;                         
+## [24] &quot;example4.Rmd&quot;                          
+## [25] &quot;exercise1-thebasics_files&quot;             
+## [26] &quot;exercise1-thebasics.html&quot;              
+## [27] &quot;exercise1-thebasics.Rmd&quot;               
+## [28] &quot;exercise2-io.html&quot;                     
+## [29] &quot;exercise2-io.Rmd&quot;                      
+## [30] &quot;exercise3-munging.html&quot;                
+## [31] &quot;exercise3-munging.Rmd&quot;                 
+## [32] &quot;habits.html&quot;                           
+## [33] &quot;habits.Rmd&quot;                            
+## [34] &quot;images&quot;                                
+## [35] &quot;import-csv-excel.html&quot;                 
+## [36] &quot;import-csv-excel.Rmd&quot;                  
+## [37] &quot;index.html&quot;                            
+## [38] &quot;index.Rmd&quot;                             
+## [39] &quot;intros_twitter_wordcloud_usernames.csv&quot;
+## [40] &quot;intros_twitter_wordcloud.R&quot;            
+## [41] &quot;intros.html&quot;                           
+## [42] &quot;intros.Rmd&quot;                            
+## [43] &quot;introToR_donalPhipps_files&quot;            
+## [44] &quot;introToR_donalPhipps.html&quot;             
+## [45] &quot;introToR_donalPhipps.R&quot;                
+## [46] &quot;introToR_donalPhipps.Rmd&quot;              
+## [47] &quot;packages.html&quot;                         
+## [48] &quot;packages.Rmd&quot;                          
+## [49] &quot;pullGAData.R&quot;                          
+## [50] &quot;README.html&quot;                           
+## [51] &quot;README.md&quot;                             
+## [52] &quot;rstudio.html&quot;                          
+## [53] &quot;rstudio.Rmd&quot;                           
+## [54] &quot;RWorkshopCopenhagen.Rproj&quot;             
+## [55] &quot;site_libs&quot;                             
+## [56] &quot;whatisr.html&quot;                          
+## [57] &quot;whatisr.Rmd&quot;</code></pre>
 </div>
 <div id="data-types" class="section level2">
 <h2>Data types</h2>
@@ -517,7 +522,7 @@ mat.frame$tens * mat.frame$twenties</code></pre>
 <pre class="r"><code>biggie1&lt;-rnorm(100000, 5, 5)
 biggie2&lt;-rnorm(100000, 5, 100)
 mean(biggie1)</code></pre>
-<pre><code>## [1] 4.993578</code></pre>
+<pre><code>## [1] 4.988951</code></pre>
 <pre class="r"><code>big.frame&lt;-data.frame(cbind(biggie1,biggie2))
 ggplot(big.frame,aes(x=biggie1,y=biggie2)) + geom_point(alpha=0.04)</code></pre>
 <p><img src="introToR_donalPhipps_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>

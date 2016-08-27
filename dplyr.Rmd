@@ -1,0 +1,141 @@
+---
+title: "dplyr()"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+
+---
+
+## dplyr
+The `dplyr()` package is one of those packages that, consistently, newcomers to R do not know about and who then get confused by some (one) aspect of it...but experienced R users seldom right a script without using it.
+
+## The dplyr Functions
+`dplyr' has just a handful of functions, all of which are geared towards doing basic manipulation of data sets with fairly straightforward functions. We're not going to go into all of the details of using these functions, as there are plenty of write-ups of that (like [this one](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)). But, we will at least provide a brief description of the functions and, at a high level, what they do:
+
+* 'filter()' -- used to subset the _rows_ of a data set
+* 'select()' -- used to subset the _columns_ of a data set
+* 'arrange()' -- used to sort the rows of a data set
+* 'distinct()' -- used to select only distinct/unique rows in a data set
+* 'mutate()' -- used to add new columns that are based on calculations on data in other columns
+* 'summarise()' -- used to perform summary calculations (mean, max, etc.) on a set of data
+* 'sample_n()' -- used to return a sample from the data set
+
+A _key_ aspect of all of these functions is that _the first argument is always the data set. There is some magic as to how this works in conjunction with the pipe (`%>%`), which we're going to tackle next.
+
+## The Pipe: %>%
+First off, the pipe is _not_ something that Hadley Wickham created, nor is it actually functionality that he implemented natively within the package. _However_, once you load `dplyr`, the pipe is available to you, because `dplyr` loads the `magrittr` package, and _that_ is where the pipe originated in R.
+
+The pipe is, simply, a combination of three characters: `%>%`. When used properly, it does two things:
+1. It shortens and simplifies the code
+2. It makes the code intuitive to read
+
+_All_ the pipe does is provide "forward application" of an object to a function.
+
+Huh? That doesn't help!
+
+Okay, let's try again: the pipe lets you string together a series of functions -- passing the result of one function directly into another function in the sequence that you want them applied and without creating temporary variables. There are two keys to this:
+* By default, the function to the _right_ of the `%>%` assumes the value it is receiving is the _first argument_ for the function, so the first argument is simply omitted in each "downstream"" function.
+* If you're using a function where you don't _want_ the result of the previous function to be the first argument -- you want it to be some other argument -- then simply write the function as you normally would, but put a `.` in the position where you want the upstream function's result to go.
+
+The second bullet above is confusing...so just file it away. You'll know it when you need it, and it will make perfect sense. We're not going to need it here.
+
+## An Example to Illustrate
+
+Let's consider our web analytics data (`webData`) that has sessions by date, device category, and channel:
+
+```{r echo=FALSE}
+webData <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE)
+webData <- webData[,c("date","deviceCategory","channelGrouping","sessions")]
+colnames(webData) <- c("Date","Device","Channel","Sessions")
+```
+
+```{r}
+head(webData)
+```
+
+Now, suppose we want to find the _average_ number of sessions for **Display** traffic _when_ the **Display** traffic from mobile for the day was greater than 2 000 sessions.
+
+### Option 1: LONG Form
+First, the longest way to do this (but, really, okay when you're starting out -- it works!):
+
+```{r}
+# Get the subset of data that is display traffic
+display_traffic <- webData[webData$Channel == "Display",]
+
+# Get the subset of *that* traffic that is mobile
+mobile_display <- display_traffic[display_traffic$Device == "mobile",]
+
+# Get the subset of *that* traffic that is greater than 2 000 sessions
+final_data <- mobile_display[mobile_display$Sessions > 2000,]
+
+# Calculate the average sessions
+avg <- mean(final_data$Sessions)
+
+# Round to the nearest whole number and print the results
+round(avg,0)
+
+```
+
+### Option 2: Short(er)
+Option 1 was an extreme. So, we may realize that we can combine a bunch of the subsetting operations into a single command:
+```{r}
+# Subset the data in one fell swoop
+final_data <- webData[(webData$Channel == "Display" & webData$Device == "mobile" 
+                       & webData$Sessions > 2000),]
+
+# Calculate, round, and print all at once
+round(mean(final_data$Sessions),0)
+```
+
+### Option 3: Excel-Like
+We _could_ get this all down to a single line (although we need line breaks to control the wrapping):
+```{r}
+round(mean(webData[(webData$Channel == "Display" & webData$Device == "mobile" 
+                       & webData$Sessions > 2000),]$Sessions),0)
+
+```
+Does this start to remind you of something in Excel? **The dreaded heavy nesting of functions!**
+
+### Option Ideal: dplyr
+With the pipe and some `dplyr` functions, we can perform these operations in a way that is both efficient and easy to read:
+
+```{r}
+# We'll start to need the dplyr library
+library(dplyr)
+
+webData %>% filter(Channel == "Display") %>%
+  filter(Device == "mobile") %>%
+  filter(Sessions > 2000) %>%
+  summarise(mean(Sessions)) %>%
+  round(0)
+
+```
+
+As soon as you understand how the pipe works, the code above starts to be _super_-readable. You could read it like this:
+1. Take the web data and filter it to just the "Display" rows.
+2. Then, filter _that_ to just be the "mobile" rows.
+3. Then, filter _that_ to just be rows where "Sessions" are greater than 2 000.
+4. Summarise the resulting data subset by taking the mean of "Sessions."
+5. Round the mean to the nearest integer.
+
+**Remember**: Each of the functions above actually has a _first argument_ that is "the data the function should act on." For instance, if I wanted to round pi to 4 digits, I would use the full `round()` function:
+```{r}
+round(pi,4)
+```
+
+But, in our example above, we simply used `round(0)`. That's because the first argument was omitted -- it was just assumed to be the value resulting from the preceding function. We could have written the piped function this way, too:
+
+```{r}
+# We'll start to need the dplyr library
+library(dplyr)
+
+webData %>% filter(.,Channel == "Display") %>%
+  filter(.,Device == "mobile") %>%
+  filter(.,Sessions > 2000) %>%
+  summarise(.,mean(Sessions)) %>%
+  round(.,0)
+
+```
+
+It returns the same result, and you would never really right it this way. But, when using pipes with functions that are not `dplyr` functions, sometimes, you don't want the result of a function to be passed into the first argument. So, the `.` comes in handy!
