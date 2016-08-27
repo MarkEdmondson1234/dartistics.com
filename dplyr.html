@@ -536,14 +536,14 @@ round(mean(final_data$Sessions),0)</code></pre>
 <pre class="r"><code># We&#39;ll start to need the dplyr library
 library(dplyr)
 
-webData %&gt;% filter(Channel == &quot;Display&quot;) %&gt;%
-  filter(Device == &quot;mobile&quot;) %&gt;%
-  filter(Sessions &gt; 2000) %&gt;%
+webData %&gt;% filter(Channel == &quot;Display&quot;,
+                   Device == &quot;mobile&quot;,
+                   Sessions &gt; 2000) %&gt;%
   summarise(mean(Sessions)) %&gt;%
   round(0)</code></pre>
 <pre><code>##   mean(Sessions)
 ## 1           3273</code></pre>
-<p>As soon as you understand how the pipe works, the code above starts to be <em>super</em>-readable. You could read it like this: 1. Take the web data and filter it to just the “Display” rows. 2. Then, filter <em>that</em> to just be the “mobile” rows. 3. Then, filter <em>that</em> to just be rows where “Sessions” are greater than 2 000. 4. Summarise the resulting data subset by taking the mean of “Sessions.” 5. Round the mean to the nearest integer.</p>
+<p>As soon as you understand how the pipe works, the code above starts to be <em>super</em>-readable. You could read it like this: 1. Take the web data. 2. Filter it to just the “Display”/“mobile”/“&gt;2000” rows. 3. Summarise the resulting data subset by taking the mean of “Sessions.” 4. Round the mean to the nearest integer.</p>
 <p><strong>Remember</strong>: Each of the functions above actually has a <em>first argument</em> that is “the data the function should act on.” For instance, if I wanted to round pi to 4 digits, I would use the full <code>round()</code> function:</p>
 <pre class="r"><code>round(pi,4)</code></pre>
 <pre><code>## [1] 3.1416</code></pre>
@@ -551,9 +551,9 @@ webData %&gt;% filter(Channel == &quot;Display&quot;) %&gt;%
 <pre class="r"><code># We&#39;ll start to need the dplyr library
 library(dplyr)
 
-webData %&gt;% filter(.,Channel == &quot;Display&quot;) %&gt;%
-  filter(.,Device == &quot;mobile&quot;) %&gt;%
-  filter(.,Sessions &gt; 2000) %&gt;%
+webData %&gt;% filter(.,Channel == &quot;Display&quot;
+                   ,Device == &quot;mobile&quot;
+                   ,Sessions &gt; 2000) %&gt;%
   summarise(.,mean(Sessions)) %&gt;%
   round(.,0)</code></pre>
 <pre><code>##   mean(Sessions)

@@ -104,20 +104,19 @@ With the pipe and some `dplyr` functions, we can perform these operations in a w
 # We'll start to need the dplyr library
 library(dplyr)
 
-webData %>% filter(Channel == "Display") %>%
-  filter(Device == "mobile") %>%
-  filter(Sessions > 2000) %>%
+webData %>% filter(Channel == "Display",
+                   Device == "mobile",
+                   Sessions > 2000) %>%
   summarise(mean(Sessions)) %>%
   round(0)
 
 ```
 
 As soon as you understand how the pipe works, the code above starts to be _super_-readable. You could read it like this:
-1. Take the web data and filter it to just the "Display" rows.
-2. Then, filter _that_ to just be the "mobile" rows.
-3. Then, filter _that_ to just be rows where "Sessions" are greater than 2 000.
-4. Summarise the resulting data subset by taking the mean of "Sessions."
-5. Round the mean to the nearest integer.
+1. Take the web data.
+2. Filter it to just the "Display"/"mobile"/">2000" rows.
+3. Summarise the resulting data subset by taking the mean of "Sessions."
+4. Round the mean to the nearest integer.
 
 **Remember**: Each of the functions above actually has a _first argument_ that is "the data the function should act on." For instance, if I wanted to round pi to 4 digits, I would use the full `round()` function:
 ```{r}
@@ -130,9 +129,9 @@ But, in our example above, we simply used `round(0)`. That's because the first a
 # We'll start to need the dplyr library
 library(dplyr)
 
-webData %>% filter(.,Channel == "Display") %>%
-  filter(.,Device == "mobile") %>%
-  filter(.,Sessions > 2000) %>%
+webData %>% filter(.,Channel == "Display"
+                   ,Device == "mobile"
+                   ,Sessions > 2000) %>%
   summarise(.,mean(Sessions)) %>%
   round(.,0)
 
