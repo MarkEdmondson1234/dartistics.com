@@ -37,6 +37,9 @@ We now have an object named `y`, which we can inspect by typing `y` at the promp
 y
 ```
 
+## R is Case-Sensitive
+R is case-sensitive, so `gaData` is a totally different object from `gadata` (and `x` is different from `X` for that matter). Depending on how well you type and how closely you pay attention to the details, this is an easy way to get tripped up.
+
 ## Functions
 Functions are fundamental to any programming language, and R is no different. There are three main sources for functions.
 
