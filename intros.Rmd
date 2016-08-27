@@ -9,18 +9,42 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Mark Edmondson
+<style>
+  .col2 {
+    columns: 2 200px;         /* number of columns and width in pixels*/
+    -webkit-columns: 2 200px; /* chrome, safari */
+    -moz-columns: 2 200px;    /* firefox */
+  }
+  .col3 {
+    columns: 3 100px;
+    -webkit-columns: 3 100px;
+    -moz-columns: 3 100px;
+  }
+</style>
+
+## Your Instructors
+
+<div class="col2">
+
+<div>
+![Mark Edmondson](images/edmondsonHead.jpg)
 
 * "Better than Google" <-- according to Tim
 * Heavy user of R
 * Creator of the googleAnalyticsR package (and others!)
 * Englishman living in Denmark
-
-## Tim Wilson
+* [@holomarked](http://twitter.com/holomarked)
+</div>
+<div>
+![Tim Wilson](images/wilsonHead.jpg)
 
 * Dove into R in earnest in December 2015
 * On a mission to make digital analysts more data science-y
 * American living in America (but, within the country, a Texan living in Ohio)
+* [@tgwilson](http://twitter.com/tgwilson)
+
+</div>
+</div>
 
 ## And you...?
 
