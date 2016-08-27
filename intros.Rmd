@@ -33,7 +33,7 @@ knitr::opts_chunk$set(echo = TRUE)
 * Heavy user of R
 * Creator of the googleAnalyticsR package (and others!)
 * Englishman living in Denmark
-* [@holomarked](http://twitter.com/holomarked)
+* <a href="http://twitter.com/holomarked" target=_blank>@holomarked</a>
 </div>
 <div>
 ![Tim Wilson](images/wilsonHead.jpg)
@@ -41,7 +41,7 @@ knitr::opts_chunk$set(echo = TRUE)
 * Dove into R in earnest in December 2015
 * On a mission to make digital analysts more data science-y
 * American living in America (but, within the country, a Texan living in Ohio)
-* [@tgwilson](http://twitter.com/tgwilson)
+* <a href="http://twitter.com/tgwilson" target=_blank>@tgwilson</a>
 
 </div>
 </div>
