@@ -100,7 +100,7 @@ Does this start to remind you of something in Excel? **The dreaded heavy nesting
 ### Option Ideal: dplyr
 With the pipe and some `dplyr` functions, we can perform these operations in a way that is both efficient and easy to read:
 
-```{r}
+```{r message=FALSE}
 # We'll start to need the dplyr library
 library(dplyr)
 
@@ -126,7 +126,7 @@ round(pi,4)
 
 But, in our example above, we simply used `round(0)`. That's because the first argument was omitted -- it was just assumed to be the value resulting from the preceding function. We could have written the piped function this way, too:
 
-```{r}
+```{r message=FALSE}
 # We'll start to need the dplyr library
 library(dplyr)
 

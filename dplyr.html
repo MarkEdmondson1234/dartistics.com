@@ -534,16 +534,9 @@ round(mean(final_data$Sessions),0)</code></pre>
 <h3>Option Ideal: dplyr</h3>
 <p>With the pipe and some <code>dplyr</code> functions, we can perform these operations in a way that is both efficient and easy to read:</p>
 <pre class="r"><code># We&#39;ll start to need the dplyr library
-library(dplyr)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>webData %&gt;% filter(Channel == &quot;Display&quot;) %&gt;%
+library(dplyr)
+
+webData %&gt;% filter(Channel == &quot;Display&quot;) %&gt;%
   filter(Device == &quot;mobile&quot;) %&gt;%
   filter(Sessions &gt; 2000) %&gt;%
   summarise(mean(Sessions)) %&gt;%
