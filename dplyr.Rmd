@@ -11,15 +11,15 @@ output:
 The `dplyr()` package is one of those packages that, consistently, newcomers to R do not know about and who then get confused by some (one) aspect of it...but experienced R users seldom right a script without using it.
 
 ## The dplyr Functions
-`dplyr' has just a handful of functions, all of which are geared towards doing basic manipulation of data sets with fairly straightforward functions. We're not going to go into all of the details of using these functions, as there are plenty of write-ups of that (like [this one](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)). But, we will at least provide a brief description of the functions and, at a high level, what they do:
+`dplyr` has just a handful of functions, all of which are geared towards doing basic manipulation of data sets with fairly straightforward functions. We're not going to go into all of the details of using these functions, as there are plenty of write-ups of that (like [this one](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)). But, we will at least provide a brief description of the functions and, at a high level, what they do:
 
-* 'filter()' -- used to subset the _rows_ of a data set
-* 'select()' -- used to subset the _columns_ of a data set
-* 'arrange()' -- used to sort the rows of a data set
-* 'distinct()' -- used to select only distinct/unique rows in a data set
-* 'mutate()' -- used to add new columns that are based on calculations on data in other columns
-* 'summarise()' -- used to perform summary calculations (mean, max, etc.) on a set of data
-* 'sample_n()' -- used to return a sample from the data set
+* `filter()` -- used to subset the _rows_ of a data set
+* `select()` -- used to subset the _columns_ of a data set
+* `arrange()` -- used to sort the rows of a data set
+* `distinct()` -- used to select only distinct/unique rows in a data set
+* `mutate()` -- used to add new columns that are based on calculations on data in other columns
+* `summarise()` -- used to perform summary calculations (mean, max, etc.) on a set of data
+* `sample_n()` -- used to return a sample from the data set
 
 A _key_ aspect of all of these functions is that _the first argument is always the data set. There is some magic as to how this works in conjunction with the pipe (`%>%`), which we're going to tackle next.
 
