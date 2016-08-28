@@ -6,22 +6,20 @@ output:
 navbar:
   title: "R Masterclass"
   left:
-    - text: "Introduction"
+    - text: "Overview"
       menu:
-      - text: "Hellos"
+      - text: "Introductions"
         href: intros.html
       - text: "What Is R?"
         href: whatisr.html
-    - text: "Examples"
-      menu:
-        - text: "1. Trending"
-          href: example1.html
-        - text: "2. Data Explorer"
-          href: example2.html
-        - text: "3. Venn Diagram"
-          href: example3.html
-        - text: "4. GA Effect"
-          href: example4.html
+      - text: "Example: Trending"
+        href: example1.html
+      - text: "Example: Data Explorer"
+        href: example2.html
+      - text: "Example: Venn Diagram"
+        href: example3.html
+      - text: "Example: GA Effect"
+        href: example4.html
     - text: "Exercises"
       menu:
         - text: "1. The Basic Basics"
@@ -36,27 +34,22 @@ navbar:
         href: rstudio.html
       - text: "Packages"
         href: packages.html
-      - text: "Basic of Base R"
-        href: basics-base_r.html
-      - text: "Good habits"
-        href: habits.html
-    - text: "I/O"
-      menu:
       - text: "CSV import"
         href: import-csv-excel.html
-      - text: "Analytics APIs"
-        href: analytics-apis.html
-    - text: "Munging"
-      menu: 
+      - text: "Basics of Base R"
+        href: basics-base_r.html
       - text: "R Classes"
         href: classes.html
       - text: "Accessing elements"
         href: accessing.html
-      - text: "BaseR vs Tidyverse"
-      - text: "BaseR Tips"
-      - text: "Tidy data"
+      - text: "Tidy data / Tidyverse"
       - text: "dplyr()"
         href: dplyr.html
+      - text: "Good habits"
+        href: habits.html
+      - text: "Analytics APIs"
+        href: analytics-apis.html
+      - text: Microsoft Excel(!)
     - text: "Modelling"
       menu:
       - text: "Introduction"
