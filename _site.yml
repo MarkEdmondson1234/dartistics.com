@@ -68,8 +68,9 @@ navbar:
       - text: "RMarkdown"
       - text: "Shiny"
       - text: "RMarkdown + Shiny"
-    - text: "Summary"
+    - text: "Wrap-Up"
       menu:
       - text: "Key topics"
+      - text: "GitHub"
       - text: "Best practices"
       - text: "Additional Resources"
