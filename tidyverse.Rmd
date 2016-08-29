@@ -1,0 +1,43 @@
+---
+title: "Tidy data and the Tidyverse"
+---
+
+This section covers an important strategy when you are cleaning data, that is to aim to create **tidy data**, which is a defined concept of how data should look before you work with it.  This is a concept that is embraced by the godfather of R, Hadley Wickham, and so supported by his collection of packages, the so called **tidyverse**.
+
+# Tidy data
+
+There are a great many resources on tidy data that will explain it better than we can here, so we will just give it a brief summary and leave some links for further reading, but the main point is that we embrace its philosophy and as a data analyst it is wise to aim for tidy data after you have imported it.
+
+## Tidy summary
+
+> "Tidy datasets are all alike, but every messy dataset is messy in its own way" - Hadley Wickham
+
+The aim of a tidy dataset is to present it in a manner that further processing can be done in an organised fashion:
+
+1. Each variable in the data set is placed in its own column
+2. Each observation is placed in its own row
+3. Each value is placed in its own cell
+
+Tidy data isn't necessarily data that is easiest to read by a human, but it is well suited for passing into further R functions, especially those within the `tidyverse`.
+
+## Some links
+
+* [Garret's deep delve into tidy data](http://garrettgman.github.io/tidying/)
+* [The tidyr vignette](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html)
+* [Hadley's book chapter on tidy data](http://r4ds.had.co.nz/tidy-data.html)
+
+# Tidyverse
+
+`Tidyverse` is the new name for the `Hadleyverse`, which is a collection of R packages created or supported by Hadley Wickham.
+
+These packages aim to cover the whole spectrum of data analysis within R, each supporting the other in concepts and output.  The main packages within are:
+
+* [`tibble`](https://github.com/hadley/tibble) - creating more user-friendly data.frames 
+* [`dplyr`](https://github.com/hadley/dplyr) - data manipulation of data.frames
+* [`ggplot2`](http://ggplot2.org/) - plotting tidy data
+* [`tidyr`](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html) - tools to tidy data.frames
+* [`purrr`](https://github.com/hadley/purrr) - more general data manipulation tools
+* [`magrittr`](https://github.com/smbache/magrittr) - the origin of `%>%`, extensivly used in the tidyverse
+* [`broom`](https://cran.r-project.org/web/packages/broom/vignettes/broom.html) - turn statistical models into tidy data.frames/tiddles
+
+Whilst you can achieve what the above packages do in base R or with other packages (`data.table()` a noteable alternative to `dplyr()`), if you embrace the `tidyverse` then you will need to become familiar with some if not all the packages above.

@@ -43,6 +43,7 @@ navbar:
       - text: "Accessing elements"
         href: accessing.html
       - text: "Tidy data / Tidyverse"
+        href: tidyverse.html
       - text: "dplyr()"
         href: dplyr.html
       - text: "Good habits"
@@ -53,6 +54,7 @@ navbar:
     - text: "Modelling"
       menu:
       - text: "Introduction"
+        href: modelling-intro.html
       - text: "Correlation"
       - text: "Regression"
       - text: "Time-series"
@@ -73,3 +75,4 @@ navbar:
       - text: "Key topics"
       - text: "Best practices"
       - text: "Additional Resources"
+        href: resources.html

@@ -11,7 +11,7 @@
 
 
 
-<title>GA Effect</title>
+<title>Modelling Introduction</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -329,16 +329,109 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">GA Effect</h1>
+<h1 class="title toc-ignore">Modelling Introduction</h1>
 
 </div>
 
 
-<p>Shiny app to test if an event has a statistically significant effect.</p>
-<p>Using shinydashboard, Google Analytics, CausalImpact and dygraphs.</p>
-<p><a href="https://gallery.shinyapps.io/ga-effect/">Shiny App</a></p>
-<p><a href="http://online-behavior.com/analytics/statistical-significance">Intro blog post</a></p>
-<p><a href="http://markedmondson.me/how-i-made-ga-effect-creating-an-online-statistics-dashboard-using-reais">How I made GA Effect</a></p>
+<p>Data modelling is the reason for R’s existence, and is still used as a primary channel of release for cutting edge new advances in data statistics and modelling. As a marketer, you can take advantage of this cutting edge research in your own real-world data sets.</p>
+<div id="picking-a-model" class="section level2">
+<h2>Picking a model</h2>
+<p>The choice of model can be bewildering, as the options available in R are thousand-fold. As ever, it gets easiesr if you can boil down your problem to the right question, and have some foreknowledge on what can and can’t be done with your type of data.</p>
+<p>To get an idea of the questions you need to be answering, take a look at this decision tree for the Python machine learning module, scikit-learn:</p>
+<div class="figure">
+<img src="images/medium_ml_map.png" />
+
+</div>
+<p>Key questions include:</p>
+<ul>
+<li>How much data do I have?</li>
+<li>Is my data categorical, continuous, a time-series, etc.</li>
+<li>Am I just exploring, need a forecast or am looking for features?</li>
+</ul>
+</div>
+<div id="common-model-syntax" class="section level2">
+<h2>Common model syntax</h2>
+<p>Within R, there are some norms that apply to a lot of the modelling functions out there.</p>
+</div>
+<div id="formula-notation" class="section level2">
+<h2>Formula notation</h2>
+<p>A lot of model functions use this notation in R, as well as packages like <code>reshape2()</code></p>
+<p>Its a way to specify what you want the model to calculate, different from the arguments <code>foo = &quot;blah&quot;</code> you may already be familiar with. Details differ, but for formula notation they typically are closer to how you would write it out in mathematical notation.</p>
+<p>For example, if you are running a correlation, you typically want to know how a response <code>y</code> varies with terms <code>x</code> and <code>z</code>. When calling this in <code>lm()</code> you would use:</p>
+<pre class="r"><code>y ~ x + z</code></pre>
+<blockquote>
+<p>~ is a special character used in formula, and means something like “modelled by”. Note no quotes.</p>
+</blockquote>
+<p>Using <code>mtcars</code> again as an example, here is a linear model made with base <code>lm</code>:</p>
+<pre class="r"><code>## Create a linear model that Miles per gallon is modelled by number of cylinders and car weight
+model &lt;- lm(mpg ~ cyl + wt, data = mtcars)</code></pre>
+<blockquote>
+<p>This step can be a real workhorse depending on what statistical model you are applying and the amount of data, so can take several minutes (even hours!) if you are chucking alot of data at it</p>
+</blockquote>
+</div>
+<div id="summary" class="section level2">
+<h2>summary()</h2>
+<p>Now you have your model, how do you see the results? Most R functions will let you see something via <code>summary()</code></p>
+<pre class="r"><code>summary(model)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mpg ~ cyl + wt, data = mtcars)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.2893 -1.5512 -0.4684  1.5743  6.1004 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  39.6863     1.7150  23.141  &lt; 2e-16 ***
+## cyl          -1.5078     0.4147  -3.636 0.001064 ** 
+## wt           -3.1910     0.7569  -4.216 0.000222 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.568 on 29 degrees of freedom
+## Multiple R-squared:  0.8302, Adjusted R-squared:  0.8185 
+## F-statistic: 70.91 on 2 and 29 DF,  p-value: 6.809e-12</code></pre>
+<p>The output will differ depending on your model, and you should read the documentation carefully so you can interpret carefully.</p>
+<p>In this case, it looks as if we are getting an R-squared value of <code>0.82</code> on our model and high confidence’s in our estimates for <code>cyl</code> and <code>wt</code> being correlated with <code>mpg</code> (which makes sense).</p>
+<p>From the defintion of linear models, it says that if you keep the other variable constant, you lose <code>1.5</code> miles per gallon for every extra cylindar in your car, and lose <code>3.2</code> miles per gallon for every <code>1</code> extra weight.</p>
+</div>
+<div id="predict" class="section level2">
+<h2>predict()</h2>
+<p>You can also usually use <code>predict()</code> on the model result to find what your model predicts.</p>
+<blockquote>
+<p>To see specific help on model predict(), plot() and summary(), add a .functionname to the help defintion. This is related to how R uses R classes e.g. ?predict.lm</p>
+</blockquote>
+<p>For <code>predict.lm()</code> you can pass a newdata argument - this should hold the same arguments as the predictors you used in the model - e.g. <code>cyl</code> and <code>wt</code> in this case:</p>
+<pre class="r"><code>## what would be the miles per gallon for a 10 cylindar behomoth?
+new_data &lt;- data.frame(cyl = 10, wt = 5)
+
+## you would get a hefty 8.653 mpg, according to this model
+predict(model, new_data)</code></pre>
+<pre><code>##        1 
+## 8.653451</code></pre>
+</div>
+<div id="plot" class="section level2">
+<h2>plot()</h2>
+<p>Finally, you can usually plot the model. These usually aren’t of publishable standard, but instead for a quick exploratory visualisation of what you have just calculated</p>
+<pre class="r"><code>plot(model)</code></pre>
+<p><img src="modelling-intro_files/figure-html/unnamed-chunk-4-1.png" width="672" /><img src="modelling-intro_files/figure-html/unnamed-chunk-4-2.png" width="672" /><img src="modelling-intro_files/figure-html/unnamed-chunk-4-3.png" width="672" /><img src="modelling-intro_files/figure-html/unnamed-chunk-4-4.png" width="672" /></p>
+</div>
+<div id="training-validation-and-tests" class="section level2">
+<h2>Training, Validation and Tests</h2>
+<p>Best practice when creating models is to split your data into training, validation and test data.</p>
+<p>This is to prevent you making overconfident predictions, that won’t work well on new data.</p>
+<p>A typical split is 60% of your data for training, 20% for validation and 20% for testing.</p>
+<blockquote>
+<p>more to add here</p>
+</blockquote>
+</div>
+<div id="overfitting" class="section level2">
+<h2>Overfitting</h2>
+<p>As normal in these situations, a warning on not being rigorous in your analysis approach:</p>
+<p>If you skip best practices such as validation or training sets, there is a danger you will make overconfident conclusions. This is sadly quite common in digital marketing where overstated claims can result in more investment in your channel, but if you truely believe in a data-driven appraoch then that will make you less credible in the future once the overstated forecasts fail to arrive.</p>
+</div>
 
 
 

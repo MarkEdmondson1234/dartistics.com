@@ -249,7 +249,9 @@ $(document).ready(function () {
     <li>
       <a href="accessing.html">Accessing elements</a>
     </li>
-    <li class="dropdown-header">Tidy data / Tidyverse</li>
+    <li>
+      <a href="tidyverse.html">Tidy data / Tidyverse</a>
+    </li>
     <li>
       <a href="dplyr.html">dplyr()</a>
     </li>
@@ -269,7 +271,9 @@ $(document).ready(function () {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Introduction</li>
+    <li>
+      <a href="modelling-intro.html">Introduction</a>
+    </li>
     <li class="dropdown-header">Correlation</li>
     <li class="dropdown-header">Regression</li>
     <li class="dropdown-header">Time-series</li>
@@ -310,7 +314,9 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Key topics</li>
     <li class="dropdown-header">Best practices</li>
-    <li class="dropdown-header">Additional Resources</li>
+    <li>
+      <a href="resources.html">Additional Resources</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -346,7 +352,7 @@ x</code></pre>
 <h2>Working directory</h2>
 <p>Dangers of setting setwd() in scripts on interportability, perhaps explanation on using RStudio projects</p>
 <pre class="r"><code>getwd()</code></pre>
-<pre><code>## [1] &quot;/Users/timwilson/Documents/RWorkshopCopenhagen&quot;</code></pre>
+<pre><code>## [1] &quot;/Users/IIH-Nordic/dev/RWorkshop&quot;</code></pre>
 <pre class="r"><code># setwd()
 list.files()</code></pre>
 <pre><code>##  [1] &quot;_site.yml&quot;                             
@@ -387,26 +393,32 @@ list.files()</code></pre>
 ## [36] &quot;import-csv-excel.html&quot;                 
 ## [37] &quot;import-csv-excel.Rmd&quot;                  
 ## [38] &quot;index.html&quot;                            
-## [39] &quot;index.Rmd&quot;                             
-## [40] &quot;intros_twitter_wordcloud_usernames.csv&quot;
-## [41] &quot;intros_twitter_wordcloud.R&quot;            
-## [42] &quot;intros.html&quot;                           
-## [43] &quot;intros.Rmd&quot;                            
-## [44] &quot;introToR_donalPhipps_files&quot;            
-## [45] &quot;introToR_donalPhipps.html&quot;             
-## [46] &quot;introToR_donalPhipps.R&quot;                
-## [47] &quot;introToR_donalPhipps.Rmd&quot;              
-## [48] &quot;packages.html&quot;                         
-## [49] &quot;packages.Rmd&quot;                          
-## [50] &quot;pullGAData.R&quot;                          
-## [51] &quot;README.html&quot;                           
-## [52] &quot;README.md&quot;                             
-## [53] &quot;rstudio.html&quot;                          
-## [54] &quot;rstudio.Rmd&quot;                           
-## [55] &quot;RWorkshopCopenhagen.Rproj&quot;             
-## [56] &quot;site_libs&quot;                             
-## [57] &quot;whatisr.html&quot;                          
-## [58] &quot;whatisr.Rmd&quot;</code></pre>
+## [39] &quot;index.knit.html&quot;                       
+## [40] &quot;index.Rmd&quot;                             
+## [41] &quot;intros_twitter_wordcloud_usernames.csv&quot;
+## [42] &quot;intros_twitter_wordcloud.R&quot;            
+## [43] &quot;intros.html&quot;                           
+## [44] &quot;intros.Rmd&quot;                            
+## [45] &quot;introToR_donalPhipps_files&quot;            
+## [46] &quot;introToR_donalPhipps.html&quot;             
+## [47] &quot;introToR_donalPhipps.R&quot;                
+## [48] &quot;introToR_donalPhipps.Rmd&quot;              
+## [49] &quot;modelling-intro.Rmd&quot;                   
+## [50] &quot;packages.html&quot;                         
+## [51] &quot;packages.Rmd&quot;                          
+## [52] &quot;pullGAData.R&quot;                          
+## [53] &quot;README.html&quot;                           
+## [54] &quot;README.md&quot;                             
+## [55] &quot;resources.Rmd&quot;                         
+## [56] &quot;rstudio.html&quot;                          
+## [57] &quot;rstudio.Rmd&quot;                           
+## [58] &quot;RWorkshopCopenhagen.Rproj&quot;             
+## [59] &quot;site_libs&quot;                             
+## [60] &quot;td.csv&quot;                                
+## [61] &quot;tidyverse.html&quot;                        
+## [62] &quot;tidyverse.Rmd&quot;                         
+## [63] &quot;whatisr.html&quot;                          
+## [64] &quot;whatisr.Rmd&quot;</code></pre>
 </div>
 <div id="data-types" class="section level2">
 <h2>Data types</h2>
@@ -495,7 +507,7 @@ mat.frame$tens * mat.frame$twenties</code></pre>
 <pre class="r"><code>biggie1&lt;-rnorm(100000, 5, 5)
 biggie2&lt;-rnorm(100000, 5, 100)
 mean(biggie1)</code></pre>
-<pre><code>## [1] 5.001699</code></pre>
+<pre><code>## [1] 4.982591</code></pre>
 <pre class="r"><code>big.frame&lt;-data.frame(cbind(biggie1,biggie2))
 ggplot(big.frame,aes(x=biggie1,y=biggie2)) + geom_point(alpha=0.04)</code></pre>
 <p><img src="introToR_donalPhipps_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>

@@ -15,6 +15,7 @@ Here are some good habits to get into learnt from experience to make working wit
 2. Create a `script` and `data` folder in the project straight away
 3. Put your R scripts `./scripts/your-script.R` in the script folder, and raw or processed data written to the data folder (`./data/your_data.csv`)
 4. Never change your working directory (`setwd()`) in the scripts, it ruins portability
+5. If using Git (and you should!) then make one Github repo per R project.
 
 ## Code style
 
@@ -66,4 +67,25 @@ lookup
 big_list_of_ids <- c("2323","2323","3434","9999","9999","1231","5353","9999","2323","1231","9999")
 
 lookup[big_list_of_ids]
+```
+
+8. `Reduce()` operates repeatedly on a list, adding the result to its previous.  A good example is for reading a folder full of files:
+
+```r
+## say you have lots of files in folder "./data/myfolder"
+## we can use lapply on write.csv to read in all the files:
+
+folder <- "./data/myfolder"
+filenames <- list.files(folder)
+
+## a list of data.frames read from the csv
+df_list <- lapply(filenames, read.csv)
+
+## operate rbind (bind the rows) on the list, iterativly
+all_files <- Reduce(rbind, df_list)
+
+## all_files is now one big dataframe, all_files
+
+## in one line:
+all_files <- Reduce(rbind, lapply(filenames, read.csv))
 ```

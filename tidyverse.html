@@ -11,7 +11,7 @@
 
 
 
-<title>GA Effect</title>
+<title>Tidy data and the Tidyverse</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -329,16 +329,52 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">GA Effect</h1>
+<h1 class="title toc-ignore">Tidy data and the Tidyverse</h1>
 
 </div>
 
 
-<p>Shiny app to test if an event has a statistically significant effect.</p>
-<p>Using shinydashboard, Google Analytics, CausalImpact and dygraphs.</p>
-<p><a href="https://gallery.shinyapps.io/ga-effect/">Shiny App</a></p>
-<p><a href="http://online-behavior.com/analytics/statistical-significance">Intro blog post</a></p>
-<p><a href="http://markedmondson.me/how-i-made-ga-effect-creating-an-online-statistics-dashboard-using-reais">How I made GA Effect</a></p>
+<p>This section covers an important strategy when you are cleaning data, that is to aim to create <strong>tidy data</strong>, which is a defined concept of how data should look before you work with it. This is a concept that is embraced by the godfather of R, Hadley Wickham, and so supported by his collection of packages, the so called <strong>tidyverse</strong>.</p>
+<div id="tidy-data" class="section level1">
+<h1>Tidy data</h1>
+<p>There are a great many resources on tidy data that will explain it better than we can here, so we will just give it a brief summary and leave some links for further reading, but the main point is that we embrace its philosophy and as a data analyst it is wise to aim for tidy data after you have imported it.</p>
+<div id="tidy-summary" class="section level2">
+<h2>Tidy summary</h2>
+<blockquote>
+<p>“Tidy datasets are all alike, but every messy dataset is messy in its own way” - Hadley Wickham</p>
+</blockquote>
+<p>The aim of a tidy dataset is to present it in a manner that further processing can be done in an organised fashion:</p>
+<ol style="list-style-type: decimal">
+<li>Each variable in the data set is placed in its own column</li>
+<li>Each observation is placed in its own row</li>
+<li>Each value is placed in its own cell</li>
+</ol>
+<p>Tidy data isn’t necessarily data that is easiest to read by a human, but it is well suited for passing into further R functions, especially those within the <code>tidyverse</code>.</p>
+</div>
+<div id="some-links" class="section level2">
+<h2>Some links</h2>
+<ul>
+<li><a href="http://garrettgman.github.io/tidying/">Garret’s deep delve into tidy data</a></li>
+<li><a href="https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html">The tidyr vignette</a></li>
+<li><a href="http://r4ds.had.co.nz/tidy-data.html">Hadley’s book chapter on tidy data</a></li>
+</ul>
+</div>
+</div>
+<div id="tidyverse" class="section level1">
+<h1>Tidyverse</h1>
+<p><code>Tidyverse</code> is the new name for the <code>Hadleyverse</code>, which is a collection of R packages created or supported by Hadley Wickham.</p>
+<p>These packages aim to cover the whole spectrum of data analysis within R, each supporting the other in concepts and output. The main packages within are:</p>
+<ul>
+<li><a href="https://github.com/hadley/tibble"><code>tibble</code></a> - creating more user-friendly data.frames</li>
+<li><a href="https://github.com/hadley/dplyr"><code>dplyr</code></a> - data manipulation of data.frames</li>
+<li><a href="http://ggplot2.org/"><code>ggplot2</code></a> - plotting tidy data</li>
+<li><a href="https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html"><code>tidyr</code></a> - tools to tidy data.frames</li>
+<li><a href="https://github.com/hadley/purrr"><code>purrr</code></a> - more general data manipulation tools</li>
+<li><a href="https://github.com/smbache/magrittr"><code>magrittr</code></a> - the origin of <code>%&gt;%</code>, extensivly used in the tidyverse</li>
+<li><a href="https://cran.r-project.org/web/packages/broom/vignettes/broom.html"><code>broom</code></a> - turn statistical models into tidy data.frames/tiddles</li>
+</ul>
+<p>Whilst you can achieve what the above packages do in base R or with other packages (<code>data.table()</code> a noteable alternative to <code>dplyr()</code>), if you embrace the <code>tidyverse</code> then you will need to become familiar with some if not all the packages above.</p>
+</div>
 
 
 

@@ -344,7 +344,9 @@ div.tocify {
     <li>
       <a href="accessing.html">Accessing elements</a>
     </li>
-    <li class="dropdown-header">Tidy data / Tidyverse</li>
+    <li>
+      <a href="tidyverse.html">Tidy data / Tidyverse</a>
+    </li>
     <li>
       <a href="dplyr.html">dplyr()</a>
     </li>
@@ -364,7 +366,9 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Introduction</li>
+    <li>
+      <a href="modelling-intro.html">Introduction</a>
+    </li>
     <li class="dropdown-header">Correlation</li>
     <li class="dropdown-header">Regression</li>
     <li class="dropdown-header">Time-series</li>
@@ -405,7 +409,9 @@ div.tocify {
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Key topics</li>
     <li class="dropdown-header">Best practices</li>
-    <li class="dropdown-header">Additional Resources</li>
+    <li>
+      <a href="resources.html">Additional Resources</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -447,7 +453,7 @@ class(mtcars)
 </ul>
 <pre class="r"><code>a_date &lt;- Sys.Date()
 a_date</code></pre>
-<pre><code>## [1] &quot;2016-08-28&quot;</code></pre>
+<pre><code>## [1] &quot;2016-08-29&quot;</code></pre>
 <pre class="r"><code>class(a_date)</code></pre>
 <pre><code>## [1] &quot;Date&quot;</code></pre>
 <pre class="r"><code>a_character &lt;- &quot;2016-08-24&quot;
@@ -493,7 +499,10 @@ a_vector</code></pre>
 <pre><code>## [1] &quot;character&quot;</code></pre>
 <pre class="r"><code>str(a_vector)</code></pre>
 <pre><code>##  chr [1:4] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot;</code></pre>
-<p>Note that the class of the vector is the same as the element. This hints at a powerful feature of R, namely <strong>vectorisation</strong>. The atomic elements above are actually a one-length vector. This means that anything you can do to one element, will also work on an entire vector of the same <code>class</code>.</p>
+<blockquote>
+<p>The class of the vector is the same as the element!</p>
+</blockquote>
+<p>This hints at a powerful feature of R, namely <strong>vectorisation</strong>. The atomic elements above are actually a one-length vector. This means that anything you can do to one element, will also work on an entire vector of the same <code>class</code>.</p>
 <p>An example of this:</p>
 <pre class="r"><code>## sum individual elements
 sum(1,2,3,3,4,5,6)</code></pre>
@@ -546,7 +555,9 @@ class(my_data_frame)</code></pre>
 ##  $ numbers: int  1 2 3 4 5
 ##  $ letters: Factor w/ 5 levels &quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,..: 1 2 3 4 5
 ##  $ logic  : logi  TRUE FALSE FALSE TRUE TRUE</code></pre>
-<p>Note that each column can only be one class, but the class of the columns can be different types.</p>
+<blockquote>
+<p>Each column can only be one class, but the class of the columns can be different types.</p>
+</blockquote>
 <p>Also see that by default it will turn characters into <code>factors</code>. Turn this off via the <code>stringsAsFactors = FALSE</code> argument:</p>
 <pre class="r"><code>## names before equals, values after
 my_data_frame &lt;- data.frame(numbers = 1:5, 

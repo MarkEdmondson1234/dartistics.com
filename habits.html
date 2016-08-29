@@ -344,7 +344,9 @@ div.tocify {
     <li>
       <a href="accessing.html">Accessing elements</a>
     </li>
-    <li class="dropdown-header">Tidy data / Tidyverse</li>
+    <li>
+      <a href="tidyverse.html">Tidy data / Tidyverse</a>
+    </li>
     <li>
       <a href="dplyr.html">dplyr()</a>
     </li>
@@ -364,7 +366,9 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Introduction</li>
+    <li>
+      <a href="modelling-intro.html">Introduction</a>
+    </li>
     <li class="dropdown-header">Correlation</li>
     <li class="dropdown-header">Regression</li>
     <li class="dropdown-header">Time-series</li>
@@ -405,7 +409,9 @@ div.tocify {
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Key topics</li>
     <li class="dropdown-header">Best practices</li>
-    <li class="dropdown-header">Additional Resources</li>
+    <li>
+      <a href="resources.html">Additional Resources</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -433,6 +439,7 @@ div.tocify {
 <li>Create a <code>script</code> and <code>data</code> folder in the project straight away</li>
 <li>Put your R scripts <code>./scripts/your-script.R</code> in the script folder, and raw or processed data written to the data folder (<code>./data/your_data.csv</code>)</li>
 <li>Never change your working directory (<code>setwd()</code>) in the scripts, it ruins portability</li>
+<li>If using Git (and you should!) then make one Github repo per R project.</li>
 </ol>
 </div>
 <div id="code-style" class="section level2">
@@ -493,6 +500,25 @@ lookup[big_list_of_ids]</code></pre>
 ##   &quot;Ben&quot;   &quot;Ben&quot; &quot;Linda&quot; &quot;Gerry&quot; &quot;Gerry&quot;  &quot;Bill&quot;   &quot;Sue&quot; &quot;Gerry&quot;   &quot;Ben&quot; 
 ##    1231    9999 
 ##  &quot;Bill&quot; &quot;Gerry&quot;</code></pre>
+<ol start="8" style="list-style-type: decimal">
+<li><code>Reduce()</code> operates repeatedly on a list, adding the result to its previous. A good example is for reading a folder full of files:</li>
+</ol>
+<pre class="r"><code>## say you have lots of files in folder &quot;./data/myfolder&quot;
+## we can use lapply on write.csv to read in all the files:
+
+folder &lt;- &quot;./data/myfolder&quot;
+filenames &lt;- list.files(folder)
+
+## a list of data.frames read from the csv
+df_list &lt;- lapply(filenames, read.csv)
+
+## operate rbind (bind the rows) on the list, iterativly
+all_files &lt;- Reduce(rbind, df_list)
+
+## all_files is now one big dataframe, all_files
+
+## in one line:
+all_files &lt;- Reduce(rbind, lapply(filenames, read.csv))</code></pre>
 </div>
 
 

@@ -90,7 +90,9 @@ class(a_vector)
 str(a_vector)
 ```
 
-Note that the class of the vector is the same as the element.  This hints at a powerful feature of R, namely **vectorisation**.  The atomic elements above are actually a one-length vector.  This means that anything you can do to one element, will also work on an entire vector of the same `class`.
+> The class of the vector is the same as the element!  
+
+This hints at a powerful feature of R, namely **vectorisation**.  The atomic elements above are actually a one-length vector.  This means that anything you can do to one element, will also work on an entire vector of the same `class`.
 
 An example of this:
 
@@ -142,7 +144,7 @@ str(my_data_frame)
 
 ```
 
-Note that each column can only be one class, but the class of the columns can be different types.
+> Each column can only be one class, but the class of the columns can be different types.
 
 Also see that by default it will turn characters into `factors`.  Turn this off via the `stringsAsFactors = FALSE` argument:
 
