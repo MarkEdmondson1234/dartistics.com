@@ -1,0 +1,22 @@
+---
+title: "Exercise 6 -- Regression"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+
+---
+
+```{r echo=FALSE}
+# We need to load the file behind the scenes to work with it.
+webData <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE)
+```
+
+This exercise is dependent on the successful completion of [Exercise 4](exercise4-tidy-dplyr.html).
+
+(Need to figure out a good exercise here.)
+
+-------------
+
+## 1. Detailed Instructions
+If time allows, blow out the instructions on how to actually do this.

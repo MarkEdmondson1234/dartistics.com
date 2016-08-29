@@ -1,0 +1,29 @@
+---
+title: "Exercise 5 -- Correlation"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+
+---
+
+```{r echo=FALSE}
+# We need to load the file behind the scenes to work with it.
+webData <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE)
+```
+
+This exercise is dependent on the successful completion of [Exercise 4](exercise4-tidy-dplyr.html).
+
+For this exercise, complete the following tasks with `webData` (which should now have a `pageviews_per_visit` and a `bounce_rate` column following Exercise 4):
+
+1. Evaluate the correlation between bounce rate and sessions using each row in `webData` as a data point
+2. Evaluate the correlation between bounce rate and sessions for each `deviceCategory`.
+3. Evaluate the correlation between bounce rate and sessions for each `channelGrouping`.
+4. (Bonus) Plot a grid of scatterplots:
+  + Arrange the scatterplots with `deviceCategory` along the x-axis and `channelGrouping` along the y-axis
+  + For each scatterplot, use `sessions` as the x-axis and `bounce-rate` as the y-axis
+
+-------------
+
+## 1. Detailed Instructions
+If time allows, blow out the instructions on how to actually do this.

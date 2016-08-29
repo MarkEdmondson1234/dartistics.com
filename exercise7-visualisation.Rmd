@@ -1,0 +1,31 @@
+---
+title: "Exercise 7 -- Visualisation"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+
+---
+
+```{r echo=FALSE}
+# We need to load the file behind the scenes to work with it.
+webData <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE)
+```
+
+This exercise is dependent on the successful completion of [Exercise 4](exercise4-tidy-dplyr.html).
+
+For this exercise:
+
+1. Create and save a new script called `visualizations.`
+2. In the script, create a single line chart showing total `sessions` by day. In the script, save this plot to an object called `plot-single-line`.
+2. In the script, add a new line chart to show three lines: one for each `deviceCategory`. Save this plot to an object called `plot-device-cat`.
+3. In the script, add a grid of sparklines showing `sessions` by day:
+  + Each row in the grid should be a different `channelGrouping`.
+  + Each column in the grid should be a different `deviceCategory`.
+4. Adjust the formatting of the grid:
+  + (Need to add a list of things here.)
+
+-------------
+
+## 1. Detailed Instructions
+If time allows, blow out the instructions on how to actually do this.

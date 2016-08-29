@@ -11,7 +11,7 @@
 
 
 
-<title>Introduction</title>
+<title>Exercise 6 – Regression</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,6 +19,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -161,6 +164,100 @@ $(document).ready(function () {
 <!-- code folding -->
 
 
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.9em;
+  padding-left: 5px;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -339,66 +436,23 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Introduction</h1>
+<h1 class="title toc-ignore">Exercise 6 – Regression</h1>
 
 </div>
 
 
-<style>
-  .col2 {
-    columns: 2 200px;         /* number of columns and width in pixels*/
-    -webkit-columns: 2 200px; /* chrome, safari */
-    -moz-columns: 2 200px;    /* firefox */
-  }
-  .col3 {
-    columns: 3 100px;
-    -webkit-columns: 3 100px;
-    -moz-columns: 3 100px;
-  }
-</style>
-<div id="your-instructors" class="section level2">
-<h2>Your Instructors</h2>
-<div class="col2">
-<div>
-<div class="figure">
-<img src="images/edmondsonHead.jpg" alt="Mark Edmondson" />
-<p class="caption">Mark Edmondson</p>
-</div>
-<ul>
-<li>“Better than Google” &lt;– according to Tim</li>
-<li>Heavy user of R</li>
-<li>Creator of the googleAnalyticsR package (and others!)</li>
-<li>Englishman living in Denmark</li>
-<li><a href="http://twitter.com/holomarked" target=_blank><span class="citation">@holomarked</span></a></li>
-</ul>
-</div>
-<div>
-<div class="figure">
-<img src="images/wilsonHead.jpg" alt="Tim Wilson" />
-<p class="caption">Tim Wilson</p>
-</div>
-<ul>
-<li>Dove into R in earnest in December 2015</li>
-<li>On a mission to make digital analysts more data science-y</li>
-<li>American living in America (but, within the country, a Texan living in Ohio)</li>
-<li><a href="http://twitter.com/tgwilson" target=_blank><span class="citation">@tgwilson</span></a></li>
-</ul>
-</div>
-</div>
-</div>
-<div id="and-you" class="section level2">
-<h2>And you…?</h2>
-<ul>
-<li>Name</li>
-<li>Company</li>
-<li>Favorite Excel function</li>
-<li>(Optional) Favorite R package</li>
-<li>Your Twitter username</li>
-</ul>
+<p>This exercise is dependent on the successful completion of <a href="exercise4-tidy-dplyr.html">Exercise 4</a>.</p>
+<p>(Need to figure out a good exercise here.)</p>
+<hr />
+<div id="detailed-instructions" class="section level2">
+<h2>1. Detailed Instructions</h2>
+<p>If time allows, blow out the instructions on how to actually do this.</p>
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 
