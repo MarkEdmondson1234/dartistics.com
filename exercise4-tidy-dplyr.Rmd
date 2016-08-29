@@ -1,0 +1,28 @@
+---
+title: "Exercise 4 -- Tidy / dplyr()"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+
+---
+
+```{r echo=FALSE}
+# We need to load the file behind the scenes to work with it.
+webData <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE)
+```
+
+This exercise is dependent on the successful completion of [Exercise 2](exercise2-io.html).
+
+Our `webData` data is _already_ in a tidy format. When data is _not_ in a tidy format when you get it, the `tidyr` package has functions to help make it that way. Some day, perhaps we'll have an exercise to do this!
+
+For this exercise, complete the following tasks with `webData`:
+
+1. Calculate the average pageviews per day by channel using the `summarise()` function in the `dplyr` package
+2. Add two columns to `webData` using the `mutate()` function: `pageviews_per_visit` and `bounce_rate`
+3. Calculate the average bounce rate by `deviceCategory` (be careful with the order of your calculations!).
+  
+-------------
+
+## 1. Detailed Instructions
+If time allows, blow out the instructions on how to actually do this.

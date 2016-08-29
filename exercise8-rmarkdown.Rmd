@@ -1,0 +1,28 @@
+---
+title: "Exercise 8 -- RMarkdown"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+
+---
+
+```{r echo=FALSE}
+# We need to load the file behind the scenes to work with it.
+webData <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE)
+```
+
+This exercise is dependent on the successful completion of [Exercise 7](exercise7-visualisation.html).
+
+For this exercise, we're going to push the three plots created in Exercise 7 into an HTML file using RMarkdown:
+
+1. Create a new RMarkdown file called `visualisation-markdown`.
+2. Add the single line chart to the script with the code to plot it displayed.
+3. Add the chart with the lines broken out by `deviceCategory` _without_ displaying the underlying code
+4. Add the grid of sparklines
+5. (Add formatting?)
+
+-------------
+
+## 1. Detailed Instructions
+If time allows, blow out the instructions on how to actually do this.

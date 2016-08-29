@@ -11,7 +11,7 @@
 
 
 
-<title>dplyr()</title>
+<title>Exercise 5 – Correlation</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -442,118 +442,27 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">dplyr()</h1>
+<h1 class="title toc-ignore">Exercise 5 – Correlation</h1>
 
 </div>
 
 
-<div id="dplyr" class="section level2">
-<h2>dplyr</h2>
-<p>The <code>dplyr()</code> package is one of those packages that, consistently, newcomers to R do not know about and who then get confused by some (one) aspect of it…but experienced R users seldom right a script without using it.</p>
-</div>
-<div id="the-dplyr-functions" class="section level2">
-<h2>The dplyr Functions</h2>
-<p><code>dplyr</code> has just a handful of functions, all of which are geared towards doing basic manipulation of data sets with fairly straightforward functions. We’re not going to go into all of the details of using these functions, as there are plenty of write-ups of that (like <a href="https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html">this one</a>). But, we will at least provide a brief description of the functions and, at a high level, what they do:</p>
+<p>This exercise is dependent on the successful completion of <a href="exercise4-tidy-dplyr.html">Exercise 4</a>.</p>
+<p>For this exercise, complete the following tasks with <code>webData</code> (which should now have a <code>pageviews_per_visit</code> and a <code>bounce_rate</code> column following Exercise 4):</p>
+<ol style="list-style-type: decimal">
+<li>Evaluate the correlation between bounce rate and sessions using each row in <code>webData</code> as a data point</li>
+<li>Evaluate the correlation between bounce rate and sessions for each <code>deviceCategory</code>.</li>
+<li>Evaluate the correlation between bounce rate and sessions for each <code>channelGrouping</code>.</li>
+<li>(Bonus) Plot a grid of scatterplots:</li>
+</ol>
 <ul>
-<li><code>filter()</code> – used to subset the <em>rows</em> of a data set</li>
-<li><code>select()</code> – used to subset the <em>columns</em> of a data set</li>
-<li><code>arrange()</code> – used to sort the rows of a data set</li>
-<li><code>distinct()</code> – used to select only distinct/unique rows in a data set</li>
-<li><code>mutate()</code> – used to add new columns that are based on calculations on data in other columns</li>
-<li><code>summarise()</code> – used to perform summary calculations (mean, max, etc.) on a set of data</li>
-<li><code>sample_n()</code> – used to return a sample from the data set</li>
+<li>Arrange the scatterplots with <code>deviceCategory</code> along the x-axis and <code>channelGrouping</code> along the y-axis</li>
+<li>For each scatterplot, use <code>sessions</code> as the x-axis and <code>bounce-rate</code> as the y-axis</li>
 </ul>
-<p>A <em>key</em> aspect of all of these functions is that _the first argument is always the data set. There is some magic as to how this works in conjunction with the pipe (<code>%&gt;%</code>), which we’re going to tackle next.</p>
-</div>
-<div id="the-pipe" class="section level2">
-<h2>The Pipe: %&gt;%</h2>
-<p>First off, the pipe is <em>not</em> something that Hadley Wickham created, nor is it actually functionality that he implemented natively within the package. <em>However</em>, once you load <code>dplyr</code>, the pipe is available to you, because <code>dplyr</code> loads the <code>magrittr</code> package, and <em>that</em> is where the pipe originated in R.</p>
-<p>The pipe is, simply, a combination of three characters: <code>%&gt;%</code>. When used properly, it does two things: 1. It shortens and simplifies the code 2. It makes the code intuitive to read</p>
-<p><em>All</em> the pipe does is provide “forward application” of an object to a function.</p>
-<p>Huh? That doesn’t help!</p>
-<p>Okay, let’s try again: the pipe lets you string together a series of functions – passing the result of one function directly into another function in the sequence that you want them applied and without creating temporary variables. There are two keys to this: * By default, the function to the <em>right</em> of the <code>%&gt;%</code> assumes the value it is receiving is the <em>first argument</em> for the function, so the first argument is simply omitted in each “downstream”&quot; function. * If you’re using a function where you don’t <em>want</em> the result of the previous function to be the first argument – you want it to be some other argument – then simply write the function as you normally would, but put a <code>.</code> in the position where you want the upstream function’s result to go.</p>
-<p>The second bullet above is confusing…so just file it away. You’ll know it when you need it, and it will make perfect sense. We’re not going to need it here.</p>
-</div>
-<div id="an-example-to-illustrate" class="section level2">
-<h2>An Example to Illustrate</h2>
-<p>Let’s consider our web analytics data (<code>webData</code>) that has sessions by date, device category, and channel:</p>
-<pre class="r"><code>head(webData)</code></pre>
-<pre><code>##         Date  Device Channel Sessions
-## 1 2016-01-01 desktop (Other)       19
-## 2 2016-01-01  mobile (Other)      112
-## 3 2016-01-01  tablet (Other)       24
-## 4 2016-01-01 desktop  Direct      133
-## 5 2016-01-01  mobile  Direct      345
-## 6 2016-01-01  tablet  Direct      126</code></pre>
-<p>Now, suppose we want to find the <em>average</em> number of sessions for <strong>Display</strong> traffic <em>when</em> the <strong>Display</strong> traffic from mobile for the day was greater than 2 000 sessions.</p>
-<div id="option-1-long-form" class="section level3">
-<h3>Option 1: LONG Form</h3>
-<p>First, the longest way to do this (but, really, okay when you’re starting out – it works!):</p>
-<pre class="r"><code># Get the subset of data that is display traffic
-display_traffic &lt;- webData[webData$Channel == &quot;Display&quot;,]
-
-# Get the subset of *that* traffic that is mobile
-mobile_display &lt;- display_traffic[display_traffic$Device == &quot;mobile&quot;,]
-
-# Get the subset of *that* traffic that is greater than 2 000 sessions
-final_data &lt;- mobile_display[mobile_display$Sessions &gt; 2000,]
-
-# Calculate the average sessions
-avg &lt;- mean(final_data$Sessions)
-
-# Round to the nearest whole number and print the results
-round(avg,0)</code></pre>
-<pre><code>## [1] 3273</code></pre>
-</div>
-<div id="option-2-shorter" class="section level3">
-<h3>Option 2: Short(er)</h3>
-<p>Option 1 was an extreme. So, we may realize that we can combine a bunch of the subsetting operations into a single command:</p>
-<pre class="r"><code># Subset the data in one fell swoop
-final_data &lt;- webData[(webData$Channel == &quot;Display&quot; &amp; webData$Device == &quot;mobile&quot; 
-                       &amp; webData$Sessions &gt; 2000),]
-
-# Calculate, round, and print all at once
-round(mean(final_data$Sessions),0)</code></pre>
-<pre><code>## [1] 3273</code></pre>
-</div>
-<div id="option-3-excel-like" class="section level3">
-<h3>Option 3: Excel-Like</h3>
-<p>We <em>could</em> get this all down to a single line (although we need line breaks to control the wrapping):</p>
-<pre class="r"><code>round(mean(webData[(webData$Channel == &quot;Display&quot; &amp; webData$Device == &quot;mobile&quot; 
-                       &amp; webData$Sessions &gt; 2000),]$Sessions),0)</code></pre>
-<pre><code>## [1] 3273</code></pre>
-<p>Does this start to remind you of something in Excel? <strong>The dreaded heavy nesting of functions!</strong></p>
-</div>
-<div id="option-ideal-dplyr" class="section level3">
-<h3>Option Ideal: dplyr</h3>
-<p>With the pipe and some <code>dplyr</code> functions, we can perform these operations in a way that is both efficient and easy to read:</p>
-<pre class="r"><code># We&#39;ll start to need the dplyr library
-library(dplyr)
-
-webData %&gt;% filter(Channel == &quot;Display&quot;,
-                   Device == &quot;mobile&quot;,
-                   Sessions &gt; 2000) %&gt;%
-  summarise(mean(Sessions)) %&gt;%
-  round(0)</code></pre>
-<pre><code>##   mean(Sessions)
-## 1           3273</code></pre>
-<p>As soon as you understand how the pipe works, the code above starts to be <em>super</em>-readable. You could read it like this: 1. Take the web data. 2. Filter it to just the “Display”/“mobile”/“&gt;2000” rows. 3. Summarise the resulting data subset by taking the mean of “Sessions.” 4. Round the mean to the nearest integer.</p>
-<p><strong>Remember</strong>: Each of the functions above actually has a <em>first argument</em> that is “the data the function should act on.” For instance, if I wanted to round pi to 4 digits, I would use the full <code>round()</code> function:</p>
-<pre class="r"><code>round(pi,4)</code></pre>
-<pre><code>## [1] 3.1416</code></pre>
-<p>But, in our example above, we simply used <code>round(0)</code>. That’s because the first argument was omitted – it was just assumed to be the value resulting from the preceding function. We could have written the piped function this way, too:</p>
-<pre class="r"><code># We&#39;ll start to need the dplyr library
-library(dplyr)
-
-webData %&gt;% filter(.,Channel == &quot;Display&quot;,
-                   Device == &quot;mobile&quot;,
-                   Sessions &gt; 2000) %&gt;%
-  summarise(.,mean(Sessions)) %&gt;%
-  round(.,0)</code></pre>
-<pre><code>##   mean(Sessions)
-## 1           3273</code></pre>
-<p>It returns the same result, and you would never really right it this way. But, when using pipes with functions that are not <code>dplyr</code> functions, sometimes, you don’t want the result of a function to be passed into the first argument. So, the <code>.</code> comes in handy!</p>
-</div>
+<hr />
+<div id="detailed-instructions" class="section level2">
+<h2>1. Detailed Instructions</h2>
+<p>If time allows, blow out the instructions on how to actually do this.</p>
 </div>
 
 

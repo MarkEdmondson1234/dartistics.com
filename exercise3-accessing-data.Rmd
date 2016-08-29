@@ -1,5 +1,5 @@
 ---
-title: "Exercise 3 -- Munging"
+title: "Exercise 3 -- Accessing Data"
 output:
   html_document:
     toc: true

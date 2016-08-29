@@ -218,7 +218,22 @@ $(document).ready(function () {
       <a href="exercise2-io.html">2. I/O</a>
     </li>
     <li>
-      <a href="exercise3-munging.html">3. Munging</a>
+      <a href="exercise3-accessing-data.html">3. Accessing Data</a>
+    </li>
+    <li>
+      <a href="exercise4-tidy-dplyr.html">4. Tidy Data / dplyr()</a>
+    </li>
+    <li>
+      <a href="exercise5-correlation.html">5. Correlation</a>
+    </li>
+    <li>
+      <a href="exercise6-regression.html">6. Regression</a>
+    </li>
+    <li>
+      <a href="exercise7-visualisation.html">7. Visualisation</a>
+    </li>
+    <li>
+      <a href="exercise8-rmarkdown.html">8. RMarkdown</a>
     </li>
   </ul>
 </li>
@@ -305,12 +320,13 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Summary
+    Wrap-Up
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Key topics</li>
+    <li class="dropdown-header">GitHub</li>
     <li class="dropdown-header">Best practices</li>
     <li>
       <a href="resources.html">Additional Resources</a>
@@ -404,7 +420,7 @@ model &lt;- lm(mpg ~ cyl + wt, data = mtcars)</code></pre>
 <p>To see specific help on model predict(), plot() and summary(), add a .functionname to the help defintion. This is related to how R uses R classes e.g. ?predict.lm</p>
 </blockquote>
 <p>For <code>predict.lm()</code> you can pass a newdata argument - this should hold the same arguments as the predictors you used in the model - e.g. <code>cyl</code> and <code>wt</code> in this case:</p>
-<pre class="r"><code>## what would be the miles per gallon for a 10 cylindar behomoth?
+<pre class="r"><code>## what would be the miles per gallon for a 10 cylindar behemoth?
 new_data &lt;- data.frame(cyl = 10, wt = 5)
 
 ## you would get a hefty 8.653 mpg, according to this model

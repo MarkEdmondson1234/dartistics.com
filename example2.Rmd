@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This was Tim's first web-based, interactive R applications. In hindsight...it was ambitious. It's available at [https://gilligan.shinyapps.io/ga_explorer_demo/](https://gilligan.shinyapps.io/ga_explorer_demo/).
 
-![](example2_files/figure_html/ex2_gaExplorer.png)
+![](images/example2_ga-explorer.png)
 
 Some keys to the underlying functionality used to build this:
 
