@@ -113,3 +113,16 @@ There are two main ways to _execute_ scripts. You will use both of them:
 **Run** comes in very handy when, for instance, you already have data loaded into your environment (possibly through API calls that took a little time to run), and you just want to debug and add to additional code. Or, when you're trying to figure out the exact syntax for getting to the subset of data you're looking for and want to repeatedly run the same small section of a script as you tweak it.
 
 A handy keyboard shortcut for **Run** is `CMD-ENTER` (`CTRL-ENTER` on Windows) that will run all of the highlighted code.
+
+## Commenting Code
+Comments are critical to any programming language, as their core purpose is to actually embed documentation within the code itself. In R, comments are denoted with a `#`. Comment profusely and often!
+```{r}
+# This is what a comment looks like. If your comment goes on for a while (which)
+# is fine, then press <Enter>, add another '#', and continue commenting.
+```
+Comments are _also_ handy for temporarily halting the execution of portions of your script. If, for instance, you're trying a couple of different ways to do something, you may want to keep the original way, but just comment it out while you try an alternative.
+
+To quickly comment/un-comment a section of code in RStudio, highlight the rows you want to toggle commenting on and press `CMD-SHIFT-C` (`CTRL-SHIFT-C` on Windows).
+
+## The Up Arrow
+This is also a fairly standard convention, but it comes in very handy in the console. Pressing the "up" arrow at the console prompt will load the previously entered command. Continuing to press the "up" arrow will cycle back through commands already executed. This is useful when you either want to exactly repeat a command _or_ when you want to simply tweak a command -- press "up" until the command is loaded, and then edit it before pressing `ENTER` to execute.
