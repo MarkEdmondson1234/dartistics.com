@@ -19,10 +19,64 @@ Our `webData` data is _already_ in a tidy format. When data is _not_ in a tidy f
 For this exercise, complete the following tasks with `webData`:
 
 1. Calculate the average pageviews per day by channel using the `summarise()` function in the `dplyr` package
-2. Add two columns to `webData` using the `mutate()` function: `pageviews_per_visit` and `bounce_rate`
-3. Calculate the average bounce rate by `deviceCategory` (be careful with the order of your calculations!).
+2. Add two columns to **webData** using the `mutate()` function: **pvs_per_session** and **bounce_rate**
+3. Calculate the average bounce rate by **deviceCategory** (be careful with the order of your calculations!).
   
 -------------
 
-## 1. Detailed Instructions
-If time allows, blow out the instructions on how to actually do this.
+Start by loading the `dplyr` package:
+```{r message=FALSE}
+library(dplyr)
+```
+Now, dive into the exercises!
+
+## 1. Average Pageviews
+To get the averages for each combination of **deviceCategory** and **channelGrouping** we simply use `summarise()` with `group_by`:
+```{r}
+summarise(group_by(webData, deviceCategory, channelGrouping),mean(pageviews))
+```
+
+This function uses the `group_by` function to take the data set (`webData`) and specify that it should be grouped together by two fields: **deviceCategory** and **channelGrouping**. That, in and of itself, isn't enough. If we're going to group by those, then we need to also specify how we want to handle the multiple rows that get collapsed with that grouping.
+
+For that, we put the `group_by()` function inside a `summarise()` function and tell the `summarise()` function that we want to include **pageviews** as a metric, and we want to collapse the grouped rows by averaging (`mean()`) **pageviews**.
+
+We _could_ include multiple metrics in the `summarise()` function. For instance, if we wanted to t _total_ visits and the _average_ pageviews, we could alter the code slightly:
+
+```{r}
+summarise(group_by(webData, deviceCategory, channelGrouping), mean(pageviews),sum(sessions))
+```
+
+## 2. Add Two Columns
+In this case, we're actually going to modify the **webData** object by adding a couple of calculated columns. This is, really, just like working with an Excel Table and adding columns that are based on existing columns in the table. The `mutate()` function takes a data set and then adds new columns as specified in the remaining parameters:
+
+```{r}
+webData <- mutate(webData, pvs_per_session = pageviews / sessions, 
+                  bounce_rate = bounces / entrances)
+
+# Display the results: truncated here so that it fits nicely on the screen
+head(webData[c("date","channelGrouping","deviceCategory",
+               "pvs_per_session","bounce_rate")])
+```
+
+## 3. Bounce Rate
+This is a little bit of a trick question. Since we've already calculated the bounce rate and added that as a new column in our **webData** data frame, we may be tempted to simply average those values:
+```{r}
+summarise(group_by(webData,deviceCategory), mean(bounce_rate))
+```
+This would be incorrect, though, wouldn't it? This would be the _daily average bounce rate_, but we want just the _average bounce rate_. Note that _R is not going to point this out. We still have to use our analytical brains_.
+
+What we need to do is to _first_ summarise the data and sum the metrics we need to use for the bounce rate calculation and _then_ perform the bounce rate calculation. This is where the pipe really starts to come in handy for code readability:
+```{r}
+summarise(group_by(webData,deviceCategory), 
+          entrances = sum(entrances), 
+          bounces = sum(bounces)) %>%
+  mutate(bounce_rate = bounces / entrances)
+```
+Note how the results from the second calculation differ from those in the first calculation.
+
+Also, a note on why we included "entrances =" in the `summarise()` function. If we hadn't, then the column heading would have been **sum(entrances)** and **sum(bounces)**. That would have been fine, but we then would have needed to change the `mutate()` function:
+```{r eval=FALSE}
+mutate(bounce_Rate = sum(bounces) / sum(entrances))
+```
+
+Either would work, but it's sometimes easier to clean up names as we go along. If anything, this should be reminiscent of working with pivot tables in Excel: if we added **sessions** as a value summarised by summing it, then the value would show as **SUM of sessions** in the pivot table. Right?
