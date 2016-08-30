@@ -15,6 +15,60 @@ If you would like to continue to enhance your R prowess, here is a suggested sub
 5. Kaggle - practice your machine learning with public datasets in a friendly competative environment
 6. Advanced packages - get a package on CRAN, or contribute to the development of one on Github.  Start using tests, Travis and coverage
 
-# Helpful links
+# R and Statistics for Digital Analysts
 
-* [CRAN Task Views](https://cran.r-project.org/web/views/) - a curated list of R packages categorised by task
+This is a community-driven set of resources and links on R and statistics generated of, by, and for digital analysts. To submit a resource, fill out [this Google form](https://docs.google.com/a/webanalyticsdemystified.com/forms/d/e/1FAIpQLSftDmRdGT-Ad-mgaa2rEh7yt4F6hYzDGkIuIym4lsq1Lothsw/viewform). Once approved, the resource will appear here.
+
+We will be working to improve the structure and navigation of this site. Heck...it uses Shiny, so we very well may add some interactivity, too! If you have feedback or are interested in helping out with this project, shoot a note to [Tim Wilson](mailto:tim@analyticsdemystified.com). 
+
+```{r, echo=FALSE, message=FALSE}
+library(googlesheets)
+library(pander)  # To get tabs to be rendered within the code chunk
+
+sourceBook <- gs_key("1E2H979v2L_NwrxCxI3OlfreLVTJ6a77Ed3WgH6A2YbA")
+
+resourceList <- gs_read(sourceBook, ws = "Form responses 1")
+
+# Pare this down to just the ones that have been approved
+resourceList <- resourceList[!is.na(resourceList$`Approved?`),]
+
+# List of resource types. The first value in each vector is the tab label. The
+# Second is the value to filter on to get those resources
+resourcePurposes <- data.frame(
+  tabLabel = c("Tutorials","Tips & Tricks","Scripts & Packages","General Reference"),
+  filterValue = c("Tutorial","Tip/Trick","Useful/Usable Script/Package","General Reference"))
+  
+```
+
+```{r, echo=FALSE, results='asis'}
+
+# The function to actually display each resource. This still needs cleanup work.
+displayResource <- function(resource){
+  cat(c("<p><b><a href=\"",resource$Link,"\" target='_blank'>",resource$`Resource Name/Title`,"</a></b> (",resource$`Content Type`,")<br>"),sep="")
+  cat(c(resource$Description,"<br>"),sep="")
+  cat(c("Content Focus: ",resource$`Focus of the Content`,"<br>"),sep="")
+  if(resource$`Include Your Name as a Contributor?`=="Yes"){
+    cat(c("Contributed by: ",resource$`Your Name`),sep="")
+  }
+  cat("</p>",sep="")
+}
+
+```
+
+##{.tabset}
+
+```{r, echo=FALSE, results='asis'}
+
+for (i in 1:nrow(resourcePurposes)){
+  # Add the tab and label it
+  pandoc.header(as.character(resourcePurposes$tabLabel[i]),level = 3)
+
+  # Grab the subset of resources that fit the current purpose
+  resources <- resourceList[resourceList$`Resource Purpose`==as.character(resourcePurposes$filterValue[i]),]
+  
+  # Cycle through all of the resources and output their details
+  for (j in 1:nrow(resources)){
+    displayResource(resources[j,])
+    }
+}
+```
