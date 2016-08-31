@@ -1,0 +1,101 @@
+---
+title: "Correlation"
+---
+
+Correlation is a number that describes how much relationship is between two variables.
+
+In digital analytis terms, you can use it to explore relationships between web metrics to see if an influence can be inferred, but beware the 101 stat advice of not accounting for other factors.  This is fairly rampant in the SEO industry.  For instance, a high correlation between social shares and SEO position could mean:
+
+* Social shares influence SEO position
+* SEO position influences social shares
+* Social shares and SEO position are influenced by a third factor (such as Brand strength)
+* The relationship was a chance error
+
+It is rare to see the last three possibilties considered.
+
+## Performing correlation analysis in R
+
+That said, correlations can really help get an understanding of your data and hint at relationships.
+
+The base function `cor()` will perform correlations on a `data.frame`.
+
+The below example uses the dataset used previously:
+
+```{r}
+web_data <- read.csv("./data/gadata_example_2.csv", stringsAsFactors = FALSE)
+head(web_data)
+
+web_data_metrics <- web_data[c("sessions","pageviews","entrances","bounces")]
+## see correlation between sessions an pageviews
+cor(web_data_metrics)
+```
+
+When working with correlations, its always a good idea to view an exploratory plot to see if any outliers are effecting your metrics:
+
+```{r}
+pairs(web_data_metrics)
+```
+
+## How do web channels correlate?
+
+One useful piece of analysis is seeing how web channels possibly interact.
+
+To get the data in the right format, the below code pivots via the `reshape2` package:
+
+```{r}
+## get only desktop rows, and the date, channelGrouping and sessions columns
+per_channel <- web_data[web_data$deviceCategory == "desktop", c("date","channelGrouping","sessions")] 
+
+## use reshape2's dcast to pivot the data
+library(reshape2)
+pivoted <- dcast(per_channel, date ~ channelGrouping, fun.aggregate = sum, value.var = "sessions")
+head(pivoted)
+```
+
+Lets now see if Display and Paid correlate:
+
+```{r}
+cor(pivoted$Display, pivoted$`Paid Search`)
+```
+
+Not at all!  See the plot:
+
+```{r}
+plot(as.Date(pivoted$date), pivoted$Display, type = "l")
+lines(as.Date(pivoted$date), pivoted$`Paid Search`)
+```
+
+The two differing spikes hint at why the correlation failed.
+
+```{r}
+plot(as.Date(pivoted$date), pivoted$Display, type = "l")
+lines(as.Date(pivoted$date), pivoted$`Paid Search`)
+```
+
+
+```{r}
+cor(pivoted[-1])
+pairs(pivoted[-1])
+```
+
+## Auto and cross correlation
+
+The correlations above all compare the same date point, but what if you expect a lagged effect?
+
+Auto and cross correlations are useful when dealing with time-series data, and can examine if a metric has an influence on itself or another after some time has passed.  
+
+This can be a powerful way to find if say a TV or Display campaign increased SEO traffic the next few weeks afterwards.
+
+The below compares paid search on SEO - the correlation for different lags of days is the result - we can see a correlation at 0 lag at around 0.5, but the correlation increases if you compare the SEO peaks to the paid peaks 
+
+```{r}
+ccf(pivoted$`Paid Search`, pivoted$`Organic Search`)
+```
+
+Looking at the data plots you can see a peak that most likely created this correlation peak in the data, with the red (Paid) peak preceeding the Organic.
+
+```{r}
+## zoom in to the peak, and scale the metrics so they have same size peaks to illustrate
+plot(as.Date(pivoted$date)[31:90], scale(pivoted$`Paid Search`[31:90]), type = "l", col = "red")
+lines(as.Date(pivoted$date)[31:90], scale(pivoted$`Organic Search`[31:90]), col = "blue")
+```

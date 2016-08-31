@@ -94,9 +94,7 @@ Best practice when creating models is to split your data into training, validati
 
 This is to prevent you making overconfident predictions, that won't work well on new data.
 
-A typical split is 60% of your data for training, 20% for validation and 20% for testing.
-
-> more to add here
+> A typical split is 60% of your data for training, 20% for validation and 20% for testing.
 
 ## Overfitting
 

@@ -66,6 +66,7 @@ navbar:
       - text: "Introduction"
         href: modelling-intro.html
       - text: "Correlation"
+        href: correlation.html
       - text: "Regression"
       - text: "Time-series"
       - text: "Categorisation"
