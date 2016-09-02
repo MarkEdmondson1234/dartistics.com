@@ -48,8 +48,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## And you...?
 
+While we're going around the room for the following, complete this two-question survey: [bit.ly/r-class-survey](http://bit.ly/r-class-survey).
+
 * Name
 * Company
 * Favorite Excel function
 * (Optional) Favorite R package
-* Your Twitter username
