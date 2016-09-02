@@ -297,8 +297,12 @@ $(document).ready(function () {
     <li>
       <a href="regression.html">Regression</a>
     </li>
-    <li class="dropdown-header">Time-series</li>
-    <li class="dropdown-header">Categorisation</li>
+    <li>
+      <a href="timeseries.html">Time-series</a>
+    </li>
+    <li>
+      <a href="categorisation.html">Categorisation</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -308,10 +312,18 @@ $(document).ready(function () {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Options</li>
-    <li class="dropdown-header">Base Plots</li>
-    <li class="dropdown-header">ggplot2()</li>
-    <li class="dropdown-header">htmlwidgets()</li>
+    <li>
+      <a href="viz-options.html">Options</a>
+    </li>
+    <li>
+      <a href="base-plots.html">Base Plots</a>
+    </li>
+    <li>
+      <a href="ggplot2.html">ggplot2()</a>
+    </li>
+    <li>
+      <a href="htmlwidgets.html">htmlwidgets()</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -321,9 +333,15 @@ $(document).ready(function () {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">RMarkdown</li>
-    <li class="dropdown-header">Shiny</li>
-    <li class="dropdown-header">RMarkdown + Shiny</li>
+    <li>
+      <a href="rmarkdown.html">RMarkdown</a>
+    </li>
+    <li>
+      <a href="shiny.html">Shiny</a>
+    </li>
+    <li>
+      <a href="rmarkdown-shiny.html">RMarkdown + Shiny</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -333,9 +351,15 @@ $(document).ready(function () {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Key topics</li>
-    <li class="dropdown-header">GitHub</li>
-    <li class="dropdown-header">Best practices</li>
+    <li>
+      <a href="key-topics.html">Key topics</a>
+    </li>
+    <li>
+      <a href="github.html">GitHub</a>
+    </li>
+    <li>
+      <a href="best-practice.html">Best practices</a>
+    </li>
     <li>
       <a href="going-further.html">Going further</a>
     </li>
@@ -380,89 +404,114 @@ x</code></pre>
 <pre><code>## [1] &quot;/Users/timwilson/Documents/RWorkshopCopenhagen&quot;</code></pre>
 <pre class="r"><code># setwd()
 list.files()</code></pre>
-<pre><code>##  [1] &quot;_site.yml&quot;                             
-##  [2] &quot;accessing.html&quot;                        
-##  [3] &quot;accessing.Rmd&quot;                         
-##  [4] &quot;analytics-apis.html&quot;                   
-##  [5] &quot;analytics-apis.Rmd&quot;                    
-##  [6] &quot;basicGAQuery.R&quot;                        
-##  [7] &quot;basics-base_r.html&quot;                    
-##  [8] &quot;basics-base_r.Rmd&quot;                     
-##  [9] &quot;classes.html&quot;                          
-## [10] &quot;classes.Rmd&quot;                           
-## [11] &quot;correlation_files&quot;                     
-## [12] &quot;correlation.html&quot;                      
-## [13] &quot;correlation.Rmd&quot;                       
-## [14] &quot;data&quot;                                  
-## [15] &quot;dplyr.html&quot;                            
-## [16] &quot;dplyr.Rmd&quot;                             
-## [17] &quot;example1_files&quot;                        
-## [18] &quot;example1.html&quot;                         
-## [19] &quot;example1.Rmd&quot;                          
-## [20] &quot;example2.html&quot;                         
-## [21] &quot;example2.Rmd&quot;                          
-## [22] &quot;example3.html&quot;                         
-## [23] &quot;example3.Rmd&quot;                          
-## [24] &quot;example4.html&quot;                         
-## [25] &quot;example4.Rmd&quot;                          
-## [26] &quot;excel.html&quot;                            
-## [27] &quot;excel.Rmd&quot;                             
-## [28] &quot;exercise1-thebasics_files&quot;             
-## [29] &quot;exercise1-thebasics.html&quot;              
-## [30] &quot;exercise1-thebasics.Rmd&quot;               
-## [31] &quot;exercise2-io.html&quot;                     
-## [32] &quot;exercise2-io.Rmd&quot;                      
-## [33] &quot;exercise3-accessing-data.html&quot;         
-## [34] &quot;exercise3-accessing-data.Rmd&quot;          
-## [35] &quot;exercise4-tidy-dplyr.html&quot;             
-## [36] &quot;exercise4-tidy-dplyr.Rmd&quot;              
-## [37] &quot;exercise5-correlation.html&quot;            
-## [38] &quot;exercise5-correlation.Rmd&quot;             
-## [39] &quot;exercise6-regression.html&quot;             
-## [40] &quot;exercise6-regression.Rmd&quot;              
-## [41] &quot;exercise7-visualisation.html&quot;          
-## [42] &quot;exercise7-visualisation.Rmd&quot;           
-## [43] &quot;exercise8-rmarkdown.html&quot;              
-## [44] &quot;exercise8-rmarkdown.Rmd&quot;               
-## [45] &quot;going-further.html&quot;                    
-## [46] &quot;going-further.Rmd&quot;                     
-## [47] &quot;habits.html&quot;                           
-## [48] &quot;habits.Rmd&quot;                            
-## [49] &quot;images&quot;                                
-## [50] &quot;import-csv-excel.html&quot;                 
-## [51] &quot;import-csv-excel.Rmd&quot;                  
-## [52] &quot;index.html&quot;                            
-## [53] &quot;index.knit.html&quot;                       
-## [54] &quot;index.Rmd&quot;                             
-## [55] &quot;intros_twitter_wordcloud_usernames.csv&quot;
-## [56] &quot;intros_twitter_wordcloud.R&quot;            
-## [57] &quot;intros-wordcloud&quot;                      
-## [58] &quot;intros.html&quot;                           
-## [59] &quot;intros.Rmd&quot;                            
-## [60] &quot;introToR_donalPhipps_files&quot;            
-## [61] &quot;introToR_donalPhipps.html&quot;             
-## [62] &quot;introToR_donalPhipps.R&quot;                
-## [63] &quot;introToR_donalPhipps.Rmd&quot;              
-## [64] &quot;modelling-intro_files&quot;                 
-## [65] &quot;modelling-intro.html&quot;                  
-## [66] &quot;modelling-intro.Rmd&quot;                   
-## [67] &quot;packages.html&quot;                         
-## [68] &quot;packages.Rmd&quot;                          
-## [69] &quot;pullGAData.R&quot;                          
-## [70] &quot;README.html&quot;                           
-## [71] &quot;README.md&quot;                             
-## [72] &quot;regression.html&quot;                       
-## [73] &quot;regression.Rmd&quot;                        
-## [74] &quot;resources.html&quot;                        
-## [75] &quot;resources.Rmd&quot;                         
-## [76] &quot;rstudio.html&quot;                          
-## [77] &quot;rstudio.Rmd&quot;                           
-## [78] &quot;RWorkshopCopenhagen.Rproj&quot;             
-## [79] &quot;site_libs&quot;                             
-## [80] &quot;tidyverse.html&quot;                        
-## [81] &quot;tidyverse.Rmd&quot;                         
-## [82] &quot;whatisr.html&quot;                          
-## [83] &quot;whatisr.Rmd&quot;</code></pre>
+<pre><code>##   [1] &quot;_site.yml&quot;                             
+##   [2] &quot;accessing.html&quot;                        
+##   [3] &quot;accessing.Rmd&quot;                         
+##   [4] &quot;analytics-apis.html&quot;                   
+##   [5] &quot;analytics-apis.Rmd&quot;                    
+##   [6] &quot;base-plots.html&quot;                       
+##   [7] &quot;base-plots.Rmd&quot;                        
+##   [8] &quot;basicGAQuery.R&quot;                        
+##   [9] &quot;basics-base_r.html&quot;                    
+##  [10] &quot;basics-base_r.Rmd&quot;                     
+##  [11] &quot;best-practice.html&quot;                    
+##  [12] &quot;best-practice.Rmd&quot;                     
+##  [13] &quot;categorisation.html&quot;                   
+##  [14] &quot;categorisation.Rmd&quot;                    
+##  [15] &quot;classes.html&quot;                          
+##  [16] &quot;classes.Rmd&quot;                           
+##  [17] &quot;correlation_files&quot;                     
+##  [18] &quot;correlation.html&quot;                      
+##  [19] &quot;correlation.Rmd&quot;                       
+##  [20] &quot;data&quot;                                  
+##  [21] &quot;dplyr.html&quot;                            
+##  [22] &quot;dplyr.Rmd&quot;                             
+##  [23] &quot;example1_files&quot;                        
+##  [24] &quot;example1.html&quot;                         
+##  [25] &quot;example1.Rmd&quot;                          
+##  [26] &quot;example2.html&quot;                         
+##  [27] &quot;example2.Rmd&quot;                          
+##  [28] &quot;example3.html&quot;                         
+##  [29] &quot;example3.Rmd&quot;                          
+##  [30] &quot;example4.html&quot;                         
+##  [31] &quot;example4.Rmd&quot;                          
+##  [32] &quot;excel.html&quot;                            
+##  [33] &quot;excel.Rmd&quot;                             
+##  [34] &quot;exercise1-thebasics_files&quot;             
+##  [35] &quot;exercise1-thebasics.html&quot;              
+##  [36] &quot;exercise1-thebasics.Rmd&quot;               
+##  [37] &quot;exercise2-io.html&quot;                     
+##  [38] &quot;exercise2-io.Rmd&quot;                      
+##  [39] &quot;exercise3-accessing-data.html&quot;         
+##  [40] &quot;exercise3-accessing-data.Rmd&quot;          
+##  [41] &quot;exercise4-tidy-dplyr.html&quot;             
+##  [42] &quot;exercise4-tidy-dplyr.Rmd&quot;              
+##  [43] &quot;exercise5-correlation.html&quot;            
+##  [44] &quot;exercise5-correlation.Rmd&quot;             
+##  [45] &quot;exercise6-regression.html&quot;             
+##  [46] &quot;exercise6-regression.Rmd&quot;              
+##  [47] &quot;exercise7-visualisation.html&quot;          
+##  [48] &quot;exercise7-visualisation.Rmd&quot;           
+##  [49] &quot;exercise8-rmarkdown.html&quot;              
+##  [50] &quot;exercise8-rmarkdown.Rmd&quot;               
+##  [51] &quot;ggplot2.html&quot;                          
+##  [52] &quot;ggplot2.Rmd&quot;                           
+##  [53] &quot;github.html&quot;                           
+##  [54] &quot;github.Rmd&quot;                            
+##  [55] &quot;going-further.html&quot;                    
+##  [56] &quot;going-further.Rmd&quot;                     
+##  [57] &quot;habits.html&quot;                           
+##  [58] &quot;habits.Rmd&quot;                            
+##  [59] &quot;htmlwidgets.html&quot;                      
+##  [60] &quot;htmlwidgets.Rmd&quot;                       
+##  [61] &quot;images&quot;                                
+##  [62] &quot;import-csv-excel.html&quot;                 
+##  [63] &quot;import-csv-excel.Rmd&quot;                  
+##  [64] &quot;index.html&quot;                            
+##  [65] &quot;index.knit.html&quot;                       
+##  [66] &quot;index.Rmd&quot;                             
+##  [67] &quot;intros_twitter_wordcloud_usernames.csv&quot;
+##  [68] &quot;intros_twitter_wordcloud.R&quot;            
+##  [69] &quot;intros-wordcloud&quot;                      
+##  [70] &quot;intros.html&quot;                           
+##  [71] &quot;intros.Rmd&quot;                            
+##  [72] &quot;introToR_donalPhipps_files&quot;            
+##  [73] &quot;introToR_donalPhipps.html&quot;             
+##  [74] &quot;introToR_donalPhipps.R&quot;                
+##  [75] &quot;introToR_donalPhipps.Rmd&quot;              
+##  [76] &quot;key-topics.html&quot;                       
+##  [77] &quot;key-topics.Rmd&quot;                        
+##  [78] &quot;modelling-intro_files&quot;                 
+##  [79] &quot;modelling-intro.html&quot;                  
+##  [80] &quot;modelling-intro.Rmd&quot;                   
+##  [81] &quot;packages.html&quot;                         
+##  [82] &quot;packages.Rmd&quot;                          
+##  [83] &quot;pullGAData.R&quot;                          
+##  [84] &quot;README.html&quot;                           
+##  [85] &quot;README.md&quot;                             
+##  [86] &quot;regression.html&quot;                       
+##  [87] &quot;regression.Rmd&quot;                        
+##  [88] &quot;resources.html&quot;                        
+##  [89] &quot;resources.Rmd&quot;                         
+##  [90] &quot;rmarkdown_files&quot;                       
+##  [91] &quot;rmarkdown-shiny.html&quot;                  
+##  [92] &quot;rmarkdown-shiny.Rmd&quot;                   
+##  [93] &quot;rmarkdown.html&quot;                        
+##  [94] &quot;rmarkdown.Rmd&quot;                         
+##  [95] &quot;rstudio.html&quot;                          
+##  [96] &quot;rstudio.Rmd&quot;                           
+##  [97] &quot;RWorkshopCopenhagen.Rproj&quot;             
+##  [98] &quot;shiny.html&quot;                            
+##  [99] &quot;shiny.Rmd&quot;                             
+## [100] &quot;site_libs&quot;                             
+## [101] &quot;tidyverse.html&quot;                        
+## [102] &quot;tidyverse.Rmd&quot;                         
+## [103] &quot;timeseries.html&quot;                       
+## [104] &quot;timeseries.Rmd&quot;                        
+## [105] &quot;viz-options.html&quot;                      
+## [106] &quot;viz-options.Rmd&quot;                       
+## [107] &quot;whatisr.html&quot;                          
+## [108] &quot;whatisr.Rmd&quot;</code></pre>
 </div>
 <div id="data-types" class="section level2">
 <h2>Data types</h2>
@@ -551,7 +600,7 @@ mat.frame$tens * mat.frame$twenties</code></pre>
 <pre class="r"><code>biggie1&lt;-rnorm(100000, 5, 5)
 biggie2&lt;-rnorm(100000, 5, 100)
 mean(biggie1)</code></pre>
-<pre><code>## [1] 5.001643</code></pre>
+<pre><code>## [1] 4.995642</code></pre>
 <pre class="r"><code>big.frame&lt;-data.frame(cbind(biggie1,biggie2))
 ggplot(big.frame,aes(x=biggie1,y=biggie2)) + geom_point(alpha=0.04)</code></pre>
 <p><img src="introToR_donalPhipps_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>

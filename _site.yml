@@ -22,22 +22,22 @@ navbar:
         href: example4.html
     - text: "Exercises"
       menu:
-        - text: "1. The Basic Basics"
-          href: exercise1-thebasics.html
-        - text: "2. I/O"
-          href: exercise2-io.html
-        - text: "3. Accessing Data"
-          href: exercise3-accessing-data.html
-        - text: "4. Tidy Data / dplyr()"
-          href: exercise4-tidy-dplyr.html
-        - text: "5. Correlation"
-          href: exercise5-correlation.html
-        - text: "6. Regression"
-          href: exercise6-regression.html
-        - text: "7. Visualisation"
-          href: exercise7-visualisation.html
-        - text: "8. RMarkdown"
-          href: exercise8-rmarkdown.html
+      - text: "1. The Basic Basics"
+        href: exercise1-thebasics.html
+      - text: "2. I/O"
+        href: exercise2-io.html
+      - text: "3. Accessing Data"
+        href: exercise3-accessing-data.html
+      - text: "4. Tidy Data / dplyr()"
+        href: exercise4-tidy-dplyr.html
+      - text: "5. Correlation"
+        href: exercise5-correlation.html
+      - text: "6. Regression"
+        href: exercise6-regression.html
+      - text: "7. Visualisation"
+        href: exercise7-visualisation.html
+      - text: "8. RMarkdown"
+        href: exercise8-rmarkdown.html
     - text: "Basics"
       menu:
       - text: "RStudio"
@@ -71,23 +71,35 @@ navbar:
       - text: "Regression"
         href: regression.html
       - text: "Time-series"
+        href: timeseries.html
       - text: "Categorisation"
+        href: categorisation.html
     - text: "Visualisation"
       menu:
       - text: "Options"
+        href: viz-options.html
       - text: "Base Plots"
+        href: base-plots.html
       - text: "ggplot2()"
+        href: ggplot2.html
       - text: "htmlwidgets()"
+        href: htmlwidgets.html
     - text: "Presentation"
       menu:
       - text: "RMarkdown"
+        href: rmarkdown.html
       - text: "Shiny"
+        href: shiny.html
       - text: "RMarkdown + Shiny"
+        href: rmarkdown-shiny.html
     - text: "Wrap-Up"
       menu:
       - text: "Key topics"
+        href: key-topics.html
       - text: "GitHub"
+        href: github.html
       - text: "Best practices"
+        href: best-practice.html
       - text: "Going further"
         href: going-further.html
       - text: "Additional Resources"
