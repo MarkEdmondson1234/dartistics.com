@@ -94,7 +94,6 @@ button.code-folding-btn:focus {
 }
 </style>
 
-
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -331,6 +330,9 @@ $(document).ready(function () {
     <li class="dropdown-header">GitHub</li>
     <li class="dropdown-header">Best practices</li>
     <li>
+      <a href="going-further.html">Going further</a>
+    </li>
+    <li>
       <a href="resources.html">Additional Resources</a>
     </li>
   </ul>
@@ -353,7 +355,8 @@ $(document).ready(function () {
 
 
 <p>Correlation is a number that describes how much relationship is between two variables.</p>
-<p>In digital analytis terms, you can use it to explore relationships between web metrics to see if an influence can be inferred, but beware the 101 stat advice of not accounting for other factors. This is fairly rampant in the SEO industry. For instance, a high correlation between social shares and SEO position could mean:</p>
+<p>In digital analytis terms, you can use it to explore relationships between web metrics to see if an influence can be inferred, but beware the 101 stat advice of not accounting for other factors.</p>
+<p>For instance, a high correlation between social shares and SEO position could mean:</p>
 <ul>
 <li>Social shares influence SEO position</li>
 <li>SEO position influences social shares</li>
@@ -365,118 +368,415 @@ $(document).ready(function () {
 <h2>Performing correlation analysis in R</h2>
 <p>That said, correlations can really help get an understanding of your data and hint at relationships.</p>
 <p>The base function <code>cor()</code> will perform correlations on a <code>data.frame</code>.</p>
-<p>The below example uses the dataset used previously:</p>
-<pre class="r"><code>web_data &lt;- read.csv(&quot;./data/gadata_example_2.csv&quot;, stringsAsFactors = FALSE)
-head(web_data)</code></pre>
-<pre><code>##   X       date channelGrouping deviceCategory sessions pageviews entrances
-## 1 1 2016-01-01         (Other)        desktop       19        23        19
-## 2 2 2016-01-01         (Other)         mobile      112       162       112
-## 3 3 2016-01-01         (Other)         tablet       24        41        24
-## 4 4 2016-01-01          Direct        desktop      133       423       133
-## 5 5 2016-01-01          Direct         mobile      345       878       344
-## 6 6 2016-01-01          Direct         tablet      126       237       126
-##   bounces
-## 1      15
-## 2      82
-## 3      19
-## 4      61
-## 5     172
-## 6      77</code></pre>
+<p>The below example uses the web data dataset used in Excercise 4:</p>
+<pre class="r"><code>## used for kable that makes nice RMarkdown tables
+library(knitr)
+web_data &lt;- read.csv(&quot;./data/gadata_example_2.csv&quot;, stringsAsFactors = FALSE)
+kable(head(web_data[-1]), row.names = FALSE)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">date</th>
+<th align="left">channelGrouping</th>
+<th align="left">deviceCategory</th>
+<th align="right">sessions</th>
+<th align="right">pageviews</th>
+<th align="right">entrances</th>
+<th align="right">bounces</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">(Other)</td>
+<td align="left">desktop</td>
+<td align="right">19</td>
+<td align="right">23</td>
+<td align="right">19</td>
+<td align="right">15</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">(Other)</td>
+<td align="left">mobile</td>
+<td align="right">112</td>
+<td align="right">162</td>
+<td align="right">112</td>
+<td align="right">82</td>
+</tr>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">(Other)</td>
+<td align="left">tablet</td>
+<td align="right">24</td>
+<td align="right">41</td>
+<td align="right">24</td>
+<td align="right">19</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">Direct</td>
+<td align="left">desktop</td>
+<td align="right">133</td>
+<td align="right">423</td>
+<td align="right">133</td>
+<td align="right">61</td>
+</tr>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">Direct</td>
+<td align="left">mobile</td>
+<td align="right">345</td>
+<td align="right">878</td>
+<td align="right">344</td>
+<td align="right">172</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">Direct</td>
+<td align="left">tablet</td>
+<td align="right">126</td>
+<td align="right">237</td>
+<td align="right">126</td>
+<td align="right">77</td>
+</tr>
+</tbody>
+</table>
+<p>Correlations will only work with numeric data, so we subset to just those columns, and then run the base R function <code>cor()</code> to see a correlation table:</p>
 <pre class="r"><code>web_data_metrics &lt;- web_data[c(&quot;sessions&quot;,&quot;pageviews&quot;,&quot;entrances&quot;,&quot;bounces&quot;)]
-## see correlation between sessions an pageviews
-cor(web_data_metrics)</code></pre>
-<pre><code>##            sessions pageviews entrances   bounces
-## sessions  1.0000000 0.8384321 0.9999923 0.9411201
-## pageviews 0.8384321 1.0000000 0.8377078 0.6364753
-## entrances 0.9999923 0.8377078 1.0000000 0.9416535
-## bounces   0.9411201 0.6364753 0.9416535 1.0000000</code></pre>
-<p>When working with correlations, its always a good idea to view an exploratory plot to see if any outliers are effecting your metrics:</p>
+## see correlation between all metrics
+kable(cor(web_data_metrics))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">sessions</th>
+<th align="right">pageviews</th>
+<th align="right">entrances</th>
+<th align="right">bounces</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>sessions</td>
+<td align="right">1.0000000</td>
+<td align="right">0.8384321</td>
+<td align="right">0.9999923</td>
+<td align="right">0.9411201</td>
+</tr>
+<tr class="even">
+<td>pageviews</td>
+<td align="right">0.8384321</td>
+<td align="right">1.0000000</td>
+<td align="right">0.8377078</td>
+<td align="right">0.6364753</td>
+</tr>
+<tr class="odd">
+<td>entrances</td>
+<td align="right">0.9999923</td>
+<td align="right">0.8377078</td>
+<td align="right">1.0000000</td>
+<td align="right">0.9416535</td>
+</tr>
+<tr class="even">
+<td>bounces</td>
+<td align="right">0.9411201</td>
+<td align="right">0.6364753</td>
+<td align="right">0.9416535</td>
+<td align="right">1.0000000</td>
+</tr>
+</tbody>
+</table>
+<p>The table is mirrored in the diagonal. 1 means a perfect correlation, 0 no correlation and -1 a perfect negative correlation.</p>
+<p>When working with correlations, its always a good idea to view an exploratory plot. A handy function for this is <code>pairs()</code> which creates a scatter plot of all the metrics passed in combination:</p>
 <pre class="r"><code>pairs(web_data_metrics)</code></pre>
-<p><img src="correlation_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="correlation_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Here you can see the correlation numbers in graphical form - for instance the high correlation of 0.9999923 between sessions and entrances results in an almost perfect straight line. As a session starts with an entrance, this makes perfect sense. A correlation of less than 1 may be a quick diagnostic that something is wrong with the tracking.</p>
 </div>
 <div id="how-do-web-channels-correlate" class="section level2">
 <h2>How do web channels correlate?</h2>
 <p>One useful piece of analysis is seeing how web channels possibly interact.</p>
+<div id="data-prep" class="section level3">
+<h3>Data prep</h3>
 <p>To get the data in the right format, the below code pivots via the <code>reshape2</code> package:</p>
-<pre class="r"><code>## get only desktop rows, and the date, channelGrouping and sessions columns
-per_channel &lt;- web_data[web_data$deviceCategory == &quot;desktop&quot;, c(&quot;date&quot;,&quot;channelGrouping&quot;,&quot;sessions&quot;)] 
+<pre class="r"><code>## use tidyverse to pivot the data
+library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(tidyr)
 
-## use reshape2&#39;s dcast to pivot the data
-library(reshape2)
-pivoted &lt;- dcast(per_channel, date ~ channelGrouping, fun.aggregate = sum, value.var = &quot;sessions&quot;)
-head(pivoted)</code></pre>
-<pre><code>##         date (Other) Direct Display Email Organic Search Paid Search
-## 1 2016-01-01      19    133     307    17            431         555
-## 2 2016-01-02     156   1003     196    43           1077        1060
-## 3 2016-01-03      35   1470     235    29            696         489
-## 4 2016-01-04      31   1794     321    70           1075         558
-## 5 2016-01-05      27   1899     309    74           1004         478
-## 6 2016-01-06      21   1972     204   299            974         494
-##   Referral Social Video
-## 1      131     68     0
-## 2      226    158     3
-## 3      179     66    90
-## 4      235     46   898
-## 5      218     47   461
-## 6      246     47   418</code></pre>
-<p>Lets now see if Display and Paid correlate:</p>
-<pre class="r"><code>cor(pivoted$Display, pivoted$`Paid Search`)</code></pre>
-<pre><code>## [1] 0.05289315</code></pre>
-<p>Not at all! See the plot:</p>
-<pre class="r"><code>plot(as.Date(pivoted$date), pivoted$Display, type = &quot;l&quot;)
-lines(as.Date(pivoted$date), pivoted$`Paid Search`)</code></pre>
-<p><img src="correlation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>The two differing spikes hint at why the correlation failed.</p>
-<pre class="r"><code>plot(as.Date(pivoted$date), pivoted$Display, type = &quot;l&quot;)
-lines(as.Date(pivoted$date), pivoted$`Paid Search`)</code></pre>
-<p><img src="correlation_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<pre class="r"><code>cor(pivoted[-1])</code></pre>
-<pre><code>##                    (Other)      Direct     Display      Email
-## (Other)         1.00000000  0.12743479  0.11976504 0.09419624
-## Direct          0.12743479  1.00000000  0.04036891 0.07208526
-## Display         0.11976504  0.04036891  1.00000000 0.01001570
-## Email           0.09419624  0.07208526  0.01001570 1.00000000
-## Organic Search  0.16660245  0.21963582 -0.04628897 0.26241579
-## Paid Search     0.03461935 -0.02233086  0.05289315 0.03498069
-## Referral       -0.04104845  0.09400806 -0.10116768 0.13186681
-## Social          0.46029627 -0.04864601  0.19312976 0.03326082
-## Video           0.37183368  0.01428600  0.27306324 0.13428036
-##                Organic Search Paid Search    Referral      Social
-## (Other)            0.16660245  0.03461935 -0.04104845  0.46029627
-## Direct             0.21963582 -0.02233086  0.09400806 -0.04864601
-## Display           -0.04628897  0.05289315 -0.10116768  0.19312976
-## Email              0.26241579  0.03498069  0.13186681  0.03326082
-## Organic Search     1.00000000  0.50911991  0.19389553 -0.04091869
-## Paid Search        0.50911991  1.00000000  0.07755885 -0.01073152
-## Referral           0.19389553  0.07755885  1.00000000 -0.10516192
-## Social            -0.04091869 -0.01073152 -0.10516192  1.00000000
-## Video              0.08146977  0.22177828 -0.25423741  0.49831671
-##                      Video
-## (Other)         0.37183368
-## Direct          0.01428600
-## Display         0.27306324
-## Email           0.13428036
-## Organic Search  0.08146977
-## Paid Search     0.22177828
-## Referral       -0.25423741
-## Social          0.49831671
-## Video           1.00000000</code></pre>
-<pre class="r"><code>pairs(pivoted[-1])</code></pre>
-<p><img src="correlation_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+## get only desktop rows, and the date, channelGrouping and sessions columns
+pivoted &lt;- web_data %&gt;% 
+  filter(deviceCategory == &quot;desktop&quot;) %&gt;% 
+  select(date, channelGrouping, sessions) %&gt;%
+  spread(channelGrouping, sessions)
+
+## get rid of any NA&#39;s and replace with 0
+pivoted[is.na(pivoted)] &lt;- 0
+
+kable(head(pivoted))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">date</th>
+<th align="right">(Other)</th>
+<th align="right">Direct</th>
+<th align="right">Display</th>
+<th align="right">Email</th>
+<th align="right">Organic Search</th>
+<th align="right">Paid Search</th>
+<th align="right">Referral</th>
+<th align="right">Social</th>
+<th align="right">Video</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="right">19</td>
+<td align="right">133</td>
+<td align="right">307</td>
+<td align="right">17</td>
+<td align="right">431</td>
+<td align="right">555</td>
+<td align="right">131</td>
+<td align="right">68</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-02</td>
+<td align="right">156</td>
+<td align="right">1003</td>
+<td align="right">196</td>
+<td align="right">43</td>
+<td align="right">1077</td>
+<td align="right">1060</td>
+<td align="right">226</td>
+<td align="right">158</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">2016-01-03</td>
+<td align="right">35</td>
+<td align="right">1470</td>
+<td align="right">235</td>
+<td align="right">29</td>
+<td align="right">696</td>
+<td align="right">489</td>
+<td align="right">179</td>
+<td align="right">66</td>
+<td align="right">90</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-04</td>
+<td align="right">31</td>
+<td align="right">1794</td>
+<td align="right">321</td>
+<td align="right">70</td>
+<td align="right">1075</td>
+<td align="right">558</td>
+<td align="right">235</td>
+<td align="right">46</td>
+<td align="right">898</td>
+</tr>
+<tr class="odd">
+<td align="left">2016-01-05</td>
+<td align="right">27</td>
+<td align="right">1899</td>
+<td align="right">309</td>
+<td align="right">74</td>
+<td align="right">1004</td>
+<td align="right">478</td>
+<td align="right">218</td>
+<td align="right">47</td>
+<td align="right">461</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-06</td>
+<td align="right">21</td>
+<td align="right">1972</td>
+<td align="right">204</td>
+<td align="right">299</td>
+<td align="right">974</td>
+<td align="right">494</td>
+<td align="right">246</td>
+<td align="right">47</td>
+<td align="right">418</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div id="auto-and-cross-correlation" class="section level2">
-<h2>Auto and cross correlation</h2>
-<p>The correlations above all compare the same date point, but what if you expect a lagged effect?</p>
-<p>Auto and cross correlations are useful when dealing with time-series data, and can examine if a metric has an influence on itself or another after some time has passed.</p>
+<div id="examining-data" class="section level3">
+<h3>Examining data</h3>
+<p>We can plot and correlate all the metrics for an overview:</p>
+<pre class="r"><code>## not including first column, so -1 subset
+cor_table &lt;- round(cor(pivoted[-1]),2)
+kable(cor_table)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">(Other)</th>
+<th align="right">Direct</th>
+<th align="right">Display</th>
+<th align="right">Email</th>
+<th align="right">Organic Search</th>
+<th align="right">Paid Search</th>
+<th align="right">Referral</th>
+<th align="right">Social</th>
+<th align="right">Video</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(Other)</td>
+<td align="right">1.00</td>
+<td align="right">0.13</td>
+<td align="right">0.12</td>
+<td align="right">0.09</td>
+<td align="right">0.17</td>
+<td align="right">0.03</td>
+<td align="right">-0.04</td>
+<td align="right">0.46</td>
+<td align="right">0.37</td>
+</tr>
+<tr class="even">
+<td>Direct</td>
+<td align="right">0.13</td>
+<td align="right">1.00</td>
+<td align="right">0.04</td>
+<td align="right">0.07</td>
+<td align="right">0.22</td>
+<td align="right">-0.02</td>
+<td align="right">0.09</td>
+<td align="right">-0.05</td>
+<td align="right">0.01</td>
+</tr>
+<tr class="odd">
+<td>Display</td>
+<td align="right">0.12</td>
+<td align="right">0.04</td>
+<td align="right">1.00</td>
+<td align="right">0.01</td>
+<td align="right">-0.05</td>
+<td align="right">0.05</td>
+<td align="right">-0.10</td>
+<td align="right">0.19</td>
+<td align="right">0.27</td>
+</tr>
+<tr class="even">
+<td>Email</td>
+<td align="right">0.09</td>
+<td align="right">0.07</td>
+<td align="right">0.01</td>
+<td align="right">1.00</td>
+<td align="right">0.26</td>
+<td align="right">0.03</td>
+<td align="right">0.13</td>
+<td align="right">0.03</td>
+<td align="right">0.13</td>
+</tr>
+<tr class="odd">
+<td>Organic Search</td>
+<td align="right">0.17</td>
+<td align="right">0.22</td>
+<td align="right">-0.05</td>
+<td align="right">0.26</td>
+<td align="right">1.00</td>
+<td align="right">0.51</td>
+<td align="right">0.19</td>
+<td align="right">-0.04</td>
+<td align="right">0.08</td>
+</tr>
+<tr class="even">
+<td>Paid Search</td>
+<td align="right">0.03</td>
+<td align="right">-0.02</td>
+<td align="right">0.05</td>
+<td align="right">0.03</td>
+<td align="right">0.51</td>
+<td align="right">1.00</td>
+<td align="right">0.08</td>
+<td align="right">-0.01</td>
+<td align="right">0.22</td>
+</tr>
+<tr class="odd">
+<td>Referral</td>
+<td align="right">-0.04</td>
+<td align="right">0.09</td>
+<td align="right">-0.10</td>
+<td align="right">0.13</td>
+<td align="right">0.19</td>
+<td align="right">0.08</td>
+<td align="right">1.00</td>
+<td align="right">-0.11</td>
+<td align="right">-0.25</td>
+</tr>
+<tr class="even">
+<td>Social</td>
+<td align="right">0.46</td>
+<td align="right">-0.05</td>
+<td align="right">0.19</td>
+<td align="right">0.03</td>
+<td align="right">-0.04</td>
+<td align="right">-0.01</td>
+<td align="right">-0.11</td>
+<td align="right">1.00</td>
+<td align="right">0.50</td>
+</tr>
+<tr class="odd">
+<td>Video</td>
+<td align="right">0.37</td>
+<td align="right">0.01</td>
+<td align="right">0.27</td>
+<td align="right">0.13</td>
+<td align="right">0.08</td>
+<td align="right">0.22</td>
+<td align="right">-0.25</td>
+<td align="right">0.50</td>
+<td align="right">1.00</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>pairs(pivoted[-1])</code></pre>
+<p><img src="correlation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="analysis" class="section level3">
+<h3>Analysis</h3>
+<p>Now we compare channels we can see much looser correlations for this dataset, which is typical. Correlations under 0.3 are as a rule-of-thumb not worth considering, so the standouts look to be Social vs Video and Paid vs Organic Search.</p>
+<p>Plotting those channels we can examine the trends to see the shape of the data</p>
+<blockquote>
+<p>Correlation has help us zero in on possible interesting relationships</p>
+</blockquote>
+<pre class="r"><code>library(ggplot2)
+gg &lt;- ggplot(data = pivoted) + theme_minimal() + ggtitle(&quot;Paid (blue) vs Organic (green) search&quot;)
+gg &lt;- gg + geom_line(aes(x = as.Date(date), y = `Paid Search`), col = &quot;blue&quot;)
+gg + geom_line(aes(x = as.Date(date), y = `Organic Search`), col = &quot;green&quot;)</code></pre>
+<p><img src="correlation_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>We can see here the trends do look similar, but with a paid search peak in the first Q.</p>
+<pre class="r"><code>library(ggplot2)
+gg &lt;- ggplot(data = pivoted) + theme_minimal() + ggtitle(&quot;Social (red) vs Video (orange)&quot;)
+gg &lt;- gg + geom_line(aes(x = as.Date(date), y = Social), col = &quot;red&quot;)
+gg + geom_line(aes(x = as.Date(date), y = Video), col = &quot;orange&quot;)</code></pre>
+<p><img src="correlation_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Here a peak in social late in the year looed to have conincided with a peak in social, possibly a campaign driving video views?</p>
+</div>
+</div>
+<div id="cross-correlation" class="section level2">
+<h2>Cross correlation</h2>
+<p>The correlations above all compare the same date point, but what if you expect a lagged effect? Perhaps the video traffic drove social traffic later on due to client advocacy?</p>
+<p>Cross correlations are useful when dealing with time-series data, and can examine if a metric has an influence on itself or another after some time has passed.</p>
 <p>This can be a powerful way to find if say a TV or Display campaign increased SEO traffic the next few weeks afterwards.</p>
-<p>The below compares paid search on SEO - the correlation for different lags of days is the result - we can see a correlation at 0 lag at around 0.5, but the correlation increases if you compare the SEO peaks to the paid peaks</p>
-<pre class="r"><code>ccf(pivoted$`Paid Search`, pivoted$`Organic Search`)</code></pre>
+<p>The below compares paid search on SEO - the correlation for different lags of days is the result - we can see a correlation at 0 lag at around 0.5, but the correlation increases if you lag the Social trend up to 10 days before.</p>
+<pre class="r"><code>ccf(pivoted$Social, pivoted$Video)</code></pre>
 <p><img src="correlation_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<p>Looking at the data plots you can see a peak that most likely created this correlation peak in the data, with the red (Paid) peak precedding the Organic.</p>
-<pre class="r"><code>## zoom in to the peak, and scale the metrics so they have same size peaks to illustrate
-plot(as.Date(pivoted$date)[31:90], scale(pivoted$`Paid Search`[31:90]), type = &quot;l&quot;, col = &quot;red&quot;)
-lines(as.Date(pivoted$date)[31:90], scale(pivoted$`Organic Search`[31:90]), col = &quot;blue&quot;)</code></pre>
-<p><img src="correlation_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>You could then conclude that Video was having a lagged effect on Social traffic up to 10 days beforehand, but beware - the nature of cross-correlation is that if both datasets have a similar looking spike, cross-correlation will highlight it. Careful examination of the raw data trends should be done to verify it. In some cases a smoother line will help get rid of spikes that effect the data (e.g. do the analysis on weekly or monthly data instead of daily.)</p>
 </div>
 
 
@@ -490,7 +790,6 @@ lines(as.Date(pivoted$date)[31:90], scale(pivoted$`Organic Search`[31:90]), col 
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
-
 
 </script>
 

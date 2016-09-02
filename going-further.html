@@ -11,7 +11,7 @@
 
 
 
-<title>Venn Diagram</title>
+<title>Going further</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -349,99 +349,24 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Venn Diagram</h1>
+<h1 class="title toc-ignore">Going further</h1>
 
 </div>
 
 
-<div id="example-3-venn-diagram" class="section level2">
-<h2>Example 3: Venn Diagram</h2>
-<p>This is an example of a visualization built using <code>shiny</code> (web-enablement) that was then repurposed for an entirely different use.</p>
-<p>The first example, shown below, is available at <a href="https://gilligan.shinyapps.io/eMetrics_Venn/" class="uri">https://gilligan.shinyapps.io/eMetrics_Venn/</a>, if you want to try it out.</p>
-<div class="figure">
-<img src="images/example3_venn_inputs.png" />
-
-</div>
-<p><code>shiny</code> apps historically required two files, although the package has been updated to enable using a single file.</p>
-</div>
-<div id="the-code" class="section level2 tabset">
-<h2>The Code</h2>
-<div id="server.r" class="section level3">
-<h3>server.R</h3>
-<p>The code that runs behind the scenes (note that <em>most</em> of the code is really just setting up the formatting options for the Venn diagram itself):</p>
-<pre class="r"><code>library(shiny)
-library(VennDiagram)
-
-shinyServer(function(input, output) {
-  
-  output$vennDiagram &lt;- renderPlot({
-    
-    # Only plot the Venn diagram if the input values are legit (the input values
-    # are all available and the intersection area isn&#39;t greater than either individual set). 
-    if(as.numeric(req(input$adobeGoogle)) &lt;= as.numeric(req(input$adobe)) &amp;&amp;
-       as.numeric(req(input$adobeGoogle)) &lt;= as.numeric(req(input$google))){
-
-      draw.pairwise.venn(area1 = as.numeric(input$google),
-                         area2 = as.numeric(input$adobe),
-                         cross.area = as.numeric(input$adobeGoogle),
-                         category = c(&quot;Google Analytics&quot;,&quot;Adobe Analytics&quot;),
-                         fill = c(&quot;#F29B05&quot;,&quot;#A1D490&quot;),
-                         ext.text = TRUE,
-                         ext.percent = c(0.1,0.1,0.1),
-                         ext.length = 0.6,
-                         label.col = rep(&quot;gray10&quot;,3),
-                         lwd = 0,
-                         cex = 2,
-                         fontface = rep(&quot;bold&quot;,3),
-                         fontfamily = rep(&quot;sans&quot;,3), 
-                         cat.cex = 1.5,
-                         cat.fontface = rep(&quot;plain&quot;,2),
-                         cat.fontfamily = rep(&quot;sans&quot;,2),
-                         cat.pos = c(0, 0),
-                         print.mode = c(&quot;percent&quot;,&quot;raw&quot;)
-                         )
-    }
-  })
-})</code></pre>
-</div>
-<div id="ui.r" class="section level3">
-<h3>ui.R</h3>
-<p>The code for the user interface:</p>
-<pre class="r"><code>library(shiny)
-
-shinyUI(fluidPage(
-  
-  # Application title
-  titlePanel(h3(&quot;Class Participation!&quot;)),
-
-  # Sidebar with a slider input for number of bins
-  fluidRow(
-    column(4,numericInput(&quot;google&quot;, label = &quot;Total Google Analytics Users&quot;, value = NULL)),
-    column(4,numericInput(&quot;adobe&quot;, label = &quot;Total Adobe Analytics Users&quot;, value = NULL)),
-    column(4,numericInput(&quot;adobeGoogle&quot;, label = &quot;Google Analytics AND Adobe Analytics&quot;, value = NULL))
-    ),
-
-    # Show a plot of the generated distribution
-  fluidRow(
-      column(12,plotOutput(&quot;vennDiagram&quot;))
-    )
-  )
-)</code></pre>
-</div>
-</div>
-<div id="repurposing-to-use-segments" class="section level2">
-<h2>Repurposing to Use Segments</h2>
-<p>The example above, obviously, was just a demo for a conference presentation. But, the demo was actually inspired by a real-world use case, which is the visualization of two different segments of traffic to a site.</p>
-<p>This example is available at <a href="https://gilligan.shinyapps.io/segmentsVenn/" class="uri">https://gilligan.shinyapps.io/segmentsVenn/</a>.</p>
-<p>It shows the volume of sessions from each segment and the degree to which traffic fell in both segments (the overlapping area), and provides the user with two settings that trigger a re-query of the data and an update of the diagram:</p>
-<ul>
-<li>Changing the date range</li>
-<li>Choosing a channel</li>
-</ul>
-<div class="figure">
-<img src="images/example3_venn_segments.png" />
-
-</div>
+<div id="suggested-next-steps" class="section level1">
+<h1>Suggested next steps</h1>
+<p>If you would like to continue to enhance your R prowess, here is a suggested subject tree:</p>
+<ol style="list-style-type: decimal">
+<li>Master the <a href="http://adv-r.had.co.nz/">Advanced R Hadley book</a></li>
+<li>Functions - get comfortable writing your own functions for repeatable tasks.</li>
+<li>Github - any coder should use some kind of source control, R’s integration with Github makes it a natural fit.</li>
+<li>Create a package - it doesn’t have to appear in CRAN (yet!) but its a small step from sourcing a file of your custom functions to loading your own private library.</li>
+<li>Shiny - being able to quickly create interactive webapps when asked for a report is always impressive</li>
+<li>Kaggle - practice your machine learning with public datasets in a friendly competative environment</li>
+<li>Advanced packages - get a package on CRAN, or contribute to the development of one on Github. Start using tests, Travis and coverage</li>
+<li>Start using unit tests via <code>library(testthat)</code> to ensure robust code.</li>
+</ol>
 </div>
 
 

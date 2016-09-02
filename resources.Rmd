@@ -2,19 +2,6 @@
 title: "Resources"
 ---
 
-Here are some resources for you to carry on after you have mastered the material on this website:
-
-# Suggested next steps
-
-If you would like to continue to enhance your R prowess, here is a suggested subject tree:
-
-1. Functions - get comfortable writing your own functions for repeatable tasks.
-2. Github - any coder should use some kind of source control, R's integration with Github makes it a natural fit.
-3. Create a package - it doesn't have to appear in CRAN (yet!) but its a small step from sourcing a file of your custom functions to loading your own private library.
-4. Shiny - being able to quickly create interactive webapps when asked for a report is always impressive 
-5. Kaggle - practice your machine learning with public datasets in a friendly competative environment
-6. Advanced packages - get a package on CRAN, or contribute to the development of one on Github.  Start using tests, Travis and coverage
-
 # R and Statistics for Digital Analysts
 
 This is a community-driven set of resources and links on R and statistics generated of, by, and for digital analysts. To submit a resource, fill out [this Google form](https://docs.google.com/a/webanalyticsdemystified.com/forms/d/e/1FAIpQLSftDmRdGT-Ad-mgaa2rEh7yt4F6hYzDGkIuIym4lsq1Lothsw/viewform). Once approved, the resource will appear here.

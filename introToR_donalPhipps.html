@@ -96,7 +96,6 @@ button.code-folding-btn:focus {
 }
 </style>
 
-
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -333,6 +332,9 @@ $(document).ready(function () {
     <li class="dropdown-header">GitHub</li>
     <li class="dropdown-header">Best practices</li>
     <li>
+      <a href="going-further.html">Going further</a>
+    </li>
+    <li>
       <a href="resources.html">Additional Resources</a>
     </li>
   </ul>
@@ -370,7 +372,7 @@ x</code></pre>
 <h2>Working directory</h2>
 <p>Dangers of setting setwd() in scripts on interportability, perhaps explanation on using RStudio projects</p>
 <pre class="r"><code>getwd()</code></pre>
-<pre><code>## [1] &quot;/Users/IIH-Nordic/dev/RWorkshop&quot;</code></pre>
+<pre><code>## [1] &quot;/Users/mark/dev/R/RWorkshopCopenhagen&quot;</code></pre>
 <pre class="r"><code># setwd()
 list.files()</code></pre>
 <pre><code>##  [1] &quot;_site.yml&quot;                             
@@ -415,41 +417,42 @@ list.files()</code></pre>
 ## [40] &quot;exercise7-visualisation.Rmd&quot;           
 ## [41] &quot;exercise8-rmarkdown.html&quot;              
 ## [42] &quot;exercise8-rmarkdown.Rmd&quot;               
-## [43] &quot;habits.html&quot;                           
-## [44] &quot;habits.Rmd&quot;                            
-## [45] &quot;images&quot;                                
-## [46] &quot;import-csv-excel.html&quot;                 
-## [47] &quot;import-csv-excel.Rmd&quot;                  
-## [48] &quot;index.html&quot;                            
-## [49] &quot;index.knit.html&quot;                       
-## [50] &quot;index.Rmd&quot;                             
-## [51] &quot;intros_twitter_wordcloud_usernames.csv&quot;
-## [52] &quot;intros_twitter_wordcloud.R&quot;            
-## [53] &quot;intros.html&quot;                           
-## [54] &quot;intros.Rmd&quot;                            
-## [55] &quot;introToR_donalPhipps_files&quot;            
-## [56] &quot;introToR_donalPhipps.html&quot;             
-## [57] &quot;introToR_donalPhipps.R&quot;                
-## [58] &quot;introToR_donalPhipps.Rmd&quot;              
-## [59] &quot;modelling-intro_files&quot;                 
-## [60] &quot;modelling-intro.html&quot;                  
-## [61] &quot;modelling-intro.Rmd&quot;                   
-## [62] &quot;packages.html&quot;                         
-## [63] &quot;packages.Rmd&quot;                          
-## [64] &quot;pullGAData.R&quot;                          
-## [65] &quot;README.html&quot;                           
-## [66] &quot;README.md&quot;                             
-## [67] &quot;resources.html&quot;                        
-## [68] &quot;resources.Rmd&quot;                         
-## [69] &quot;rstudio.html&quot;                          
-## [70] &quot;rstudio.Rmd&quot;                           
-## [71] &quot;RWorkshopCopenhagen.Rproj&quot;             
-## [72] &quot;site_libs&quot;                             
-## [73] &quot;td.csv&quot;                                
-## [74] &quot;tidyverse.html&quot;                        
-## [75] &quot;tidyverse.Rmd&quot;                         
-## [76] &quot;whatisr.html&quot;                          
-## [77] &quot;whatisr.Rmd&quot;</code></pre>
+## [43] &quot;going-further.html&quot;                    
+## [44] &quot;going-further.Rmd&quot;                     
+## [45] &quot;habits.html&quot;                           
+## [46] &quot;habits.Rmd&quot;                            
+## [47] &quot;images&quot;                                
+## [48] &quot;import-csv-excel.html&quot;                 
+## [49] &quot;import-csv-excel.Rmd&quot;                  
+## [50] &quot;index.html&quot;                            
+## [51] &quot;index.knit.html&quot;                       
+## [52] &quot;index.Rmd&quot;                             
+## [53] &quot;intros_twitter_wordcloud_usernames.csv&quot;
+## [54] &quot;intros_twitter_wordcloud.R&quot;            
+## [55] &quot;intros.html&quot;                           
+## [56] &quot;intros.Rmd&quot;                            
+## [57] &quot;introToR_donalPhipps_files&quot;            
+## [58] &quot;introToR_donalPhipps.html&quot;             
+## [59] &quot;introToR_donalPhipps.R&quot;                
+## [60] &quot;introToR_donalPhipps.Rmd&quot;              
+## [61] &quot;modelling-intro_files&quot;                 
+## [62] &quot;modelling-intro.html&quot;                  
+## [63] &quot;modelling-intro.Rmd&quot;                   
+## [64] &quot;packages.html&quot;                         
+## [65] &quot;packages.Rmd&quot;                          
+## [66] &quot;pullGAData.R&quot;                          
+## [67] &quot;README.html&quot;                           
+## [68] &quot;README.md&quot;                             
+## [69] &quot;resources.html&quot;                        
+## [70] &quot;resources.Rmd&quot;                         
+## [71] &quot;rstudio.html&quot;                          
+## [72] &quot;rstudio.Rmd&quot;                           
+## [73] &quot;RWorkshopCopenhagen.Rproj&quot;             
+## [74] &quot;site_libs&quot;                             
+## [75] &quot;tidyverse.html&quot;                        
+## [76] &quot;tidyverse.Rmd&quot;                         
+## [77] &quot;whatisr.html&quot;                          
+## [78] &quot;whatisr.Rmd&quot;</code></pre>
 </div>
 <div id="data-types" class="section level2">
 <h2>Data types</h2>
@@ -538,7 +541,7 @@ mat.frame$tens * mat.frame$twenties</code></pre>
 <pre class="r"><code>biggie1&lt;-rnorm(100000, 5, 5)
 biggie2&lt;-rnorm(100000, 5, 100)
 mean(biggie1)</code></pre>
-<pre><code>## [1] 4.982774</code></pre>
+<pre><code>## [1] 5.024489</code></pre>
 <pre class="r"><code>big.frame&lt;-data.frame(cbind(biggie1,biggie2))
 ggplot(big.frame,aes(x=biggie1,y=biggie2)) + geom_point(alpha=0.04)</code></pre>
 <p><img src="introToR_donalPhipps_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
@@ -651,7 +654,6 @@ g + geom_smooth(method = &quot;lm&quot;, se = FALSE)</code></pre>
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
-
 
 </script>
 
