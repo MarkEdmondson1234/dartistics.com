@@ -1,0 +1,9 @@
+---
+title: "Time Series"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Time-series are often found when dealing with digital analytics, and R uses a special class to deal with specific analysis. 
