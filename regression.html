@@ -11,7 +11,7 @@
 
 
 
-<title>Exercise 2 – I/O</title>
+<title>Regression</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -351,20 +351,47 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Exercise 2 – I/O</h1>
+<h1 class="title toc-ignore">Regression</h1>
 
 </div>
 
 
-<div id="load-up-some-sample-data" class="section level2">
-<h2>Load Up Some Sample Data</h2>
-<p>We’re going to skip the step of actually pulling data directly using an API (for now), so just download the file at <a href="bit.ly/r_webData">http://bit.ly/r_webData</a>. Upload that file to your working directory, and then load that file into your R environment as an object (data frame) named <code>webData</code>:</p>
-<pre class="r"><code>webData &lt;- read.csv(&quot;gadata_example_2.csv&quot;, stringsAsFactors = FALSE)</code></pre>
-<p>We’re not going to dive into why we’re including <code>stringsAsFactors = FALSE</code> at this point. The more comfortable you are with statistics, the more likely the phrase “this factor has three levels” will intuitively mean something to you. Let’s just put it aside for now.</p>
-<p>Double-click on <code>webData</code> in the <strong>Environment</strong> window to view the data like a spreadsheet.</p>
-<p>Note that the data, if it <em>were</em> in Excel, would be primed and ready to have a pivot table made out of it: each row contains a value for each dimension and for each metric. Put (overly) simply, this is what is referred to as a “tidy” data structure, and conventional wisdom is that this structure is, in the words of Keanu Reeves and Alex Winter, <em>most excellent</em>.</p>
-<p>There are situations where we may want to move a dimension into the columns, certainly, and there are very quick and easy ways to do this, but, if we aim for tidy data as the default, we’ll be in good shape. Luckily, when pulling data from the Google Analytics or Adobe Analytics API, that’s the format the data arrives in.</p>
-<p>That’s really it for this exercise. Now that we have some data loaded up into our environment, though, we can start working with it, which we’ll do in the <a href="exercise3-munging.html">next exercise</a>.</p>
+<p>Regression is a way to represent cause and effect between two (or more variables). It attempts to make a best guess or model on how variables influence each other, and gives you an equation which you can use to predict future values.</p>
+<p>If you want to just measure how closely two variables are and in which direction, correlation is more appropriate. However, if you want to try and make predictions from another metric then regression may be the tool for you.</p>
+<div id="types-of-regression" class="section level1">
+<h1>Types of regression</h1>
+<p>There are many types of regression for different data scenarios, but we will cover just a few in this introduction that you may need for your own data.</p>
+<div id="simple-linear-regression" class="section level2">
+<h2>Simple linear regression</h2>
+<p>Simple linear regression is performed between two variables, of the form:</p>
+<pre><code>y = Ax + e</code></pre>
+<p>Where <code>y</code> is the metric you want to predict (<em>dependent variable</em>), <code>x</code> the metric you want to use to predict <code>y</code> (<em>regressors/predictors</em>), <code>A</code> being the <em>regression coefficient</em> of variable <code>x</code> and <code>e</code> being the bit not predicted, sometimes called <em>noise</em>.</p>
+<p>This you may also recognise as the equation for a straight line on a x-y plot, where A is the slope and e is the intercept, and that is pretty much what linear regression is, where the technique of least-squares is used to fit a line to some points.</p>
+<blockquote>
+<p>An example applied to digital marketing would be predicting transactions from sessions. The regression coefficient in this case would represent a conversion rate.</p>
+</blockquote>
+<p>In R, you create linear regression via the <code>lm()</code> function:</p>
+<pre class="r"><code>model &lt;- lm(transactions ~ sessions, data = webdata)
+</code></pre>
+</div>
+<div id="multi-linear-regression" class="section level2">
+<h2>Multi-linear regression</h2>
+<p>Multi-linear regression is the same as simple linear regression, but you have more predictors - the below shows three (<code>x, y, ø</code>) with corresponding <em>regression coefficients</em> (<code>A, B and C</code>)</p>
+<pre><code>y = Ax + Bz + Cø + e</code></pre>
+<p>Plotting a multi-linear regression is harder for more than 3 variables, as you need a multi-dimensional space, but its exactly the same principle - in this case the <em>coefficients</em> <code>A, B and C</code> show how much <code>y</code> would change if their respective <em>regressor</em> changed by 1 (and everything else stayed the same)</p>
+<p>In R, you create multi-linear regression via the <code>lm()</code> function again, but you just add more variables to the model formula:</p>
+<pre class="r"><code>model &lt;- lm(transactions ~ tv.impressions + display.spend + seo.sessions, data = webdata)
+</code></pre>
+</div>
+<div id="logistic-regression" class="section level2">
+<h2>Logistic regression</h2>
+<p>The above regressions are all for continuous data - metrics that can take any value. They don’t work when the thing you want to predict is more categorical e.g. TRUE or FALSE. An example of this could be predicting if a customer is going to transact in a web session or not.</p>
+<p>In R, you create logistic regression by using the <code>glm()</code> function and passing in a family argument. In this case we choose <code>binomial</code> (another name for logistic), but the argument takes many other names too for different types of regression - see <code>?family</code> for details.</p>
+<pre class="r"><code>model &lt;- glm(sale ~ saw.promotion + existing.customer + hour.of.day, 
+             data = webdata, 
+             family = binomial)
+</code></pre>
+</div>
 </div>
 
 

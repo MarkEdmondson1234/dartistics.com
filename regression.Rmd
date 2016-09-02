@@ -1,0 +1,62 @@
+---
+title: "Regression"
+---
+
+Regression is a way to represent cause and effect between two (or more variables).  It attempts to make a best guess or model on how variables influence each other, and gives you an equation which you can use to predict future values.
+
+If you want to just measure how closely two variables are and in which direction, correlation is more appropriate.  However, if you want to try and make predictions from another metric then regression may be the tool for you.
+
+# Types of regression
+
+There are many types of regression for different data scenarios, but we will cover just a few in this introduction that you may need for your own data.
+
+## Simple linear regression
+
+Simple linear regression is performed between two variables, of the form:
+
+```
+y = Ax + e
+```
+
+Where `y` is the metric you want to predict (*dependent variable*), `x` the metric you want to use to predict `y` (*regressors/predictors*), `A` being the *regression coefficient* of variable `x` and `e` being the bit not predicted, sometimes called *noise*.
+
+This you may also recognise as the equation for a straight line on a x-y plot, where A is the slope and e is the intercept, and that is pretty much what linear regression is, where the technique of least-squares is used to fit a line to some points.
+
+> An example applied to digital marketing would be predicting transactions from sessions.  The regression coefficient in this case would represent a conversion rate.
+
+In R, you create linear regression via the `lm()` function:
+
+```r
+model <- lm(transactions ~ sessions, data = webdata)
+
+```
+
+## Multi-linear regression
+
+Multi-linear regression is the same as simple linear regression, but you have more predictors - the below shows three (`x, y, ø`) with corresponding *regression coefficients* (`A, B and C`)
+
+```
+y = Ax + Bz + Cø + e
+```
+
+Plotting a multi-linear regression is harder for more than 3 variables, as you need a multi-dimensional space, but its exactly the same principle - in this case the *coefficients* `A, B and C` show how much `y` would change if their respective *regressor* changed by 1 (and everything else stayed the same)
+
+In R, you create multi-linear regression via the `lm()` function again, but you just add more variables to the model formula:
+
+```r
+model <- lm(transactions ~ tv.impressions + display.spend + seo.sessions, data = webdata)
+
+```
+
+## Logistic regression
+
+The above regressions are all for continuous data - metrics that can take any value.  They don't work when the thing you want to predict is more categorical e.g. TRUE or FALSE.  An example of this could be predicting if a customer is going to transact in a web session or not.
+
+In R, you create logistic regression by using the `glm()` function and passing in a family argument.  In this case we choose `binomial` (another name for logistic), but the argument takes many other names too for different types of regression - see `?family` for details.
+
+```r
+model <- glm(sale ~ saw.promotion + existing.customer + hour.of.day, 
+             data = webdata, 
+             family = binomial)
+
+```

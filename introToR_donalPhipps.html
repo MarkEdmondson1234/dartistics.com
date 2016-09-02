@@ -291,7 +291,9 @@ $(document).ready(function () {
     <li>
       <a href="correlation.html">Correlation</a>
     </li>
-    <li class="dropdown-header">Regression</li>
+    <li>
+      <a href="regression.html">Regression</a>
+    </li>
     <li class="dropdown-header">Time-series</li>
     <li class="dropdown-header">Categorisation</li>
   </ul>
@@ -429,30 +431,33 @@ list.files()</code></pre>
 ## [52] &quot;index.Rmd&quot;                             
 ## [53] &quot;intros_twitter_wordcloud_usernames.csv&quot;
 ## [54] &quot;intros_twitter_wordcloud.R&quot;            
-## [55] &quot;intros.html&quot;                           
-## [56] &quot;intros.Rmd&quot;                            
-## [57] &quot;introToR_donalPhipps_files&quot;            
-## [58] &quot;introToR_donalPhipps.html&quot;             
-## [59] &quot;introToR_donalPhipps.R&quot;                
-## [60] &quot;introToR_donalPhipps.Rmd&quot;              
-## [61] &quot;modelling-intro_files&quot;                 
-## [62] &quot;modelling-intro.html&quot;                  
-## [63] &quot;modelling-intro.Rmd&quot;                   
-## [64] &quot;packages.html&quot;                         
-## [65] &quot;packages.Rmd&quot;                          
-## [66] &quot;pullGAData.R&quot;                          
-## [67] &quot;README.html&quot;                           
-## [68] &quot;README.md&quot;                             
-## [69] &quot;resources.html&quot;                        
-## [70] &quot;resources.Rmd&quot;                         
-## [71] &quot;rstudio.html&quot;                          
-## [72] &quot;rstudio.Rmd&quot;                           
-## [73] &quot;RWorkshopCopenhagen.Rproj&quot;             
-## [74] &quot;site_libs&quot;                             
-## [75] &quot;tidyverse.html&quot;                        
-## [76] &quot;tidyverse.Rmd&quot;                         
-## [77] &quot;whatisr.html&quot;                          
-## [78] &quot;whatisr.Rmd&quot;</code></pre>
+## [55] &quot;intros-wordcloud&quot;                      
+## [56] &quot;intros.html&quot;                           
+## [57] &quot;intros.Rmd&quot;                            
+## [58] &quot;introToR_donalPhipps_files&quot;            
+## [59] &quot;introToR_donalPhipps.html&quot;             
+## [60] &quot;introToR_donalPhipps.R&quot;                
+## [61] &quot;introToR_donalPhipps.Rmd&quot;              
+## [62] &quot;modelling-intro_files&quot;                 
+## [63] &quot;modelling-intro.html&quot;                  
+## [64] &quot;modelling-intro.Rmd&quot;                   
+## [65] &quot;packages.html&quot;                         
+## [66] &quot;packages.Rmd&quot;                          
+## [67] &quot;pullGAData.R&quot;                          
+## [68] &quot;README.html&quot;                           
+## [69] &quot;README.md&quot;                             
+## [70] &quot;regression.html&quot;                       
+## [71] &quot;regression.Rmd&quot;                        
+## [72] &quot;resources.html&quot;                        
+## [73] &quot;resources.Rmd&quot;                         
+## [74] &quot;rstudio.html&quot;                          
+## [75] &quot;rstudio.Rmd&quot;                           
+## [76] &quot;RWorkshopCopenhagen.Rproj&quot;             
+## [77] &quot;site_libs&quot;                             
+## [78] &quot;tidyverse.html&quot;                        
+## [79] &quot;tidyverse.Rmd&quot;                         
+## [80] &quot;whatisr.html&quot;                          
+## [81] &quot;whatisr.Rmd&quot;</code></pre>
 </div>
 <div id="data-types" class="section level2">
 <h2>Data types</h2>
@@ -541,7 +546,7 @@ mat.frame$tens * mat.frame$twenties</code></pre>
 <pre class="r"><code>biggie1&lt;-rnorm(100000, 5, 5)
 biggie2&lt;-rnorm(100000, 5, 100)
 mean(biggie1)</code></pre>
-<pre><code>## [1] 5.024489</code></pre>
+<pre><code>## [1] 5.006253</code></pre>
 <pre class="r"><code>big.frame&lt;-data.frame(cbind(biggie1,biggie2))
 ggplot(big.frame,aes(x=biggie1,y=biggie2)) + geom_point(alpha=0.04)</code></pre>
 <p><img src="introToR_donalPhipps_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>

@@ -68,6 +68,7 @@ navbar:
       - text: "Correlation"
         href: correlation.html
       - text: "Regression"
+        href: regression.html
       - text: "Time-series"
       - text: "Categorisation"
     - text: "Visualisation"
