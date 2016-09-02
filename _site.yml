@@ -60,7 +60,8 @@ navbar:
         href: habits.html
       - text: "Analytics APIs"
         href: analytics-apis.html
-      - text: Microsoft Excel(!)
+      - text: "Microsoft Excel(!)"
+        href: excel.html
     - text: "Modelling"
       menu:
       - text: "Introduction"
