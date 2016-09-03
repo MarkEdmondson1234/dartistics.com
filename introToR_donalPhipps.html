@@ -96,7 +96,6 @@ button.code-folding-btn:focus {
 }
 </style>
 
-
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -273,6 +272,7 @@ $(document).ready(function () {
     <li>
       <a href="habits.html">Good habits</a>
     </li>
+    <li class="dropdown-header">  Input</li>
     <li>
       <a href="analytics-apis.html">Analytics APIs</a>
     </li>
@@ -307,13 +307,14 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Visualisation
+    Output
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">  Visualisation</li>
     <li>
-      <a href="viz-options.html">Options</a>
+      <a href="viz-options.html">Visualisation Options</a>
     </li>
     <li>
       <a href="base-plots.html">Base Plots</a>
@@ -324,15 +325,7 @@ $(document).ready(function () {
     <li>
       <a href="htmlwidgets.html">htmlwidgets()</a>
     </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Presentation
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">  Presentation</li>
     <li>
       <a href="rmarkdown.html">RMarkdown</a>
     </li>
@@ -401,7 +394,7 @@ x</code></pre>
 <h2>Working directory</h2>
 <p>Dangers of setting setwd() in scripts on interportability, perhaps explanation on using RStudio projects</p>
 <pre class="r"><code>getwd()</code></pre>
-<pre><code>## [1] &quot;/Users/timwilson/Documents/RWorkshopCopenhagen&quot;</code></pre>
+<pre><code>## [1] &quot;/Users/mark/dev/R/RWorkshopCopenhagen&quot;</code></pre>
 <pre class="r"><code># setwd()
 list.files()</code></pre>
 <pre><code>##   [1] &quot;_site.yml&quot;                             
@@ -506,12 +499,13 @@ list.files()</code></pre>
 ## [100] &quot;site_libs&quot;                             
 ## [101] &quot;tidyverse.html&quot;                        
 ## [102] &quot;tidyverse.Rmd&quot;                         
-## [103] &quot;timeseries.html&quot;                       
-## [104] &quot;timeseries.Rmd&quot;                        
-## [105] &quot;viz-options.html&quot;                      
-## [106] &quot;viz-options.Rmd&quot;                       
-## [107] &quot;whatisr.html&quot;                          
-## [108] &quot;whatisr.Rmd&quot;</code></pre>
+## [103] &quot;timeseries_files&quot;                      
+## [104] &quot;timeseries.html&quot;                       
+## [105] &quot;timeseries.Rmd&quot;                        
+## [106] &quot;viz-options.html&quot;                      
+## [107] &quot;viz-options.Rmd&quot;                       
+## [108] &quot;whatisr.html&quot;                          
+## [109] &quot;whatisr.Rmd&quot;</code></pre>
 </div>
 <div id="data-types" class="section level2">
 <h2>Data types</h2>
@@ -600,7 +594,7 @@ mat.frame$tens * mat.frame$twenties</code></pre>
 <pre class="r"><code>biggie1&lt;-rnorm(100000, 5, 5)
 biggie2&lt;-rnorm(100000, 5, 100)
 mean(biggie1)</code></pre>
-<pre><code>## [1] 4.995642</code></pre>
+<pre><code>## [1] 5.005707</code></pre>
 <pre class="r"><code>big.frame&lt;-data.frame(cbind(biggie1,biggie2))
 ggplot(big.frame,aes(x=biggie1,y=biggie2)) + geom_point(alpha=0.04)</code></pre>
 <p><img src="introToR_donalPhipps_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
@@ -713,7 +707,6 @@ g + geom_smooth(method = &quot;lm&quot;, se = FALSE)</code></pre>
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
-
 
 </script>
 

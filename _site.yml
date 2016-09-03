@@ -58,6 +58,7 @@ navbar:
         href: dplyr.html
       - text: "Good habits"
         href: habits.html
+      - text: "  Input"
       - text: "Analytics APIs"
         href: analytics-apis.html
       - text: "Microsoft Excel(!)"
@@ -74,9 +75,10 @@ navbar:
         href: timeseries.html
       - text: "Categorisation"
         href: categorisation.html
-    - text: "Visualisation"
+    - text: "Output"
       menu:
-      - text: "Options"
+      - text: "  Visualisation"
+      - text: "Visualisation Options"
         href: viz-options.html
       - text: "Base Plots"
         href: base-plots.html
@@ -84,8 +86,7 @@ navbar:
         href: ggplot2.html
       - text: "htmlwidgets()"
         href: htmlwidgets.html
-    - text: "Presentation"
-      menu:
+      - text: "  Presentation"
       - text: "RMarkdown"
         href: rmarkdown.html
       - text: "Shiny"

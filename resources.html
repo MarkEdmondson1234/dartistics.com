@@ -94,7 +94,6 @@ button.code-folding-btn:focus {
 }
 </style>
 
-
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -271,6 +270,7 @@ $(document).ready(function () {
     <li>
       <a href="habits.html">Good habits</a>
     </li>
+    <li class="dropdown-header">  Input</li>
     <li>
       <a href="analytics-apis.html">Analytics APIs</a>
     </li>
@@ -305,13 +305,14 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Visualisation
+    Output
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">  Visualisation</li>
     <li>
-      <a href="viz-options.html">Options</a>
+      <a href="viz-options.html">Visualisation Options</a>
     </li>
     <li>
       <a href="base-plots.html">Base Plots</a>
@@ -322,15 +323,7 @@ $(document).ready(function () {
     <li>
       <a href="htmlwidgets.html">htmlwidgets()</a>
     </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Presentation
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">  Presentation</li>
     <li>
       <a href="rmarkdown.html">RMarkdown</a>
     </li>
@@ -500,7 +493,6 @@ $(document).ready(function () {
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
-
 
 </script>
 
