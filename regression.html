@@ -390,9 +390,107 @@ $(document).ready(function () {
 <blockquote>
 <p>An example applied to digital marketing would be predicting transactions from sessions. The regression coefficient in this case would represent a derived conversion rate.</p>
 </blockquote>
-<p>In R, you create linear regression via the <code>lm()</code> function:</p>
-<pre class="r"><code>model &lt;- lm(transactions ~ sessions, data = webdata)
-</code></pre>
+<div id="example-with-search-console-impressions" class="section level3">
+<h3>Example with Search Console Impressions</h3>
+<p>If you already have a conversion rate, there isn’t much to gain from creating another via linear regression, but in many cases you don’t have that linked up view which is where regression can come into play. An example below looks for a relationship to a website’s SEO impressions in Google to the amount of transactions that day.</p>
+<p>For this example we shall use the dataset <code>search_console_plus_ga.csv</code>, which is two datasets joined on date - SEO impressions and other metrics from Search Console via the <code>searchConsoleR</code> package, and Google Analytics total sessions and transactions from <code>googleAnalyticsR</code></p>
+<pre class="r"><code>library(knitr) # nice tables
+sc_ga_data &lt;- read.csv(&quot;./data/search_console_plus_ga.csv&quot;, stringsAsFactors = FALSE)
+
+kable(head(sc_ga_data))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">date</th>
+<th align="right">sessions</th>
+<th align="right">transactions</th>
+<th align="right">clicks</th>
+<th align="right">impressions</th>
+<th align="right">ctr</th>
+<th align="right">position</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2016-06-03</td>
+<td align="right">682</td>
+<td align="right">78</td>
+<td align="right">288</td>
+<td align="right">35512</td>
+<td align="right">0.0081099</td>
+<td align="right">14.33242</td>
+</tr>
+<tr class="even">
+<td align="left">2016-06-04</td>
+<td align="right">533</td>
+<td align="right">76</td>
+<td align="right">228</td>
+<td align="right">25727</td>
+<td align="right">0.0088623</td>
+<td align="right">16.78062</td>
+</tr>
+<tr class="odd">
+<td align="left">2016-06-05</td>
+<td align="right">568</td>
+<td align="right">92</td>
+<td align="right">248</td>
+<td align="right">18341</td>
+<td align="right">0.0135216</td>
+<td align="right">19.07748</td>
+</tr>
+<tr class="even">
+<td align="left">2016-06-06</td>
+<td align="right">879</td>
+<td align="right">93</td>
+<td align="right">399</td>
+<td align="right">23385</td>
+<td align="right">0.0170622</td>
+<td align="right">17.21142</td>
+</tr>
+<tr class="odd">
+<td align="left">2016-06-07</td>
+<td align="right">1085</td>
+<td align="right">86</td>
+<td align="right">366</td>
+<td align="right">22874</td>
+<td align="right">0.0160007</td>
+<td align="right">20.51867</td>
+</tr>
+<tr class="even">
+<td align="left">2016-06-08</td>
+<td align="right">1005</td>
+<td align="right">99</td>
+<td align="right">351</td>
+<td align="right">20237</td>
+<td align="right">0.0173445</td>
+<td align="right">17.24243</td>
+</tr>
+</tbody>
+</table>
+<p>In R, you create linear regression via the <code>lm()</code> function. We will do so looking for the relationship between <code>transactions</code> and <code>impressions</code>.</p>
+<pre class="r"><code>model &lt;- lm(transactions ~ impressions, data = sc_ga_data)</code></pre>
+<p>The model summary takes a bit of getting used to to interpret, but the interesting bits for us are the <code>r-squared</code> value and the coefficents</p>
+<pre class="r"><code>library(broom) ## nice tidy model results
+
+## overall model statistics
+glance(model)</code></pre>
+<pre><code>##    r.squared adj.r.squared    sigma statistic    p.value df    logLik
+## 1 0.04580986    0.03496679 18.41266  4.224805 0.04280121  2 -388.8667
+##        AIC      BIC deviance df.residual
+## 1 783.7333 791.2328  29834.3          88</code></pre>
+<pre class="r"><code>## coefficients
+tidy(model)</code></pre>
+<pre><code>##          term     estimate    std.error statistic      p.value
+## 1 (Intercept) 6.333054e+01 5.7041878936 11.102463 2.027362e-18
+## 2 impressions 3.905562e-04 0.0001900116  2.055433 4.280121e-02</code></pre>
+<p>The <code>R-squared</code> value is low which specifies the amount of variation explained by the model is low - only 5% of transactions can be attributed to impressions alone. This doesn’t necessarily mean the model is invalid, but does mean predictions will be less accurate.</p>
+<p>We can say transactions are effected by impressions, but can’t accuratly predict how much - lots of other factors are influencing the sale, we can’t say its impressions alone.</p>
+<p>We plot the data points and the regression line below:</p>
+<pre class="r"><code>## put the linear regression line (not accouting for errors)
+plot(sc_ga_data$impressions, sc_ga_data$transactions)
+abline(reg = coef(model))</code></pre>
+<p><img src="regression_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
 </div>
 <div id="multi-linear-regression" class="section level2">
 <h2>Multi-linear regression</h2>
@@ -400,8 +498,24 @@ $(document).ready(function () {
 <pre><code>y = Ax + Bz + Cø + e</code></pre>
 <p>Plotting a multi-linear regression is harder for more than 3 variables, as you need a multi-dimensional space, but its exactly the same principle - in this case the <em>coefficients</em> <code>A, B and C</code> show how much <code>y</code> would change if their respective <em>regressor</em> changed by 1 (and everything else stayed the same)</p>
 <p>In R, you create multi-linear regression via the <code>lm()</code> function again, but you just add more variables to the model formula:</p>
-<pre class="r"><code>model &lt;- lm(transactions ~ tv.impressions + display.spend + seo.sessions, data = webdata)
-</code></pre>
+<pre class="r"><code>model2 &lt;- lm(transactions ~ impressions + sessions + position, data = sc_ga_data)
+## overall model statistics
+glance(model2)</code></pre>
+<pre><code>##   r.squared adj.r.squared    sigma statistic     p.value df    logLik
+## 1 0.1642764     0.1351233 17.43101  5.634947 0.001421253  4 -382.9012
+##        AIC      BIC deviance df.residual
+## 1 775.8025 788.3015 26130.25          86</code></pre>
+<pre class="r"><code>## coefficients
+tidy(model2)</code></pre>
+<pre><code>##          term      estimate    std.error  statistic    p.value
+## 1 (Intercept) 69.8256229916 2.997209e+01  2.3296885 0.02216593
+## 2 impressions -0.0001550714 2.905029e-04 -0.5338034 0.59485465
+## 3    sessions  0.0394295484 1.331140e-02  2.9620894 0.00395002
+## 4    position -1.3288129470 1.161496e+00 -1.1440533 0.25577588</code></pre>
+<p>The <code>r-squared</code> value has improved a little so we can explain 16% of transactions from our model.</p>
+<blockquote>
+<p>How do you think the coefficients of multiple linear regression applied to all Google Analytics sessions compare to the actual conversion rate registered in the E-commerce reports? What about the multi-touch reports?</p>
+</blockquote>
 </div>
 <div id="logistic-regression" class="section level2">
 <h2>Logistic regression</h2>
