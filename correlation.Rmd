@@ -13,22 +13,35 @@ For instance, a high correlation between social shares and SEO position could me
 * Social shares and SEO position are influenced by a third factor (such as Brand strength)
 * The relationship was a chance error
 
-It is rare to see the last three possibilties considered.
+It is, unfortunately, pretty common to see something like the first bullet used as the sole interpretation of a correlation, which is problematic for two reasons:
+
+* There might be other factors in play (the other bullets in the list!)
+* Correlation is not _necessarily_ a sign of causation. 
+
+But, still, correlation can be very useful: identifying that a relationship exists can be a great place to start looking for the underlying drivers of that relationship which, ultimately, can lead to an insight than can drive an action!
 
 ## Performing correlation analysis in R
 
-That said, correlations can really help get an understanding of your data and hint at relationships.
-
 The base function `cor()` will perform correlations on a `data.frame`.
 
-The below example uses the web data dataset used in Excercise 4:
+The below example uses the web data dataset used in Exercise 4:
 
-```{r}
+```{r message=FALSE}
 ## used for kable that makes nice RMarkdown tables
 library(knitr)
 web_data <- read.csv("./data/gadata_example_2.csv", stringsAsFactors = FALSE)
-kable(head(web_data[-1]), row.names = FALSE)
+kable(head(web_data[-1]))
 ```
+
+_Quick Review: What all is going on with the simple code above?_
+
+* _`web_data` is an object (data frame) in this case that we're creating_
+* _We're using the `stringsAsFactors` parameter because...we usually just want to do that when reading in data._
+* _`kable()` is a function that is really just used here so that the data displays a little more cleanly on this page. If you're trying this simply within RStudio...you can omit it._
+* _`head()` is a function that (by default) returns only the first six rows of the object._
+* _`web_data[-1]` is "the data." the `-1` is saying "don't show the first column" (you could think of this as `web_data[,-1]`, too)_
+
+_Got it? Good. Let's continue with the lesson at hand!_
 
 Correlations will only work with numeric data, so we subset to just those columns, and then run the base R function `cor()` to see a correlation table:
 
@@ -38,7 +51,9 @@ web_data_metrics <- web_data[c("sessions","pageviews","entrances","bounces")]
 kable(cor(web_data_metrics))
 ```
 
-The table is mirrored in the diagonal. 1 means a perfect correlation, 0 no correlation and -1 a perfect negative correlation.
+The table is mirrored in the diagonal and provides the _correlation coefficient_ (aka, "_r_") between each pair of values that intersect in the cell. 1 means a perfect correlation, 0 no correlation and -1 means a perfect negative correlation.
+
+_Does the R that we're working on learning today have anything to do with the correlation coefficient _r_? Well...no. Or, at least, only to the extent that you can use R-the-platform to calculate r-the-correlation-coefficient. Good question, though!_
 
 When working with correlations, its always a good idea to view an exploratory plot.  A handy function for this is `pairs()` which creates a scatter plot of all the metrics passed in combination:
 
@@ -46,7 +61,7 @@ When working with correlations, its always a good idea to view an exploratory pl
 pairs(web_data_metrics)
 ```
 
-Here you can see the correlation numbers in graphical form - for instance the high correlation of 0.9999923 between sessions and entrances results in an almost perfect straight line.  As a session starts with an entrance, this makes perfect sense.  A correlation of less than 1 may be a quick diagnostic that something is wrong with the tracking.
+Here you can see the correlation numbers in graphical form. For instance, the high correlation of 0.9999923 between sessions and entrances results in an almost perfect straight line.  Since a session starts with an entrance, this makes perfect sense!  A correlation of less than 1 may be a quick diagnostic that something is wrong with the tracking.
 
 ## How do web channels correlate?
 
@@ -56,8 +71,8 @@ One useful piece of analysis is seeing how web channels possibly interact.
 
 To get the data in the right format, the below code pivots via the `reshape2` package:
 
-```{r}
-## use tidyverse to pivot the data
+```{r message=FALSE}
+## Use tidyverse to pivot the data
 library(dplyr)
 library(tidyr)
 
@@ -73,9 +88,11 @@ pivoted[is.na(pivoted)] <- 0
 kable(head(pivoted))
 ```
 
-### Examining data
+Take a minute to examine what the `pivoted` data looks like? Is it tidy data? Not exactly. But, that's good! In one since, we've got separate "metrics" for each day now -- the channelGrouping-sessions combination. 
 
-We can plot and correlate all the metrics for an overview:
+### Examining the Data
+
+We can plot and correlate all the metrics for an overview. Because we don't want to do _exactly_ the same thing as we did earlier (where's the fun in that?!), let's go ahead and round the correlation coefficients to two decimal places using the `round()` function. Other than that, we'll do exactly what we already did when we were simply correlating the metrics in our data set:
 
 ```{r}
 ## not including first column, so -1 subset
@@ -87,7 +104,7 @@ pairs(pivoted[-1])
 
 ### Analysis
 
-Now we compare channels we can see much looser correlations for this dataset, which is typical.  Correlations under 0.3 are as a rule-of-thumb not worth considering, so the standouts look to be Social vs Video and Paid vs Organic Search.
+Now, when we compare channels, we see much looser correlations for this dataset, which makes sense, right?.  Correlations under 0.3 are, as a rule-of-thumb, not worth considering, so the standouts look to be **Social** vs. **Video8* and **Paid** vs. **Organic Search**.
 
 Plotting those channels we can examine the trends to see the shape of the data
 
@@ -101,7 +118,7 @@ gg <- gg + geom_line(aes(x = as.Date(date), y = `Paid Search`), col = "blue")
 gg + geom_line(aes(x = as.Date(date), y = `Organic Search`), col = "green")
 ```
 
-We can see here the trends do look similar, but with a paid search peak in the first Q.
+We can see here the trends do look similar, but with a paid search peak in the first quarter (as we look at this, we might want to consider these spikes as outliers -- either simply by the visual or using a more defined method for detecting outlier; it would be quite simple to remove this data from the data set and run the analysis again...but we're not going to go down that particular rabbit hole right now).
 
 ```{r}
 library(ggplot2)
@@ -110,20 +127,20 @@ gg <- gg + geom_line(aes(x = as.Date(date), y = Social), col = "red")
 gg + geom_line(aes(x = as.Date(date), y = Video), col = "orange")
 ```
 
-Here a peak in social late in the year looed to have conincided with a peak in social, possibly a campaign driving video views?
+Here, a peak in **Social** late in the year looks to have coincided with a peak in *Video*: possibly a campaign driving video views?
 
 ## Cross correlation
 
 The correlations above all compare the same date point, but what if you expect a lagged effect?  Perhaps the video traffic drove social traffic later on due to client advocacy?
 
-Cross correlations are useful when dealing with time-series data, and can examine if a metric has an influence on itself or another after some time has passed.  
+Cross correlations are useful when dealing with time-series data and can examine if a metric has an influence on itself or another after some time has passed.  
 
-This can be a powerful way to find if say a TV or Display campaign increased SEO traffic the next few weeks afterwards.
+This can be a powerful way to find if, say, a TV or Display campaign increased SEO traffic over the course of the few weeks following the campaign.
 
-The below compares paid search on SEO - the correlation for different lags of days is the result - we can see a correlation at 0 lag at around 0.5, but the correlation increases if you lag the Social trend up to 10 days before. 
+The below compares paid search on SEO using the `ccf()` function. The result is the correlation for different lags of days. We can see a correlation at 0 lag at around 0.5, but the correlation increases if you lag the Social trend up to 10 days before. 
 
 ```{r}
 ccf(pivoted$Social, pivoted$Video)
 ```
 
-You could then conclude that Video was having a lagged effect on Social traffic up to 10 days beforehand, but beware - the nature of cross-correlation is that if both datasets have a similar looking spike, cross-correlation will highlight it.  Careful examination of the raw data trends should be done to verify it.  In some cases a smoother line will help get rid of spikes that effect the data (e.g. do the analysis on weekly or monthly data instead of daily.)
+You could then conclude that Video was having a lagged effect on Social traffic up to 10 days beforehand. But, beware! The nature of cross-correlation is that if both datasets have a similar looking spike, cross-correlation will highlight it.  Careful examination of the raw data trends should be performed to verify it.  In some cases a smoother line will help get rid of spikes that affect the data (e.g., do the analysis on weekly or monthly data instead of daily). And, of course, there is no substitue for rational thought: if you find a relationship like this, can you explain it rationally? And, if so, can you further analysis to validate that rationalization? _(If only R had an **Easy Button** to do the actual thinking, too. Alas!)_
