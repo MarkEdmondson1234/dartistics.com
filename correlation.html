@@ -94,6 +94,7 @@ button.code-folding-btn:focus {
 }
 </style>
 
+
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -482,7 +483,7 @@ kable(head(web_data))</code></pre>
 </ul>
 <p><em>Got it? Good. Let’s continue with the lesson at hand!</em></p>
 <p>Correlations will only work with numeric data, so we subset to just those columns, and then run the base R function <code>cor()</code> to see a correlation table:</p>
-<pre class="r"><code>web_data_metrics &lt;- web_data[c(&quot;sessions&quot;,&quot;pageviews&quot;,&quot;entrances&quot;,&quot;bounces&quot;)]
+<pre class="r"><code>web_data_metrics &lt;- web_data[,c(&quot;sessions&quot;,&quot;pageviews&quot;,&quot;entrances&quot;,&quot;bounces&quot;)]
 ## see correlation between all metrics
 kable(cor(web_data_metrics))</code></pre>
 <table>
@@ -537,19 +538,19 @@ kable(cor(web_data_metrics))</code></pre>
 <h2>How do web channels correlate?</h2>
 <p>One useful piece of analysis is seeing how web channels possibly interact.</p>
 <div id="data-prep" class="section level3">
-<h3>Data prep</h3>
+<h3>Data Prep</h3>
 <p>To get the data in the right format, the below code pivots via the <code>reshape2</code> package:</p>
 <pre class="r"><code>## Use tidyverse to pivot the data
 library(dplyr)
 library(tidyr)
 
-## get only desktop rows, and the date, channelGrouping and sessions columns
+## Get only desktop rows, and the date, channelGrouping and sessions columns
 pivoted &lt;- web_data %&gt;% 
   filter(deviceCategory == &quot;desktop&quot;) %&gt;% 
   select(date, channelGrouping, sessions) %&gt;%
   spread(channelGrouping, sessions)
 
-## get rid of any NA&#39;s and replace with 0
+## Get rid of any NA&#39;s and replace with 0
 pivoted[is.na(pivoted)] &lt;- 0
 
 kable(head(pivoted))</code></pre>
@@ -825,6 +826,7 @@ gg + geom_line(aes(x = as.Date(date), y = Video), col = &quot;orange&quot;)</cod
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 

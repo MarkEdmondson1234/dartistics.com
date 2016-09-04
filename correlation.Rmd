@@ -50,7 +50,7 @@ _Got it? Good. Let's continue with the lesson at hand!_
 Correlations will only work with numeric data, so we subset to just those columns, and then run the base R function `cor()` to see a correlation table:
 
 ```{r}
-web_data_metrics <- web_data[c("sessions","pageviews","entrances","bounces")]
+web_data_metrics <- web_data[,c("sessions","pageviews","entrances","bounces")]
 ## see correlation between all metrics
 kable(cor(web_data_metrics))
 ```
@@ -71,7 +71,7 @@ Here you can see the correlation numbers in graphical form. For instance, the hi
 
 One useful piece of analysis is seeing how web channels possibly interact.
 
-### Data prep
+### Data Prep
 
 To get the data in the right format, the below code pivots via the `reshape2` package:
 
@@ -80,13 +80,13 @@ To get the data in the right format, the below code pivots via the `reshape2` pa
 library(dplyr)
 library(tidyr)
 
-## get only desktop rows, and the date, channelGrouping and sessions columns
+## Get only desktop rows, and the date, channelGrouping and sessions columns
 pivoted <- web_data %>% 
   filter(deviceCategory == "desktop") %>% 
   select(date, channelGrouping, sessions) %>%
   spread(channelGrouping, sessions)
 
-## get rid of any NA's and replace with 0
+## Get rid of any NA's and replace with 0
 pivoted[is.na(pivoted)] <- 0
 
 kable(head(pivoted))
