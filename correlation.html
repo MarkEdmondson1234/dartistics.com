@@ -522,16 +522,8 @@ kable(cor(web_data_metrics))</code></pre>
 <h3>Data prep</h3>
 <p>To get the data in the right format, the below code pivots via the <code>reshape2</code> package:</p>
 <pre class="r"><code>## use tidyverse to pivot the data
-library(dplyr)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(tidyr)
+library(dplyr)
+library(tidyr)
 
 ## get only desktop rows, and the date, channelGrouping and sessions columns
 pivoted &lt;- web_data %&gt;% 
