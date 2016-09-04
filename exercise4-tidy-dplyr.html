@@ -14,14 +14,14 @@
 <title>Exercise 4 – Tidy / dplyr()</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -96,6 +96,7 @@ button.code-folding-btn:focus {
   outline: none;
 }
 </style>
+
 
 <style type="text/css">
 /* padding for bootstrap navbar */
@@ -474,11 +475,11 @@ div.tocify {
 
 
 <p>This exercise is dependent on the successful completion of <a href="exercise2-io.html">Exercise 2</a>.</p>
-<p>Our <code>webData</code> data is <em>already</em> in a tidy format. When data is <em>not</em> in a tidy format when you get it, the <code>tidyr</code> package has functions to help make it that way. Some day, perhaps we’ll have an exercise to do this!</p>
-<p>For this exercise, complete the following tasks with <code>webData</code>:</p>
+<p>Our <code>web_data</code> data is <em>already</em> in a tidy format. When data is <em>not</em> in a tidy format when you get it, the <code>tidyr</code> package has functions to help make it that way. Some day, perhaps we’ll have an exercise to do this!</p>
+<p>For this exercise, complete the following tasks with <code>web_data</code>:</p>
 <ol style="list-style-type: decimal">
 <li>Calculate the average pageviews per day by channel using the <code>summarise()</code> function in the <code>dplyr</code> package</li>
-<li>Add two columns to <strong>webData</strong> using the <code>mutate()</code> function: <strong>pvs_per_session</strong> and <strong>bounce_rate</strong></li>
+<li>Add two columns to <strong>web_data</strong> using the <code>mutate()</code> function: <strong>pvs_per_session</strong> and <strong>bounce_rate</strong></li>
 <li>Calculate the average bounce rate by <strong>deviceCategory</strong> (be careful with the order of your calculations!).</li>
 </ol>
 <hr />
@@ -488,52 +489,52 @@ div.tocify {
 <div id="average-pageviews" class="section level2">
 <h2>1. Average Pageviews</h2>
 <p>To get the averages for each combination of <strong>deviceCategory</strong> and <strong>channelGrouping</strong> we simply use <code>summarise()</code> with <code>group_by</code>:</p>
-<pre class="r"><code>summarise(group_by(webData, deviceCategory, channelGrouping),mean(pageviews))</code></pre>
+<pre class="r"><code>summarise(group_by(web_data, deviceCategory, channelGrouping),mean(pageviews))</code></pre>
 <pre><code>## Source: local data frame [27 x 3]
 ## Groups: deviceCategory [?]
 ## 
-##    deviceCategory channelGrouping mean(pageviews)
-##             &lt;chr&gt;           &lt;chr&gt;           &lt;dbl&gt;
-## 1         desktop         (Other)        108.4413
-## 2         desktop          Direct       2220.2394
-## 3         desktop         Display        576.0329
-## 4         desktop           Email        246.8169
-## 5         desktop  Organic Search       2902.8826
-## 6         desktop     Paid Search       1927.7136
-## 7         desktop        Referral       1401.0094
-## 8         desktop          Social        368.0798
-## 9         desktop           Video        584.2358
-## 10         mobile         (Other)        193.7981
+##    deviceCategory channelGrouping `mean(pageviews)`
+##             &lt;chr&gt;           &lt;chr&gt;             &lt;dbl&gt;
+## 1         desktop         (Other)          108.4413
+## 2         desktop          Direct         2220.2394
+## 3         desktop         Display          576.0329
+## 4         desktop           Email          246.8169
+## 5         desktop  Organic Search         2902.8826
+## 6         desktop     Paid Search         1927.7136
+## 7         desktop        Referral         1401.0094
+## 8         desktop          Social          368.0798
+## 9         desktop           Video          584.2358
+## 10         mobile         (Other)          193.7981
 ## # ... with 17 more rows</code></pre>
-<p>This function uses the <code>group_by</code> function to take the data set (<code>webData</code>) and specify that it should be grouped together by two fields: <strong>deviceCategory</strong> and <strong>channelGrouping</strong>. That, in and of itself, isn’t enough. If we’re going to group by those, then we need to also specify how we want to handle the multiple rows that get collapsed with that grouping.</p>
+<p>This function uses the <code>group_by</code> function to take the data set (<code>web_data</code>) and specify that it should be grouped together by two fields: <strong>deviceCategory</strong> and <strong>channelGrouping</strong>. That, in and of itself, isn’t enough. If we’re going to group by those, then we need to also specify how we want to handle the multiple rows that get collapsed with that grouping.</p>
 <p>For that, we put the <code>group_by()</code> function inside a <code>summarise()</code> function and tell the <code>summarise()</code> function that we want to include <strong>pageviews</strong> as a metric, and we want to collapse the grouped rows by averaging (<code>mean()</code>) <strong>pageviews</strong>.</p>
 <p>We <em>could</em> include multiple metrics in the <code>summarise()</code> function. For instance, if we wanted to t <em>total</em> visits and the <em>average</em> pageviews, we could alter the code slightly:</p>
-<pre class="r"><code>summarise(group_by(webData, deviceCategory, channelGrouping), mean(pageviews),sum(sessions))</code></pre>
+<pre class="r"><code>summarise(group_by(web_data, deviceCategory, channelGrouping), mean(pageviews),sum(sessions))</code></pre>
 <pre><code>## Source: local data frame [27 x 4]
 ## Groups: deviceCategory [?]
 ## 
-##    deviceCategory channelGrouping mean(pageviews) sum(sessions)
-##             &lt;chr&gt;           &lt;chr&gt;           &lt;dbl&gt;         &lt;int&gt;
-## 1         desktop         (Other)        108.4413         10820
-## 2         desktop          Direct       2220.2394        297580
-## 3         desktop         Display        576.0329         88688
-## 4         desktop           Email        246.8169         22350
-## 5         desktop  Organic Search       2902.8826        156144
-## 6         desktop     Paid Search       1927.7136        154535
-## 7         desktop        Referral       1401.0094         75253
-## 8         desktop          Social        368.0798         22434
-## 9         desktop           Video        584.2358         92885
-## 10         mobile         (Other)        193.7981         29115
+##    deviceCategory channelGrouping `mean(pageviews)` `sum(sessions)`
+##             &lt;chr&gt;           &lt;chr&gt;             &lt;dbl&gt;           &lt;int&gt;
+## 1         desktop         (Other)          108.4413           10820
+## 2         desktop          Direct         2220.2394          297580
+## 3         desktop         Display          576.0329           88688
+## 4         desktop           Email          246.8169           22350
+## 5         desktop  Organic Search         2902.8826          156144
+## 6         desktop     Paid Search         1927.7136          154535
+## 7         desktop        Referral         1401.0094           75253
+## 8         desktop          Social          368.0798           22434
+## 9         desktop           Video          584.2358           92885
+## 10         mobile         (Other)          193.7981           29115
 ## # ... with 17 more rows</code></pre>
 </div>
 <div id="add-two-columns" class="section level2">
 <h2>2. Add Two Columns</h2>
-<p>In this case, we’re actually going to modify the <strong>webData</strong> object by adding a couple of calculated columns. This is, really, just like working with an Excel Table and adding columns that are based on existing columns in the table. The <code>mutate()</code> function takes a data set and then adds new columns as specified in the remaining parameters:</p>
-<pre class="r"><code>webData &lt;- mutate(webData, pvs_per_session = pageviews / sessions, 
+<p>In this case, we’re actually going to modify the <strong>web_data</strong> object by adding a couple of calculated columns. This is, really, just like working with an Excel Table and adding columns that are based on existing columns in the table. The <code>mutate()</code> function takes a data set and then adds new columns as specified in the remaining parameters:</p>
+<pre class="r"><code>web_data &lt;- mutate(web_data, pvs_per_session = pageviews / sessions, 
                   bounce_rate = bounces / entrances)
 
 # Display the results: truncated here so that it fits nicely on the screen
-head(webData[c(&quot;date&quot;,&quot;channelGrouping&quot;,&quot;deviceCategory&quot;,
+head(web_data[c(&quot;date&quot;,&quot;channelGrouping&quot;,&quot;deviceCategory&quot;,
                &quot;pvs_per_session&quot;,&quot;bounce_rate&quot;)])</code></pre>
 <pre><code>##         date channelGrouping deviceCategory pvs_per_session bounce_rate
 ## 1 2016-01-01         (Other)        desktop        1.210526   0.7894737
@@ -545,21 +546,21 @@ head(webData[c(&quot;date&quot;,&quot;channelGrouping&quot;,&quot;deviceCategory
 </div>
 <div id="bounce-rate" class="section level2">
 <h2>3. Bounce Rate</h2>
-<p>This is a little bit of a trick question. Since we’ve already calculated the bounce rate and added that as a new column in our <strong>webData</strong> data frame, we may be tempted to simply average those values:</p>
-<pre class="r"><code>summarise(group_by(webData,deviceCategory), mean(bounce_rate))</code></pre>
-<pre><code>## # A tibble: 3 x 2
-##   deviceCategory mean(bounce_rate)
-##            &lt;chr&gt;             &lt;dbl&gt;
-## 1        desktop         0.5614256
-## 2         mobile         0.6041581
-## 3         tablet         0.5981690</code></pre>
+<p>This is a little bit of a trick question. Since we’ve already calculated the bounce rate and added that as a new column in our <strong>web_data</strong> data frame, we may be tempted to simply average those values:</p>
+<pre class="r"><code>summarise(group_by(web_data,deviceCategory), mean(bounce_rate))</code></pre>
+<pre><code>## # A tibble: 3 × 2
+##   deviceCategory `mean(bounce_rate)`
+##            &lt;chr&gt;               &lt;dbl&gt;
+## 1        desktop           0.5614256
+## 2         mobile           0.6041581
+## 3         tablet           0.5981690</code></pre>
 <p>This would be incorrect, though, wouldn’t it? This would be the <em>daily average bounce rate</em>, but we want just the <em>average bounce rate</em>. Note that <em>R is not going to point this out. We still have to use our analytical brains</em>.</p>
 <p>What we need to do is to <em>first</em> summarise the data and sum the metrics we need to use for the bounce rate calculation and <em>then</em> perform the bounce rate calculation. This is where the pipe really starts to come in handy for code readability:</p>
-<pre class="r"><code>summarise(group_by(webData,deviceCategory), 
+<pre class="r"><code>summarise(group_by(web_data,deviceCategory), 
           entrances = sum(entrances), 
           bounces = sum(bounces)) %&gt;%
   mutate(bounce_rate = bounces / entrances)</code></pre>
-<pre><code>## # A tibble: 3 x 4
+<pre><code>## # A tibble: 3 × 4
 ##   deviceCategory entrances bounces bounce_rate
 ##            &lt;chr&gt;     &lt;int&gt;   &lt;int&gt;       &lt;dbl&gt;
 ## 1        desktop    914621  565252   0.6180177
@@ -584,6 +585,7 @@ head(webData[c(&quot;date&quot;,&quot;channelGrouping&quot;,&quot;deviceCategory
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 

@@ -9,17 +9,17 @@ output:
 
 ```{r echo=FALSE}
 # We need to load the file behind the scenes to work with it.
-webData <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE)
+web_data <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE)
 ```
 
 This exercise is dependent on the successful completion of [Exercise 2](exercise2-io.html).
 
-Our `webData` data is _already_ in a tidy format. When data is _not_ in a tidy format when you get it, the `tidyr` package has functions to help make it that way. Some day, perhaps we'll have an exercise to do this!
+Our `web_data` data is _already_ in a tidy format. When data is _not_ in a tidy format when you get it, the `tidyr` package has functions to help make it that way. Some day, perhaps we'll have an exercise to do this!
 
-For this exercise, complete the following tasks with `webData`:
+For this exercise, complete the following tasks with `web_data`:
 
 1. Calculate the average pageviews per day by channel using the `summarise()` function in the `dplyr` package
-2. Add two columns to **webData** using the `mutate()` function: **pvs_per_session** and **bounce_rate**
+2. Add two columns to **web_data** using the `mutate()` function: **pvs_per_session** and **bounce_rate**
 3. Calculate the average bounce rate by **deviceCategory** (be careful with the order of your calculations!).
   
 -------------
@@ -33,41 +33,41 @@ Now, dive into the exercises!
 ## 1. Average Pageviews
 To get the averages for each combination of **deviceCategory** and **channelGrouping** we simply use `summarise()` with `group_by`:
 ```{r}
-summarise(group_by(webData, deviceCategory, channelGrouping),mean(pageviews))
+summarise(group_by(web_data, deviceCategory, channelGrouping),mean(pageviews))
 ```
 
-This function uses the `group_by` function to take the data set (`webData`) and specify that it should be grouped together by two fields: **deviceCategory** and **channelGrouping**. That, in and of itself, isn't enough. If we're going to group by those, then we need to also specify how we want to handle the multiple rows that get collapsed with that grouping.
+This function uses the `group_by` function to take the data set (`web_data`) and specify that it should be grouped together by two fields: **deviceCategory** and **channelGrouping**. That, in and of itself, isn't enough. If we're going to group by those, then we need to also specify how we want to handle the multiple rows that get collapsed with that grouping.
 
 For that, we put the `group_by()` function inside a `summarise()` function and tell the `summarise()` function that we want to include **pageviews** as a metric, and we want to collapse the grouped rows by averaging (`mean()`) **pageviews**.
 
 We _could_ include multiple metrics in the `summarise()` function. For instance, if we wanted to t _total_ visits and the _average_ pageviews, we could alter the code slightly:
 
 ```{r}
-summarise(group_by(webData, deviceCategory, channelGrouping), mean(pageviews),sum(sessions))
+summarise(group_by(web_data, deviceCategory, channelGrouping), mean(pageviews),sum(sessions))
 ```
 
 ## 2. Add Two Columns
-In this case, we're actually going to modify the **webData** object by adding a couple of calculated columns. This is, really, just like working with an Excel Table and adding columns that are based on existing columns in the table. The `mutate()` function takes a data set and then adds new columns as specified in the remaining parameters:
+In this case, we're actually going to modify the **web_data** object by adding a couple of calculated columns. This is, really, just like working with an Excel Table and adding columns that are based on existing columns in the table. The `mutate()` function takes a data set and then adds new columns as specified in the remaining parameters:
 
 ```{r}
-webData <- mutate(webData, pvs_per_session = pageviews / sessions, 
+web_data <- mutate(web_data, pvs_per_session = pageviews / sessions, 
                   bounce_rate = bounces / entrances)
 
 # Display the results: truncated here so that it fits nicely on the screen
-head(webData[c("date","channelGrouping","deviceCategory",
+head(web_data[c("date","channelGrouping","deviceCategory",
                "pvs_per_session","bounce_rate")])
 ```
 
 ## 3. Bounce Rate
-This is a little bit of a trick question. Since we've already calculated the bounce rate and added that as a new column in our **webData** data frame, we may be tempted to simply average those values:
+This is a little bit of a trick question. Since we've already calculated the bounce rate and added that as a new column in our **web_data** data frame, we may be tempted to simply average those values:
 ```{r}
-summarise(group_by(webData,deviceCategory), mean(bounce_rate))
+summarise(group_by(web_data,deviceCategory), mean(bounce_rate))
 ```
 This would be incorrect, though, wouldn't it? This would be the _daily average bounce rate_, but we want just the _average bounce rate_. Note that _R is not going to point this out. We still have to use our analytical brains_.
 
 What we need to do is to _first_ summarise the data and sum the metrics we need to use for the bounce rate calculation and _then_ perform the bounce rate calculation. This is where the pipe really starts to come in handy for code readability:
 ```{r}
-summarise(group_by(webData,deviceCategory), 
+summarise(group_by(web_data,deviceCategory), 
           entrances = sum(entrances), 
           bounces = sum(bounces)) %>%
   mutate(bounce_rate = bounces / entrances)
