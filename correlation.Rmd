@@ -30,7 +30,11 @@ The below example uses the web data dataset used in Exercise 4:
 ## used for kable that makes nice RMarkdown tables
 library(knitr)
 web_data <- read.csv("./data/gadata_example_2.csv", stringsAsFactors = FALSE)
-kable(head(web_data[-1]))
+
+## get rid of first colum as its just row numbers
+web_data <- web_data[, -1]
+
+kable(head(web_data))
 ```
 
 _Quick Review: What all is going on with the simple code above?_
@@ -39,7 +43,7 @@ _Quick Review: What all is going on with the simple code above?_
 * _We're using the `stringsAsFactors` parameter because...we usually just want to do that when reading in data._
 * _`kable()` is a function that is really just used here so that the data displays a little more cleanly on this page. If you're trying this simply within RStudio...you can omit it._
 * _`head()` is a function that (by default) returns only the first six rows of the object._
-* _`web_data[-1]` is "the data." the `-1` is saying "don't show the first column" (you could think of this as `web_data[,-1]`, too)_
+* _`web_data[, -1]` is "the data." the `-1` is saying "don't show the first column" (you could think of this as `web_data[,-1]`, too)_
 
 _Got it? Good. Let's continue with the lesson at hand!_
 
@@ -95,11 +99,13 @@ Take a minute to examine what the `pivoted` data looks like? Is it tidy data? No
 We can plot and correlate all the metrics for an overview. Because we don't want to do _exactly_ the same thing as we did earlier (where's the fun in that?!), let's go ahead and round the correlation coefficients to two decimal places using the `round()` function. Other than that, we'll do exactly what we already did when we were simply correlating the metrics in our data set:
 
 ```{r}
+## can't include the date as its not numeric, so remove
+cor_data <- pivoted[, "date"]
 ## not including first column, so -1 subset
-cor_table <- round(cor(pivoted[-1]),2)
+cor_table <- round(cor(cor_data),2)
 kable(cor_table)
 
-pairs(pivoted[-1])
+pairs(cor_data)
 ```
 
 ### Analysis
