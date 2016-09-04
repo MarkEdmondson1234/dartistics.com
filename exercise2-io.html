@@ -94,6 +94,7 @@ button.code-folding-btn:focus {
 }
 </style>
 
+
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -378,10 +379,10 @@ $(document).ready(function () {
 
 <div id="load-up-some-sample-data" class="section level2">
 <h2>Load Up Some Sample Data</h2>
-<p>We’re going to skip the step of actually pulling data directly using an API (for now), so just download the file at <a href="bit.ly/r_webData">http://bit.ly/r_webData</a>. Upload that file to your working directory, and then load that file into your R environment as an object (data frame) named <code>webData</code>:</p>
-<pre class="r"><code>webData &lt;- read.csv(&quot;gadata_example_2.csv&quot;, stringsAsFactors = FALSE)</code></pre>
+<p>We’re going to skip the step of actually pulling data directly using an API (for now), so just download the file at <a href="bit.ly/r_web_data">http://bit.ly/r_web_data</a>. Upload that file to your working directory, and then load that file into your R environment as an object (data frame) named <code>web_data</code>:</p>
+<pre class="r"><code>web_data &lt;- read.csv(&quot;gadata_example_2.csv&quot;, stringsAsFactors = FALSE)</code></pre>
 <p>We’re not going to dive into why we’re including <code>stringsAsFactors = FALSE</code> at this point. The more comfortable you are with statistics, the more likely the phrase “this factor has three levels” will intuitively mean something to you. Let’s just put it aside for now.</p>
-<p>Double-click on <code>webData</code> in the <strong>Environment</strong> window to view the data like a spreadsheet.</p>
+<p>Double-click on <code>web_data</code> in the <strong>Environment</strong> window to view the data like a spreadsheet.</p>
 <p>Note that the data, if it <em>were</em> in Excel, would be primed and ready to have a pivot table made out of it: each row contains a value for each dimension and for each metric. Put (overly) simply, this is what is referred to as a “tidy” data structure, and conventional wisdom is that this structure is, in the words of Keanu Reeves and Alex Winter, <em>most excellent</em>.</p>
 <p>There are situations where we may want to move a dimension into the columns, certainly, and there are very quick and easy ways to do this, but, if we aim for tidy data as the default, we’ll be in good shape. Luckily, when pulling data from the Google Analytics or Adobe Analytics API, that’s the format the data arrives in.</p>
 <p>That’s really it for this exercise. Now that we have some data loaded up into our environment, though, we can start working with it, which we’ll do in the <a href="exercise3-munging.html">next exercise</a>.</p>
@@ -398,6 +399,7 @@ $(document).ready(function () {
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 
