@@ -484,7 +484,7 @@ tidy(model)</code></pre>
 ## 1 (Intercept) 6.333054e+01 5.7041878936 11.102463 2.027362e-18
 ## 2 impressions 3.905562e-04 0.0001900116  2.055433 4.280121e-02</code></pre>
 <p>The <code>R-squared</code> value is low which specifies the amount of variation explained by the model is low - only 5% of transactions can be attributed to impressions alone. This doesn’t necessarily mean the model is invalid, but does mean predictions will be less accurate.</p>
-<p>We can say transactions are effected by impressions, but can’t accuratly predict how much - lots of other factors are influencing the sale, we can’t say its impressions alone.</p>
+<p>We can say transactions are related to impressions in a measureable way; that <code>0.00039</code> transactions correspond to each impression, or <code>2564</code> impressions for each transaction.</p>
 <p>We plot the data points and the regression line below:</p>
 <pre class="r"><code>## put the linear regression line (not accouting for errors)
 plot(sc_ga_data$impressions, sc_ga_data$transactions)

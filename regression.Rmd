@@ -59,7 +59,7 @@ tidy(model)
 
 The `R-squared` value is low which specifies the amount of variation explained by the model is low - only 5% of transactions can be attributed to impressions alone.  This doesn't necessarily mean the model is invalid, but does mean predictions will be less accurate. 
 
-We can say transactions are effected by impressions, but can't accuratly predict how much - lots of other factors are influencing the sale, we can't say its impressions alone.
+We can say transactions are related to impressions in a measureable way; that `0.00039` transactions correspond to each impression, or `2564` impressions for each transaction.
 
 We plot the data points and the regression line below:
 
