@@ -561,6 +561,16 @@ all_files &lt;- Reduce(rbind, df_list)
 
 ## in one line:
 all_files &lt;- Reduce(rbind, lapply(filenames, read.csv))</code></pre>
+<ol start="8" style="list-style-type: decimal">
+<li>A handy way to get rid of the first column is to use <code>the_data[-1]</code> where <code>the_data</code> is your data.frame. This is equivalent to <code>the_data[,-1]</code></li>
+<li>If you want to include only certain columns from a big dataframe, it can be a bit of a chore to write out all the column names you want to keep rather than dropping the ones you want. Two options: Use <code>library(dplyr)</code> and the <code>select()</code> function that lets you specify dropped columns like <code>select(-notthisone, -notthisonetoo)</code> or in base R use <code>setdiff()</code> against the names:</li>
+</ol>
+<pre class="r"><code>names(mtcars)</code></pre>
+<pre><code>##  [1] &quot;mpg&quot;  &quot;cyl&quot;  &quot;disp&quot; &quot;hp&quot;   &quot;drat&quot; &quot;wt&quot;   &quot;qsec&quot; &quot;vs&quot;   &quot;am&quot;   &quot;gear&quot;
+## [11] &quot;carb&quot;</code></pre>
+<pre class="r"><code>new_data &lt;- mtcars[ , setdiff(names(mtcars), c(&quot;mpg&quot;,&quot;disp&quot;,&quot;drat&quot;))]
+names(new_data)</code></pre>
+<pre><code>## [1] &quot;cyl&quot;  &quot;hp&quot;   &quot;wt&quot;   &quot;qsec&quot; &quot;vs&quot;   &quot;am&quot;   &quot;gear&quot; &quot;carb&quot;</code></pre>
 </div>
 
 

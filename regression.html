@@ -388,7 +388,7 @@ $(document).ready(function () {
 <p>Where <code>y</code> is the metric you want to predict (<em>dependent variable</em>), <code>x</code> the metric you want to use to predict <code>y</code> (<em>regressors/predictors</em>), <code>A</code> being the <em>regression coefficient</em> of variable <code>x</code> and <code>e</code> being the bit not predicted, sometimes called <em>noise</em>.</p>
 <p>This you may also recognise as the equation for a straight line on a x-y plot, where A is the slope and e is the intercept, and that is pretty much what linear regression is, where the technique of least-squares is used to fit a line to some points.</p>
 <blockquote>
-<p>An example applied to digital marketing would be predicting transactions from sessions. The regression coefficient in this case would represent a conversion rate.</p>
+<p>An example applied to digital marketing would be predicting transactions from sessions. The regression coefficient in this case would represent a derived conversion rate.</p>
 </blockquote>
 <p>In R, you create linear regression via the <code>lm()</code> function:</p>
 <pre class="r"><code>model &lt;- lm(transactions ~ sessions, data = webdata)

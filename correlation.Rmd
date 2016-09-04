@@ -100,7 +100,7 @@ We can plot and correlate all the metrics for an overview. Because we don't want
 
 ```{r}
 ## can't include the date as its not numeric, so remove
-cor_data <- pivoted[, "date"]
+cor_data <- pivoted[, -1]
 ## not including first column, so -1 subset
 cor_table <- round(cor(cor_data),2)
 kable(cor_table)

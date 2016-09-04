@@ -89,3 +89,12 @@ all_files <- Reduce(rbind, df_list)
 ## in one line:
 all_files <- Reduce(rbind, lapply(filenames, read.csv))
 ```
+8. A handy way to get rid of the first column is to use `the_data[-1]` where `the_data` is your data.frame.  This is equivalent to `the_data[,-1]`
+9. If you want to include only certain columns from a big dataframe, it can be a bit of a chore to write out all the column names you want to keep rather than dropping the ones you want.  Two options: Use `library(dplyr)` and the `select()` function that lets you specify dropped columns like `select(-notthisone, -notthisonetoo)` or in base R use `setdiff()` against the names:
+
+```{r}
+names(mtcars)
+
+new_data <- mtcars[ , setdiff(names(mtcars), c("mpg","disp","drat"))]
+names(new_data)
+```
