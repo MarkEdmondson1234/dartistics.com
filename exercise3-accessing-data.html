@@ -14,14 +14,14 @@
 <title>Exercise 3 – Accessing Data</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -96,6 +96,7 @@ button.code-folding-btn:focus {
   outline: none;
 }
 </style>
+
 
 <style type="text/css">
 /* padding for bootstrap navbar */
@@ -478,19 +479,19 @@ div.tocify {
 <li>Inspect the entire data set:</li>
 </ol>
 <ul>
-<li>View the data as its own tab in RStudio by double-clicking <code>webData</code> in the <strong>Environment</strong> pane</li>
-<li>View the data in the console by typing <code>webData</code></li>
+<li>View the data as its own tab in RStudio by double-clicking <code>web_data</code> in the <strong>Environment</strong> pane</li>
+<li>View the data in the console by typing <code>web_data</code></li>
 <li>View just the first six rows of data using the <code>head()</code> function</li>
 </ul>
 <ol start="2" style="list-style-type: decimal">
 <li>Use row/column indices to inspect specific values/sets in the data frame:</li>
 </ol>
 <ul>
-<li>Display the element in the 2nd row and 5th column of <code>webData</code></li>
-<li>Display the entire 2nd row of <code>webData</code></li>
-<li>Display the entire 5th column of <code>webData</code></li>
-<li>Mimic the <code>head()</code> function using indices to display the first 6 rows of data in <code>webData</code></li>
-<li>Display the 1st through 6th rows and 2nd through 5th columns of <code>webData</code></li>
+<li>Display the element in the 2nd row and 5th column of <code>web_data</code></li>
+<li>Display the entire 2nd row of <code>web_data</code></li>
+<li>Display the entire 5th column of <code>web_data</code></li>
+<li>Mimic the <code>head()</code> function using indices to display the first 6 rows of data in <code>web_data</code></li>
+<li>Display the 1st through 6th rows and 2nd through 5th columns of <code>web_data</code></li>
 </ul>
 <ol start="3" style="list-style-type: decimal">
 <li>Use column names (and indices) to inspect specific values/sets in the data frame:</li>
@@ -503,18 +504,18 @@ div.tocify {
 <li>Filter/subset the data:</li>
 </ol>
 <ul>
-<li>Create an object called <code>mobileData</code> that includes only the rows from <code>webData</code> where the <code>deviceCategory</code> value is <code>mobile</code></li>
+<li>Create an object called <code>mobileData</code> that includes only the rows from <code>web_data</code> where the <code>deviceCategory</code> value is <code>mobile</code></li>
 <li>Display all of the rows from <code>mobileData</code> where the <code>sessions</code> are greater than 2.000</li>
-<li>Display the same result as in the previous task, but do so using <em>only</em> <code>webData</code> (don’t create an intermediate <code>mobileData</code> object)</li>
+<li>Display the same result as in the previous task, but do so using <em>only</em> <code>web_data</code> (don’t create an intermediate <code>mobileData</code> object)</li>
 <li>Display rows where <code>mobile</code> is the <code>deviceCategory</code>, <code>sessions</code> is greater than 2000, but only display three columns: <code>date</code>, <code>channelGrouping</code>, and <code>sessions</code></li>
 </ul>
 <hr />
 <div id="inspect-the-data" class="section level2">
 <h2>1. Inspect the data</h2>
 <p>Instead of clicking on the object in the <strong>Environment</strong> tab, we can just type the object’s name in the console. Go ahead and do that:</p>
-<pre class="r"><code>webData</code></pre>
+<pre class="r"><code>web_data</code></pre>
 <p>Whoa! We’re not showing the results of that here, as it’s 10,000 rows of material quickly flashing past your eyes. But, often, we just want to get a basic sense of the data structure, so just viewing the first few rows of the data will suffice. We can do that with the <code>head()</code> function (remember: <code>?head()</code> will give you documentation on the function):</p>
-<pre class="r"><code>head(webData)</code></pre>
+<pre class="r"><code>head(web_data)</code></pre>
 <pre><code>##   X       date channelGrouping deviceCategory sessions pageviews entrances
 ## 1 1 2016-01-01         (Other)        desktop       19        23        19
 ## 2 2 2016-01-01         (Other)         mobile      112       162       112
@@ -534,19 +535,19 @@ div.tocify {
 <div id="use-rowcolumn-indices" class="section level2">
 <h2>2. Use Row/Column Indices</h2>
 <p>Let’s look at a single value from this data set: the value in the second row and the fifth column:</p>
-<pre class="r"><code>webData[2,5]</code></pre>
+<pre class="r"><code>web_data[2,5]</code></pre>
 <pre><code>## [1] 112</code></pre>
 <p>Find this value in the data frame that you opened up from the environment (or just find it in the <code>head()</code> data you pulled above). Make sense?</p>
 <p>Now, let’s look at the <em>entire</em> second row.</p>
-<pre class="r"><code>webData[2,]</code></pre>
+<pre class="r"><code>web_data[2,]</code></pre>
 <pre><code>##   X       date channelGrouping deviceCategory sessions pageviews entrances
 ## 2 2 2016-01-01         (Other)         mobile      112       162       112
 ##   bounces
 ## 2      82</code></pre>
 <p>Or, we could look at the entire 5th column (not shown here, but feel free to give it a try):</p>
-<pre class="r"><code>webData[,5]</code></pre>
-<p>We can also look at ranges using these indices. To mimic <code>head(webData)</code>, we can simply specify we want to see all columns for the first six rows of the data:</p>
-<pre class="r"><code>webData[1:6,]</code></pre>
+<pre class="r"><code>web_data[,5]</code></pre>
+<p>We can also look at ranges using these indices. To mimic <code>head(web_data)</code>, we can simply specify we want to see all columns for the first six rows of the data:</p>
+<pre class="r"><code>web_data[1:6,]</code></pre>
 <pre><code>##   X       date channelGrouping deviceCategory sessions pageviews entrances
 ## 1 1 2016-01-01         (Other)        desktop       19        23        19
 ## 2 2 2016-01-01         (Other)         mobile      112       162       112
@@ -562,7 +563,7 @@ div.tocify {
 ## 5     172
 ## 6      77</code></pre>
 <p>Or, if we wanted to look at just the second through fifth columns for the first six rows of data:</p>
-<pre class="r"><code>webData[1:6,2:5]</code></pre>
+<pre class="r"><code>web_data[1:6,2:5]</code></pre>
 <pre><code>##         date channelGrouping deviceCategory sessions
 ## 1 2016-01-01         (Other)        desktop       19
 ## 2 2016-01-01         (Other)         mobile      112
@@ -576,15 +577,15 @@ div.tocify {
 <p>The dicey thing about using numeric indices is that, if the structure of the data changes (e.g., the query of the API gets updated to add a dimension or a metric), the indices may suddenly start referencing the wrong thing.</p>
 <p>Happily, we can use column <em>names</em> to prevent this. If you’ve worked with Excel tables, this will seem somewhat familiar.</p>
 <p>Let’s look at <em>just</em> the <strong>sessions</strong> column:</p>
-<pre class="r"><code>webData$sessions</code></pre>
+<pre class="r"><code>web_data$sessions</code></pre>
 <p>Or, we can combine column names and indices. If we use a column name, then we don’t need to specify a column index, so there is only one value inside the <code>[ ]</code>s:</p>
-<pre class="r"><code>webData$sessions[1:5]</code></pre>
+<pre class="r"><code>web_data$sessions[1:5]</code></pre>
 <pre><code>## [1]  19 112  24 133 345</code></pre>
 </div>
 <div id="filtersubset-the-data" class="section level2">
 <h2>4. Filter/Subset the Data</h2>
 <p>It’s generally more efficient to do as few API calls as possible. That means that, often, we’re pulling a master data set, even though we only want to work on pieces of it at once. In this example, what if we wanted to look at <em>just</em> the mobile data. And, as a small twist, let’s not only isolate the mobile data, but let’s put that data into its own data frame calle <code>mobileData</code>:</p>
-<pre class="r"><code>mobileData &lt;- webData[webData$deviceCategory==&quot;mobile&quot;,]</code></pre>
+<pre class="r"><code>mobileData &lt;- web_data[web_data$deviceCategory==&quot;mobile&quot;,]</code></pre>
 <p>Double-click on the <strong>mobileData* object in your </strong>Environment** to check out this data. (Or, perhaps, view the <code>head()</code> of this new object in your console!)</p>
 <p>What if we wanted to quickly get a list of dates and channels where the channel’s sessions for the day were greater than 2.000 (or 2,000, depending on which continent you are on)? We can perform this on our new <code>mobileData</code> object:</p>
 <pre class="r"><code>mobileData[mobileData$sessions&gt;2000,]</code></pre>
@@ -626,8 +627,8 @@ div.tocify {
 ## 3635      2453    2234
 ## 4540      2073    1809
 ## 4567      2098    1720</code></pre>
-<p>Could we have gotten this same result from our base <code>webData</code> data set? We could – by combining criteria:</p>
-<pre class="r"><code>webData[(webData$sessions&gt;2000 &amp; webData$deviceCategory==&quot;mobile&quot;),]</code></pre>
+<p>Could we have gotten this same result from our base <code>web_data</code> data set? We could – by combining criteria:</p>
+<pre class="r"><code>web_data[(web_data$sessions&gt;2000 &amp; web_data$deviceCategory==&quot;mobile&quot;),]</code></pre>
 <pre><code>##         X       date channelGrouping deviceCategory sessions pageviews
 ## 8       8 2016-01-01         Display         mobile     3266      3772
 ## 33     33 2016-01-02         Display         mobile     2375      2745
@@ -667,7 +668,7 @@ div.tocify {
 ## 4540      2073    1809
 ## 4567      2098    1720</code></pre>
 <p>So far, we’ve been pulling <em>all</em> columns. But, we can also pull a subset of columns by passing a “vector” of column name values that we’ve “combined” with the <code>c()</code> function:</p>
-<pre class="r"><code>webData[(webData$sessions&gt;2000 &amp; webData$deviceCategory==&quot;mobile&quot;),c(&quot;date&quot;,&quot;channelGrouping&quot;,&quot;sessions&quot;)]</code></pre>
+<pre class="r"><code>web_data[(web_data$sessions&gt;2000 &amp; web_data$deviceCategory==&quot;mobile&quot;),c(&quot;date&quot;,&quot;channelGrouping&quot;,&quot;sessions&quot;)]</code></pre>
 <pre><code>##            date channelGrouping sessions
 ## 8    2016-01-01         Display     3266
 ## 33   2016-01-02         Display     2375
@@ -703,6 +704,7 @@ div.tocify {
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 
