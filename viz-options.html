@@ -94,6 +94,7 @@ button.code-folding-btn:focus {
 }
 </style>
 
+
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -376,7 +377,27 @@ $(document).ready(function () {
 </div>
 
 
-
+<p>There are three main options for visualizing data with R. These options are not mutually exclusive, but it’s useful to understand the basics of each.</p>
+<div id="base-r-plots" class="section level2">
+<h2>Base R Plots</h2>
+<p>Base R comes with some basic plotting capabilties. It is useful for quickly visualizing data, but seldom produces visualizations that you would want to include in a final deliverable due to the lack of formatting and control available.</p>
+</div>
+<div id="ggplot2" class="section level2">
+<h2>ggplot2</h2>
+<p>The <code>ggplot2</code> package is the <em>de facto</em> standard visualization package. It was developed by Hadley Wickham and is based on the “grammar of graphics,” which was an academic exercise conducted some time back that looked to break down all of the possible components of a data visualization into component parts, with the idea that, if such an exercise resulted in a finite number of components, then those components could be assembled in a nearly infinite number of ways.</p>
+<p>As it turns out…this works!</p>
+<p>But, <em>it can be confusing</em>.</p>
+<p><code>ggplot</code> also has a concept of “themes.” These are extraordinarily useful. If you’ve ever worked with CSS for HTML or with styles in Microsoft Word (or, to a lesser extent, in Google Docs), then you will get themes pretty easily. They cascade/inherit – just like CSS – so you can define a base theme and then selectively override any aspects you need to for a specific visualization.</p>
+</div>
+<div id="custom-packages" class="section level2">
+<h2>Custom Package(s)</h2>
+<p>For visualizations that fall outside the bounds of ggplot2 (although some of them actually rely on ggplot2 under the hood), there are packages that get developed for a specific type of visualization. A few examples of such packages are:</p>
+<ul>
+<li><code>VennDiagram</code> – as you might expect…it’s a package for rendering Venn diagrams</li>
+<li><code>wordcloud</code> – a package for rendering wordclouds <em>almost</em> as powerful as <a href="http://wordle.net">Wordle</a></li>
+<li><code>corrgram</code> – a package for rendering a grid of correlation plots with options to display the data within each cell as a small scatterplot, as a small piechart, or simply color coded</li>
+</ul>
+</div>
 
 
 
@@ -389,6 +410,7 @@ $(document).ready(function () {
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 
