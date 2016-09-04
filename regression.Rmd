@@ -22,7 +22,7 @@ Where `y` is the metric you want to predict (*dependent variable*), `x` the metr
 
 This you may also recognise as the equation for a straight line on a x-y plot, where A is the slope and e is the intercept, and that is pretty much what linear regression is, where the technique of least-squares is used to fit a line to some points.
 
-> An example applied to digital marketing would be predicting transactions from sessions.  The regression coefficient in this case would represent a conversion rate.
+> An example applied to digital marketing would be predicting transactions from sessions.  The regression coefficient in this case would represent a derived conversion rate.
 
 In R, you create linear regression via the `lm()` function:
 
