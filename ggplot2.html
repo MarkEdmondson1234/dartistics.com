@@ -376,7 +376,128 @@ $(document).ready(function () {
 </div>
 
 
+<p><code>ggplot()</code> is one of the most downloaded R packages and probably the one that bought Hadley to fame.</p>
+<p>The “grammar of graphics” philosophy it supports not only lets you create professional looking plots, but once you have mastered its syntax should encourage you to think about plots in a more structured manner too.</p>
+<p>The syntax does take time to master though, so do take time to check out the <a href="http://docs.ggplot2.org/current/">ggplot2 website</a> and the <a href="http://www.cookbook-r.com/Graphs/">ggplot2 cookbook</a> which will walk you through common tasks. The author still refers to these!</p>
+<div id="grammar-rules" class="section level2">
+<h2>Grammar rules</h2>
+<p><code>ggplot</code> looks to break down a plot into various categories, that you can build up into a whole plot.</p>
+<p>A brief explanation of the components are below:</p>
+<ul>
+<li><em>Data source</em> - its easiest to use a tidy data source in long format</li>
+<li><em>Aesthetics</em> - this specifies which variables in your data will vary and be plotted</li>
+<li><em>Coordinate systems</em> - usually you’ll be in x-y, but polar and more exotic systems are possible</li>
+<li><em>Scales</em> - How your variables map onto the coordinate system (e.g. a log scale)</li>
+<li><em>Statistics</em> - Statistics applied to the data before plotting - most common is binning, such as for histograms, and smoothers such as trend lines</li>
+<li><em>Geoms</em> - Geometric objects, the type of plot to produce. Line charts, bar charts, tiled plots etc.</li>
+</ul>
+<p>Thinking about what you want to produce via the componenets above will get you to your desired plot quicker.</p>
+</div>
+<div id="what-plot-to-do" class="section level2">
+<h2>What plot to do?</h2>
+<p>Another great resource is the <a href="https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf">ggplot2 cheatsheet</a> which groups geoms by the type of data you have.</p>
+<div class="figure">
+<img src="images/ggplot2_geoms.png" />
 
+</div>
+</div>
+<div id="workflow" class="section level2">
+<h2>Workflow</h2>
+<ol style="list-style-type: decimal">
+<li>First get your data ready and tidy. Whilst its possible to use “wide” data, I find it easiest to always start with tidy “long” data, so you can quickly repeat what you have learnt before.</li>
+</ol>
+<pre class="r"><code>## get the web data
+web_data &lt;- read.csv(&quot;./data/gadata_example_2.csv&quot;, stringsAsFactors = FALSE)
+
+## remove row name row
+web_data &lt;- web_data[,-1]
+## to date I have been using reshape2&#39;s melt() to make the long data:
+library(reshape2)
+web_data_long &lt;- melt(web_data)</code></pre>
+<pre><code>## Using date, channelGrouping, deviceCategory as id variables</code></pre>
+<pre class="r"><code>head(web_data_long)</code></pre>
+<pre><code>##         date channelGrouping deviceCategory variable value
+## 1 2016-01-01         (Other)        desktop sessions    19
+## 2 2016-01-01         (Other)         mobile sessions   112
+## 3 2016-01-01         (Other)         tablet sessions    24
+## 4 2016-01-01          Direct        desktop sessions   133
+## 5 2016-01-01          Direct         mobile sessions   345
+## 6 2016-01-01          Direct         tablet sessions   126</code></pre>
+<pre class="r"><code>## but you should (and I) use the newer tidyr() package and use gather() instead:
+library(tidyr)
+## call the key column &#39;variable&#39; and the value colum &#39;value&#39; and 
+## gather all variables apart from date, channelGrouping and deviceCategory
+web_data_tidy &lt;- web_data %&gt;% gather(variable, value, -date, -channelGrouping, -deviceCategory)
+head(web_data_tidy)</code></pre>
+<pre><code>##         date channelGrouping deviceCategory variable value
+## 1 2016-01-01         (Other)        desktop sessions    19
+## 2 2016-01-01         (Other)         mobile sessions   112
+## 3 2016-01-01         (Other)         tablet sessions    24
+## 4 2016-01-01          Direct        desktop sessions   133
+## 5 2016-01-01          Direct         mobile sessions   345
+## 6 2016-01-01          Direct         tablet sessions   126</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Make sure all your columsn are the right class. In this case, I make the date column a <code>Date</code> object.</li>
+</ol>
+<p>You could also choose to make factors out of your categories, as they let you set the order of colours in legends a bit easier.</p>
+<pre class="r"><code>str(web_data_tidy)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    22928 obs. of  5 variables:
+##  $ date           : chr  &quot;2016-01-01&quot; &quot;2016-01-01&quot; &quot;2016-01-01&quot; &quot;2016-01-01&quot; ...
+##  $ channelGrouping: chr  &quot;(Other)&quot; &quot;(Other)&quot; &quot;(Other)&quot; &quot;Direct&quot; ...
+##  $ deviceCategory : chr  &quot;desktop&quot; &quot;mobile&quot; &quot;tablet&quot; &quot;desktop&quot; ...
+##  $ variable       : chr  &quot;sessions&quot; &quot;sessions&quot; &quot;sessions&quot; &quot;sessions&quot; ...
+##  $ value          : int  19 112 24 133 345 126 307 3266 1025 17 ...</code></pre>
+<pre class="r"><code>web_data_tidy$date &lt;- as.Date(web_data_tidy$date)
+
+## we will only look at sessions
+library(dplyr)
+plot_data &lt;- web_data_tidy %&gt;% filter(variable == &quot;sessions&quot;)</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Start up a gg object with a <code>ggplot()</code> call including your data, and any known aesthetics you want to apply to all plots. I tend to also set the theme here, favouring a minimal look:</li>
+</ol>
+<pre class="r"><code>library(ggplot2)
+## I don&#39;t know why, but I always call them gg
+gg &lt;- ggplot(data = plot_data, aes(x = date)) + theme_minimal()</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Now the fun begins - experiment with adding various elements to your <code>gg</code> object using <code>+</code>. Once you have found something you want to keep, assign it to <code>gg</code> and then carry on to the next feature.</li>
+</ol>
+<p>Anything you haven’t specified in the global line, you will need to add in the <code>geom</code> you are adding. Note that because we have put the data in the first line, we don’t need to specify it again.</p>
+<pre class="r"><code>## lets make some line plots
+gg + geom_line(aes(y = value))</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-4-1.png" width="960" /></p>
+<pre class="r"><code>## hmm, too much data in there, lets colour by the channelGroupings
+gg + geom_line(aes(y = value, colour = channelGrouping))</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-4-2.png" width="960" /></p>
+<pre class="r"><code>## we have desktop, mobile and tablet all in there, lets seperate them out with facet
+gg + geom_line(aes(y = value, colour = channelGrouping)) + facet_grid(. ~ deviceCategory)</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-4-3.png" width="960" /></p>
+<pre class="r"><code>## I prefer it one other the other
+gg + geom_line(aes(y = value, colour = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-4-4.png" width="960" /></p>
+<pre class="r"><code>## lets try an area plot
+gg + geom_area(aes(y = value, colour = channelGrouping, group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-4-5.png" width="960" /></p>
+<pre class="r"><code>## ok, lets keep that for now
+gg &lt;- gg + geom_area(aes(y = value, group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
+<p>The point above is to show how modifcations can be quickly added as you try out ideas.</p>
+<p>A little more styling, and we are done with this example:</p>
+<pre class="r"><code>## make the colours nicer
+gg &lt;- gg + scale_fill_brewer(palette = &quot;Paired&quot;)
+## add a title
+gg &lt;- gg + ggtitle(&quot;Sessions per device category&quot;)
+## rename the x and y axis
+gg &lt;- gg + xlab(&quot;Date&quot;) + ylab(&quot;Sessions&quot;)
+## change the legend title
+gg &lt;- gg + guides(fill = guide_legend(title = &quot;Channel Grouping&quot;))
+## put the legend at the bottom
+gg &lt;- gg + theme(legend.position = &quot;bottom&quot;)
+## print the final plot
+gg</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-5-1.png" width="960" /></p>
+<blockquote>
+<p>Disclaimer, I don’t think area plots are very clear but they look pretty ;)</p>
+</blockquote>
+</div>
 
 
 

@@ -422,11 +422,11 @@ abline(h = 900)</code></pre>
 <p>If you pass in a factor, then it will attempt to show a plot suitable for categorical variables, in this case a boxplot.</p>
 <pre class="r"><code>web_data$deviceCategory &lt;- as.factor(web_data$deviceCategory)
 
-plot(web_data[,c(&quot;deviceCategory&quot;,&quot;sessions&quot;)], main = &quot;Box-plot of pageviews&quot;)</code></pre>
+plot(web_data[,c(&quot;deviceCategory&quot;,&quot;sessions&quot;)], main = &quot;Box-plot of pageviews&quot;, outline = FALSE)</code></pre>
 <p><img src="base-plots_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
-<div id="the-function-par" class="section level2">
-<h2>The function par()</h2>
+<div id="the-function-par-and-other-animals" class="section level2">
+<h2>The function par() and other animals</h2>
 <p><code>par()</code> can be used to set a lot of low-level graphical options:</p>
 <pre class="r"><code>## facet plots in a grid
 par(mfrow = c(2,2))
@@ -435,15 +435,21 @@ plot(sc_ga_data$clicks, type = &quot;l&quot;)
 plot(sc_ga_data$position, type = &quot;l&quot;)
 plot(sc_ga_data$impressions, type = &quot;l&quot;)</code></pre>
 <p><img src="base-plots_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<pre class="r"><code>## remobed to reset it again
+<pre class="r"><code>## remember to reset it again
 par(mfrow = c(1,1))</code></pre>
+<p><code>axis()</code> lets you redefine the axis, but you need to remove them first from the plot otherwise it will write over the existing ones.</p>
+<pre class="r"><code>## axes = FALSE gets rid of the axes, ann gets rid of the labels.
+plot(as.Date(sc_ga_data$date), sc_ga_data$sessions, type = &quot;l&quot;, axes = FALSE, ann = FALSE)
+axis(1, as.Date(sc_ga_data$date), labels = format(as.Date(sc_ga_data$date), format = &quot;W%W&quot;))
+title(xlab = &quot;2016 Weeks&quot;)</code></pre>
+<p><img src="base-plots_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 <div id="bar-and-histograms" class="section level2">
 <h2>Bar and histograms</h2>
 <pre class="r"><code>barplot(sc_ga_data$sessions, col = &quot;green&quot;)</code></pre>
-<p><img src="base-plots_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="base-plots_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <pre class="r"><code>hist(sc_ga_data$sessions)</code></pre>
-<p><img src="base-plots_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<p><img src="base-plots_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
 <blockquote>
 <p>Bar plots will plot your data, whilst histograms will plot the frequency distribution</p>
 </blockquote>

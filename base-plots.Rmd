@@ -70,12 +70,12 @@ If you pass in a factor, then it will attempt to show a plot suitable for catego
 ```{r}
 web_data$deviceCategory <- as.factor(web_data$deviceCategory)
 
-plot(web_data[,c("deviceCategory","sessions")], main = "Box-plot of pageviews")
+plot(web_data[,c("deviceCategory","sessions")], main = "Box-plot of pageviews", outline = FALSE)
 
 ```
 
 
-## The function par()
+## The function par() and other animals
 
 `par()` can be used to set a lot of low-level graphical options:
 
@@ -87,8 +87,17 @@ plot(sc_ga_data$clicks, type = "l")
 plot(sc_ga_data$position, type = "l")
 plot(sc_ga_data$impressions, type = "l")
 
-## remobed to reset it again
+## remember to reset it again
 par(mfrow = c(1,1))
+```
+
+`axis()` lets you redefine the axis, but you need to remove them first from the plot otherwise it will write over the existing ones.
+
+```{r}
+## axes = FALSE gets rid of the axes, ann gets rid of the labels.
+plot(as.Date(sc_ga_data$date), sc_ga_data$sessions, type = "l", axes = FALSE, ann = FALSE)
+axis(1, as.Date(sc_ga_data$date), labels = format(as.Date(sc_ga_data$date), format = "W%W"))
+title(xlab = "2016 Weeks")
 ```
 
 ## Bar and histograms
