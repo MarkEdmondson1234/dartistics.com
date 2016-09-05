@@ -54,6 +54,8 @@ web_data_ts <- ts(pivoted[-1], frequency = 7)
 plot(web_data_ts, axes = FALSE)
 ```
 
+
+
 ## Time-series appplications
 
 ### Decomposition
@@ -85,6 +87,14 @@ fc <- forecast(fit)
 plot(fc)
 ```
 
+`HoltWinters()` is a function in base R that also lets you take account of seasonal effects:
+
+```{r}
+fit2 <- HoltWinters(web_data_ts[, "Organic Search"])
+## makes the forecast
+fc2 <- forecast(fit2, h = 25)
+plot(fc2)
+```
 
 ## Converting to xts for some packages
 

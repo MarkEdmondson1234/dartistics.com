@@ -35,7 +35,7 @@ pivoted[is.na(pivoted)] <- 0
 
 Good for time-series.  Click plot to zoom
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library(dygraphs)
 library(xts)
 
@@ -52,7 +52,7 @@ dygraph(web_data_xts)
 
 Includes very handy `ggplotly()` function to turn ggplot objects into interactive versions:
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library(tidyr)
 library(dplyr)
 
@@ -80,16 +80,24 @@ gg <- gg + theme(legend.position = "bottom")
 
 
 library(plotly)
-
 ggplotly(gg)
 
 ```
 
 ### Highcharter
 
-You need to pay to use this commercially, but very nice library with lots of options and shortcuts to plot R objects:
+You need to pay to use this commercially, but very nice library with lots of options and shortcuts to plot R objects - the below is a correlation table:
 
 
+```{r}
+library(highcharter)
+## make a time-series object
+## can't include the date as its not numeric, so remove
+cor_data <- pivoted[, -1]
+## not including first column, so -1 subset
+cor_table <- round(cor(cor_data),2)
 
+hchart(cor_table)
+```
 
 

@@ -582,6 +582,12 @@ fit &lt;- ets(web_data_ts[, &quot;Organic Search&quot;])
 fc &lt;- forecast(fit)
 plot(fc)</code></pre>
 <p><img src="timeseries_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><code>HoltWinters()</code> is a function in base R that also lets you take account of seasonal effects:</p>
+<pre class="r"><code>fit2 &lt;- HoltWinters(web_data_ts[, &quot;Organic Search&quot;])
+## makes the forecast
+fc2 &lt;- forecast(fit2, h = 25)
+plot(fc2)</code></pre>
+<p><img src="timeseries_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 </div>
 <div id="converting-to-xts-for-some-packages" class="section level2">
@@ -608,7 +614,7 @@ model_data &lt;- web_data_xts[,c(&quot;Video&quot;,&quot;Social&quot;,&quot;Dire
 
 impact &lt;- CausalImpact(model_data,  pre.period, post.period)
 plot(impact)</code></pre>
-<p><img src="timeseries_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="timeseries_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <ul>
 <li><em>original</em> - the original response data, with a forecast (blue) of where it should have been in post event period</li>
 <li><em>pointwise</em> - the difference between the forecast and reality per day</li>
