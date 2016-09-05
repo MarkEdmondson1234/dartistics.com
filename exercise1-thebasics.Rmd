@@ -31,7 +31,7 @@ _In R, assignment of values uses `<-`._
 Look in the **Environment** tab in the top right pane, you should now see your variable:
 
 <div style="text-align:center" markdown="1">
-![](exercise1_files/figure_html/ex1_environment.png)
+![](images/exercise1_myvar_2.png)
 </div>
 
 You've just created a variable and stored it in your working space...even though you haven't actually created a script! So, let's do some work with our script.
@@ -40,7 +40,7 @@ You've just created a variable and stored it in your working space...even though
 In the top left pane, enter `myVar <- myVar * 10`. Nothing will happen, because this is just a script. It hasn't been executed yet. Click **Source** to run the script. Now, check out the **Environment** tab:
 
 <div style="text-align:center" markdown="1">
-![](exercise1_files/figure_html/ex1_environment2.png)
+![](images/exercise1_myvar_2.png)
 </div>
 
 This is a simple illustration of working in both the console _and_ the script to work on the same environment.
