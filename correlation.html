@@ -379,13 +379,30 @@ $(document).ready(function () {
 <p>But, still, correlation can be very useful: identifying that a relationship exists can be a great place to start looking for the underlying drivers of that relationship which, ultimately, can lead to an insight than can drive an action!</p>
 <div id="performing-correlation-analysis-in-r" class="section level2">
 <h2>Performing correlation analysis in R</h2>
-<p>The base function <code>cor()</code> will perform correlations on a <code>data.frame</code>.</p>
-<p>The below example uses the web data dataset used in Exercise 4:</p>
+<p>The base function <code>cor()</code> will perform correlations on a <code>data.frame</code>. Let’s give this a go with some data. We’ve got two options here, so choose wisely, grasshopper!</p>
+<div id="option-1-your-data" class="section level3">
+<h3>Option 1: YOUR Data</h3>
+<p>To make this interesting, how about we use your data? If you have a Google account with access to Google Analytics, then follow the instructions to authenticate on the <a href="http://code.markedmondson.me/RWorkshopCopenhagen/analytics-apis.html">Analytics APIs page</a>. Once you’ve done that, then the function below from the <code>googleAnalyticsR</code> package should give you the last 60 days of data for the <code>viewID</code> you enter:</p>
+<pre class="r"><code>start_date &lt;- Sys.Date()-60
+end_date &lt;- Sys.Date()-1
+
+web_data &lt;- google_analytics_4(66876757,
+            date_range = c(start_date,end_date),
+            metrics = c(&quot;sessions&quot;,&quot;pageviews&quot;,&quot;entrances&quot;,&quot;bounces&quot;),
+            dimensions = c(&quot;date&quot;,&quot;channelGrouping&quot;,&quot;deviceCategory&quot;),
+            anti_sample = TRUE)
+
+head(web_data)</code></pre>
+<p>Structurally, the output should look very similar to the table shown in <strong>Option 2</strong> below (note that you didn’t have to remove the first column!).</p>
+</div>
+<div id="option-2-sample-data" class="section level3">
+<h3>Option 2: Sample Data</h3>
+<p>If you don’t have a Google Analytics account or are not able to access it, then you can use the sample data set already downloaded in earlier exercises:</p>
 <pre class="r"><code>## used for kable that makes nice RMarkdown tables
 library(knitr)
 web_data &lt;- read.csv(&quot;./data/gadata_example_2.csv&quot;, stringsAsFactors = FALSE)
 
-## get rid of first colum as its just row numbers
+## get rid of first colum as it&#39;s just row numbers
 web_data &lt;- web_data[, -1]
 
 kable(head(web_data))</code></pre>
@@ -467,7 +484,11 @@ kable(head(web_data))</code></pre>
 <li><em><code>web_data[, -1]</code> is “the data.” the <code>-1</code> is saying “don’t show the first column” (you could think of this as <code>web_data[,-1]</code>, too)</em></li>
 </ul>
 <p><em>Got it? Good. Let’s continue with the lesson at hand!</em></p>
-<p>Correlations will only work with numeric data, so we subset to just those columns, and then run the base R function <code>cor()</code> to see a correlation table:</p>
+</div>
+</div>
+<div id="lets-correlate" class="section level2">
+<h2>Let’s correlate!</h2>
+<p>Correlations will only work with numeric data, so we subset to just those columns and then run the base R function <code>cor()</code> to see a correlation table:</p>
 <pre class="r"><code>web_data_metrics &lt;- web_data[,c(&quot;sessions&quot;,&quot;pageviews&quot;,&quot;entrances&quot;,&quot;bounces&quot;)]
 ## see correlation between all metrics
 kable(cor(web_data_metrics))</code></pre>
@@ -512,11 +533,11 @@ kable(cor(web_data_metrics))</code></pre>
 </tr>
 </tbody>
 </table>
-<p>The table is mirrored in the diagonal and provides the <em>correlation coefficient</em> (aka, “<em>r</em>”) between each pair of values that intersect in the cell. 1 means a perfect correlation, 0 no correlation and -1 means a perfect negative correlation.</p>
+<p>The table is mirrored in the diagonal and provides the <em>correlation coefficient</em> (aka, “<em>r</em>”) between each pair of values that intersect in the cell. 1 means a perfect correlation, 0 means no correlation and -1 means a perfect negative correlation.</p>
 <p><em>Does the R that we’re working on learning today have anything to do with the correlation coefficient <em>r</em>? Well…no. Or, at least, only to the extent that you can use R-the-platform to calculate r-the-correlation-coefficient. Good question, though!</em></p>
 <p>When working with correlations, its always a good idea to view an exploratory plot. A handy function for this is <code>pairs()</code> which creates a scatter plot of all the metrics passed in combination:</p>
 <pre class="r"><code>pairs(web_data_metrics)</code></pre>
-<p><img src="correlation_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="correlation_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>Here you can see the correlation numbers in graphical form. For instance, the high correlation of 0.9999923 between sessions and entrances results in an almost perfect straight line. Since a session starts with an entrance, this makes perfect sense! A correlation of less than 1 may be a quick diagnostic that something is wrong with the tracking.</p>
 </div>
 <div id="how-do-web-channels-correlate" class="section level2">
@@ -766,7 +787,7 @@ kable(cor_table)</code></pre>
 </tbody>
 </table>
 <pre class="r"><code>pairs(cor_data)</code></pre>
-<p><img src="correlation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="correlation_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 <div id="analysis" class="section level3">
 <h3>Analysis</h3>
@@ -779,13 +800,13 @@ kable(cor_table)</code></pre>
 gg &lt;- ggplot(data = pivoted) + theme_minimal() + ggtitle(&quot;Paid (blue) vs Organic (green) search&quot;)
 gg &lt;- gg + geom_line(aes(x = as.Date(date), y = `Paid Search`), col = &quot;blue&quot;)
 gg + geom_line(aes(x = as.Date(date), y = `Organic Search`), col = &quot;green&quot;)</code></pre>
-<p><img src="correlation_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="correlation_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>We can see here the trends do look similar, but with a paid search peak in the first quarter (as we look at this, we might want to consider these spikes as outliers – either simply by the visual or using a more defined method for detecting outlier; it would be quite simple to remove this data from the data set and run the analysis again…but we’re not going to go down that particular rabbit hole right now).</p>
 <pre class="r"><code>library(ggplot2)
 gg &lt;- ggplot(data = pivoted) + theme_minimal() + ggtitle(&quot;Social (red) vs Video (orange)&quot;)
 gg &lt;- gg + geom_line(aes(x = as.Date(date), y = Social), col = &quot;red&quot;)
 gg + geom_line(aes(x = as.Date(date), y = Video), col = &quot;orange&quot;)</code></pre>
-<p><img src="correlation_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="correlation_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>Here, a peak in <strong>Social</strong> late in the year looks to have coincided with a peak in <em>Video</em>: possibly a campaign driving video views?</p>
 </div>
 </div>
@@ -796,7 +817,7 @@ gg + geom_line(aes(x = as.Date(date), y = Video), col = &quot;orange&quot;)</cod
 <p>This can be a powerful way to find if, say, a TV or Display campaign increased SEO traffic over the course of the few weeks following the campaign.</p>
 <p>The below compares paid search on SEO using the <code>ccf()</code> function. The result is the correlation for different lags of days. We can see a correlation at 0 lag at around 0.5, but the correlation increases if you lag the Social trend up to 10 days before.</p>
 <pre class="r"><code>ccf(pivoted$Social, pivoted$Video)</code></pre>
-<p><img src="correlation_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="correlation_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>You could then conclude that Video was having a lagged effect on Social traffic up to 10 days beforehand. But, beware! The nature of cross-correlation is that if both datasets have a similar looking spike, cross-correlation will highlight it. Careful examination of the raw data trends should be performed to verify it. In some cases a smoother line will help get rid of spikes that affect the data (e.g., do the analysis on weekly or monthly data instead of daily). And, of course, there is no substitue for rational thought: if you find a relationship like this, can you explain it rationally? And, if so, can you further analysis to validate that rationalization? <em>(If only R had an <strong>Easy Button</strong> to do the actual thinking, too. Alas!)</em></p>
 </div>
 

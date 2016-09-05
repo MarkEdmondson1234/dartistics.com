@@ -22,16 +22,38 @@ But, still, correlation can be very useful: identifying that a relationship exis
 
 ## Performing correlation analysis in R
 
-The base function `cor()` will perform correlations on a `data.frame`.
+The base function `cor()` will perform correlations on a `data.frame`. Let's give this a go with some data. We've got two options here, so choose wisely, grasshopper!
 
-The below example uses the web data dataset used in Exercise 4:
+### Option 1: YOUR Data
+
+To make this interesting, how about we use your data? If you have a Google account with access to Google Analytics, then follow the instructions to authenticate on the [Analytics APIs page](http://code.markedmondson.me/RWorkshopCopenhagen/analytics-apis.html). Once you've done that, then the function below from the `googleAnalyticsR` package should give you the last 60 days of data for the `viewID` you enter:
+
+```{r eval=FALSE}
+
+start_date <- Sys.Date()-60
+end_date <- Sys.Date()-1
+
+web_data <- google_analytics_4(66876757,
+            date_range = c(start_date,end_date),
+            metrics = c("sessions","pageviews","entrances","bounces"),
+            dimensions = c("date","channelGrouping","deviceCategory"),
+            anti_sample = TRUE)
+
+head(web_data)
+```
+
+Structurally, the output should look very similar to the table shown in **Option 2** below (note that you didn't have to remove the first column!).
+
+### Option 2: Sample Data
+
+If you don't have a Google Analytics account or are not able to access it, then you can use the sample data set already downloaded in earlier exercises:
 
 ```{r message=FALSE}
 ## used for kable that makes nice RMarkdown tables
 library(knitr)
 web_data <- read.csv("./data/gadata_example_2.csv", stringsAsFactors = FALSE)
 
-## get rid of first colum as its just row numbers
+## get rid of first colum as it's just row numbers
 web_data <- web_data[, -1]
 
 kable(head(web_data))
@@ -47,7 +69,9 @@ _Quick Review: What all is going on with the simple code above?_
 
 _Got it? Good. Let's continue with the lesson at hand!_
 
-Correlations will only work with numeric data, so we subset to just those columns, and then run the base R function `cor()` to see a correlation table:
+## Let's correlate!
+
+Correlations will only work with numeric data, so we subset to just those columns and then run the base R function `cor()` to see a correlation table:
 
 ```{r}
 web_data_metrics <- web_data[,c("sessions","pageviews","entrances","bounces")]
@@ -55,7 +79,7 @@ web_data_metrics <- web_data[,c("sessions","pageviews","entrances","bounces")]
 kable(cor(web_data_metrics))
 ```
 
-The table is mirrored in the diagonal and provides the _correlation coefficient_ (aka, "_r_") between each pair of values that intersect in the cell. 1 means a perfect correlation, 0 no correlation and -1 means a perfect negative correlation.
+The table is mirrored in the diagonal and provides the _correlation coefficient_ (aka, "_r_") between each pair of values that intersect in the cell. 1 means a perfect correlation, 0 means no correlation and -1 means a perfect negative correlation.
 
 _Does the R that we're working on learning today have anything to do with the correlation coefficient _r_? Well...no. Or, at least, only to the extent that you can use R-the-platform to calculate r-the-correlation-coefficient. Good question, though!_
 
