@@ -1,16 +1,13 @@
 ---
-title: "Going further"
+title: "Going Further"
 ---
-
-# Suggested next steps
-
 If you would like to continue to enhance your R prowess, here is a suggested subject tree:
 
 1. Master the [Advanced R Hadley book](http://adv-r.had.co.nz/)
-2. Functions - get comfortable writing your own functions for repeatable tasks.
-3. Github - any coder should use some kind of source control, R's integration with Github makes it a natural fit.
-4. Create a package - it doesn't have to appear in CRAN (yet!) but its a small step from sourcing a file of your custom functions to loading your own private library.
-5. Shiny - being able to quickly create interactive webapps when asked for a report is always impressive 
-6. Kaggle - practice your machine learning with public datasets in a friendly competative environment
-7. Advanced packages - get a package on CRAN, or contribute to the development of one on Github.  Start using tests, Travis and coverage
+2. **Functions** - get comfortable writing your own functions for repeatable tasks.
+3. **Github** - any coder should use some kind of source control, R's integration with Github makes it a natural fit.
+4. **Create a package** - it doesn't have to appear in CRAN (yet!) but its a small step from sourcing a file of your custom functions to loading your own private library.
+5. **Shiny** - being able to quickly create interactive webapps when asked for a report is always impressive 
+6. **Kaggle** - practice your machine learning with public datasets in a friendly competitive environment
+7. **Advanced packages** - get a package on CRAN, or contribute to the development of one on Github.  Start using tests, [Travis](https://travis-ci.org/) and coverage
 8. Start using unit tests via `library(testthat)` to ensure robust code.
