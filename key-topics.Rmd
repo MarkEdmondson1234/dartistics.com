@@ -1,4 +1,52 @@
 ---
 title: "Key Topics"
 ---
+Is your brain full? We certainly hope so!
+
+>**Remember**: Rome wasn't built in a day. And "Rome" starts with "R."
+
+R takes time and practice to master. But, hopefully, you've been energized by some of the exercises and examples shared today. Let's do a quick review.
+
+### The Basics
+
+Some of the keys we covered early in the day and then have repeated already to the point that, with luck, they're already seeming intuitive:
+
+* **RStudio vs. R** -- you work in RStudio, but the underlying engine is R. And...each of the four main "panes" in RStudio is useful!
+* **The Console vs. Scripts** -- you will curse VBA for not having this capability, should you ever get back into it!
+* **Packages** -- they have to first be installed (`install.packages()`) and then have to be loaded (`library()`) to use them.
+* **Help!(?)** -- to get help on a function, simply type `?` and then the function name.
+* **Case Sensitivity** -- R is case-sEnsItiVe. This can trip you up. But, it's a good reason to follow a consistent _coding style_.
+* **<-** -- to assign a value (or function) to an object, use `<-` rather than `=`.
+
+### Possibly Starting to Sink In
+
+Beyond the basics, we covered other topics that can take a while to wrap your head around. Keep at it. These are key!
+
+* **Atomic Classes** -- these are different data types, and the main ones are `character()`, `numeric()`, `logical()`, and `Date()`.
+* **Coercion** -- this is simply a fancy way of saying "you can often convert a value from one class to another" using `as.` functions (`as.character()`, `as.numeric()`, etc.)
+* **Vectors** -- vectors are simply a set of values with the same atomic class.
+* **Data Frames** -- data frames are super handy and are like an Excel spreadsheet on steroids; the one catch is that each column in a data frame can only be a single atomic class.
+* **Lists** -- lists are like data frames...but way more confusing. They can be variable length, have nested values, and have all sorts of combinations of classes. They are confusing...but also hold much of the power of R.
+* **Subsetting** -- there are _many_ ways to subset data, including using the `$` operator, using `[]` notation, and doing all manner of things inside those `[]`. There is also `dplyr()`...
+
+### Almost Certainly "More Study Required"
+
+_(Hah! And we called this page "Key Topics!" Are you starting to feel like when you ask for "KPIs" an get 37 metrics in return?)_
+
+Some additional topics that start to move from "making R work" to "making it work efficiently and awesomely:"
+
+* **Tidy Data / dplyr()** -- tidy data is "data that would be very easy to pivot in Excel" (no dimensions across columns).
+* **The pipe** -- if you're using `dplyr()` you can use the `%>%` operator to pass the output of a function in to a subsequent function. Once you get the hang of it, this makes for efficient and readable code.
+* **Untidying Data** -- once you have tidy data, it's very easy to untidy it (or subsets of it) for specific uses; the key to this are the functions in the `tidyr` package.
+* **Analytics APIs** -- it's getting easier and easier to bring data in directly from Google Analytics, the Google Search Console, Adobe Analytics, and more. There are packages for this!
+
+### And...Your Brain Runneth Over
+These remaining topics were covered in the afternoon and are where some of the real, _real_ power of R starts to shine:
+
+* **Modeling the Data** -- R and statistics go hand in hand; even with just base R, you can quickly perform correlations, regressions, categorisation, and more!
+* **Data Visualization** -- while base plotting functions in R are good for quick visualizations, `ggplot2()` is where there starts to be real power in the layout and formatting. The "gg" in `ggplot2()` is for "**g**rammar of **g**raphics," and that grammar can be a bit of a mind-bender.
+* **Outputting the Results** -- RMarkdown has a relatively simple syntax that can be used to output results to slides, to a PDF, to HTML, and more; RShiny lets you build web applications that are actually "reactive" (when the user changes something, the data/visualisations refresh automatically).
+
+_<whew>_ That's about it. Once you've got these "key" topics mastered...you'll realize that your adventure with R has, really, just begun!
+
 

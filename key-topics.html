@@ -362,7 +362,56 @@ $(document).ready(function () {
 </div>
 
 
-
+<p>Is your brain full? We certainly hope so!</p>
+<blockquote>
+<p><strong>Remember</strong>: Rome wasn’t built in a day. And “Rome” starts with “R.”</p>
+</blockquote>
+<p>R takes time and practice to master. But, hopefully, you’ve been energized by some of the exercises and examples shared today. Let’s do a quick review.</p>
+<div id="the-basics" class="section level3">
+<h3>The Basics</h3>
+<p>Some of the keys we covered early in the day and then have repeated already to the point that, with luck, they’re already seeming intuitive:</p>
+<ul>
+<li><strong>RStudio vs. R</strong> – you work in RStudio, but the underlying engine is R. And…each of the four main “panes” in RStudio is useful!</li>
+<li><strong>The Console vs. Scripts</strong> – you will curse VBA for not having this capability, should you ever get back into it!</li>
+<li><strong>Packages</strong> – they have to first be installed (<code>install.packages()</code>) and then have to be loaded (<code>library()</code>) to use them.</li>
+<li><strong>Help!(?)</strong> – to get help on a function, simply type <code>?</code> and then the function name.</li>
+<li><strong>Case Sensitivity</strong> – R is case-sEnsItiVe. This can trip you up. But, it’s a good reason to follow a consistent <em>coding style</em>.</li>
+<li><strong>&lt;-</strong> – to assign a value (or function) to an object, use <code>&lt;-</code> rather than <code>=</code>.</li>
+</ul>
+</div>
+<div id="possibly-starting-to-sink-in" class="section level3">
+<h3>Possibly Starting to Sink In</h3>
+<p>Beyond the basics, we covered other topics that can take a while to wrap your head around. Keep at it. These are key!</p>
+<ul>
+<li><strong>Atomic Classes</strong> – these are different data types, and the main ones are <code>character()</code>, <code>numeric()</code>, <code>logical()</code>, and <code>Date()</code>.</li>
+<li><strong>Coercion</strong> – this is simply a fancy way of saying “you can often convert a value from one class to another” using <code>as.</code> functions (<code>as.character()</code>, <code>as.numeric()</code>, etc.)</li>
+<li><strong>Vectors</strong> – vectors are simply a set of values with the same atomic class.</li>
+<li><strong>Data Frames</strong> – data frames are super handy and are like an Excel spreadsheet on steroids; the one catch is that each column in a data frame can only be a single atomic class.</li>
+<li><strong>Lists</strong> – lists are like data frames…but way more confusing. They can be variable length, have nested values, and have all sorts of combinations of classes. They are confusing…but also hold much of the power of R.</li>
+<li><strong>Subsetting</strong> – there are <em>many</em> ways to subset data, including using the <code>$</code> operator, using <code>[]</code> notation, and doing all manner of things inside those <code>[]</code>. There is also <code>dplyr()</code>…</li>
+</ul>
+</div>
+<div id="almost-certainly-more-study-required" class="section level3">
+<h3>Almost Certainly “More Study Required”</h3>
+<p><em>(Hah! And we called this page “Key Topics!” Are you starting to feel like when you ask for “KPIs” an get 37 metrics in return?)</em></p>
+<p>Some additional topics that start to move from “making R work” to “making it work efficiently and awesomely:”</p>
+<ul>
+<li><strong>Tidy Data / dplyr()</strong> – tidy data is “data that would be very easy to pivot in Excel” (no dimensions across columns).</li>
+<li><strong>The pipe</strong> – if you’re using <code>dplyr()</code> you can use the <code>%&gt;%</code> operator to pass the output of a function in to a subsequent function. Once you get the hang of it, this makes for efficient and readable code.</li>
+<li><strong>Untidying Data</strong> – once you have tidy data, it’s very easy to untidy it (or subsets of it) for specific uses; the key to this are the functions in the <code>tidyr</code> package.</li>
+<li><strong>Analytics APIs</strong> – it’s getting easier and easier to bring data in directly from Google Analytics, the Google Search Console, Adobe Analytics, and more. There are packages for this!</li>
+</ul>
+</div>
+<div id="andyour-brain-runneth-over" class="section level3">
+<h3>And…Your Brain Runneth Over</h3>
+<p>These remaining topics were covered in the afternoon and are where some of the real, <em>real</em> power of R starts to shine:</p>
+<ul>
+<li><strong>Modeling the Data</strong> – R and statistics go hand in hand; even with just base R, you can quickly perform correlations, regressions, categorisation, and more!</li>
+<li><strong>Data Visualization</strong> – while base plotting functions in R are good for quick visualizations, <code>ggplot2()</code> is where there starts to be real power in the layout and formatting. The “gg” in <code>ggplot2()</code> is for “<strong>g</strong>rammar of <strong>g</strong>raphics,” and that grammar can be a bit of a mind-bender.</li>
+<li><strong>Outputting the Results</strong> – RMarkdown has a relatively simple syntax that can be used to output results to slides, to a PDF, to HTML, and more; RShiny lets you build web applications that are actually “reactive” (when the user changes something, the data/visualisations refresh automatically).</li>
+</ul>
+<p><em><whew></em> That’s about it. Once you’ve got these “key” topics mastered…you’ll realize that your adventure with R has, really, just begun!</p>
+</div>
 
 
 
