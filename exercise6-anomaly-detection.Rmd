@@ -1,0 +1,103 @@
+---
+title: "Exercise 6 -- Anomaly Detection"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+
+---
+
+This exercise is dependent on the successful completion of [Exercise 2](exercise2-io.html).
+
+For this exercise, use the `AnomalyDetection` package to identify anomalies in the `web_data` set -- looking for anomalies in each combination of `deviceCategory`-`channelGrouping`:
+
+1. Write a script to look for anomalies in the `sessions` data.
+2. Modify the script to look for anomalies in the `bounceRate`.
+
+Sound intimidating? It's actually fairly simple!
+
+-------------
+
+```{r echo=FALSE, message=FALSE}
+
+# Replicate the results from Exercise 2 so we've got the data
+# We need to work with.
+web_data <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE) 
+```
+
+## 1. Anomalies in Sessions
+
+First, we need to install and load the `AnomalyDetection` package, so type `install.packages("AnomalyDetection")` and, once it's installed, add this line to your script:
+
+The easiest way to do this is to simply build a nested loop to run through each combination of `deviceCategory` and `channelGrouping`. Now, generally, it's better to take advantage of **vectorization** in R and _not use loops at all_...but that's just a hint as to which of your instructors wrote this exercise.
+
+We can do this by getting the unique values of each using the `unique()` function. For now, let's write that code and then just demonstrate that these loops can crank through all the possibilities.
+
+```{r message=FALSE, eval=FALSE}
+# Get vectors with the unique values for each variable
+device_cats <- unique(web_data$deviceCategory)
+channel_grps <- unique(web_data$channelGrouping)
+
+# Start with a loop for each unique value of deviceCategory
+for (d in 1:length(device_cats)){
+  
+  # Then, add a loop within it for each unique channelGrouping
+  for (c in 1:length(channel_grps)){
+    
+    # For now, let's just print all the values this loop creates.
+    # the \n is just a new line indicator
+    cat("deviceCategory =",
+        device_cats[d],
+        "and channelGrouping =",
+        channel_grps[c],
+        "\n",sep=" ")
+  }
+}
+```
+
+If you run that, you should see a list of all combinations of `deviceCategory` and `channelGrouping`
+
+Now, let's right a separate bit of code just to prove to ourself that we can pull a subset of data that is _just_ the sessions for a given pair of values for these two variables. You can put this in place of the `cat()` function and just **Run** these new lines to try it out. Ultimately, we'll swap these rows out for the dynamic loop values:
+
+```{r message=FALSE}
+# We'll need dplyr
+library(dplyr)
+
+# Filter the data to only include a specified deviceCategory and 
+# channelGrouping (we'll make these dynamic in a bit) and pull just
+# the date, deviceCategory, channelGrouping, and sessions
+current_data <- filter(web_data,
+                       deviceCategory=="mobile",
+                       channelGrouping=="Email") %>%
+  select(date, deviceCategory, channelGrouping, sessions)
+
+head(current_data)
+
+```
+
+So, good. That works! So, now, let's do three things:
+
+1. Add the `AnomalyDetection` package
+2. Run the `$sessions` data through the `AnomalyDetectionTs()` (time-series) function.
+
+We just need to make a couple of updates to the code:
+
+```{r message=FALSE}
+# We'll need dplyr and AnomalyDetection
+library(dplyr)
+library(AnomalyDetection)
+
+# Filter the data to only include a specified deviceCategory and 
+# channelGrouping, and convert the date to POSIXct
+current_data <- filter(web_data,
+                       deviceCategory=="mobile",
+                       channelGrouping=="Email") %>%
+  select(date, sessions) %>%
+  mutate(date2 = as.POSIXct(date)) %>%
+  select(date2, sessions)
+
+# Run anomaly detection on the data
+AnomalyDetectionTs(current_data, direction = "both", plot=TRUE)
+
+```
+

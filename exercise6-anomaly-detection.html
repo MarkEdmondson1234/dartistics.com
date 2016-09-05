@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Exercise 6 – Anomaly Detection</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="site_libs/highlight/default.css"
+      type="text/css" />
+<script src="site_libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.9em;
+  padding-left: 5px;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R Masterclass</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Overview
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="intros.html">Introductions</a>
+    </li>
+    <li>
+      <a href="whatisr.html">What Is R?</a>
+    </li>
+    <li>
+      <a href="example1.html">Example: Trending</a>
+    </li>
+    <li>
+      <a href="example2.html">Example: Data Explorer</a>
+    </li>
+    <li>
+      <a href="example3.html">Example: Venn Diagram</a>
+    </li>
+    <li>
+      <a href="example4.html">Example: GA Effect</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Exercises
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="exercise1-thebasics.html">1. The Basic Basics</a>
+    </li>
+    <li>
+      <a href="exercise2-io.html">2. I/O</a>
+    </li>
+    <li>
+      <a href="exercise3-accessing-data.html">3. Accessing Data</a>
+    </li>
+    <li>
+      <a href="exercise4-tidy-dplyr.html">4. Tidy Data / dplyr()</a>
+    </li>
+    <li>
+      <a href="exercise5-correlation.html">5. Correlation</a>
+    </li>
+    <li>
+      <a href="exercise6-regression.html">6. Regression</a>
+    </li>
+    <li>
+      <a href="exercise7-visualisation.html">7. Visualisation</a>
+    </li>
+    <li>
+      <a href="exercise8-rmarkdown.html">8. RMarkdown</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Basics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="rstudio.html">RStudio</a>
+    </li>
+    <li>
+      <a href="packages.html">Packages</a>
+    </li>
+    <li>
+      <a href="import-csv-excel.html">CSV import</a>
+    </li>
+    <li>
+      <a href="basics-base_r.html">Basics of Base R</a>
+    </li>
+    <li>
+      <a href="classes.html">R Classes</a>
+    </li>
+    <li>
+      <a href="accessing.html">Accessing elements</a>
+    </li>
+    <li>
+      <a href="tidyverse.html">Tidy data / Tidyverse</a>
+    </li>
+    <li>
+      <a href="dplyr.html">dplyr()</a>
+    </li>
+    <li>
+      <a href="habits.html">Good habits</a>
+    </li>
+    <li class="dropdown-header">  Input</li>
+    <li>
+      <a href="analytics-apis.html">Analytics APIs</a>
+    </li>
+    <li>
+      <a href="excel.html">Microsoft Excel(!)</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="modelling-intro.html">Introduction</a>
+    </li>
+    <li>
+      <a href="correlation.html">Correlation</a>
+    </li>
+    <li>
+      <a href="regression.html">Regression</a>
+    </li>
+    <li>
+      <a href="timeseries.html">Time-series</a>
+    </li>
+    <li>
+      <a href="categorisation.html">Categorisation</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Output
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">  Visualisation</li>
+    <li>
+      <a href="viz-options.html">Visualisation Options</a>
+    </li>
+    <li>
+      <a href="base-plots.html">Base Plots</a>
+    </li>
+    <li>
+      <a href="ggplot2.html">ggplot2()</a>
+    </li>
+    <li>
+      <a href="htmlwidgets.html">htmlwidgets()</a>
+    </li>
+    <li class="dropdown-header">  Presentation</li>
+    <li>
+      <a href="rmarkdown.html">RMarkdown</a>
+    </li>
+    <li>
+      <a href="shiny.html">Shiny</a>
+    </li>
+    <li>
+      <a href="rmarkdown-shiny.html">RMarkdown + Shiny</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Wrap-Up
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="key-topics.html">Key topics</a>
+    </li>
+    <li>
+      <a href="github.html">GitHub</a>
+    </li>
+    <li>
+      <a href="best-practice.html">Best practices</a>
+    </li>
+    <li>
+      <a href="going-further.html">Going further</a>
+    </li>
+    <li>
+      <a href="resources.html">Additional Resources</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Exercise 6 – Anomaly Detection</h1>
+
+</div>
+
+
+<p>This exercise is dependent on the successful completion of <a href="exercise2-io.html">Exercise 2</a>.</p>
+<p>For this exercise, use the <code>AnomalyDetection</code> package to identify anomalies in the <code>web_data</code> set – looking for anomalies in each combination of <code>deviceCategory</code>-<code>channelGrouping</code>:</p>
+<ol style="list-style-type: decimal">
+<li>Write a script to look for anomalies in the <code>sessions</code> data.</li>
+<li>Modify the script to look for anomalies in the <code>bounceRate</code>.</li>
+</ol>
+<p>Sound intimidating? It’s actually fairly simple!</p>
+<hr />
+<div id="anomalies-in-sessions" class="section level2">
+<h2>1. Anomalies in Sessions</h2>
+<p>First, we need to install and load the <code>AnomalyDetection</code> package, so type <code>install.packages(&quot;AnomalyDetection&quot;)</code> and, once it’s installed, add this line to your script:</p>
+<p>The easiest way to do this is to simply build a nested loop to run through each combination of <code>deviceCategory</code> and <code>channelGrouping</code>. Now, generally, it’s better to take advantage of <strong>vectorization</strong> in R and <em>not use loops at all</em>…but that’s just a hint as to which of your instructors wrote this exercise.</p>
+<p>We can do this by getting the unique values of each using the <code>unique()</code> function. For now, let’s write that code and then just demonstrate that these loops can crank through all the possibilities.</p>
+<pre class="r"><code># Get vectors with the unique values for each variable
+device_cats &lt;- unique(web_data$deviceCategory)
+channel_grps &lt;- unique(web_data$channelGrouping)
+
+# Start with a loop for each unique value of deviceCategory
+for (d in 1:length(device_cats)){
+  
+  # Then, add a loop within it for each unique channelGrouping
+  for (c in 1:length(channel_grps)){
+    
+    # For now, let&#39;s just print all the values this loop creates.
+    # the \n is just a new line indicator
+    cat(&quot;deviceCategory =&quot;,
+        device_cats[d],
+        &quot;and channelGrouping =&quot;,
+        channel_grps[c],
+        &quot;\n&quot;,sep=&quot; &quot;)
+  }
+}</code></pre>
+<p>If you run that, you should see a list of all combinations of <code>deviceCategory</code> and <code>channelGrouping</code></p>
+<p>Now, let’s right a separate bit of code just to prove to ourself that we can pull a subset of data that is <em>just</em> the sessions for a given pair of values for these two variables. You can put this in place of the <code>cat()</code> function and just <strong>Run</strong> these new lines to try it out. Ultimately, we’ll swap these rows out for the dynamic loop values:</p>
+<pre class="r"><code># We&#39;ll need dplyr
+library(dplyr)
+
+# Filter the data to only include a specified deviceCategory and 
+# channelGrouping (we&#39;ll make these dynamic in a bit) and pull just
+# the date, deviceCategory, channelGrouping, and sessions
+current_data &lt;- filter(web_data,
+                       deviceCategory==&quot;mobile&quot;,
+                       channelGrouping==&quot;Email&quot;) %&gt;%
+  select(date, deviceCategory, channelGrouping, sessions)
+
+head(current_data)</code></pre>
+<pre><code>##         date deviceCategory channelGrouping sessions
+## 1 2016-01-01         mobile           Email       27
+## 2 2016-01-02         mobile           Email       37
+## 3 2016-01-03         mobile           Email       26
+## 4 2016-01-04         mobile           Email       24
+## 5 2016-01-05         mobile           Email       21
+## 6 2016-01-06         mobile           Email      264</code></pre>
+<p>So, good. That works! So, now, let’s do three things:</p>
+<ol style="list-style-type: decimal">
+<li>Add the <code>AnomalyDetection</code> package</li>
+<li>Run the <code>$sessions</code> data through the <code>AnomalyDetectionTs()</code> (time-series) function.</li>
+</ol>
+<p>We just need to make a couple of updates to the code:</p>
+<pre class="r"><code># We&#39;ll need dplyr and AnomalyDetection
+library(dplyr)
+library(AnomalyDetection)
+
+# Filter the data to only include a specified deviceCategory and 
+# channelGrouping, and convert the date to POSIXct
+current_data &lt;- filter(web_data,
+                       deviceCategory==&quot;mobile&quot;,
+                       channelGrouping==&quot;Email&quot;) %&gt;%
+  select(date, sessions) %&gt;%
+  mutate(date2 = as.POSIXct(date)) %&gt;%
+  select(date2, sessions)
+
+# Run anomaly detection on the data
+AnomalyDetectionTs(current_data, direction = &quot;both&quot;, plot=TRUE)</code></pre>
+<pre><code>## $anoms
+##     timestamp anoms
+## 1  2016-01-06   264
+## 2  2016-01-11   604
+## 3  2016-01-22   448
+## 4  2016-02-05   212
+## 5  2016-02-09   170
+## 6  2016-02-11   208
+## 7  2016-02-17   337
+## 8  2016-02-24  1531
+## 9  2016-02-25   516
+## 10 2016-03-03   183
+## 11 2016-03-15   264
+## 12 2016-04-15   203
+## 13 2016-05-03   185
+## 14 2016-05-16   240
+## 15 2016-06-06   251
+## 16 2016-06-13   365
+## 17 2016-06-16   287
+## 18 2016-07-05   174
+## 19 2016-07-21   424
+## 20 2016-07-28   784
+## 21 2016-07-29   211
+## 
+## $plot</code></pre>
+<p><img src="exercise6-anomaly-detection_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
