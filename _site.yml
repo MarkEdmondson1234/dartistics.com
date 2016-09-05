@@ -76,11 +76,6 @@ navbar:
         href: ggplot2.html
       - text: "htmlwidgets()"
         href: htmlwidgets.html
-      - text: "  Presentation"
-      - text: "RMarkdown"
-        href: rmarkdown.html
-      - text: "Shiny"
-        href: shiny.html
       - text: "RMarkdown + Shiny"
         href: rmarkdown-shiny.html
     - text: "Wrap-Up"

@@ -308,13 +308,6 @@ $(document).ready(function () {
     <li>
       <a href="htmlwidgets.html">htmlwidgets()</a>
     </li>
-    <li class="dropdown-header">  Presentation</li>
-    <li>
-      <a href="rmarkdown.html">RMarkdown</a>
-    </li>
-    <li>
-      <a href="shiny.html">Shiny</a>
-    </li>
     <li>
       <a href="rmarkdown-shiny.html">RMarkdown + Shiny</a>
     </li>
@@ -361,6 +354,43 @@ $(document).ready(function () {
 </div>
 
 
+<div id="rmarkdown" class="section level1">
+<h1>RMarkdown</h1>
+<p>This website is generated using RMarkdown.</p>
+<p>RMarkdown is great for creating quick professional looking reports, with embedded R function output with or without the code that created them.</p>
+<p>You can schedule reports by scheduling the RMarkdown document like you would any R script.</p>
+<p>Options include PDFs, HTML, MS Word, Slides, books, websites (like this one).</p>
+<p>The default RMarkdown document has the below text:</p>
+<div id="r-markdown" class="section level2">
+<h2>R Markdown</h2>
+<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
+<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
+<pre class="r"><code>summary(cars)</code></pre>
+<pre><code>##      speed           dist       
+##  Min.   : 4.0   Min.   :  2.00  
+##  1st Qu.:12.0   1st Qu.: 26.00  
+##  Median :15.0   Median : 36.00  
+##  Mean   :15.4   Mean   : 42.98  
+##  3rd Qu.:19.0   3rd Qu.: 56.00  
+##  Max.   :25.0   Max.   :120.00</code></pre>
+</div>
+<div id="including-plots" class="section level2">
+<h2>Including Plots</h2>
+<p>You can also embed plots, for example:</p>
+<p><img src="rmarkdown-shiny_files/figure-html/pressure-1.png" width="672" /></p>
+<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
+</div>
+</div>
+<div id="shiny" class="section level1">
+<h1>Shiny</h1>
+<p><a href="http://shiny.rstudio.com/">Shiny</a> is a web application framework for R, produced by RStudio.</p>
+<p>A Shiny app usually has two files, <code>server.R</code> and <code>ui.R</code>. These take care of the web server backend and the HTML frontend, respectivily.</p>
+<p>To run a Shiny app you need to have a Shiny server running. RStudio comes with one pre-installed for running your apps locally, but for publishing you will need to install Shiny server or host via <code>shinyapps.io</code>.</p>
+<p>Shiny apps use a functionality called <em>reactivity</em> that means that apps can be quick and responsive to changes to inputs - this is one of the best features of Excel, where changing one cell can have consequences throughout the Workbook.</p>
+<p>Shiny apps can be tricky to get your head around due to its different work flow from normal R programs, its recommended to go through the <a href="http://shiny.rstudio.com/tutorial/">tutorials online</a>.</p>
+</div>
+<div id="combinging-rmarkdown-and-shiny" class="section level1">
+<h1>Combinging RMarkdown and Shiny</h1>
 <p>A recent development is the ability to put Shiny elements into an RMarkdown document.</p>
 <p>These documents again need a Shiny server to run, but takes advatage of the easy formatting of RMarkdown to present the user interface - server and UI elements sit in the same document.</p>
 <ul>
@@ -368,6 +398,7 @@ $(document).ready(function () {
 <li><em>Shiny</em> - supplied reactive components within your RMarkdown</li>
 </ul>
 <p>An example RMarkdown document with a Shiny element taking care of authentication can be found here: <a href="http://shiny.rstudio.com/tutorial/" class="uri">http://shiny.rstudio.com/tutorial/</a></p>
+</div>
 
 
 

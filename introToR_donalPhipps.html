@@ -310,13 +310,6 @@ $(document).ready(function () {
     <li>
       <a href="htmlwidgets.html">htmlwidgets()</a>
     </li>
-    <li class="dropdown-header">  Presentation</li>
-    <li>
-      <a href="rmarkdown.html">RMarkdown</a>
-    </li>
-    <li>
-      <a href="shiny.html">Shiny</a>
-    </li>
     <li>
       <a href="rmarkdown-shiny.html">RMarkdown + Shiny</a>
     </li>
@@ -587,7 +580,7 @@ mat.frame$tens * mat.frame$twenties</code></pre>
 <pre class="r"><code>biggie1&lt;-rnorm(100000, 5, 5)
 biggie2&lt;-rnorm(100000, 5, 100)
 mean(biggie1)</code></pre>
-<pre><code>## [1] 5.014334</code></pre>
+<pre><code>## [1] 5.008456</code></pre>
 <pre class="r"><code>big.frame&lt;-data.frame(cbind(biggie1,biggie2))
 ggplot(big.frame,aes(x=biggie1,y=biggie2)) + geom_point(alpha=0.04)</code></pre>
 <p><img src="introToR_donalPhipps_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
