@@ -67,7 +67,6 @@ navbar:
         href: categorisation.html
     - text: "Output"
       menu:
-      - text: "  Visualisation"
       - text: "Visualisation Options"
         href: viz-options.html
       - text: "Base Plots"
