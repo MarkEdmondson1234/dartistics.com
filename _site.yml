@@ -56,8 +56,6 @@ navbar:
         href: tidyverse.html
       - text: "dplyr()"
         href: dplyr.html
-      - text: "Good habits"
-        href: habits.html
       - text: "  Input"
       - text: "Analytics APIs"
         href: analytics-apis.html
@@ -99,9 +97,9 @@ navbar:
         href: key-topics.html
       - text: "GitHub"
         href: github.html
-      - text: "Best practices"
-        href: best-practice.html
+      - text: "Good Habits"
+        href: habits.html
       - text: "Going further"
         href: going-further.html
-      - text: "Additional Resources"
-        href: resources.html
+    - text: "R Linkfest"
+      href: resources.html

@@ -14,14 +14,14 @@
 <title>Analytics APIs</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -96,6 +96,7 @@ button.code-folding-btn:focus {
   outline: none;
 }
 </style>
+
 
 <style type="text/css">
 /* padding for bootstrap navbar */
@@ -364,9 +365,6 @@ div.tocify {
     <li>
       <a href="dplyr.html">dplyr()</a>
     </li>
-    <li>
-      <a href="habits.html">Good habits</a>
-    </li>
     <li class="dropdown-header">  Input</li>
     <li>
       <a href="analytics-apis.html">Analytics APIs</a>
@@ -446,15 +444,15 @@ div.tocify {
       <a href="github.html">GitHub</a>
     </li>
     <li>
-      <a href="best-practice.html">Best practices</a>
+      <a href="habits.html">Good Habits</a>
     </li>
     <li>
       <a href="going-further.html">Going further</a>
     </li>
-    <li>
-      <a href="resources.html">Additional Resources</a>
-    </li>
   </ul>
+</li>
+<li>
+  <a href="resources.html">R Linkfest</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -483,29 +481,12 @@ div.tocify {
 <pre class="r"><code>## This installs googleAnalyticsR if you haven&#39;t got it already
 if(!require(googleAnalyticsR)) install.packages(&quot;googleAnalyticsR&quot;)</code></pre>
 <pre><code>## Loading required package: googleAnalyticsR</code></pre>
-<pre><code>## 
-## Auto-auth - .httr-oauth</code></pre>
-<pre><code>## Successfully authenticated via /Users/mark/dev/auth/googleAnalyticsR.httr-oauth</code></pre>
 </div>
 <div id="authentication" class="section level2">
 <h2>Authentication</h2>
 <p>By default you can authenticate using googleAnalyticsR default project:</p>
 <pre class="r"><code>library(googleAnalyticsR)
 ga_auth()</code></pre>
-<pre><code>## 
-## Auto-auth - .httr-oauth</code></pre>
-<pre><code>## Authenticated</code></pre>
-<pre><code>## &lt;Token&gt;
-## &lt;oauth_endpoint&gt;
-##  authorize: https://accounts.google.com/o/oauth2/auth
-##  access:    https://accounts.google.com/o/oauth2/token
-##  validate:  https://www.googleapis.com/oauth2/v1/tokeninfo
-##  revoke:    https://accounts.google.com/o/oauth2/revoke
-## &lt;oauth_app&gt; google
-##   key:    289759286325-da3fr5kq4nl4nkhmhs2uft776kdsggbo.apps.googleusercontent.com
-##   secret: &lt;hidden&gt;
-## &lt;credentials&gt; access_token, token_type, expires_in, refresh_token
-## ---</code></pre>
 <p>Pause here, as the first time it should open a web browser the first time to your Google login.</p>
 <div class="figure">
 <img src="images/google_auth_login.png" />
@@ -518,9 +499,9 @@ ga_auth()</code></pre>
 <h2>Getting your View Id</h2>
 <p>To get your data, you need to specify which Google Analytics View you want to pull it from.</p>
 <p>The easiest way to find this is to use <code>google_analytics_account_list()</code> to list your Views, then read the number in the <code>viewId</code> column:</p>
-<pre class="r"><code>my_accounts &lt;- google_analytics_account_list()</code></pre>
-<pre><code>## Auto-refreshing stale OAuth token.</code></pre>
-<pre class="r"><code>head(my_accounts)</code></pre>
+<pre class="r"><code>my_accounts &lt;- google_analytics_account_list()
+
+head(my_accounts)</code></pre>
 <pre><code>##   accountId         accountName webPropertyId          webPropertyName
 ## 1  79301104             cloudyr UA-79301104-1      the cloudyr project
 ## 2  27488374       Copenhagenish UA-27488374-1            Copenhagenish
@@ -753,6 +734,7 @@ head(bq)
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 

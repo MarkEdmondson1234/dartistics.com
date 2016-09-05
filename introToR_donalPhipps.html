@@ -96,6 +96,7 @@ button.code-folding-btn:focus {
 }
 </style>
 
+
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -269,9 +270,6 @@ $(document).ready(function () {
     <li>
       <a href="dplyr.html">dplyr()</a>
     </li>
-    <li>
-      <a href="habits.html">Good habits</a>
-    </li>
     <li class="dropdown-header">  Input</li>
     <li>
       <a href="analytics-apis.html">Analytics APIs</a>
@@ -351,15 +349,15 @@ $(document).ready(function () {
       <a href="github.html">GitHub</a>
     </li>
     <li>
-      <a href="best-practice.html">Best practices</a>
+      <a href="habits.html">Good Habits</a>
     </li>
     <li>
       <a href="going-further.html">Going further</a>
     </li>
-    <li>
-      <a href="resources.html">Additional Resources</a>
-    </li>
   </ul>
+</li>
+<li>
+  <a href="resources.html">R Linkfest</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -394,7 +392,7 @@ x</code></pre>
 <h2>Working directory</h2>
 <p>Dangers of setting setwd() in scripts on interportability, perhaps explanation on using RStudio projects</p>
 <pre class="r"><code>getwd()</code></pre>
-<pre><code>## [1] &quot;/Users/mark/dev/R/RWorkshopCopenhagen&quot;</code></pre>
+<pre><code>## [1] &quot;/Users/IIH-Nordic/dev/RWorkshop&quot;</code></pre>
 <pre class="r"><code># setwd()
 list.files()</code></pre>
 <pre><code>##   [1] &quot;_site.yml&quot;                             
@@ -444,73 +442,77 @@ list.files()</code></pre>
 ##  [45] &quot;exercise5-correlation_files&quot;           
 ##  [46] &quot;exercise5-correlation.html&quot;            
 ##  [47] &quot;exercise5-correlation.Rmd&quot;             
-##  [48] &quot;exercise6-regression.html&quot;             
-##  [49] &quot;exercise6-regression.Rmd&quot;              
-##  [50] &quot;exercise7-visualisation.html&quot;          
-##  [51] &quot;exercise7-visualisation.Rmd&quot;           
-##  [52] &quot;exercise8-rmarkdown.html&quot;              
-##  [53] &quot;exercise8-rmarkdown.Rmd&quot;               
-##  [54] &quot;ggplot2_files&quot;                         
-##  [55] &quot;ggplot2.html&quot;                          
-##  [56] &quot;ggplot2.Rmd&quot;                           
-##  [57] &quot;github.html&quot;                           
-##  [58] &quot;github.Rmd&quot;                            
-##  [59] &quot;going-further.html&quot;                    
-##  [60] &quot;going-further.Rmd&quot;                     
-##  [61] &quot;habits.html&quot;                           
-##  [62] &quot;habits.Rmd&quot;                            
-##  [63] &quot;htmlwidgets.html&quot;                      
-##  [64] &quot;htmlwidgets.Rmd&quot;                       
-##  [65] &quot;images&quot;                                
-##  [66] &quot;import-csv-excel.html&quot;                 
-##  [67] &quot;import-csv-excel.Rmd&quot;                  
-##  [68] &quot;index.html&quot;                            
-##  [69] &quot;index.knit.html&quot;                       
-##  [70] &quot;index.Rmd&quot;                             
-##  [71] &quot;intros_twitter_wordcloud_usernames.csv&quot;
-##  [72] &quot;intros_twitter_wordcloud.R&quot;            
-##  [73] &quot;intros-wordcloud&quot;                      
-##  [74] &quot;intros.html&quot;                           
-##  [75] &quot;intros.Rmd&quot;                            
-##  [76] &quot;introToR_donalPhipps_files&quot;            
-##  [77] &quot;introToR_donalPhipps.html&quot;             
-##  [78] &quot;introToR_donalPhipps.R&quot;                
-##  [79] &quot;introToR_donalPhipps.Rmd&quot;              
-##  [80] &quot;key-topics.html&quot;                       
-##  [81] &quot;key-topics.Rmd&quot;                        
-##  [82] &quot;modelling-intro_files&quot;                 
-##  [83] &quot;modelling-intro.html&quot;                  
-##  [84] &quot;modelling-intro.Rmd&quot;                   
-##  [85] &quot;packages.html&quot;                         
-##  [86] &quot;packages.Rmd&quot;                          
-##  [87] &quot;pullGAData.R&quot;                          
-##  [88] &quot;README.html&quot;                           
-##  [89] &quot;README.md&quot;                             
-##  [90] &quot;regression_files&quot;                      
-##  [91] &quot;regression.html&quot;                       
-##  [92] &quot;regression.Rmd&quot;                        
-##  [93] &quot;resources.html&quot;                        
-##  [94] &quot;resources.Rmd&quot;                         
-##  [95] &quot;rmarkdown_files&quot;                       
-##  [96] &quot;rmarkdown-shiny.html&quot;                  
-##  [97] &quot;rmarkdown-shiny.Rmd&quot;                   
-##  [98] &quot;rmarkdown.html&quot;                        
-##  [99] &quot;rmarkdown.Rmd&quot;                         
-## [100] &quot;rstudio.html&quot;                          
-## [101] &quot;rstudio.Rmd&quot;                           
-## [102] &quot;RWorkshopCopenhagen.Rproj&quot;             
-## [103] &quot;shiny.html&quot;                            
-## [104] &quot;shiny.Rmd&quot;                             
-## [105] &quot;site_libs&quot;                             
-## [106] &quot;tidyverse.html&quot;                        
-## [107] &quot;tidyverse.Rmd&quot;                         
-## [108] &quot;timeseries_files&quot;                      
-## [109] &quot;timeseries.html&quot;                       
-## [110] &quot;timeseries.Rmd&quot;                        
-## [111] &quot;viz-options.html&quot;                      
-## [112] &quot;viz-options.Rmd&quot;                       
-## [113] &quot;whatisr.html&quot;                          
-## [114] &quot;whatisr.Rmd&quot;</code></pre>
+##  [48] &quot;exercise6-anomaly-detection_files&quot;     
+##  [49] &quot;exercise6-anomaly-detection.html&quot;      
+##  [50] &quot;exercise6-anomaly-detection.Rmd&quot;       
+##  [51] &quot;exercise6-regression.html&quot;             
+##  [52] &quot;exercise6-regression.Rmd&quot;              
+##  [53] &quot;exercise7-visualisation.html&quot;          
+##  [54] &quot;exercise7-visualisation.Rmd&quot;           
+##  [55] &quot;exercise8-rmarkdown.html&quot;              
+##  [56] &quot;exercise8-rmarkdown.Rmd&quot;               
+##  [57] &quot;ggplot2_files&quot;                         
+##  [58] &quot;ggplot2.html&quot;                          
+##  [59] &quot;ggplot2.Rmd&quot;                           
+##  [60] &quot;github.html&quot;                           
+##  [61] &quot;github.Rmd&quot;                            
+##  [62] &quot;going-further.html&quot;                    
+##  [63] &quot;going-further.Rmd&quot;                     
+##  [64] &quot;habits.html&quot;                           
+##  [65] &quot;habits.Rmd&quot;                            
+##  [66] &quot;htmlwidgets.html&quot;                      
+##  [67] &quot;htmlwidgets.Rmd&quot;                       
+##  [68] &quot;images&quot;                                
+##  [69] &quot;import-csv-excel.html&quot;                 
+##  [70] &quot;import-csv-excel.Rmd&quot;                  
+##  [71] &quot;index.html&quot;                            
+##  [72] &quot;index.knit.html&quot;                       
+##  [73] &quot;index.Rmd&quot;                             
+##  [74] &quot;intros_twitter_wordcloud_usernames.csv&quot;
+##  [75] &quot;intros_twitter_wordcloud.R&quot;            
+##  [76] &quot;intros-wordcloud&quot;                      
+##  [77] &quot;intros.html&quot;                           
+##  [78] &quot;intros.Rmd&quot;                            
+##  [79] &quot;introToR_donalPhipps_files&quot;            
+##  [80] &quot;introToR_donalPhipps.html&quot;             
+##  [81] &quot;introToR_donalPhipps.R&quot;                
+##  [82] &quot;introToR_donalPhipps.Rmd&quot;              
+##  [83] &quot;key-topics.html&quot;                       
+##  [84] &quot;key-topics.Rmd&quot;                        
+##  [85] &quot;modelling-intro_files&quot;                 
+##  [86] &quot;modelling-intro.html&quot;                  
+##  [87] &quot;modelling-intro.Rmd&quot;                   
+##  [88] &quot;packages.html&quot;                         
+##  [89] &quot;packages.Rmd&quot;                          
+##  [90] &quot;pullGAData.R&quot;                          
+##  [91] &quot;README.html&quot;                           
+##  [92] &quot;README.md&quot;                             
+##  [93] &quot;regression_files&quot;                      
+##  [94] &quot;regression.html&quot;                       
+##  [95] &quot;regression.Rmd&quot;                        
+##  [96] &quot;resources.html&quot;                        
+##  [97] &quot;resources.Rmd&quot;                         
+##  [98] &quot;rmarkdown_files&quot;                       
+##  [99] &quot;rmarkdown-shiny.html&quot;                  
+## [100] &quot;rmarkdown-shiny.Rmd&quot;                   
+## [101] &quot;rmarkdown.html&quot;                        
+## [102] &quot;rmarkdown.Rmd&quot;                         
+## [103] &quot;rstudio.html&quot;                          
+## [104] &quot;rstudio.Rmd&quot;                           
+## [105] &quot;RWorkshopCopenhagen.Rproj&quot;             
+## [106] &quot;shiny.html&quot;                            
+## [107] &quot;shiny.Rmd&quot;                             
+## [108] &quot;site_libs&quot;                             
+## [109] &quot;td.csv&quot;                                
+## [110] &quot;tidyverse.html&quot;                        
+## [111] &quot;tidyverse.Rmd&quot;                         
+## [112] &quot;timeseries_files&quot;                      
+## [113] &quot;timeseries.html&quot;                       
+## [114] &quot;timeseries.Rmd&quot;                        
+## [115] &quot;viz-options.html&quot;                      
+## [116] &quot;viz-options.Rmd&quot;                       
+## [117] &quot;whatisr.html&quot;                          
+## [118] &quot;whatisr.Rmd&quot;</code></pre>
 </div>
 <div id="data-types" class="section level2">
 <h2>Data types</h2>
@@ -599,7 +601,7 @@ mat.frame$tens * mat.frame$twenties</code></pre>
 <pre class="r"><code>biggie1&lt;-rnorm(100000, 5, 5)
 biggie2&lt;-rnorm(100000, 5, 100)
 mean(biggie1)</code></pre>
-<pre><code>## [1] 5.00401</code></pre>
+<pre><code>## [1] 4.998128</code></pre>
 <pre class="r"><code>big.frame&lt;-data.frame(cbind(biggie1,biggie2))
 ggplot(big.frame,aes(x=biggie1,y=biggie2)) + geom_point(alpha=0.04)</code></pre>
 <p><img src="introToR_donalPhipps_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
@@ -712,6 +714,7 @@ g + geom_smooth(method = &quot;lm&quot;, se = FALSE)</code></pre>
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 
