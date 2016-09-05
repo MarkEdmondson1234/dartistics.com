@@ -1,3 +1,95 @@
 ---
 title: "HTML Widgets"
 ---
+
+R plots are cool, but interactive R plots are even cooler.
+
+[HTMLwidgets](http://gallery.htmlwidgets.org/) is a library you may not use directly, but enables package  creators to easily port JavScript visualisations to R for display.  Since JavaScript has arguably the best visualisation libraries out there, led by [https://d3js.org/](https://d3js.org/), this opens up many opportunities to link R data with JavaScript interactivity.
+
+A few notable examples are shown below using our example data:
+
+```{r}
+## get the web data
+web_data <- read.csv("./data/gadata_example_2.csv", stringsAsFactors = FALSE)
+
+## remove row name row
+web_data <- web_data[,-1]
+
+library(tidyr)
+library(dplyr)
+## call the key column 'variable' and the value colum 'value' and 
+## gather all variables apart from date, channelGrouping and deviceCategory
+## get only desktop rows, and the date, channelGrouping and sessions columns
+pivoted <- web_data %>% 
+  filter(deviceCategory == "desktop") %>% 
+  select(date, channelGrouping, sessions) %>%
+  spread(channelGrouping, sessions)
+
+## get rid of any NA's and replace with 0
+pivoted[is.na(pivoted)] <- 0
+```
+
+## Plots
+
+### Dygraphs
+
+Good for time-series.  Click plot to zoom
+
+```{r}
+library(dygraphs)
+library(xts)
+
+## dygraph likes date objects
+pivoted$date <- as.Date(pivoted$date)
+
+## dygraph likes xts objects
+web_data_xts <- xts(pivoted[,-1], order.by = pivoted$date)
+
+dygraph(web_data_xts)
+```
+
+### Plot.ly
+
+Includes very handy `ggplotly()` function to turn ggplot objects into interactive versions:
+
+```{r}
+library(tidyr)
+library(dplyr)
+
+## call the key column 'variable' and the value colum 'value' and 
+## gather all variables apart from date, channelGrouping and deviceCategory
+web_data_tidy <- web_data %>% gather(variable, value, -date, -channelGrouping, -deviceCategory)
+web_data_tidy$date <- as.Date(web_data_tidy$date)
+
+plot_data <- web_data_tidy %>% filter(variable == "sessions")
+
+library(ggplot2)
+## I don't know why, but I always call them gg
+gg <- ggplot(data = plot_data, aes(x = date)) + theme_minimal()
+gg <- gg + geom_area(aes(y = value, group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)
+## make the colours nicer
+gg <- gg + scale_fill_brewer(palette = "Paired")
+## add a title
+gg <- gg + ggtitle("Sessions per device category")
+## rename the x and y axis
+gg <- gg + xlab("Date") + ylab("Sessions")
+## change the legend title
+gg <- gg + guides(fill = guide_legend(title = "Channel Grouping"))
+## put the legend at the bottom
+gg <- gg + theme(legend.position = "bottom")
+
+
+library(plotly)
+
+ggplotly(gg)
+
+```
+
+### Highcharter
+
+You need to pay to use this commercially, but very nice library with lots of options and shortcuts to plot R objects:
+
+
+
+
+

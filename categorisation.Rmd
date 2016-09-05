@@ -50,12 +50,8 @@ From this you can see from this data at a glance that for sessions under 300, Ta
 
 # Machine learning
 
-Categorisation is a use case for machine learning, as it utilises self-validation checks to check your categorisatons.  The below two methods are talked about in more length in the blog post, ["Introduction to Machine Learning with Web Analytics: Random Forests and K-Means"](http://markedmondson.me/intro-to-machine-learning-with-web-analytics-random-forests-and-k-means).
+Categorisation is a use case for machine learning, as it utilises self-validation checks to check your categorisatons.  Two methods are talked about in more length in the blog post, ["Introduction to Machine Learning with Web Analytics: Random Forests and K-Means"](http://markedmondson.me/intro-to-machine-learning-with-web-analytics-random-forests-and-k-means).
 
-## Random Forest
-
-
-## K-means
 
 
 

@@ -96,7 +96,6 @@ button.code-folding-btn:focus {
 }
 </style>
 
-
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -380,7 +379,7 @@ x</code></pre>
 <h2>Working directory</h2>
 <p>Dangers of setting setwd() in scripts on interportability, perhaps explanation on using RStudio projects</p>
 <pre class="r"><code>getwd()</code></pre>
-<pre><code>## [1] &quot;/Users/IIH-Nordic/dev/RWorkshop&quot;</code></pre>
+<pre><code>## [1] &quot;/Users/mark/dev/R/RWorkshopCopenhagen&quot;</code></pre>
 <pre class="r"><code># setwd()
 list.files()</code></pre>
 <pre><code>##   [1] &quot;_site.yml&quot;                             
@@ -491,16 +490,15 @@ list.files()</code></pre>
 ## [106] &quot;shiny.html&quot;                            
 ## [107] &quot;shiny.Rmd&quot;                             
 ## [108] &quot;site_libs&quot;                             
-## [109] &quot;td.csv&quot;                                
-## [110] &quot;tidyverse.html&quot;                        
-## [111] &quot;tidyverse.Rmd&quot;                         
-## [112] &quot;timeseries_files&quot;                      
-## [113] &quot;timeseries.html&quot;                       
-## [114] &quot;timeseries.Rmd&quot;                        
-## [115] &quot;viz-options.html&quot;                      
-## [116] &quot;viz-options.Rmd&quot;                       
-## [117] &quot;whatisr.html&quot;                          
-## [118] &quot;whatisr.Rmd&quot;</code></pre>
+## [109] &quot;tidyverse.html&quot;                        
+## [110] &quot;tidyverse.Rmd&quot;                         
+## [111] &quot;timeseries_files&quot;                      
+## [112] &quot;timeseries.html&quot;                       
+## [113] &quot;timeseries.Rmd&quot;                        
+## [114] &quot;viz-options.html&quot;                      
+## [115] &quot;viz-options.Rmd&quot;                       
+## [116] &quot;whatisr.html&quot;                          
+## [117] &quot;whatisr.Rmd&quot;</code></pre>
 </div>
 <div id="data-types" class="section level2">
 <h2>Data types</h2>
@@ -589,7 +587,7 @@ mat.frame$tens * mat.frame$twenties</code></pre>
 <pre class="r"><code>biggie1&lt;-rnorm(100000, 5, 5)
 biggie2&lt;-rnorm(100000, 5, 100)
 mean(biggie1)</code></pre>
-<pre><code>## [1] 5.004934</code></pre>
+<pre><code>## [1] 4.97326</code></pre>
 <pre class="r"><code>big.frame&lt;-data.frame(cbind(biggie1,biggie2))
 ggplot(big.frame,aes(x=biggie1,y=biggie2)) + geom_point(alpha=0.04)</code></pre>
 <p><img src="introToR_donalPhipps_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
@@ -702,7 +700,6 @@ g + geom_smooth(method = &quot;lm&quot;, se = FALSE)</code></pre>
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
-
 
 </script>
 

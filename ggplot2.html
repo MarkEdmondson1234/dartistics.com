@@ -94,7 +94,6 @@ button.code-folding-btn:focus {
 }
 </style>
 
-
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -465,7 +464,7 @@ gg + geom_area(aes(y = value, colour = channelGrouping, group = channelGrouping,
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-4-5.png" width="960" /></p>
 <pre class="r"><code>## ok, lets keep that for now
 gg &lt;- gg + geom_area(aes(y = value, group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
-<p>The point above is to show how modifcations can be quickly added as you try out ideas.</p>
+<p>The point above is to show how modifications can be quickly added as you try out ideas.</p>
 <p>A little more styling, and we are done with this example:</p>
 <pre class="r"><code>## make the colours nicer
 gg &lt;- gg + scale_fill_brewer(palette = &quot;Paired&quot;)
@@ -496,7 +495,6 @@ gg</code></pre>
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
-
 
 </script>
 
