@@ -320,18 +320,6 @@ div.tocify {
     <li>
       <a href="exercise4-tidy-dplyr.html">4. Tidy Data / dplyr()</a>
     </li>
-    <li>
-      <a href="exercise5-correlation.html">5. Correlation</a>
-    </li>
-    <li>
-      <a href="exercise6-regression.html">6. Regression</a>
-    </li>
-    <li>
-      <a href="exercise7-visualisation.html">7. Visualisation</a>
-    </li>
-    <li>
-      <a href="exercise8-rmarkdown.html">8. RMarkdown</a>
-    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -499,9 +487,9 @@ ga_auth()</code></pre>
 <h2>Getting your View Id</h2>
 <p>To get your data, you need to specify which Google Analytics View you want to pull it from.</p>
 <p>The easiest way to find this is to use <code>google_analytics_account_list()</code> to list your Views, then read the number in the <code>viewId</code> column:</p>
-<pre class="r"><code>my_accounts &lt;- google_analytics_account_list()
-
-head(my_accounts)</code></pre>
+<pre class="r"><code>my_accounts &lt;- google_analytics_account_list()</code></pre>
+<pre><code>## Auto-refreshing stale OAuth token.</code></pre>
+<pre class="r"><code>head(my_accounts)</code></pre>
 <pre><code>##   accountId         accountName webPropertyId          webPropertyName
 ## 1  79301104             cloudyr UA-79301104-1      the cloudyr project
 ## 2  27488374       Copenhagenish UA-27488374-1            Copenhagenish
