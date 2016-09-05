@@ -99,7 +99,7 @@ gg + geom_area(aes(y = value, colour = channelGrouping, group = channelGrouping,
 gg <- gg + geom_area(aes(y = value, group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)
 ```
 
-The point above is to show how modifcations can be quickly added as you try out ideas.
+The point above is to show how modifications can be quickly added as you try out ideas.
 
 A little more styling, and we are done with this example:
 
