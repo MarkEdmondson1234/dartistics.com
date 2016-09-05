@@ -7,43 +7,43 @@ output:
 
 ---
 
-Here are some good habits to get into learnt from experience to make working with R easier.
+Here are some good habits to get into that I learned from experience to make working with R easier.
 
 ## Project structure
 
 1. For every new task, client or project, create an RStudio project (top right)
 2. Create a `script` and `data` folder in the project straight away
 3. Put your R scripts `./scripts/your-script.R` in the script folder, and raw or processed data written to the data folder (`./data/your_data.csv`)
-4. Never change your working directory (`setwd()`) in the scripts, it ruins portability
+4. Never change your working directory (`setwd()`) in the scripts; it ruins portability
 5. If using Git (and you should!) then make one Github repo per R project.
 
 ## Code style
 
-1. Follow a code style - any will do, just be consistent.  Here is [Google](https://google.github.io/styleguide/Rguide.xml)'s, I am closer to [this one](http://adv-r.had.co.nz/Style.html)
-2. Descriptivly name your function and variables
-3. Comment everything - you can even start code with comments
-4. Pretend the reader of your code is a homicidal maniac who will axe you if they don't understand it
-5. Avoid copy-pasting, if you repeat yourself more than twice, write a function
-6. Fail fast - use `stop()` to write informative error messages
-7. Check the types of your input and output variables are what you expected
-8. "Clever" code or "code golf" makes you feel good short-term, but confused long term. 
+1. Follow a code style - any will do, just be consistent.  Here is [Google](https://google.github.io/styleguide/Rguide.xml)'s. I am closer to [this one](http://adv-r.had.co.nz/Style.html).
+2. Descriptively name your function and variables.
+3. Comment everything - you can even start code with comments.
+4. Pretend the reader of your code is a homicidal maniac who will axe you if they don't understand it.
+5. Avoid copy-pasting: if you repeat yourself more than twice, write a function!
+6. Fail fast: use `stop()` to write informative error messages.
+7. Check that the types of your input and output variables are what you expected.
+8. "Clever" code or "code golf" makes you feel good in the short term, but confused long term. 
 9. Clarity is most important.
 10. If you write functions, document them using the `roxygen` format (`#' lines above function`). 
 
 ## Always check the type
 
-1. 4 times out of 10 the errors in code is you copying something wrong `rowname` instead of `row.name` etc.
-2. 4 times out of 10 the errors in code is expecting the wrong type e.g. `class(obj) == "list"` not `class(obj) == "data.frame"`.  Read the function documentation carefully. 
+1. 4 times out of 10 the errors in code are from you copying something wrong (`rowname` instead of `row.name`, for instance).
+2. 4 times out of 10 the errors in code are because a function is expecting a different type from what you are trying to pass it (e.g., `class(obj) == "list"` not `class(obj) == "data.frame"`).  Read the function documentation carefully. 
 3. Use `str()` a lot.
 
 ## Useful functions to know
 
 1. `str()`
-2. Get help via `?ggplot`
+2. Get help via `?[function name]`.
 3. `paste0` - shortcut for `paste("blah", "blah", sep = "")`
-4. Learn to love `list()` - its a way to group related objects
+4. Learn to love `list()` - it's a way to group related objects:
 
-```r
+```{r eval=FALSE}
 stuff = list(mydata = data, 
              the_author = "Bob",
              created = Sys.Date())
@@ -53,9 +53,9 @@ stuff$mydata
 stuff$the_author
 stuff$created
 ```
-5. Once you love lists, you will adore `lapply()`, `apply()` etc.
-6. `data.frames` are special lists, with equal length objects.
-7. You can do lookups via subsetting of named vectors e.g.
+5. Once you love lists, you will adore `lapply()`, `apply()`, `sapply()`, etc.
+6. `data.frames` are special lists...just with equal length objects.
+7. You can do lookups via subsetting of named vectors:
 
 ```{r}
 ## example with some user Ids
@@ -69,9 +69,9 @@ big_list_of_ids <- c("2323","2323","3434","9999","9999","1231","5353","9999","23
 lookup[big_list_of_ids]
 ```
 
-8. `Reduce()` operates repeatedly on a list, adding the result to its previous.  A good example is for reading a folder full of files:
+8. `Reduce()` operates repeatedly on a list, adding the result to its previous. A good example is for reading a folder full of files:
 
-```r
+```{r}
 ## say you have lots of files in folder "./data/myfolder"
 ## we can use lapply on write.csv to read in all the files:
 
@@ -90,7 +90,7 @@ all_files <- Reduce(rbind, df_list)
 all_files <- Reduce(rbind, lapply(filenames, read.csv))
 ```
 8. A handy way to get rid of the first column is to use `the_data[-1]` where `the_data` is your data.frame.  This is equivalent to `the_data[,-1]`
-9. If you want to include only certain columns from a big dataframe, it can be a bit of a chore to write out all the column names you want to keep rather than dropping the ones you want.  Two options: Use `library(dplyr)` and the `select()` function that lets you specify dropped columns like `select(-notthisone, -notthisonetoo)` or in base R use `setdiff()` against the names:
+9. If you want to include only certain columns from a big data frame, it can be a bit of a chore to write out all the column names you want to keep rather than dropping the ones you want.  Two options: Use `library(dplyr)` and the `select()` function that lets you specify dropped columns like `select(-notthisone, -notthisonetoo)` or in base R use `setdiff()` against the names:
 
 ```{r}
 names(mtcars)

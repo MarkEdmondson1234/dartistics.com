@@ -14,14 +14,14 @@
 <title>Good habits</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -96,6 +96,7 @@ button.code-folding-btn:focus {
   outline: none;
 }
 </style>
+
 
 <style type="text/css">
 /* padding for bootstrap navbar */
@@ -450,28 +451,28 @@ div.tocify {
 </div>
 
 
-<p>Here are some good habits to get into learnt from experience to make working with R easier.</p>
+<p>Here are some good habits to get into that I learned from experience to make working with R easier.</p>
 <div id="project-structure" class="section level2">
 <h2>Project structure</h2>
 <ol style="list-style-type: decimal">
 <li>For every new task, client or project, create an RStudio project (top right)</li>
 <li>Create a <code>script</code> and <code>data</code> folder in the project straight away</li>
 <li>Put your R scripts <code>./scripts/your-script.R</code> in the script folder, and raw or processed data written to the data folder (<code>./data/your_data.csv</code>)</li>
-<li>Never change your working directory (<code>setwd()</code>) in the scripts, it ruins portability</li>
+<li>Never change your working directory (<code>setwd()</code>) in the scripts; it ruins portability</li>
 <li>If using Git (and you should!) then make one Github repo per R project.</li>
 </ol>
 </div>
 <div id="code-style" class="section level2">
 <h2>Code style</h2>
 <ol style="list-style-type: decimal">
-<li>Follow a code style - any will do, just be consistent. Here is <a href="https://google.github.io/styleguide/Rguide.xml">Google</a>’s, I am closer to <a href="http://adv-r.had.co.nz/Style.html">this one</a></li>
-<li>Descriptivly name your function and variables</li>
-<li>Comment everything - you can even start code with comments</li>
-<li>Pretend the reader of your code is a homicidal maniac who will axe you if they don’t understand it</li>
-<li>Avoid copy-pasting, if you repeat yourself more than twice, write a function</li>
-<li>Fail fast - use <code>stop()</code> to write informative error messages</li>
-<li>Check the types of your input and output variables are what you expected</li>
-<li>“Clever” code or “code golf” makes you feel good short-term, but confused long term.</li>
+<li>Follow a code style - any will do, just be consistent. Here is <a href="https://google.github.io/styleguide/Rguide.xml">Google</a>’s. I am closer to <a href="http://adv-r.had.co.nz/Style.html">this one</a>.</li>
+<li>Descriptively name your function and variables.</li>
+<li>Comment everything - you can even start code with comments.</li>
+<li>Pretend the reader of your code is a homicidal maniac who will axe you if they don’t understand it.</li>
+<li>Avoid copy-pasting: if you repeat yourself more than twice, write a function!</li>
+<li>Fail fast: use <code>stop()</code> to write informative error messages.</li>
+<li>Check that the types of your input and output variables are what you expected.</li>
+<li>“Clever” code or “code golf” makes you feel good in the short term, but confused long term.</li>
 <li>Clarity is most important.</li>
 <li>If you write functions, document them using the <code>roxygen</code> format (<code>#' lines above function</code>).</li>
 </ol>
@@ -479,8 +480,8 @@ div.tocify {
 <div id="always-check-the-type" class="section level2">
 <h2>Always check the type</h2>
 <ol style="list-style-type: decimal">
-<li>4 times out of 10 the errors in code is you copying something wrong <code>rowname</code> instead of <code>row.name</code> etc.</li>
-<li>4 times out of 10 the errors in code is expecting the wrong type e.g. <code>class(obj) == &quot;list&quot;</code> not <code>class(obj) == &quot;data.frame&quot;</code>. Read the function documentation carefully.</li>
+<li>4 times out of 10 the errors in code are from you copying something wrong (<code>rowname</code> instead of <code>row.name</code>, for instance).</li>
+<li>4 times out of 10 the errors in code are because a function is expecting a different type from what you are trying to pass it (e.g., <code>class(obj) == &quot;list&quot;</code> not <code>class(obj) == &quot;data.frame&quot;</code>). Read the function documentation carefully.</li>
 <li>Use <code>str()</code> a lot.</li>
 </ol>
 </div>
@@ -488,9 +489,9 @@ div.tocify {
 <h2>Useful functions to know</h2>
 <ol style="list-style-type: decimal">
 <li><code>str()</code></li>
-<li>Get help via <code>?ggplot</code></li>
+<li>Get help via <code>?[function name]</code>.</li>
 <li><code>paste0</code> - shortcut for <code>paste(&quot;blah&quot;, &quot;blah&quot;, sep = &quot;&quot;)</code></li>
-<li>Learn to love <code>list()</code> - its a way to group related objects</li>
+<li>Learn to love <code>list()</code> - it’s a way to group related objects:</li>
 </ol>
 <pre class="r"><code>stuff = list(mydata = data, 
              the_author = &quot;Bob&quot;,
@@ -501,9 +502,9 @@ stuff$mydata
 stuff$the_author
 stuff$created</code></pre>
 <ol start="5" style="list-style-type: decimal">
-<li>Once you love lists, you will adore <code>lapply()</code>, <code>apply()</code> etc.</li>
-<li><code>data.frames</code> are special lists, with equal length objects.</li>
-<li>You can do lookups via subsetting of named vectors e.g.</li>
+<li>Once you love lists, you will adore <code>lapply()</code>, <code>apply()</code>, <code>sapply()</code>, etc.</li>
+<li><code>data.frames</code> are special lists…just with equal length objects.</li>
+<li>You can do lookups via subsetting of named vectors:</li>
 </ol>
 <pre class="r"><code>## example with some user Ids
 lookup &lt;- c(&quot;Bill&quot;,&quot;Ben&quot;,&quot;Sue&quot;,&quot;Linda&quot;,&quot;Gerry&quot;)
@@ -540,7 +541,7 @@ all_files &lt;- Reduce(rbind, df_list)
 all_files &lt;- Reduce(rbind, lapply(filenames, read.csv))</code></pre>
 <ol start="8" style="list-style-type: decimal">
 <li>A handy way to get rid of the first column is to use <code>the_data[-1]</code> where <code>the_data</code> is your data.frame. This is equivalent to <code>the_data[,-1]</code></li>
-<li>If you want to include only certain columns from a big dataframe, it can be a bit of a chore to write out all the column names you want to keep rather than dropping the ones you want. Two options: Use <code>library(dplyr)</code> and the <code>select()</code> function that lets you specify dropped columns like <code>select(-notthisone, -notthisonetoo)</code> or in base R use <code>setdiff()</code> against the names:</li>
+<li>If you want to include only certain columns from a big data frame, it can be a bit of a chore to write out all the column names you want to keep rather than dropping the ones you want. Two options: Use <code>library(dplyr)</code> and the <code>select()</code> function that lets you specify dropped columns like <code>select(-notthisone, -notthisonetoo)</code> or in base R use <code>setdiff()</code> against the names:</li>
 </ol>
 <pre class="r"><code>names(mtcars)</code></pre>
 <pre><code>##  [1] &quot;mpg&quot;  &quot;cyl&quot;  &quot;disp&quot; &quot;hp&quot;   &quot;drat&quot; &quot;wt&quot;   &quot;qsec&quot; &quot;vs&quot;   &quot;am&quot;   &quot;gear&quot;
@@ -563,6 +564,7 @@ names(new_data)</code></pre>
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 
