@@ -361,40 +361,11 @@ $(document).ready(function () {
 </div>
 
 
-<p>This R Markdown document is made interactive using Shiny. Unlike the more traditional workflow of creating static reports, you can now create documents that allow your readers to change the assumptions underlying your analysis and see the results immediately.</p>
-<p>To learn more, see <a href="http://rmarkdown.rstudio.com/authoring_shiny.html">Interactive Documents</a>.</p>
-<div id="inputs-and-outputs" class="section level2">
-<h2>Inputs and Outputs</h2>
-<p>You can embed Shiny inputs and outputs in your document. Outputs are automatically updated whenever inputs change. This demonstrates how a standard R plot can be made interactive by wrapping it in the Shiny <code>renderPlot</code> function. The <code>selectInput</code> and <code>sliderInput</code> functions create the input widgets used to drive the plot.</p>
-<pre class="r"><code>inputPanel(
-  selectInput(&quot;n_breaks&quot;, label = &quot;Number of bins:&quot;,
-              choices = c(10, 20, 35, 50), selected = 20),
-  
-  sliderInput(&quot;bw_adjust&quot;, label = &quot;Bandwidth adjustment:&quot;,
-              min = 0.2, max = 2, value = 1, step = 0.2)
-)
-
-renderPlot({
-  hist(faithful$eruptions, probability = TRUE, breaks = as.numeric(input$n_breaks),
-       xlab = &quot;Duration (minutes)&quot;, main = &quot;Geyser eruption duration&quot;)
-  
-  dens &lt;- density(faithful$eruptions, adjust = input$bw_adjust)
-  lines(dens, col = &quot;blue&quot;)
-})</code></pre>
-</div>
-<div id="embedded-application" class="section level2">
-<h2>Embedded Application</h2>
-<p>It’s also possible to embed an entire Shiny application within an R Markdown document using the <code>shinyAppDir</code> function. This example embeds a Shiny application located in another directory:</p>
-<pre class="r"><code>shinyAppDir(
-  system.file(&quot;examples/06_tabsets&quot;, package = &quot;shiny&quot;),
-  options = list(
-    width = &quot;100%&quot;, height = 550
-  )
-)</code></pre>
-<p>Note the use of the <code>height</code> parameter to determine how much vertical space the embedded application should occupy.</p>
-<p>You can also use the <code>shinyApp</code> function to define an application inline rather then in an external directory.</p>
-<p>In all of R code chunks above the <code>echo = FALSE</code> attribute is used. This is to prevent the R code within the chunk from rendering in the document alongside the Shiny components.</p>
-</div>
+<p><a href="http://shiny.rstudio.com/">Shiny</a> is a web application framework for R, produced by RStudio.</p>
+<p>A Shiny app usually has two files, <code>server.R</code> and <code>ui.R</code>. These take care of the web server backend and the HTML frontend, respectivily.</p>
+<p>To run a Shiny app you need to have a Shiny server running. RStudio comes with one pre-installed for running your apps locally, but for publishing you will need to install Shiny server or host via <code>shinyapps.io</code>.</p>
+<p>Shiny apps use a functionality called <em>reactivity</em> that means that apps can be quick and responsive to changes to inputs - this is one of the best features of Excel, where changing one cell can have consequences throughout the Workbook.</p>
+<p>Shiny apps can be tricky to get your head around due to its different work flow from normal R programs, its recommended to go through the <a href="http://shiny.rstudio.com/tutorial/">tutorials online</a>.</p>
 
 
 

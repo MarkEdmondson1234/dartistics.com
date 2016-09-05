@@ -2,3 +2,20 @@
 title: "Github"
 ---
 
+Once you are doing any data programming, it is highly recommended you start using version control, and for R in particular Github is highly recommended due to its thriving R community.
+
+A few reasons to persuade you to use Github are given below:
+
+* If you have ever created local versions of files `final_data.csv`, `final_data2.csv`, `final_datav3_minusSEO.csv` etc., then you would benefit from version control.  Version control lets you freely modify and delete/add to a one file, and not worry that you are losing drafts.
+* Github is like a social network for code.  You can follow your favourite packages on Github and see how they develop (Comments and feature suggestions on libraries like [`googleAnalyticsR`](https://github.com/MarkEdmondson1234/googleAnalyticsR) are warmly welcomed!)
+* Once collaborating with someone not in the same room, Github can be invaluable to keep track of who changed what and when.
+* It can support any file - once comfortable with Github the author uses it to track all documents such as word documents, PDFs, etc.
+* For free you can have unlimited public repositories, for a fixed fee you can have unlimited private ones.
+* Github hooks into many other services via its *webhooks*, that lets you do things like schedule reports, run code every time you commit, push your code to other servers, post to Slack, etc.
+
+## Advice for using Github with R
+
+* RStudio comes with its own Git client installed already, which is ok for basic pulls and pushes, but you may want to consider a Github desktop client such as Github's or Bitbucket.
+* Github is a bit notorious to be arcane, so hang in there and stick with simple tasks for now.  If something goes wrong you can always [save your work to a different folder, delete everything and redownload again](https://xkcd.com/1597/).  You will still get a lot of value without knowing its intricies.
+* Stick with one RStudio project to one Github repo.
+
