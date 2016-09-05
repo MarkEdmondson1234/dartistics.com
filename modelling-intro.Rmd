@@ -4,9 +4,9 @@ title: "Modelling Introduction"
 
 Data modelling is the reason for R's existence, and is still used as a primary channel of release for cutting edge new advances in data statistics and modelling.  As a marketer, you can take advantage of this cutting edge research in your own real-world data sets.
 
-## Picking a model
+## Picking a Model
 
-The choice of model can be bewildering, as the options available in R are thousand-fold.  As ever, it gets easiesr if you can boil down your problem to the right question, and have some foreknowledge on what can and can't be done with your type of data.
+The choice of model can be bewildering, as the options available in R are a thousandfold.  As ever, it gets easier if you can boil down your problem to the right question and have some foreknowledge on what can and can't be done with your type of data.
 
 To get an idea of the questions you need to be answering, take a look at this decision tree for the Python machine learning module, scikit-learn:
 
@@ -16,17 +16,17 @@ Key questions include:
 
 * How much data do I have?
 * Is my data categorical, continuous, a time-series, etc.
-* Am I just exploring, need a forecast or am looking for features?
+* Am I just exploring, need a forecast, or am looking for features?
 
-## Common model syntax
+## Common Model Syntax
 
 Within R, there are some norms that apply to a lot of the modelling functions out there.
 
-## Formula notation
+## Formula Notation
 
-A lot of model functions use this notation in R, as well as packages like `reshape2()`
+A lot of model functions use this notation in R, as well as packages like `reshape2()`.
 
-Its a way to specify what you want the model to calculate, different from the arguments `foo = "blah"` you may already be familiar with.  Details differ, but for formula notation they typically are closer to how you would write it out in mathematical notation.
+It's a way to specify what you want the model to calculate, different from the arguments `foo = "blah"` you may already be familiar with.  Details differ, but, for formula notation, they typically are closer to how you would write it out in mathematical notation.
 
 For example, if you are running a correlation, you typically want to know how a response `y` varies with terms `x` and `z`.  When calling this in `lm()` you would use:
 
@@ -34,7 +34,7 @@ For example, if you are running a correlation, you typically want to know how a 
 y ~ x + z
 ```
 
-> ~ is a special character used in formula, and means something like "modelled by".  Note no quotes.
+> ~ is a special character used in formula and means something like "modelled by".  Note there are no quotes.
 
 Using `mtcars` again as an example, here is a linear model made with base `lm`:
 
@@ -67,21 +67,21 @@ You can also usually use `predict()` on the model result to find what your model
 
 > To see specific help on model predict(), plot() and summary(), add a .functionname to the help defintion.  This is related to how R uses R classes e.g. ?predict.lm
 
-For `predict.lm()` you can pass a newdata argument - this should hold the same arguments as the predictors you used in the model - e.g. `cyl` and `wt` in this case:
+For `predict.lm()` you can pass a `newdata` argument - this should hold the same arguments as the predictors you used in the model - e.g. `cyl` and `wt` in this case:
 
 ```{r}
 
-## what would be the miles per gallon for a 10 cylindar behemoth?
+## What would be the miles per gallon for a 10 cylindar behemoth?
 new_data <- data.frame(cyl = 10, wt = 5)
 
-## you would get a hefty 8.653 mpg, according to this model
+## You would get a hefty 8.653 mpg, according to this model
 predict(model, new_data)
 
 ```
 
 ## plot()
 
-Finally, you can usually plot the model.  These usually aren't of publishable standard, but instead for a quick exploratory visualisation of what you have just calculated
+Finally, you can usually plot the model. These usually aren't of publishable quality, but, instead, for a quick exploratory visualisation of what you have just calculated.
 
 ```{r}
 plot(model)
@@ -90,15 +90,13 @@ plot(model)
 
 ## Training, Validation and Tests
 
-Best practice when creating models is to split your data into training, validation and test data.
-
-This is to prevent you making overconfident predictions, that won't work well on new data.
+A best practice when creating models is to split your data into training, validation and test data. This is to prevent you from making overconfident predictions that won't work well on new data.
 
 > A typical split is 60% of your data for training, 20% for validation and 20% for testing.
 
 ## Overfitting
 
-As normal in these situations, a warning on not being rigorous in your analysis approach:
+As is normal in these situations, a warning on not being rigorous in your analysis approach:
 
-If you skip best practices such as validation or training sets, there is a danger you will make overconfident conclusions.  This is sadly quite common in digital marketing where overstated claims can result in more investment in your channel, but if you truely believe in a data-driven appraoch then that will make you less credible in the future once the overstated forecasts fail to arrive.
+_If you skip best practices such as validation or training sets, there is a danger you will make overconfident conclusions._  This is, sadly, quite common in digital marketing, where overstated claims can result in more investment in your channel, but if you truly believe in a data-driven appraoch, then that will make you less credible in the future once the overstated forecasts fail to materialise.
 
