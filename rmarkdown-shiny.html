@@ -94,6 +94,7 @@ button.code-folding-btn:focus {
 }
 </style>
 
+
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -353,12 +354,10 @@ $(document).ready(function () {
 </div>
 
 
-<div id="rmarkdown" class="section level1">
-<h1>RMarkdown</h1>
 <p>This website is generated using RMarkdown.</p>
 <p>RMarkdown is great for creating quick professional looking reports, with embedded R function output with or without the code that created them.</p>
 <p>You can schedule reports by scheduling the RMarkdown document like you would any R script.</p>
-<p>Options include PDFs, HTML, MS Word, Slides, books, websites (like this one).</p>
+<p>Options include: PDFs, HTML, MS Word, Slides, books, websites (like this one).</p>
 <p>The default RMarkdown document has the below text:</p>
 <div id="r-markdown" class="section level2">
 <h2>R Markdown</h2>
@@ -375,28 +374,27 @@ $(document).ready(function () {
 </div>
 <div id="including-plots" class="section level2">
 <h2>Including Plots</h2>
-<p>You can also embed plots, for example:</p>
+<p>You can also embed plots. For example:</p>
 <p><img src="rmarkdown-shiny_files/figure-html/pressure-1.png" width="672" /></p>
 <p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
-</div>
 </div>
 <div id="shiny" class="section level1">
 <h1>Shiny</h1>
 <p><a href="http://shiny.rstudio.com/">Shiny</a> is a web application framework for R, produced by RStudio.</p>
 <p>A Shiny app usually has two files, <code>server.R</code> and <code>ui.R</code>. These take care of the web server backend and the HTML frontend, respectivily.</p>
 <p>To run a Shiny app you need to have a Shiny server running. RStudio comes with one pre-installed for running your apps locally, but for publishing you will need to install Shiny server or host via <code>shinyapps.io</code>.</p>
-<p>Shiny apps use a functionality called <em>reactivity</em> that means that apps can be quick and responsive to changes to inputs - this is one of the best features of Excel, where changing one cell can have consequences throughout the Workbook.</p>
-<p>Shiny apps can be tricky to get your head around due to its different work flow from normal R programs, its recommended to go through the <a href="http://shiny.rstudio.com/tutorial/">tutorials online</a>.</p>
+<p>Shiny apps use a functionality called <em>reactivity</em> that means that apps can be quick and responsive to changes to inputs. This is one of the best features of Excel, where changing one cell can have consequences throughout the Workbook.</p>
+<p>Shiny apps can be tricky to get your head around due to the fact that they have a different work flow from normal R programs. It’s recommended to go through the <a href="http://shiny.rstudio.com/tutorial/">tutorials online</a>.</p>
 </div>
-<div id="combinging-rmarkdown-and-shiny" class="section level1">
-<h1>Combinging RMarkdown and Shiny</h1>
+<div id="combining-rmarkdown-and-shiny" class="section level1">
+<h1>Combining RMarkdown and Shiny</h1>
 <p>A recent development is the ability to put Shiny elements into an RMarkdown document.</p>
-<p>These documents again need a Shiny server to run, but takes advatage of the easy formatting of RMarkdown to present the user interface - server and UI elements sit in the same document.</p>
+<p>These documents, again, need a Shiny server to run, but take advatage of the easy formatting of RMarkdown to present the user interface - server and UI elements sit in the same document.</p>
 <ul>
-<li><em>RMarkdown</em> - supplies the HTML instead of a <code>ui.R</code> file.</li>
-<li><em>Shiny</em> - supplied reactive components within your RMarkdown</li>
+<li><strong>RMarkdown</strong> - supplies the HTML instead of a <code>ui.R</code> file.</li>
+<li><strong>Shiny</strong> - supplied reactive components within your RMarkdown</li>
 </ul>
-<p>An example RMarkdown document with a Shiny element taking care of authentication can be found here: <a href="http://shiny.rstudio.com/tutorial/" class="uri">http://shiny.rstudio.com/tutorial/</a></p>
+<p>An example RMarkdown document with a Shiny element taking care of authentication can be found <a href="http://shiny.rstudio.com/tutorial/">here</a>.</p>
 </div>
 
 
@@ -410,6 +408,7 @@ $(document).ready(function () {
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 
