@@ -297,7 +297,6 @@ $(document).ready(function () {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">  Visualisation</li>
     <li>
       <a href="viz-options.html">Visualisation Options</a>
     </li>
@@ -473,25 +472,26 @@ list.files()</code></pre>
 ##  [96] &quot;resources.html&quot;                        
 ##  [97] &quot;resources.Rmd&quot;                         
 ##  [98] &quot;rmarkdown_files&quot;                       
-##  [99] &quot;rmarkdown-shiny.html&quot;                  
-## [100] &quot;rmarkdown-shiny.Rmd&quot;                   
-## [101] &quot;rmarkdown.html&quot;                        
-## [102] &quot;rmarkdown.Rmd&quot;                         
-## [103] &quot;rstudio.html&quot;                          
-## [104] &quot;rstudio.Rmd&quot;                           
-## [105] &quot;RWorkshopCopenhagen.Rproj&quot;             
-## [106] &quot;shiny.html&quot;                            
-## [107] &quot;shiny.Rmd&quot;                             
-## [108] &quot;site_libs&quot;                             
-## [109] &quot;tidyverse.html&quot;                        
-## [110] &quot;tidyverse.Rmd&quot;                         
-## [111] &quot;timeseries_files&quot;                      
-## [112] &quot;timeseries.html&quot;                       
-## [113] &quot;timeseries.Rmd&quot;                        
-## [114] &quot;viz-options.html&quot;                      
-## [115] &quot;viz-options.Rmd&quot;                       
-## [116] &quot;whatisr.html&quot;                          
-## [117] &quot;whatisr.Rmd&quot;</code></pre>
+##  [99] &quot;rmarkdown-shiny_files&quot;                 
+## [100] &quot;rmarkdown-shiny.html&quot;                  
+## [101] &quot;rmarkdown-shiny.Rmd&quot;                   
+## [102] &quot;rmarkdown.html&quot;                        
+## [103] &quot;rmarkdown.Rmd&quot;                         
+## [104] &quot;rstudio.html&quot;                          
+## [105] &quot;rstudio.Rmd&quot;                           
+## [106] &quot;RWorkshopCopenhagen.Rproj&quot;             
+## [107] &quot;shiny.html&quot;                            
+## [108] &quot;shiny.Rmd&quot;                             
+## [109] &quot;site_libs&quot;                             
+## [110] &quot;tidyverse.html&quot;                        
+## [111] &quot;tidyverse.Rmd&quot;                         
+## [112] &quot;timeseries_files&quot;                      
+## [113] &quot;timeseries.html&quot;                       
+## [114] &quot;timeseries.Rmd&quot;                        
+## [115] &quot;viz-options.html&quot;                      
+## [116] &quot;viz-options.Rmd&quot;                       
+## [117] &quot;whatisr.html&quot;                          
+## [118] &quot;whatisr.Rmd&quot;</code></pre>
 </div>
 <div id="data-types" class="section level2">
 <h2>Data types</h2>
@@ -580,7 +580,7 @@ mat.frame$tens * mat.frame$twenties</code></pre>
 <pre class="r"><code>biggie1&lt;-rnorm(100000, 5, 5)
 biggie2&lt;-rnorm(100000, 5, 100)
 mean(biggie1)</code></pre>
-<pre><code>## [1] 5.008456</code></pre>
+<pre><code>## [1] 5.020221</code></pre>
 <pre class="r"><code>big.frame&lt;-data.frame(cbind(biggie1,biggie2))
 ggplot(big.frame,aes(x=biggie1,y=biggie2)) + geom_point(alpha=0.04)</code></pre>
 <p><img src="introToR_donalPhipps_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
