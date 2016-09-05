@@ -320,18 +320,6 @@ div.tocify {
     <li>
       <a href="exercise4-tidy-dplyr.html">4. Tidy Data / dplyr()</a>
     </li>
-    <li>
-      <a href="exercise5-correlation.html">5. Correlation</a>
-    </li>
-    <li>
-      <a href="exercise6-regression.html">6. Regression</a>
-    </li>
-    <li>
-      <a href="exercise7-visualisation.html">7. Visualisation</a>
-    </li>
-    <li>
-      <a href="exercise8-rmarkdown.html">8. RMarkdown</a>
-    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -484,13 +472,13 @@ div.tocify {
 <p>Let’s start with some simple math. In the console, type <code>12^2</code> and press <Enter>. You should get:</p>
 <pre class="r"><code>12^2</code></pre>
 <pre><code>## [1] 144</code></pre>
-<p>Now, let’s actually assign a value to a variable from the console by typing <code>myVar &lt;- 12^2</code>.</p>
-<pre class="r"><code>myVar &lt;- 12^2</code></pre>
+<p>Now, let’s actually assign a value to a variable from the console by typing <code>my_var &lt;- 12^2</code>.</p>
+<pre class="r"><code>my_var &lt;- 12^2</code></pre>
 <p><em>In R, assignment of values uses <code>&lt;-</code>.</em></p>
 <p>Look in the <strong>Environment</strong> tab in the top right pane, you should now see your variable:</p>
 <div style="text-align:center" markdown="1">
 <div class="figure">
-<img src="images/exercise1_myvar_2.png" />
+<img src="images/exercise1_my_var_2.png" />
 
 </div>
 </div>
@@ -498,10 +486,10 @@ div.tocify {
 </div>
 <div id="basic-script" class="section level3">
 <h3>Basic Script</h3>
-<p>In the top left pane, enter <code>myVar &lt;- myVar * 10</code>. Nothing will happen, because this is just a script. It hasn’t been executed yet. Click <strong>Source</strong> to run the script. Now, check out the <strong>Environment</strong> tab:</p>
+<p>In the top left pane, enter <code>my_var &lt;- my_var * 10</code>. Nothing will happen, because this is just a script. It hasn’t been executed yet. Click <strong>Source</strong> to run the script. Now, check out the <strong>Environment</strong> tab:</p>
 <div style="text-align:center" markdown="1">
 <div class="figure">
-<img src="images/exercise1_myvar_2.png" />
+<img src="images/exercise1_my_var_2.png" />
 
 </div>
 </div>
@@ -521,15 +509,15 @@ div.tocify {
 <p>What if we wanted to cube each of these values? Type <code>myVector^3</code>. This is an operation performed on an <em>entire vector</em>. It’s not particularly exciting in this example, but it shows one of the fundamental aspects of R that we will come back to again and again. What we did <strong>not</strong> have to do was “loop through the vector and cube each value.” Rather, we performed an operation on the <em>entire vector</em> and we did it <em>all at once</em>.</p>
 <pre class="r"><code>myVector^3</code></pre>
 <pre><code>## [1]  1  8 27 64</code></pre>
-<p>In R’s mind, both <code>myVar</code> and <code>myVector</code> are actually vectors. <code>myVar</code> is simply a vector of length <code>1</code>, while <code>myVector</code> is a vector of length <code>4</code>. Let’s illustrate that and pick up a few more basics of the R/RStudio environment.</p>
-<p>Type <code>typeof(myVar)</code>. <code>typeof</code> is a function that returns the <em>type</em> of an object.</p>
-<pre class="r"><code>typeof(myVar)</code></pre>
+<p>In R’s mind, both <code>my_var</code> and <code>myVector</code> are actually vectors. <code>my_var</code> is simply a vector of length <code>1</code>, while <code>myVector</code> is a vector of length <code>4</code>. Let’s illustrate that and pick up a few more basics of the R/RStudio environment.</p>
+<p>Type <code>typeof(my_var)</code>. <code>typeof</code> is a function that returns the <em>type</em> of an object.</p>
+<pre class="r"><code>typeof(my_var)</code></pre>
 <pre><code>## [1] &quot;double&quot;</code></pre>
-<p>Type <code>typeof(myVector)</code>. Note that it is the identical <em>type</em> as <code>myVar</code>.</p>
+<p>Type <code>typeof(myVector)</code>. Note that it is the identical <em>type</em> as <code>my_var</code>.</p>
 <pre class="r"><code>typeof(myVector)</code></pre>
 <pre><code>## [1] &quot;double&quot;</code></pre>
-<p>Now, type <code>length(myVar)</code> and then <code>length(myVector)</code>. Note that this is where the two objects differ.</p>
-<pre class="r"><code>length(myVar)</code></pre>
+<p>Now, type <code>length(my_var)</code> and then <code>length(myVector)</code>. Note that this is where the two objects differ.</p>
+<pre class="r"><code>length(my_var)</code></pre>
 <pre><code>## [1] 1</code></pre>
 <pre class="r"><code>length(myVector)</code></pre>
 <pre><code>## [1] 4</code></pre>
@@ -549,30 +537,30 @@ div.tocify {
 </div>
 <div id="load-up-a-data-frame" class="section level3">
 <h3>Load up a Data Frame</h3>
-<p>The first thing we want to do is load our data into a <strong>data frame</strong>. A data frame is, essentially, just a table. Let’s call our data frame <strong>gaData</strong> and load the data from <strong>td.csv</strong> into it. We use the <code>read.csv()</code> function for this, so add the following line of code to your script (loading data is something else we will <a href="import-csv-excel.html">get into in more detail later</a>:</p>
-<pre class="r"><code>gaData &lt;- read.csv(&quot;td.csv&quot;, stringsAsFactors = FALSE)</code></pre>
+<p>The first thing we want to do is load our data into a <strong>data frame</strong>. A data frame is, essentially, just a table. Let’s call our data frame <strong>ga_data</strong> and load the data from <strong>td.csv</strong> into it. We use the <code>read.csv()</code> function for this, so add the following line of code to your script (loading data is something else we will <a href="import-csv-excel.html">get into in more detail later</a>:</p>
+<pre class="r"><code>ga_data &lt;- read.csv(&quot;td.csv&quot;, stringsAsFactors = FALSE)</code></pre>
 <p>That <code>stringsAsFactors = FALSE</code> is something you will run into quite a bit in various functions. Let’s just ignore it for now.</p>
 </div>
 <div id="run-the-script" class="section level3">
 <h3>Run the Script</h3>
-<p>We can go ahead and run this script. Go ahead and click <strong>Source</strong>. It doesn’t look like much happened, but, if you now check your <strong>Environment</strong> window, you will see a new object called <strong>gaData</strong>. Double-click on that, and the <strong>gaData</strong> data frame will load in a new tab next to your script.</p>
+<p>We can go ahead and run this script. Go ahead and click <strong>Source</strong>. It doesn’t look like much happened, but, if you now check your <strong>Environment</strong> window, you will see a new object called <strong>ga_data</strong>. Double-click on that, and the <strong>ga_data</strong> data frame will load in a new tab next to your script.</p>
 </div>
 </div>
 <div id="explore-the-data" class="section level2">
 <h2>Explore the Data</h2>
 <p>We’re going to hop back down to the console to explore some of the most common ways we can access data in a data frame.</p>
-<p>Type in <code>gaData</code> in the console. This will simply quickly scroll all of the contents of the data frame.</p>
-<p>Sometimes, we just want to see the basic structure of an object – we don’t need to see <em>all</em> of the data. For that, try <code>head(gaData)</code>. This shows just the first few rows (and <code>head()</code> is a function; type <code>?head()</code> to read the help for it!).</p>
+<p>Type in <code>ga_data</code> in the console. This will simply quickly scroll all of the contents of the data frame.</p>
+<p>Sometimes, we just want to see the basic structure of an object – we don’t need to see <em>all</em> of the data. For that, try <code>head(ga_data)</code>. This shows just the first few rows (and <code>head()</code> is a function; type <code>?head()</code> to read the help for it!).</p>
 <p>We will get into the many different ways to access this data <a href="later">accessing.html</a>, but it’s worth a quick exploration of some of the most common ways.</p>
-<p>Let’s look at just the <strong>sessions</strong> column. We do that using <strong>$</strong> notation: try <code>gaData$sessions</code>.</p>
-<p>Since the data frame is made up of rows and columns, we can also access values using a row/column notation (similar to R1C1 notation in Excel). To view the value in the 5th row and the 3rd column of the data, type <code>gaData[5,3]</code>.</p>
-<p>We can <em>also</em> use this notation to grab an <em>entire</em> row or an <em>entire</em> column simply by using the row or column index blank. To grab the entire 5th row, type <code>gaData[5,]</code>.</p>
-<p>Using this same notation, we can also add conditions to pull subsets of the data. For instance, to view all of the rows where there were greater than 100 sessions, enter <code>gaData[gaData$sessions &gt; 100,]</code>.</p>
+<p>Let’s look at just the <strong>sessions</strong> column. We do that using <strong>$</strong> notation: try <code>ga_data$sessions</code>.</p>
+<p>Since the data frame is made up of rows and columns, we can also access values using a row/column notation (similar to R1C1 notation in Excel). To view the value in the 5th row and the 3rd column of the data, type <code>ga_data[5,3]</code>.</p>
+<p>We can <em>also</em> use this notation to grab an <em>entire</em> row or an <em>entire</em> column simply by using the row or column index blank. To grab the entire 5th row, type <code>ga_data[5,]</code>.</p>
+<p>Using this same notation, we can also add conditions to pull subsets of the data. For instance, to view all of the rows where there were greater than 100 sessions, enter <code>ga_data[ga_data$sessions &gt; 100,]</code>.</p>
 <p>Let’s say we actually want to use that subset of data for something else. We want to add it to our script to get that subset of data and assign it to a new object. We can use the console and the script window together:</p>
 <ol style="list-style-type: decimal">
-<li><p>Press the up arrow to get <code>gaData[gaData$sessions &gt; 100,]</code> to reappear.</p></li>
+<li><p>Press the up arrow to get <code>ga_data[ga_data$sessions &gt; 100,]</code> to reappear.</p></li>
 <li><p>Now, highlight it and cut or copy it.</p></li>
-<li><p>Click into the next line in your script and enter <code>gaDataOver100 &lt;-</code> and then paste in <code>gaData[gaData$sessions &gt;100,]</code>.</p></li>
+<li><p>Click into the next line in your script and enter <code>ga_dataOver100 &lt;-</code> and then paste in <code>ga_data[ga_data$sessions &gt;100,]</code>.</p></li>
 <li><p>Highlight <em>just</em> that row and click <strong>Run</strong>. You now have a new object in your <strong>Environment</strong> that you can inspect.</p></li>
 </ol>
 <p>Now, can you:</p>
@@ -586,12 +574,12 @@ div.tocify {
 <h2>A Basic Visualization</h2>
 <p>We will come back to visualizations later in the day, but let’s at least add a simple line chart of sessions by adding two lines of code to our script.</p>
 <p>The first line converts the <strong>date</strong> values to, well, actual <em>date</em> values. Dates can be tricky, but there are a lot of tips and tools (and even a package called <code>lubridate()</code> to help with that):</p>
-<pre class="r"><code>gaData$date &lt;- as.Date(gaData$date)</code></pre>
+<pre class="r"><code>ga_data$date &lt;- as.Date(ga_data$date)</code></pre>
 <p>The second line we’ll add will actually plot the data. There are shorter ways to write this out, but let’s go with this:</p>
-<pre class="r"><code>plot(x = gaData$date, y = gaData$sessions, type = &quot;l&quot;)</code></pre>
+<pre class="r"><code>plot(x = ga_data$date, y = ga_data$sessions, type = &quot;l&quot;)</code></pre>
 <p>Now, you can either highlight just the two new rows and click <strong>Run</strong>, or you can click <strong>Source</strong> to run the entire script. The end result will be a barely-formatted, ugly label line chart:</p>
 <p><img src="exercise1-thebasics_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<p>Don’t judge a platform by your first visualization. Even with the basics of <code>plot()</code>, this chart can be a lot better, but we’re actually going to primarily focus on <code>ggplot2()</code> when it comes to visualizations. So, let’s call this initial exercise a wrap! Congratulations! You’ve loaded, manipulated, and plotted data with R!</p>
+<p>Don’t judge a platform by your first visualisation. Even with the basics of <code>plot()</code>, this chart can be a lot better, but we’re actually going to primarily focus on <code>ggplot2()</code> when it comes to visualisations. So, let’s call this initial exercise a wrap! Congratulations! You’ve loaded, manipulated, and plotted data with R!</p>
 </div>
 
 

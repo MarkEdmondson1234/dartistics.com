@@ -21,9 +21,9 @@ Let's start with some simple math. In the console, type `12^2` and press <Enter>
 12^2
 ```
 
-Now, let's actually assign a value to a variable from the console by typing `myVar <- 12^2`. 
+Now, let's actually assign a value to a variable from the console by typing `my_var <- 12^2`. 
 ```{r}
-myVar <- 12^2
+my_var <- 12^2
 ```
 
 _In R, assignment of values uses `<-`._
@@ -31,23 +31,23 @@ _In R, assignment of values uses `<-`._
 Look in the **Environment** tab in the top right pane, you should now see your variable:
 
 <div style="text-align:center" markdown="1">
-![](images/exercise1_myvar_2.png)
+![](images/exercise1_my_var_2.png)
 </div>
 
 You've just created a variable and stored it in your working space...even though you haven't actually created a script! So, let's do some work with our script.
 
 ### Basic Script
-In the top left pane, enter `myVar <- myVar * 10`. Nothing will happen, because this is just a script. It hasn't been executed yet. Click **Source** to run the script. Now, check out the **Environment** tab:
+In the top left pane, enter `my_var <- my_var * 10`. Nothing will happen, because this is just a script. It hasn't been executed yet. Click **Source** to run the script. Now, check out the **Environment** tab:
 
 <div style="text-align:center" markdown="1">
-![](images/exercise1_myvar_2.png)
+![](images/exercise1_my_var_2.png)
 </div>
 
 This is a simple illustration of working in both the console _and_ the script to work on the same environment.
 
 ```{r echo=FALSE}
-# We need to actually adjust the value of myVar for when we reference it again later.
-myVar <- 12^2*10
+# We need to actually adjust the value of my_var for when we reference it again later.
+my_var <- 12^2*10
 ```
 
 ## Vectors and c()
@@ -77,21 +77,21 @@ What if we wanted to cube each of these values? Type `myVector^3`. This is an op
 myVector^3
 ```
 
-In R's mind, both `myVar` and `myVector` are actually vectors. `myVar` is simply a vector of length `1`, while `myVector` is a vector of length `4`. Let's illustrate that and pick up a few more basics of the R/RStudio environment.
+In R's mind, both `my_var` and `myVector` are actually vectors. `my_var` is simply a vector of length `1`, while `myVector` is a vector of length `4`. Let's illustrate that and pick up a few more basics of the R/RStudio environment.
 
-Type `typeof(myVar)`. `typeof` is a function that returns the _type_ of an object.
+Type `typeof(my_var)`. `typeof` is a function that returns the _type_ of an object.
 ```{r}
-typeof(myVar)
+typeof(my_var)
 ```
 
-Type `typeof(myVector)`. Note that it is the identical _type_ as `myVar`.
+Type `typeof(myVector)`. Note that it is the identical _type_ as `my_var`.
 ```{r}
 typeof(myVector)
 ```
 
-Now, type `length(myVar)` and then `length(myVector)`. Note that this is where the two objects differ.
+Now, type `length(my_var)` and then `length(myVector)`. Note that this is where the two objects differ.
 ```{r echo=TRUE}
-length(myVar)
+length(my_var)
 length(myVector)
 ```
 
@@ -112,46 +112,46 @@ Click **Upload File** in the lower right pane in RStudio and upload td.csv. You 
 We're going to create an actual script now, so either just delete everything in the script you originally created or select **File>>New File>>R Script**. Either way, then select **File>>Save** and name the file **myFirstScript**. The script is being saved in your _working directory_ and now appears -- along with **td.csv** in the **Files** tab. Now, let's start writing some script!
 
 ### Load up a Data Frame
-The first thing we want to do is load our data into a **data frame**. A data frame is, essentially, just a table. Let's call our data frame **gaData** and load the data from **td.csv** into it. We use the `read.csv()` function for this, so add the following line of code to your script (loading data is something else we will [get into in more detail later](import-csv-excel.html):
+The first thing we want to do is load our data into a **data frame**. A data frame is, essentially, just a table. Let's call our data frame **ga_data** and load the data from **td.csv** into it. We use the `read.csv()` function for this, so add the following line of code to your script (loading data is something else we will [get into in more detail later](import-csv-excel.html):
 
 ```{r echo=TRUE, eval=FALSE}
-gaData <- read.csv("td.csv", stringsAsFactors = FALSE)
+ga_data <- read.csv("td.csv", stringsAsFactors = FALSE)
 ```
 
 ```{r echo=FALSE, eval=TRUE}
-gaData <- read.csv("data/td.csv", stringsAsFactors = FALSE)
+ga_data <- read.csv("data/td.csv", stringsAsFactors = FALSE)
 ```
 
 That `stringsAsFactors = FALSE` is something you will run into quite a bit in various functions. Let's just ignore it for now.
 
 ### Run the Script
 
-We can go ahead and run this script. Go ahead and click **Source**. It doesn't look like much happened, but, if you now check your **Environment** window, you will see a new object called **gaData**. Double-click on that, and the **gaData** data frame will load in a new tab next to your script.
+We can go ahead and run this script. Go ahead and click **Source**. It doesn't look like much happened, but, if you now check your **Environment** window, you will see a new object called **ga_data**. Double-click on that, and the **ga_data** data frame will load in a new tab next to your script.
 
 ## Explore the Data
 We're going to hop back down to the console to explore some of the most common ways we can access data in a data frame. 
 
-Type in `gaData` in the console. This will simply quickly scroll all of the contents of the data frame.
+Type in `ga_data` in the console. This will simply quickly scroll all of the contents of the data frame.
 
-Sometimes, we just want to see the basic structure of an object -- we don't need to see _all_ of the data. For that, try `head(gaData)`. This shows just the first few rows (and `head()` is a function; type `?head()` to read the help for it!).
+Sometimes, we just want to see the basic structure of an object -- we don't need to see _all_ of the data. For that, try `head(ga_data)`. This shows just the first few rows (and `head()` is a function; type `?head()` to read the help for it!).
 
 We will get into the many different ways to access this data [accessing.html](later), but it's worth a quick exploration of some of the most common ways.
 
-Let's look at just the **sessions** column. We do that using **\$** notation: try `gaData$sessions`.
+Let's look at just the **sessions** column. We do that using **\$** notation: try `ga_data$sessions`.
 
-Since the data frame is made up of rows and columns, we can also access values using a row/column notation (similar to R1C1 notation in Excel). To view the value in the 5th row and the 3rd column of the data, type `gaData[5,3]`.
+Since the data frame is made up of rows and columns, we can also access values using a row/column notation (similar to R1C1 notation in Excel). To view the value in the 5th row and the 3rd column of the data, type `ga_data[5,3]`.
 
-We can _also_ use this notation to grab an _entire_ row or an _entire_ column simply by using the row or column index blank. To grab the entire 5th row, type `gaData[5,]`.
+We can _also_ use this notation to grab an _entire_ row or an _entire_ column simply by using the row or column index blank. To grab the entire 5th row, type `ga_data[5,]`.
 
-Using this same notation, we can also add conditions to pull subsets of the data. For instance, to view all of the rows where there were greater than 100 sessions, enter `gaData[gaData$sessions > 100,]`.
+Using this same notation, we can also add conditions to pull subsets of the data. For instance, to view all of the rows where there were greater than 100 sessions, enter `ga_data[ga_data$sessions > 100,]`.
 
 Let's say we actually want to use that subset of data for something else. We want to add it to our script to get that subset of data and assign it to a new object. We can use the console and the script window together:
 
-1. Press the up arrow to get `gaData[gaData$sessions > 100,]` to reappear.
+1. Press the up arrow to get `ga_data[ga_data$sessions > 100,]` to reappear.
 
 2. Now, highlight it and cut or copy it.
 
-3. Click into the next line in your script and enter `gaDataOver100 <- ` and then paste in `gaData[gaData$sessions >100,]`.
+3. Click into the next line in your script and enter `ga_dataOver100 <- ` and then paste in `ga_data[ga_data$sessions >100,]`.
 
 4. Highlight _just_ that row and click **Run**. You now have a new object in your **Environment** that you can inspect.
 
@@ -168,19 +168,19 @@ We will come back to visualizations later in the day, but let's at least add a s
 The first line converts the **date** values to, well, actual _date_ values. Dates can be tricky, but there are a lot of tips and tools (and even a package called `lubridate()` to help with that):
 
 ```{r echo=TRUE, eval=TRUE}
-gaData$date <- as.Date(gaData$date)
+ga_data$date <- as.Date(ga_data$date)
 ```
 
 The second line we'll add will actually plot the data. There are shorter ways to write this out, but let's go with this:
 
 ```{r echo=TRUE, eval=FALSE}
-plot(x = gaData$date, y = gaData$sessions, type = "l")
+plot(x = ga_data$date, y = ga_data$sessions, type = "l")
 ```
 
 Now, you can either highlight just the two new rows and click **Run**, or you can click **Source** to run the entire script. The end result will be a barely-formatted, ugly label line chart:
 
 ```{r echo=FALSE, eval=TRUE}
-plot(x = gaData$date, y = gaData$sessions, type = "l")
+plot(x = ga_data$date, y = ga_data$sessions, type = "l")
 ```
 
-Don't judge a platform by your first visualization. Even with the basics of `plot()`, this chart can be a lot better, but we're actually going to primarily focus on `ggplot2()` when it comes to visualizations. So, let's call this initial exercise a wrap! Congratulations! You've loaded, manipulated, and plotted data with R!
+Don't judge a platform by your first visualisation. Even with the basics of `plot()`, this chart can be a lot better, but we're actually going to primarily focus on `ggplot2()` when it comes to visualisations. So, let's call this initial exercise a wrap! Congratulations! You've loaded, manipulated, and plotted data with R!
