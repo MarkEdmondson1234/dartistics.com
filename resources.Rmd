@@ -2,11 +2,9 @@
 title: "Resources"
 ---
 
-# R and Statistics for Digital Analysts
+**Resource #1:** Join the Measure Slack team at [http://join.measure.chat](http://join.measure.chat). It's free! Be sure to join the #r-and-statistics channel!
 
-This is a community-driven set of resources and links on R and statistics generated of, by, and for digital analysts. To submit a resource, fill out [this Google form](https://docs.google.com/a/webanalyticsdemystified.com/forms/d/e/1FAIpQLSftDmRdGT-Ad-mgaa2rEh7yt4F6hYzDGkIuIym4lsq1Lothsw/viewform). Once approved, the resource will appear here.
-
-We will be working to improve the structure and navigation of this site. Heck...it uses Shiny, so we very well may add some interactivity, too! If you have feedback or are interested in helping out with this project, shoot a note to [Tim Wilson](mailto:tim@analyticsdemystified.com). 
+**Resoure #2:** Check out the resources below. This is a community-driven set of resources and links on R and statistics generated of, by, and for digital analysts. To submit a resource, fill out [this Google form](https://docs.google.com/a/webanalyticsdemystified.com/forms/d/e/1FAIpQLSftDmRdGT-Ad-mgaa2rEh7yt4F6hYzDGkIuIym4lsq1Lothsw/viewform). Once approved, the resource will appear here (through the magic of the `googlesheets` package and some RMarkdown!). (We are continuing to work on the structure and navigation.) 
 
 ```{r, echo=FALSE, message=FALSE}
 library(googlesheets)
