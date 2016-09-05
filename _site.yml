@@ -30,14 +30,6 @@ navbar:
         href: exercise3-accessing-data.html
       - text: "4. Tidy Data / dplyr()"
         href: exercise4-tidy-dplyr.html
-      - text: "5. Correlation"
-        href: exercise5-correlation.html
-      - text: "6. Regression"
-        href: exercise6-regression.html
-      - text: "7. Visualisation"
-        href: exercise7-visualisation.html
-      - text: "8. RMarkdown"
-        href: exercise8-rmarkdown.html
     - text: "Basics"
       menu:
       - text: "RStudio"
