@@ -467,8 +467,8 @@ div.tocify {
 <h3>Create a New Script</h3>
 <p>Create a new script by selecting <strong>File&gt;&gt;New File&gt;&gt;R Script</strong> (we’ll cover projects in a bit).</p>
 </div>
-<div id="basic-math-and-variable-assignment" class="section level3">
-<h3>Basic Math and Variable Assignment</h3>
+<div id="basic-mathvariables" class="section level3">
+<h3>Basic Math/Variables</h3>
 <p>Let’s start with some simple math. In the console, type <code>12^2</code> and press <Enter>. You should get:</p>
 <pre class="r"><code>12^2</code></pre>
 <pre><code>## [1] 144</code></pre>
@@ -478,7 +478,7 @@ div.tocify {
 <p>Look in the <strong>Environment</strong> tab in the top right pane, you should now see your variable:</p>
 <div style="text-align:center" markdown="1">
 <div class="figure">
-<img src="images/exercise1_my_var_2.png" />
+<img src="images/exercise1_myvar_2.png" />
 
 </div>
 </div>
@@ -489,7 +489,7 @@ div.tocify {
 <p>In the top left pane, enter <code>my_var &lt;- my_var * 10</code>. Nothing will happen, because this is just a script. It hasn’t been executed yet. Click <strong>Source</strong> to run the script. Now, check out the <strong>Environment</strong> tab:</p>
 <div style="text-align:center" markdown="1">
 <div class="figure">
-<img src="images/exercise1_my_var_2.png" />
+<img src="images/exercise1_myvar_2.png" />
 
 </div>
 </div>
@@ -501,25 +501,25 @@ div.tocify {
 <p>In the first part of this exercise we assigned a single <strong>numeric</strong> value to an <strong>object</strong>. We can also (and often will) want to work with multiple values. We don’t need a 1:1 relationship for each value and an object. We can use a <strong>vector</strong> to store multiple values in a single object.</p>
 <p>Two key concepts here (we’ll dive deeper into these <a href="in%20a%20bit">classes.html#multi-classes</a>: * <strong>Vectors</strong> get used quite a bit, but, with much of the data we work with, we actually work with <strong>data frames</strong>, which will look much more familiar, in that they are, essentially like Excel sheets on steroids. Wrapping your head around the differences between <strong>vectors</strong>, <strong>data frames</strong>, and a few other types of objects (<strong>lists</strong> and *matrices**) is both critical…and confusing. * Vectors get created using the <code>c()</code> function. The “c” is for “combine,” because we’re combining multiple values into a single vector.</p>
 <p>So, let’s do a little work with vectors:</p>
-<p>In the <strong>Console</strong>, type <code>myVector &lt;- c(1,2,3,4)</code>. You will see <code>myVector</code> appear in the <strong>Environment</strong> pane.</p>
-<pre class="r"><code>myVector &lt;- c(1,2,3,4)</code></pre>
-<p>Type <code>myVector</code> in the <strong>Console</strong> to display the vector in the console.</p>
-<pre class="r"><code>myVector</code></pre>
+<p>In the <strong>Console</strong>, type <code>my_vector &lt;- c(1,2,3,4)</code>. You will see <code>my_vector</code> appear in the <strong>Environment</strong> pane.</p>
+<pre class="r"><code>my_vector &lt;- c(1,2,3,4)</code></pre>
+<p>Type <code>my_vector</code> in the <strong>Console</strong> to display the vector in the console.</p>
+<pre class="r"><code>my_vector</code></pre>
 <pre><code>## [1] 1 2 3 4</code></pre>
-<p>What if we wanted to cube each of these values? Type <code>myVector^3</code>. This is an operation performed on an <em>entire vector</em>. It’s not particularly exciting in this example, but it shows one of the fundamental aspects of R that we will come back to again and again. What we did <strong>not</strong> have to do was “loop through the vector and cube each value.” Rather, we performed an operation on the <em>entire vector</em> and we did it <em>all at once</em>.</p>
-<pre class="r"><code>myVector^3</code></pre>
+<p>What if we wanted to cube each of these values? Type <code>my_vector^3</code>. This is an operation performed on an <em>entire vector</em>. It’s not particularly exciting in this example, but it shows one of the fundamental aspects of R that we will come back to again and again. What we did <strong>not</strong> have to do was “loop through the vector and cube each value.” Rather, we performed an operation on the <em>entire vector</em> and we did it <em>all at once</em>.</p>
+<pre class="r"><code>my_vector^3</code></pre>
 <pre><code>## [1]  1  8 27 64</code></pre>
-<p>In R’s mind, both <code>my_var</code> and <code>myVector</code> are actually vectors. <code>my_var</code> is simply a vector of length <code>1</code>, while <code>myVector</code> is a vector of length <code>4</code>. Let’s illustrate that and pick up a few more basics of the R/RStudio environment.</p>
+<p>In R’s mind, both <code>my_var</code> and <code>my_vector</code> are actually vectors. <code>my_var</code> is simply a vector of length <code>1</code>, while <code>my_vector</code> is a vector of length <code>4</code>. Let’s illustrate that and pick up a few more basics of the R/RStudio environment.</p>
 <p>Type <code>typeof(my_var)</code>. <code>typeof</code> is a function that returns the <em>type</em> of an object.</p>
 <pre class="r"><code>typeof(my_var)</code></pre>
 <pre><code>## [1] &quot;double&quot;</code></pre>
-<p>Type <code>typeof(myVector)</code>. Note that it is the identical <em>type</em> as <code>my_var</code>.</p>
-<pre class="r"><code>typeof(myVector)</code></pre>
+<p>Type <code>typeof(my_vector)</code>. Note that it is the identical <em>type</em> as <code>my_var</code>.</p>
+<pre class="r"><code>typeof(my_vector)</code></pre>
 <pre><code>## [1] &quot;double&quot;</code></pre>
-<p>Now, type <code>length(my_var)</code> and then <code>length(myVector)</code>. Note that this is where the two objects differ.</p>
+<p>Now, type <code>length(my_var)</code> and then <code>length(my_vector)</code>. Note that this is where the two objects differ.</p>
 <pre class="r"><code>length(my_var)</code></pre>
 <pre><code>## [1] 1</code></pre>
-<pre class="r"><code>length(myVector)</code></pre>
+<pre class="r"><code>length(my_vector)</code></pre>
 <pre><code>## [1] 4</code></pre>
 <p>We’ve now worked with <code>c()</code>, <code>typeof()</code>, and <code>length()</code>. That’s just the beginning!</p>
 </div>

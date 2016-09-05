@@ -14,7 +14,7 @@ We're going to walk through some basics so you get a good sense of the different
 ### Create a New Script
 Create a new script by selecting **File>>New File>>R Script** (we'll cover projects in a bit).
 
-### Basic Math and Variable Assignment
+### Basic Math/Variables
 Let's start with some simple math. In the console, type `12^2` and press <Enter>. You should get:
 
 ```{r}
@@ -31,7 +31,7 @@ _In R, assignment of values uses `<-`._
 Look in the **Environment** tab in the top right pane, you should now see your variable:
 
 <div style="text-align:center" markdown="1">
-![](images/exercise1_my_var_2.png)
+![](images/exercise1_myvar_2.png)
 </div>
 
 You've just created a variable and stored it in your working space...even though you haven't actually created a script! So, let's do some work with our script.
@@ -40,7 +40,7 @@ You've just created a variable and stored it in your working space...even though
 In the top left pane, enter `my_var <- my_var * 10`. Nothing will happen, because this is just a script. It hasn't been executed yet. Click **Source** to run the script. Now, check out the **Environment** tab:
 
 <div style="text-align:center" markdown="1">
-![](images/exercise1_my_var_2.png)
+![](images/exercise1_myvar_2.png)
 </div>
 
 This is a simple illustration of working in both the console _and_ the script to work on the same environment.
@@ -59,40 +59,40 @@ Two key concepts here (we'll dive deeper into these [classes.html#multi-classes]
 
 So, let's do a little work with vectors:
 
-In the **Console**, type `myVector <- c(1,2,3,4)`. You will see `myVector` appear in the **Environment** pane.
+In the **Console**, type `my_vector <- c(1,2,3,4)`. You will see `my_vector` appear in the **Environment** pane.
 
 ```{r}
-myVector <- c(1,2,3,4)
+my_vector <- c(1,2,3,4)
 ```
 
-Type `myVector` in the **Console** to display the vector in the console.
+Type `my_vector` in the **Console** to display the vector in the console.
 
 ```{r}
-myVector
+my_vector
 ```
 
-What if we wanted to cube each of these values? Type `myVector^3`. This is an operation performed on an _entire vector_. It's not particularly exciting in this example, but it shows one of the fundamental aspects of R that we will come back to again and again. What we did **not** have to do was "loop through the vector and cube each value." Rather, we performed an operation on the _entire vector_ and we did it _all at once_.
+What if we wanted to cube each of these values? Type `my_vector^3`. This is an operation performed on an _entire vector_. It's not particularly exciting in this example, but it shows one of the fundamental aspects of R that we will come back to again and again. What we did **not** have to do was "loop through the vector and cube each value." Rather, we performed an operation on the _entire vector_ and we did it _all at once_.
 
 ```{r}
-myVector^3
+my_vector^3
 ```
 
-In R's mind, both `my_var` and `myVector` are actually vectors. `my_var` is simply a vector of length `1`, while `myVector` is a vector of length `4`. Let's illustrate that and pick up a few more basics of the R/RStudio environment.
+In R's mind, both `my_var` and `my_vector` are actually vectors. `my_var` is simply a vector of length `1`, while `my_vector` is a vector of length `4`. Let's illustrate that and pick up a few more basics of the R/RStudio environment.
 
 Type `typeof(my_var)`. `typeof` is a function that returns the _type_ of an object.
 ```{r}
 typeof(my_var)
 ```
 
-Type `typeof(myVector)`. Note that it is the identical _type_ as `my_var`.
+Type `typeof(my_vector)`. Note that it is the identical _type_ as `my_var`.
 ```{r}
-typeof(myVector)
+typeof(my_vector)
 ```
 
-Now, type `length(my_var)` and then `length(myVector)`. Note that this is where the two objects differ.
+Now, type `length(my_var)` and then `length(my_vector)`. Note that this is where the two objects differ.
 ```{r echo=TRUE}
 length(my_var)
-length(myVector)
+length(my_vector)
 ```
 
 We've now worked with `c()`, `typeof()`, and `length()`. That's just the beginning!
