@@ -362,8 +362,8 @@ $(document).ready(function () {
 </div>
 
 
-<p>Correlation is a number that describes how much relationship is between two variables.</p>
-<p>In digital analytis terms, you can use it to explore relationships between web metrics to see if an influence can be inferred, but beware the 101 stat advice of not accounting for other factors.</p>
+<p>Correlation is a number that describes how strong of a relationship there is between two variables.</p>
+<p>In digital analytics terms, you can use it to explore relationships between web metrics to see if an influence can be inferred, but <em>be careful to not hastily jump to conclusions that do not account for other factors</em>.</p>
 <p>For instance, a high correlation between social shares and SEO position could mean:</p>
 <ul>
 <li>Social shares influence SEO position</li>
@@ -379,7 +379,7 @@ $(document).ready(function () {
 <p>But, still, correlation can be very useful: identifying that a relationship exists can be a great place to start looking for the underlying drivers of that relationship which, ultimately, can lead to an insight than can drive an action!</p>
 <div id="performing-correlation-analysis-in-r" class="section level2">
 <h2>Performing correlation analysis in R</h2>
-<p>The base function <code>cor()</code> will perform correlations on a <code>data.frame</code>. Let’s give this a go with some data. We’ve got two options here, so choose wisely, grasshopper!</p>
+<p>The base function <code>cor()</code> will perform correlations on a <code>data.frame</code>. Let’s give this a go with some data. We’ve got two options here, so choose wisely, grasshopper! <strong>Option 1</strong> is preferred, but <strong>Option 2</strong> is a perfectly serviceable fallback.</p>
 <div id="option-1-your-data" class="section level3">
 <h3>Option 1: YOUR Data</h3>
 <p>To make this interesting, how about we use your data? If you have a Google account with access to Google Analytics, then follow the instructions to authenticate on the <a href="http://code.markedmondson.me/RWorkshopCopenhagen/analytics-apis.html">Analytics APIs page</a>. Once you’ve done that, then the function below from the <code>googleAnalyticsR</code> package should give you the last 60 days of data for the <code>viewID</code> you enter:</p>
@@ -791,20 +791,27 @@ kable(cor_table)</code></pre>
 </div>
 <div id="analysis" class="section level3">
 <h3>Analysis</h3>
-<p>Now, when we compare channels, we see much looser correlations for this dataset, which makes sense, right?. Correlations under 0.3 are, as a rule-of-thumb, not worth considering, so the standouts look to be <strong>Social</strong> vs. <strong>Video8* and </strong>Paid** vs. <strong>Organic Search</strong>.</p>
-<p>Plotting those channels we can examine the trends to see the shape of the data</p>
+<p>Now, when we compare channels, we see much looser correlations for this dataset, which makes sense, right? Correlations under 0.3 are, as a rule-of-thumb, not worth considering, so the standouts look to be <strong>Social</strong> vs. <strong>Video* and </strong>Paid** vs. <strong>Organic Search</strong>.</p>
+<p>Plotting those channels, we can examine the trends to see the shape of the data</p>
 <blockquote>
-<p>Correlation has help us zero in on possible interesting relationships</p>
+<p>Correlation has help us zero in on possibly interesting relationships</p>
 </blockquote>
 <pre class="r"><code>library(ggplot2)
-gg &lt;- ggplot(data = pivoted) + theme_minimal() + ggtitle(&quot;Paid (blue) vs Organic (green) search&quot;)
-gg &lt;- gg + geom_line(aes(x = as.Date(date), y = `Paid Search`), col = &quot;blue&quot;)
+gg &lt;- ggplot(data = pivoted) + 
+      theme_minimal() + 
+      ggtitle(&quot;Paid (blue) vs Organic (green) search&quot;)
+gg &lt;- gg + 
+      geom_line(aes(x = as.Date(date), y = `Paid Search`), col = &quot;blue&quot;)
+
 gg + geom_line(aes(x = as.Date(date), y = `Organic Search`), col = &quot;green&quot;)</code></pre>
 <p><img src="correlation_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>We can see here the trends do look similar, but with a paid search peak in the first quarter (as we look at this, we might want to consider these spikes as outliers – either simply by the visual or using a more defined method for detecting outlier; it would be quite simple to remove this data from the data set and run the analysis again…but we’re not going to go down that particular rabbit hole right now).</p>
+<p>We can see here the trends do look similar, but with a paid search peak in the first quarter (as we look at this, we might want to consider these spikes as outliers – either simply by the visual or using a more defined method for detecting outliers; it would be quite simple to remove this data from the data set and run the analysis again…but we’re not going to go down that particular rabbit hole right now).</p>
 <pre class="r"><code>library(ggplot2)
-gg &lt;- ggplot(data = pivoted) + theme_minimal() + ggtitle(&quot;Social (red) vs Video (orange)&quot;)
-gg &lt;- gg + geom_line(aes(x = as.Date(date), y = Social), col = &quot;red&quot;)
+gg &lt;- ggplot(data = pivoted) + 
+              theme_minimal() + 
+              ggtitle(&quot;Social (red) vs Video (orange)&quot;)
+gg &lt;- gg + 
+      geom_line(aes(x = as.Date(date), y = Social), col = &quot;red&quot;)
 gg + geom_line(aes(x = as.Date(date), y = Video), col = &quot;orange&quot;)</code></pre>
 <p><img src="correlation_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>Here, a peak in <strong>Social</strong> late in the year looks to have coincided with a peak in <em>Video</em>: possibly a campaign driving video views?</p>
@@ -812,13 +819,13 @@ gg + geom_line(aes(x = as.Date(date), y = Video), col = &quot;orange&quot;)</cod
 </div>
 <div id="cross-correlation" class="section level2">
 <h2>Cross correlation</h2>
-<p>The correlations above all compare the same date point, but what if you expect a lagged effect? Perhaps the video traffic drove social traffic later on due to client advocacy?</p>
+<p>The correlations, above all, compare the same date point, but what if you expect a lagged effect? Perhaps the video traffic drove social traffic later on due to client advocacy?</p>
 <p>Cross correlations are useful when dealing with time-series data and can examine if a metric has an influence on itself or another after some time has passed.</p>
 <p>This can be a powerful way to find if, say, a TV or Display campaign increased SEO traffic over the course of the few weeks following the campaign.</p>
 <p>The below compares paid search on SEO using the <code>ccf()</code> function. The result is the correlation for different lags of days. We can see a correlation at 0 lag at around 0.5, but the correlation increases if you lag the Social trend up to 10 days before.</p>
 <pre class="r"><code>ccf(pivoted$Social, pivoted$Video)</code></pre>
 <p><img src="correlation_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>You could then conclude that Video was having a lagged effect on Social traffic up to 10 days beforehand. But, beware! The nature of cross-correlation is that if both datasets have a similar looking spike, cross-correlation will highlight it. Careful examination of the raw data trends should be performed to verify it. In some cases a smoother line will help get rid of spikes that affect the data (e.g., do the analysis on weekly or monthly data instead of daily). And, of course, there is no substitue for rational thought: if you find a relationship like this, can you explain it rationally? And, if so, can you further analysis to validate that rationalization? <em>(If only R had an <strong>Easy Button</strong> to do the actual thinking, too. Alas!)</em></p>
+<p>You could then conclude that Video was having a lagged effect on Social traffic up to 10 days beforehand. But, beware! The nature of cross-correlation is that if both datasets have a similar looking spike, cross-correlation will highlight it. Careful examination of the raw data trends should be performed to verify it. In some cases a smoother line will help get rid of spikes that affect the data (e.g., do the analysis on weekly or monthly data instead of daily). And, of course, there is no substitue for rational thought: if you find a relationship like this, can you explain it rationally? And, if so, can you conduct further analysis to validate that rationalization? <em>(If only R had an <strong>Easy Button</strong> to do the actual thinking, too. Alas!)</em></p>
 </div>
 
 

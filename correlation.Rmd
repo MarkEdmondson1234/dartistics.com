@@ -2,9 +2,9 @@
 title: "Correlation"
 ---
 
-Correlation is a number that describes how much relationship is between two variables.
+Correlation is a number that describes how strong of a relationship there is between two variables.
 
-In digital analytis terms, you can use it to explore relationships between web metrics to see if an influence can be inferred, but beware the 101 stat advice of not accounting for other factors.  
+In digital analytics terms, you can use it to explore relationships between web metrics to see if an influence can be inferred, but _be careful to not hastily jump to conclusions that do not account for other factors_.  
 
 For instance, a high correlation between social shares and SEO position could mean:
 
@@ -22,7 +22,7 @@ But, still, correlation can be very useful: identifying that a relationship exis
 
 ## Performing correlation analysis in R
 
-The base function `cor()` will perform correlations on a `data.frame`. Let's give this a go with some data. We've got two options here, so choose wisely, grasshopper!
+The base function `cor()` will perform correlations on a `data.frame`. Let's give this a go with some data. We've got two options here, so choose wisely, grasshopper! **Option 1** is preferred, but **Option 2** is a perfectly serviceable fallback.
 
 ### Option 1: YOUR Data
 
@@ -134,26 +134,33 @@ pairs(cor_data)
 
 ### Analysis
 
-Now, when we compare channels, we see much looser correlations for this dataset, which makes sense, right?.  Correlations under 0.3 are, as a rule-of-thumb, not worth considering, so the standouts look to be **Social** vs. **Video8* and **Paid** vs. **Organic Search**.
+Now, when we compare channels, we see much looser correlations for this dataset, which makes sense, right?  Correlations under 0.3 are, as a rule-of-thumb, not worth considering, so the standouts look to be **Social** vs. **Video* and **Paid** vs. **Organic Search**.
 
-Plotting those channels we can examine the trends to see the shape of the data
+Plotting those channels, we can examine the trends to see the shape of the data
 
-> Correlation has help us zero in on possible interesting relationships
+> Correlation has help us zero in on possibly interesting relationships
 
 
 ```{r}
 library(ggplot2)
-gg <- ggplot(data = pivoted) + theme_minimal() + ggtitle("Paid (blue) vs Organic (green) search")
-gg <- gg + geom_line(aes(x = as.Date(date), y = `Paid Search`), col = "blue")
+gg <- ggplot(data = pivoted) + 
+      theme_minimal() + 
+      ggtitle("Paid (blue) vs Organic (green) search")
+gg <- gg + 
+      geom_line(aes(x = as.Date(date), y = `Paid Search`), col = "blue")
+
 gg + geom_line(aes(x = as.Date(date), y = `Organic Search`), col = "green")
 ```
 
-We can see here the trends do look similar, but with a paid search peak in the first quarter (as we look at this, we might want to consider these spikes as outliers -- either simply by the visual or using a more defined method for detecting outlier; it would be quite simple to remove this data from the data set and run the analysis again...but we're not going to go down that particular rabbit hole right now).
+We can see here the trends do look similar, but with a paid search peak in the first quarter (as we look at this, we might want to consider these spikes as outliers -- either simply by the visual or using a more defined method for detecting outliers; it would be quite simple to remove this data from the data set and run the analysis again...but we're not going to go down that particular rabbit hole right now).
 
 ```{r}
 library(ggplot2)
-gg <- ggplot(data = pivoted) + theme_minimal() + ggtitle("Social (red) vs Video (orange)")
-gg <- gg + geom_line(aes(x = as.Date(date), y = Social), col = "red")
+gg <- ggplot(data = pivoted) + 
+              theme_minimal() + 
+              ggtitle("Social (red) vs Video (orange)")
+gg <- gg + 
+      geom_line(aes(x = as.Date(date), y = Social), col = "red")
 gg + geom_line(aes(x = as.Date(date), y = Video), col = "orange")
 ```
 
@@ -161,7 +168,7 @@ Here, a peak in **Social** late in the year looks to have coincided with a peak 
 
 ## Cross correlation
 
-The correlations above all compare the same date point, but what if you expect a lagged effect?  Perhaps the video traffic drove social traffic later on due to client advocacy?
+The correlations, above all, compare the same date point, but what if you expect a lagged effect?  Perhaps the video traffic drove social traffic later on due to client advocacy?
 
 Cross correlations are useful when dealing with time-series data and can examine if a metric has an influence on itself or another after some time has passed.  
 
@@ -173,4 +180,4 @@ The below compares paid search on SEO using the `ccf()` function. The result is 
 ccf(pivoted$Social, pivoted$Video)
 ```
 
-You could then conclude that Video was having a lagged effect on Social traffic up to 10 days beforehand. But, beware! The nature of cross-correlation is that if both datasets have a similar looking spike, cross-correlation will highlight it.  Careful examination of the raw data trends should be performed to verify it.  In some cases a smoother line will help get rid of spikes that affect the data (e.g., do the analysis on weekly or monthly data instead of daily). And, of course, there is no substitue for rational thought: if you find a relationship like this, can you explain it rationally? And, if so, can you further analysis to validate that rationalization? _(If only R had an **Easy Button** to do the actual thinking, too. Alas!)_
+You could then conclude that Video was having a lagged effect on Social traffic up to 10 days beforehand. But, beware! The nature of cross-correlation is that if both datasets have a similar looking spike, cross-correlation will highlight it.  Careful examination of the raw data trends should be performed to verify it.  In some cases a smoother line will help get rid of spikes that affect the data (e.g., do the analysis on weekly or monthly data instead of daily). And, of course, there is no substitue for rational thought: if you find a relationship like this, can you explain it rationally? And, if so, can you conduct further analysis to validate that rationalization? _(If only R had an **Easy Button** to do the actual thinking, too. Alas!)_
