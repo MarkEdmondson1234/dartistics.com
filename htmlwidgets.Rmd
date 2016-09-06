@@ -8,7 +8,7 @@ R plots are cool, but interactive R plots are even cooler.
 
 A few notable examples are shown below using our example data:
 
-```{r}
+```{r message=FALSE}
 ## get the web data
 web_data <- read.csv("./data/gadata_example_2.csv", stringsAsFactors = FALSE)
 
@@ -89,7 +89,7 @@ ggplotly(gg)
 You need to pay to use this commercially, but it is a very nice library with lots of options and shortcuts to plot R objects. The below is a correlation table:
 
 
-```{r}
+```{r message=FALSE}
 library(highcharter)
 ## make a time-series object
 ## can't include the date as its not numeric, so remove
