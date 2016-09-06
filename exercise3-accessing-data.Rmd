@@ -28,9 +28,9 @@ This exercise is dependent on the successful completion of [Exercise 2](exercise
   + Display the entire `sessions` column using `$` notation
   + Display the first five values in the `sessions` column using both `$` and indices
 4. Filter/subset the data:
-  + Create an object called `mobileData` that includes only the rows from `web_data` where the `deviceCategory` value is `mobile`
-  + Display all of the rows from `mobileData` where the `sessions` are greater than 2.000
-  + Display the same result as in the previous task, but do so using _only_ `web_data` (don't create an intermediate `mobileData` object)
+  + Create an object called `mobile_data` that includes only the rows from `web_data` where the `deviceCategory` value is `mobile`
+  + Display all of the rows from `mobile_data` where the `sessions` are greater than 2.000
+  + Display the same result as in the previous task, but do so using _only_ `web_data` (don't create an intermediate `mobile_data` object)
   + Display rows where `mobile` is the `deviceCategory`, `sessions` is greater than 2000, but only display three columns: `date`, `channelGrouping`, and `sessions`
   
 -------------
@@ -94,16 +94,16 @@ web_data$sessions[1:5]
 ```
 
 ## 4. Filter/Subset the Data
-It's generally more efficient to do as few API calls as possible. That means that, often, we're pulling a master data set, even though we only want to work on pieces of it at once. In this example, what if we wanted to look at _just_ the mobile data. And, as a small twist, let's not only isolate the mobile data, but let's put that data into its own data frame calle `mobileData`:
+It's generally more efficient to do as few API calls as possible. That means that, often, we're pulling a master data set, even though we only want to work on pieces of it at once. In this example, what if we wanted to look at _just_ the mobile data. And, as a small twist, let's not only isolate the mobile data, but let's put that data into its own data frame calle `mobile_data`:
 ```{r}
-mobileData <- web_data[web_data$deviceCategory=="mobile",]
+mobile_data <- web_data[web_data$deviceCategory=="mobile",]
 ```
-Double-click on the **mobileData* object in your **Environment** to check out this data. (Or, perhaps, view the `head()` of this new object in your console!)
+Double-click on the **mobile_data* object in your **Environment** to check out this data. (Or, perhaps, view the `head()` of this new object in your console!)
 
-What if we wanted to quickly get a list of dates and channels where the channel's sessions for the day were greater than 2.000 (or 2,000, depending on which continent you are on)? We can perform this on our new `mobileData` object:
+What if we wanted to quickly get a list of dates and channels where the channel's sessions for the day were greater than 2.000 (or 2,000, depending on which continent you are on)? We can perform this on our new `mobile_data` object:
 
 ```{r}
-mobileData[mobileData$sessions>2000,]
+mobile_data[mobile_data$sessions>2000,]
 ```
 
 Could we have gotten this same result from our base `web_data` data set? We could -- by combining criteria:

@@ -14,14 +14,14 @@
 <title>Exercise 3 – Accessing Data</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -96,6 +96,7 @@ button.code-folding-btn:focus {
   outline: none;
 }
 </style>
+
 
 <style type="text/css">
 /* padding for bootstrap navbar */
@@ -480,9 +481,9 @@ div.tocify {
 <li>Filter/subset the data:</li>
 </ol>
 <ul>
-<li>Create an object called <code>mobileData</code> that includes only the rows from <code>web_data</code> where the <code>deviceCategory</code> value is <code>mobile</code></li>
-<li>Display all of the rows from <code>mobileData</code> where the <code>sessions</code> are greater than 2.000</li>
-<li>Display the same result as in the previous task, but do so using <em>only</em> <code>web_data</code> (don’t create an intermediate <code>mobileData</code> object)</li>
+<li>Create an object called <code>mobile_data</code> that includes only the rows from <code>web_data</code> where the <code>deviceCategory</code> value is <code>mobile</code></li>
+<li>Display all of the rows from <code>mobile_data</code> where the <code>sessions</code> are greater than 2.000</li>
+<li>Display the same result as in the previous task, but do so using <em>only</em> <code>web_data</code> (don’t create an intermediate <code>mobile_data</code> object)</li>
 <li>Display rows where <code>mobile</code> is the <code>deviceCategory</code>, <code>sessions</code> is greater than 2000, but only display three columns: <code>date</code>, <code>channelGrouping</code>, and <code>sessions</code></li>
 </ul>
 <hr />
@@ -560,11 +561,11 @@ div.tocify {
 </div>
 <div id="filtersubset-the-data" class="section level2">
 <h2>4. Filter/Subset the Data</h2>
-<p>It’s generally more efficient to do as few API calls as possible. That means that, often, we’re pulling a master data set, even though we only want to work on pieces of it at once. In this example, what if we wanted to look at <em>just</em> the mobile data. And, as a small twist, let’s not only isolate the mobile data, but let’s put that data into its own data frame calle <code>mobileData</code>:</p>
-<pre class="r"><code>mobileData &lt;- web_data[web_data$deviceCategory==&quot;mobile&quot;,]</code></pre>
-<p>Double-click on the <strong>mobileData* object in your </strong>Environment** to check out this data. (Or, perhaps, view the <code>head()</code> of this new object in your console!)</p>
-<p>What if we wanted to quickly get a list of dates and channels where the channel’s sessions for the day were greater than 2.000 (or 2,000, depending on which continent you are on)? We can perform this on our new <code>mobileData</code> object:</p>
-<pre class="r"><code>mobileData[mobileData$sessions&gt;2000,]</code></pre>
+<p>It’s generally more efficient to do as few API calls as possible. That means that, often, we’re pulling a master data set, even though we only want to work on pieces of it at once. In this example, what if we wanted to look at <em>just</em> the mobile data. And, as a small twist, let’s not only isolate the mobile data, but let’s put that data into its own data frame calle <code>mobile_data</code>:</p>
+<pre class="r"><code>mobile_data &lt;- web_data[web_data$deviceCategory==&quot;mobile&quot;,]</code></pre>
+<p>Double-click on the <strong>mobile_data* object in your </strong>Environment** to check out this data. (Or, perhaps, view the <code>head()</code> of this new object in your console!)</p>
+<p>What if we wanted to quickly get a list of dates and channels where the channel’s sessions for the day were greater than 2.000 (or 2,000, depending on which continent you are on)? We can perform this on our new <code>mobile_data</code> object:</p>
+<pre class="r"><code>mobile_data[mobile_data$sessions&gt;2000,]</code></pre>
 <pre><code>##         X       date channelGrouping deviceCategory sessions pageviews
 ## 8       8 2016-01-01         Display         mobile     3266      3772
 ## 33     33 2016-01-02         Display         mobile     2375      2745
@@ -680,6 +681,7 @@ div.tocify {
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 
