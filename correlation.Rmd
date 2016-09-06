@@ -33,7 +33,7 @@ To make this interesting, how about we use your data? If you have a Google accou
 start_date <- Sys.Date()-60
 end_date <- Sys.Date()-1
 
-web_data <- google_analytics_4(66876757,
+web_data <- google_analytics_4([insert your view ID],
             date_range = c(start_date,end_date),
             metrics = c("sessions","pageviews","entrances","bounces"),
             dimensions = c("date","channelGrouping","deviceCategory"),
