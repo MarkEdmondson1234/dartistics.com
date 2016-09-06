@@ -4,7 +4,7 @@ title: "HTML Widgets"
 
 R plots are cool, but interactive R plots are even cooler.
 
-[HTMLwidgets](http://gallery.htmlwidgets.org/) is a library you may not use directly, but enables package  creators to easily port JavScript visualisations to R for display.  Since JavaScript has arguably the best visualisation libraries out there, led by [https://d3js.org/](https://d3js.org/), this opens up many opportunities to link R data with JavaScript interactivity.
+[HTMLwidgets](http://gallery.htmlwidgets.org/) is a library you may not use directly, but it enables package creators to easily port JavaScript visualisations to R for display.  Since JavaScript has arguably the best visualisation libraries out there, led by [https://d3js.org/](https://d3js.org/), this opens up many opportunities to link R data with JavaScript interactivity.
 
 A few notable examples are shown below using our example data:
 
@@ -33,7 +33,7 @@ pivoted[is.na(pivoted)] <- 0
 
 ### Dygraphs
 
-Good for time-series.  Click plot to zoom
+Good for time-series.  Click the plot to zoom.
 
 ```{r, message=FALSE, warning=FALSE}
 library(dygraphs)
@@ -86,7 +86,7 @@ ggplotly(gg)
 
 ### Highcharter
 
-You need to pay to use this commercially, but very nice library with lots of options and shortcuts to plot R objects - the below is a correlation table:
+You need to pay to use this commercially, but it is a very nice library with lots of options and shortcuts to plot R objects. The below is a correlation table:
 
 
 ```{r}
