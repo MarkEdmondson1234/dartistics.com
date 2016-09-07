@@ -4,6 +4,8 @@ title: "Github"
 
 Once you are doing any data programming, it is highly recommended you start using version control, and for R in particular Github is highly recommended due to its thriving R community.
 
+A full walkthrough on using Github with R can be found in [this Jenny Bryan online book](http://happygitwithr.com/) (who is also the author of the `googlesheets` package for R).
+
 A few reasons to persuade you to use Github are given below:
 
 * If you have ever created local versions of files `final_data.csv`, `final_data2.csv`, `final_datav3_minusSEO.csv` etc., then you would benefit from version control.  Version control lets you freely modify and delete/add to a one file, and not worry that you are losing drafts.
