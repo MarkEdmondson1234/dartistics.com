@@ -6,7 +6,7 @@ output:
 
 ## Load Up Some Sample Data
 
-We're going to skip the step of actually pulling data directly using an API (for now), so just download the file at [http://bit.ly/r_web_data](bit.ly/r_web_data). Upload that file to your working directory, and then load that file into your R environment as an object (data frame) named `web_data`:
+We're going to skip the step of actually pulling data directly using an API (for now), so just download the file at [http://bit.ly/r_web_data](http://bit.ly/r_webData). Upload that file to your working directory, and then load that file into your R environment as an object (data frame) named `web_data`:
 
 ```{r eval=FALSE}
 web_data <- read.csv("gadata_example_2.csv", stringsAsFactors = FALSE)

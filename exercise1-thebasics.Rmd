@@ -54,7 +54,9 @@ my_var <- 12^2*10
 In the first part of this exercise we assigned a single **numeric** value to an **object**. We can also (and often will) want to work with multiple values. We don't need a 1:1 relationship for each value and an object. We can use a **vector** to store multiple values in a single object.
 
 Two key concepts here (we'll dive deeper into these [classes.html#multi-classes](in a bit):
+
 * **Vectors** get used quite a bit, but, with much of the data we work with, we actually work with **data frames**, which will look much more familiar, in that they are, essentially like Excel sheets on steroids. Wrapping your head around the differences between **vectors**, **data frames**, and a few other types of objects (**lists** and *matrices**) is both critical...and confusing.
+
 * Vectors get created using the `c()` function. The "c" is for "combine," because we're combining multiple values into a single vector.
 
 So, let's do a little work with vectors:
