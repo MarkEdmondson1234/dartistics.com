@@ -3,6 +3,8 @@ output_dir: "."
 output: 
   html_document:
     theme: flatly
+    includes:
+      before_body: includes/analytics.html
 navbar:
   title: "R Masterclass"
   left:
