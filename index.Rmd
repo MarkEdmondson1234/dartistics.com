@@ -9,7 +9,38 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Welcome to the R Workshop website, where you will learn to do fantastic things like this!
 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+library(highcharter)
+library(googleAnalyticsR)
+library(reshape2)
+library(forecast)
+
+## if a cache file exists, load it from there
+if(file.exists("./data/index_gadata.RData")){
+  load("./data/index_gadata.RData")
+} else {
+  ## otherwise, fetch from API
+  view_id <- 81416156
+  ga_auth()
+
+  gadata <- google_analytics_4(view_id, 
+                             date_range = c(Sys.Date() - 400, Sys.Date()),
+                             metrics = "sessions", 
+                             dimensions = c("date","hour"),
+                             max = -1)
+
+  gadata$weekday <- ordered(weekdays(gadata$date, FALSE), 
+                          levels = c("Monday","Tuesday","Wednesday",
+                                     "Thursday","Friday","Saturday","Sunday")) 
+  ## save cache
+  save(gadata, file = "./data/index_gadata.RData")
+  
+  
+}
+
+```
+
+```r
 library(highcharter)
 library(googleAnalyticsR)
 library(reshape2)
@@ -17,15 +48,19 @@ library(forecast)
 
 view_id <- 81416156
 ga_auth()
+
 gadata <- google_analytics_4(view_id, 
                              date_range = c(Sys.Date() - 400, Sys.Date()),
                              metrics = "sessions", 
                              dimensions = c("date","hour"),
                              max = -1)
 
-gadata$weekday <- ordered(weekdays(gadata$date), 
+gadata$weekday <- ordered(weekdays(gadata$date, FALSE), 
                           levels = c("Monday","Tuesday","Wednesday",
                                      "Thursday","Friday","Saturday","Sunday")) 
+```
+
+```{r, message=FALSE, warning=FALSE}
 
 heatmap_data <- gadata[, c("weekday","hour","sessions")]
 
@@ -39,12 +74,36 @@ row.names(heatmap_matrix) <- c("Monday","Tuesday","Wednesday",
 ## heatmap of weekdays per hour
 hchart(heatmap_matrix, type = "heatmap")
 
+```
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+## if file exists, fetch data from there
+if(file.exists("./data/index_gadata2.RData")){
+  
+  load("./data/index_gadata2.RData")
+  
+} else {
+  ## fetch from API
+  gadata2 <- google_analytics_4(view_id, 
+                             date_range = c("2013-08-01", "2016-07-31"),
+                             metrics = "sessions", 
+                             dimensions = c("yearMonth"),
+                             max = -1)
+  save(gadata, file = "./data/index_gadata2.RData")
+  
+}
+
+```
+
+```r
 gadata2 <- google_analytics_4(view_id, 
                              date_range = c("2013-08-01", "2016-07-31"),
                              metrics = "sessions", 
                              dimensions = c("yearMonth"),
                              max = -1)
+```
 
+```{r, message=FALSE, warning=FALSE}
 ga_ts <- ts(gadata2$sessions, start = c(2013,08), end = c(2016,07), frequency = 12)
 
 forecast1 <- HoltWinters(ga_ts)
