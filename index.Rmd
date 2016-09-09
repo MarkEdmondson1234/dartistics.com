@@ -1,13 +1,24 @@
 ---
-title: "R Masterclass - Welcome"
-author: "Mark Edmondson and Tim Wilson"
+title: "Welcome to DARTISTICS!"
+author: "Digital Analytics: R and staTISTICS"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Welcome to the R Workshop website, where you will learn to do fantastic things like this!
+This site is intended to be a resource for digital analysts who are interesting to learn or expand their knowledge of R and statistics. That's from whence the semi-silly name came from:
+
+<div style= "background-color: #cce6ff; text-align: center; font-size: 20px; padding: 10px 10px 10px 10px;"><b>D</b>igital <b>A</b>nalysts: <b>R</b> and sta<b>TISTICS</b></div>
+
+
+_(Clearly, this is not a site about "branding an initiative" or "coming up with a totally awesome name for a site!")_
+
+Our hope is that, for the analyst who is new to R, by going through the resources on this site, the code and output below will start to make some real sense!
+
+### Visualizing Sessions in a Heatmap
+
+This example shows a visualization of traffic to a site broken down by day of week and hour of day.
 
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 library(highcharter)
@@ -15,11 +26,12 @@ library(googleAnalyticsR)
 library(reshape2)
 library(forecast)
 
-## if a cache file exists, load it from there
+## If a cache file exists, load it from there
 if(file.exists("./data/index_gadata.RData")){
   load("./data/index_gadata.RData")
 } else {
-  ## otherwise, fetch from API
+  
+  ## Otherwise, fetch from API.
   view_id <- 81416156
   ga_auth()
 
@@ -34,7 +46,6 @@ if(file.exists("./data/index_gadata.RData")){
                                      "Thursday","Friday","Saturday","Sunday")) 
   ## save cache
   save(gadata, file = "./data/index_gadata.RData")
-  
   
 }
 
@@ -94,6 +105,9 @@ if(file.exists("./data/index_gadata2.RData")){
 }
 
 ```
+
+### Forecasting with Holt-Winters
+Long gone (can) be the days of forecasting simply by dropping a trendline on some data. This example uses the Holt-Winters method to apply some smoothing and seasonality to the base data to build a forecast that includes the likely range of values.
 
 ```r
 gadata2 <- google_analytics_4(view_id, 

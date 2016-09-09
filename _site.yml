@@ -6,12 +6,10 @@ output:
     includes:
       before_body: includes/analytics.html
 navbar:
-  title: "R Masterclass"
+  title: "DARTISTICS"
   left:
     - text: "Overview"
       menu:
-      - text: "Introductions"
-        href: intros.html
       - text: "What Is R?"
         href: whatisr.html
       - text: "Example: Trending"
