@@ -29,11 +29,12 @@ resourcePurposes <- data.frame(
 
 # The function to actually display each resource. This still needs cleanup work.
 displayResource <- function(resource){
-  cat(c("<p><b><a href=\"",resource$Link,"\" target='_blank'>",resource$`Resource Name/Title`,"</a></b> (",resource$`Content Type`,")<br>"),sep="")
+  cat(c("<p><b><a href=\"",resource$Link,"\" target='_blank'>",resource$`Resource Name/Title`,"</a></b> ",
+        "<span style=\"font-size:12px; color:#666666\"> - ",toupper(resource$`Content Type`),"</span><br>"),sep="")
   cat(c(resource$Description,"<br>"),sep="")
-  cat(c("Content Focus: ",resource$`Focus of the Content`,"<br>"),sep="")
+    cat(c("<span style=\"font-size:12px; color:#8c8c8c\">CONTENT FOCUS:</span> ",resource$`Focus of the Content`),"<br>",sep="")
   if(resource$`Include Your Name as a Contributor?`=="Yes"){
-    cat(c("Contributed by: ",resource$`Your Name`),sep="")
+    cat(c("<span style=\"font-size:12px; color:#8c8c8c\">CONTRIBUTED BY: ",toupper(resource$`Your Name`),"</span>"),sep="")
   }
   cat("</p>",sep="")
 }
