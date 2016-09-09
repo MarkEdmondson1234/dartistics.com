@@ -21,3 +21,6 @@ A few reasons to persuade you to use Github are given below:
 * Github is a bit notorious to be arcane, so hang in there and stick with simple tasks for now.  If something goes wrong you can always [save your work to a different folder, delete everything and redownload again](https://xkcd.com/1597/).  You will still get a lot of value without knowing its intricies.
 * Stick with one RStudio project to one Github repo.
 
+## More Reading
+
+Jenny Bryan has created an [excellent resource](http://happygitwithr.com/) for learning more about using R with Git.

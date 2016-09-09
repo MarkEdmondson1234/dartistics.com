@@ -2,7 +2,7 @@
 title: "Shiny"
 ---
 
-```{r setup, include=FALSE}
+```{r shiny, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 

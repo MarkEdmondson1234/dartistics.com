@@ -2,7 +2,7 @@
 title: "Trending Google Analytics sessions"
 ---
 
-```{r setup, include=FALSE}
+```{r example1-setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 

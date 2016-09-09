@@ -2,7 +2,7 @@
 title: "Package Ecosystem"
 ---
 
-```{r setup, include=FALSE}
+```{r package ecosystem, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 

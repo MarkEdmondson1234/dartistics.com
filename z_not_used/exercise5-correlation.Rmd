@@ -16,7 +16,7 @@ For this exercise, complete the following tasks with `web_data` (which should no
 
 -------------
 
-```{r echo=FALSE, message=FALSE}
+```{r exercise5-correlation echo=FALSE, message=FALSE}
 # We'll be using 'dplyr' functions
 library(dplyr)
 

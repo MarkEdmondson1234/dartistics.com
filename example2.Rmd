@@ -2,7 +2,7 @@
 title: "Google Analytics Data Explorer"
 ---
 
-```{r setup, include=FALSE}
+```{r example2-setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 

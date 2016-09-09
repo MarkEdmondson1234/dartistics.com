@@ -18,7 +18,7 @@ Sound intimidating? It's actually fairly simple!
 
 -------------
 
-```{r echo=FALSE, message=FALSE}
+```{r exercise6-anomaly-detection echo=FALSE, message=FALSE}
 
 # Replicate the results from Exercise 2 so we've got the data
 # We need to work with.

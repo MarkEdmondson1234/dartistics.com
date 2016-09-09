@@ -17,7 +17,7 @@ Create a new script by selecting **File>>New File>>R Script** (we'll cover proje
 ### Basic Math/Variables
 Let's start with some simple math. In the console, type `12^2` and press <Enter>. You should get:
 
-```{r}
+```{r exercise1}
 12^2
 ```
 

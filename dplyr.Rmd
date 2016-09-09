@@ -44,7 +44,7 @@ The second bullet above is confusing...so just file it away. You'll know it when
 
 Let's consider our web analytics data (`webData`) that has sessions by date, device category, and channel:
 
-```{r echo=FALSE}
+```{r dplyr, echo=FALSE}
 webData <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE)
 webData <- webData[,c("date","deviceCategory","channelGrouping","sessions")]
 colnames(webData) <- c("Date","Device","Channel","Sessions")

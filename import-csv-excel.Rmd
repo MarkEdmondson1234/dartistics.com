@@ -2,7 +2,7 @@
 title: "Importing data - Excel and CSV"
 ---
   
-```{r setup, include=FALSE}
+```{r import-csv-excel-setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 

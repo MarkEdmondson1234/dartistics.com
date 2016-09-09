@@ -8,7 +8,7 @@ R plots are cool, but interactive R plots are even cooler.
 
 A few notable examples are shown below using our example data:
 
-```{r message=FALSE}
+```{r htmlwidgets, message=FALSE}
 ## get the web data
 web_data <- read.csv("./data/gadata_example_2.csv", stringsAsFactors = FALSE)
 

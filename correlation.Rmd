@@ -28,7 +28,7 @@ The base function `cor()` will perform correlations on a `data.frame`. Let's giv
 
 To make this interesting, how about we use your data? If you have a Google account with access to Google Analytics, then follow the instructions to authenticate on the [Analytics APIs page](http://code.markedmondson.me/RWorkshopCopenhagen/analytics-apis.html). Once you've done that, then the function below from the `googleAnalyticsR` package should give you the last 60 days of data for the `viewID` you enter:
 
-```{r eval=FALSE}
+```{r correlation, eval=FALSE}
 
 start_date <- Sys.Date()-60
 end_date <- Sys.Date()-1

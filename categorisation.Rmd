@@ -10,7 +10,7 @@ In this case, we are looking to how we can classify web data to create different
 
 Decision trees are typically read top to bottom, and represent where the model thinks you can split your data.  As you move down
 
-```{r}
+```{r categorisation}
 library(knitr) # used for kable that makes nice RMarkdown tables
 web_data <- read.csv("./data/gadata_example_2.csv", stringsAsFactors = FALSE)
 kable(head(web_data[-1]), row.names = FALSE)

@@ -10,8 +10,6 @@ navbar:
   left:
     - text: "Overview"
       menu:
-      - text: "What Is R?"
-        href: whatisr.html
       - text: "Example: Trending"
         href: example1.html
       - text: "Example: Data Explorer"
@@ -20,39 +18,46 @@ navbar:
         href: example3.html
       - text: "Example: GA Effect"
         href: example4.html
-    - text: "Exercises"
+    - text: "The Basics"
       menu:
-      - text: "1. The Basic Basics"
-        href: exercise1-thebasics.html
-      - text: "2. I/O"
-        href: exercise2-io.html
-      - text: "3. Accessing Data"
-        href: exercise3-accessing-data.html
-      - text: "4. Tidy Data / dplyr()"
-        href: exercise4-tidy-dplyr.html
-    - text: "Basics"
-      menu:
+      - text: "What Is R?"
+        href: whatisr.html
       - text: "RStudio"
         href: rstudio.html
       - text: "Packages"
         href: packages.html
-      - text: "CSV import"
-        href: import-csv-excel.html
       - text: "Basics of Base R"
         href: basics-base_r.html
+      - text: "Exercise: The Basic Basics"
+        href: exercise1-thebasics.html
+    - text: "I/O"
+      menu:
+      - text: "WORKING WITH FILES"
+      - text: "CSV import"
+        href: import-csv-excel.html
+      - text: "Microsoft Excel(!)"
+        href: excel.html
+      - text: "Exercise: I/O"
+        href: exercise2-io.html
+      - text: "WORKING WITH APIs"
+      - text: "Analytics APIs"
+        href: analytics-apis.html
+    - text: "Data Structures"
+      menu:
+      - text: "R CLASSES AND SYNTAX"
       - text: "R Classes"
         href: classes.html
       - text: "Accessing elements"
         href: accessing.html
+      - text: "Exercise: Accessing Data"
+        href: exercise3-accessing-data.html
+      - text: "BASE R vs. TIDY"
       - text: "Tidy data / Tidyverse"
         href: tidyverse.html
       - text: "dplyr()"
         href: dplyr.html
-      - text: "  Input"
-      - text: "Analytics APIs"
-        href: analytics-apis.html
-      - text: "Microsoft Excel(!)"
-        href: excel.html
+      - text: "Exercise: Tidy Data / dplyr"
+        href: exercise4-tidy-dplyr.html
     - text: "Modelling"
       menu:
       - text: "Introduction"

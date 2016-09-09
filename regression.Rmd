@@ -30,7 +30,7 @@ If you already have a conversion rate, there isn't much to gain from creating an
 
 For this example we shall use the dataset `search_console_plus_ga.csv`, which is two datasets joined on date - SEO impressions and other metrics from Search Console via the `searchConsoleR` package, and Google Analytics total sessions and transactions from `googleAnalyticsR`
 
-```{r}
+```{r regression}
 library(knitr) # nice tables
 sc_ga_data <- read.csv("./data/search_console_plus_ga.csv", stringsAsFactors = FALSE)
 

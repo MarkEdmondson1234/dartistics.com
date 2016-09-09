@@ -11,7 +11,7 @@
 
 
 
-<title>Exercise 6 – Regression</title>
+<title>Exercise 5 – Correlation</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -282,9 +282,6 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="whatisr.html">What Is R?</a>
-    </li>
-    <li>
       <a href="example1.html">Example: Trending</a>
     </li>
     <li>
@@ -298,34 +295,17 @@ div.tocify {
     </li>
   </ul>
 </li>
+<li class="dropdown-header">Exercises</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Exercises
+    The Basics
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="exercise1-thebasics.html">1. The Basic Basics</a>
+      <a href="whatisr.html">What Is R?</a>
     </li>
-    <li>
-      <a href="exercise2-io.html">2. I/O</a>
-    </li>
-    <li>
-      <a href="exercise3-accessing-data.html">3. Accessing Data</a>
-    </li>
-    <li>
-      <a href="exercise4-tidy-dplyr.html">4. Tidy Data / dplyr()</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Basics
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
     <li>
       <a href="rstudio.html">RStudio</a>
     </li>
@@ -333,103 +313,35 @@ div.tocify {
       <a href="packages.html">Packages</a>
     </li>
     <li>
-      <a href="import-csv-excel.html">CSV import</a>
-    </li>
-    <li>
       <a href="basics-base_r.html">Basics of Base R</a>
     </li>
     <li>
-      <a href="classes.html">R Classes</a>
+      <a href="exercise1-thebasics.html">Exercise: The Basic Basics</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    I/O
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">WORKING WITH FILES</li>
     <li>
-      <a href="accessing.html">Accessing elements</a>
-    </li>
-    <li>
-      <a href="tidyverse.html">Tidy data / Tidyverse</a>
-    </li>
-    <li>
-      <a href="dplyr.html">dplyr()</a>
-    </li>
-    <li class="dropdown-header">  Input</li>
-    <li>
-      <a href="analytics-apis.html">Analytics APIs</a>
+      <a href="import-csv-excel.html">CSV import</a>
     </li>
     <li>
       <a href="excel.html">Microsoft Excel(!)</a>
     </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Modelling
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="modelling-intro.html">Introduction</a>
+      <a href="exercise2-io.html">Exercise: I/O</a>
     </li>
+    <li class="dropdown-header">WORKING WITH APIs</li>
     <li>
-      <a href="correlation.html">Correlation</a>
-    </li>
-    <li>
-      <a href="regression.html">Regression</a>
-    </li>
-    <li>
-      <a href="timeseries.html">Time-series</a>
-    </li>
-    <li>
-      <a href="categorisation.html">Categorisation</a>
+      <a href="analytics-apis.html">Analytics APIs</a>
     </li>
   </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Output
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="viz-options.html">Visualisation Options</a>
-    </li>
-    <li>
-      <a href="base-plots.html">Base Plots</a>
-    </li>
-    <li>
-      <a href="ggplot2.html">ggplot2()</a>
-    </li>
-    <li>
-      <a href="htmlwidgets.html">htmlwidgets()</a>
-    </li>
-    <li>
-      <a href="rmarkdown-shiny.html">RMarkdown + Shiny</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Wrap-Up
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="key-topics.html">Key topics</a>
-    </li>
-    <li>
-      <a href="github.html">GitHub</a>
-    </li>
-    <li>
-      <a href="habits.html">Good Habits</a>
-    </li>
-    <li>
-      <a href="going-further.html">Going further</a>
-    </li>
-  </ul>
-</li>
-<li>
-  <a href="resources.html">R Linkfest</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -452,17 +364,100 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-<h1 class="title toc-ignore">Exercise 6 – Regression</h1>
+<h1 class="title toc-ignore">Exercise 5 – Correlation</h1>
 
 </div>
 
 
 <p>This exercise is dependent on the successful completion of <a href="exercise4-tidy-dplyr.html">Exercise 4</a>.</p>
-<p>(Need to figure out a good exercise here.)</p>
+<p>For this exercise, complete the following tasks with <code>web_data</code> (which should now have a <code>pageviews_per_visit</code> and a <code>bounce_rate</code> column following Exercise 4):</p>
+<ol style="list-style-type: decimal">
+<li>Evaluate the correlation between all of the metrics <code>web_data</code>.</li>
+<li>Evaluate the correlation between pageviews for each <code>deviceCategory</code>.</li>
+</ol>
 <hr />
-<div id="detailed-instructions" class="section level2">
-<h2>1. Detailed Instructions</h2>
-<p>If time allows, blow out the instructions on how to actually do this.</p>
+<div id="bounce-rate-vs.sessions" class="section level2">
+<h2>1. Bounce Rate vs. Sessions</h2>
+<p>Remember, this exercise is contingent on having completed <a href="exercise4-tidy-dplyr.html">Exercise 4</a>. Check your <strong>Environment</strong> tab to make sure you have a <code>web_data</code> data frame with 5732 rows (observations) and 10 variables. Or, use the <code>str()</code> function to check the structure of the object:</p>
+<pre class="r"><code>str(web_data)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    5732 obs. of  10 variables:
+##  $ X              : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ date           : chr  &quot;2016-01-01&quot; &quot;2016-01-01&quot; &quot;2016-01-01&quot; &quot;2016-01-01&quot; ...
+##  $ channelGrouping: chr  &quot;(Other)&quot; &quot;(Other)&quot; &quot;(Other)&quot; &quot;Direct&quot; ...
+##  $ deviceCategory : chr  &quot;desktop&quot; &quot;mobile&quot; &quot;tablet&quot; &quot;desktop&quot; ...
+##  $ sessions       : int  19 112 24 133 345 126 307 3266 1025 17 ...
+##  $ pageviews      : int  23 162 41 423 878 237 356 3772 1137 52 ...
+##  $ entrances      : int  19 112 24 133 344 126 305 3253 1021 17 ...
+##  $ bounces        : int  15 82 19 61 172 77 270 2904 925 6 ...
+##  $ pvs_per_session: num  1.21 1.45 1.71 3.18 2.54 ...
+##  $ bounce_rate    : num  0.789 0.732 0.792 0.459 0.5 ...</code></pre>
+<p>All set? Good.</p>
+<pre class="r"><code># We&#39;ll be using &#39;dplyr&#39; functions
+library(dplyr)
+
+# Get just the data -- numeric only! -- that we&#39;ll be working with
+cor_data &lt;- select(web_data, -c(X, date, deviceCategory, channelGrouping))
+
+# Get a table of correlation coefficients.
+cor(cor_data)</code></pre>
+<pre><code>##                    sessions  pageviews   entrances    bounces
+## sessions         1.00000000  0.8384321  0.99999228  0.9411201
+## pageviews        0.83843209  1.0000000  0.83770782  0.6364753
+## entrances        0.99999228  0.8377078  1.00000000  0.9416535
+## bounces          0.94112013  0.6364753  0.94165351  1.0000000
+## pvs_per_session -0.02519040  0.3054187 -0.02612774 -0.1985801
+## bounce_rate      0.06904842 -0.2291329  0.07015993  0.2758110
+##                 pvs_per_session bounce_rate
+## sessions            -0.02519040  0.06904842
+## pageviews            0.30541871 -0.22913292
+## entrances           -0.02612774  0.07015993
+## bounces             -0.19858006  0.27581103
+## pvs_per_session      1.00000000 -0.79268790
+## bounce_rate         -0.79268790  1.00000000</code></pre>
+<p>Let’s go ahead and get a visual of the scatterplots of this:</p>
+<pre class="r"><code>pairs(cor_data)</code></pre>
+<p><img src="exercise5-correlation_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>There are several things we could dig into there (for instance: what’s going on with pageviews and sessions? It looks like two distinct patterns there that might be worth exploring), but…the assignment is the assignment, so let’s move on!</p>
+</div>
+<div id="pageviews-for-device-type" class="section level2">
+<h2>2. Pageviews for Device Type</h2>
+<p>From</p>
+<pre class="r"><code>library(dplyr)
+library(tidyr)
+
+# Collapse the channelGrouping by summing them, and then &quot;spread&quot; the 
+# deviceCategory values over the columns
+pivoted_data &lt;- 
+  summarise(group_by(web_data, date, deviceCategory), 
+            pageviews = sum(pageviews)) %&gt;%
+  spread(deviceCategory, pageviews)
+
+# Get rid of any NA&#39;s and replace with 0
+pivoted_data[is.na(pivoted_data)] &lt;- 0
+
+# Let&#39;s take a quick look at our data
+head(pivoted_data)</code></pre>
+<pre><code>## Source: local data frame [6 x 4]
+## Groups: date [6]
+## 
+##         date desktop mobile tablet
+##        &lt;chr&gt;   &lt;int&gt;  &lt;int&gt;  &lt;int&gt;
+## 1 2016-01-01    4335   9868   3090
+## 2 2016-01-02   10911  21305   5995
+## 3 2016-01-03    6845   9642   2705
+## 4 2016-01-04   10333   8462   2421
+## 5 2016-01-05    9332   7255   2253
+## 6 2016-01-06    9589   7050   1963</code></pre>
+<p>Now, we can calculate the correlation coefficients and make some scatterplots!</p>
+<pre class="r"><code># Remember, we don&#39;t want the date field, so we have to remove that
+cor(pivoted_data[,-1])</code></pre>
+<pre><code>##           desktop    mobile    tablet
+## desktop 1.0000000 0.7244218 0.7184109
+## mobile  0.7244218 1.0000000 0.8732054
+## tablet  0.7184109 0.8732054 1.0000000</code></pre>
+<pre class="r"><code>pairs(pivoted_data[,-1])</code></pre>
+<p><img src="exercise5-correlation_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>The interpretation of this isn’t particularly sexy, as it makes sense that, when traffic increases for one device type, it probably increases for other device types. But, since the pedagocial purpose of this exercise was to get you subsetting the data and digging in, we’re going to call it a success!</p>
 </div>
 
 

@@ -185,9 +185,6 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="whatisr.html">What Is R?</a>
-    </li>
-    <li>
       <a href="example1.html">Example: Trending</a>
     </li>
     <li>
@@ -203,32 +200,14 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Exercises
+    The Basics
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="exercise1-thebasics.html">1. The Basic Basics</a>
+      <a href="whatisr.html">What Is R?</a>
     </li>
-    <li>
-      <a href="exercise2-io.html">2. I/O</a>
-    </li>
-    <li>
-      <a href="exercise3-accessing-data.html">3. Accessing Data</a>
-    </li>
-    <li>
-      <a href="exercise4-tidy-dplyr.html">4. Tidy Data / dplyr()</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Basics
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
     <li>
       <a href="rstudio.html">RStudio</a>
     </li>
@@ -236,11 +215,44 @@ $(document).ready(function () {
       <a href="packages.html">Packages</a>
     </li>
     <li>
+      <a href="basics-base_r.html">Basics of Base R</a>
+    </li>
+    <li>
+      <a href="exercise1-thebasics.html">Exercise: The Basic Basics</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    I/O
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">WORKING WITH FILES</li>
+    <li>
       <a href="import-csv-excel.html">CSV import</a>
     </li>
     <li>
-      <a href="basics-base_r.html">Basics of Base R</a>
+      <a href="excel.html">Microsoft Excel(!)</a>
     </li>
+    <li>
+      <a href="exercise2-io.html">Exercise: I/O</a>
+    </li>
+    <li class="dropdown-header">WORKING WITH APIs</li>
+    <li>
+      <a href="analytics-apis.html">Analytics APIs</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data Structures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">R CLASSES AND SYNTAX</li>
     <li>
       <a href="classes.html">R Classes</a>
     </li>
@@ -248,17 +260,17 @@ $(document).ready(function () {
       <a href="accessing.html">Accessing elements</a>
     </li>
     <li>
+      <a href="exercise3-accessing-data.html">Exercise: Accessing Data</a>
+    </li>
+    <li class="dropdown-header">BASE R vs. TIDY</li>
+    <li>
       <a href="tidyverse.html">Tidy data / Tidyverse</a>
     </li>
     <li>
       <a href="dplyr.html">dplyr()</a>
     </li>
-    <li class="dropdown-header">  Input</li>
     <li>
-      <a href="analytics-apis.html">Analytics APIs</a>
-    </li>
-    <li>
-      <a href="excel.html">Microsoft Excel(!)</a>
+      <a href="exercise4-tidy-dplyr.html">Exercise: Tidy Data / dplyr</a>
     </li>
   </ul>
 </li>
@@ -388,13 +400,13 @@ pivoted[is.na(pivoted)] &lt;- 0</code></pre>
 <p>For instance, passing a single vector produces a scatterplot, with the x-axis being the position in the vector:</p>
 <pre class="r"><code>## a simple scatterplot
 plot(sc_ga_data$sessions)</code></pre>
-<p><img src="base-plots_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="base-plots_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <pre class="r"><code>## make it a line graph
 plot(sc_ga_data$sessions, type = &quot;l&quot;)</code></pre>
-<p><img src="base-plots_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<p><img src="base-plots_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
 <pre class="r"><code>## plot against date - will error if you pass in a character Date, needs Date class
 plot(as.Date(sc_ga_data$date), sc_ga_data$sessions, type = &quot;l&quot;, main = &quot;Line plot of date vs sessions&quot;)</code></pre>
-<p><img src="base-plots_files/figure-html/unnamed-chunk-4-3.png" width="672" /></p>
+<p><img src="base-plots_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
 <p>Once you have a plot, there are some functions such as <code>abline()</code>, <code>lines()</code>, and <code>points()</code> that when you run on the next line will appear over the previous plot:</p>
 <pre class="r"><code>plot(sc_ga_data$sessions, type = &quot;l&quot;)
 ## add a red trend line with loess()
@@ -402,12 +414,12 @@ lines(lowess(sc_ga_data$sessions), col = &quot;red&quot;)
 
 ## A horizontal line at 900
 abline(h = 900)</code></pre>
-<p><img src="base-plots_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="base-plots_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>If you pass in a factor, then it will attempt to show a plot suitable for categorical variables, in this case a boxplot.</p>
 <pre class="r"><code>web_data$deviceCategory &lt;- as.factor(web_data$deviceCategory)
 
 plot(web_data[,c(&quot;deviceCategory&quot;,&quot;sessions&quot;)], main = &quot;Box-plot of pageviews&quot;, outline = FALSE)</code></pre>
-<p><img src="base-plots_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="base-plots_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
 <div id="the-function-par-and-other-animals" class="section level2">
 <h2>The function par() and other animals</h2>
@@ -418,7 +430,7 @@ plot(sc_ga_data$transactions, type = &quot;l&quot;)
 plot(sc_ga_data$clicks, type = &quot;l&quot;)
 plot(sc_ga_data$position, type = &quot;l&quot;)
 plot(sc_ga_data$impressions, type = &quot;l&quot;)</code></pre>
-<p><img src="base-plots_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="base-plots_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <pre class="r"><code>## remember to reset it again
 par(mfrow = c(1,1))</code></pre>
 <p><code>axis()</code> lets you redefine the axis, but you need to remove them first from the plot otherwise it will write over the existing ones.</p>
@@ -426,14 +438,14 @@ par(mfrow = c(1,1))</code></pre>
 plot(as.Date(sc_ga_data$date), sc_ga_data$sessions, type = &quot;l&quot;, axes = FALSE, ann = FALSE)
 axis(1, as.Date(sc_ga_data$date), labels = format(as.Date(sc_ga_data$date), format = &quot;W%W&quot;))
 title(xlab = &quot;2016 Weeks&quot;)</code></pre>
-<p><img src="base-plots_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="base-plots_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div id="bar-and-histograms" class="section level2">
 <h2>Bar and histograms</h2>
 <pre class="r"><code>barplot(sc_ga_data$sessions, col = &quot;green&quot;)</code></pre>
-<p><img src="base-plots_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="base-plots_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <pre class="r"><code>hist(sc_ga_data$sessions)</code></pre>
-<p><img src="base-plots_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<p><img src="base-plots_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
 <blockquote>
 <p>Bar plots will plot your data, whilst histograms will plot the frequency distribution</p>
 </blockquote>

@@ -7,7 +7,7 @@ output:
 
 ---
 
-```{r echo=FALSE}
+```{r exercise3, echo=FALSE}
 # We need to load the file behind the scenes to work with it.
 web_data <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE)
 ```

@@ -43,7 +43,7 @@ Here are some good habits to get into that I learned from experience to make wor
 3. `paste0` - shortcut for `paste("blah", "blah", sep = "")`
 4. Learn to love `list()` - it's a way to group related objects:
 
-```{r eval=FALSE}
+```{r habits, eval=FALSE}
 stuff = list(mydata = data, 
              the_author = "Bob",
              created = Sys.Date())

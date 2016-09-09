@@ -33,7 +33,7 @@ Another great resource is the [ggplot2 cheatsheet](https://www.rstudio.com/wp-co
 
 1. First get your data ready and tidy.  Whilst its possible to use "wide" data, I find it easiest to always start with tidy "long" data, so you can quickly repeat what you have learnt before.
 
-```{r}
+```{r ggplot2}
 ## get the web data
 web_data <- read.csv("./data/gadata_example_2.csv", stringsAsFactors = FALSE)
 

@@ -185,9 +185,6 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="whatisr.html">What Is R?</a>
-    </li>
-    <li>
       <a href="example1.html">Example: Trending</a>
     </li>
     <li>
@@ -203,32 +200,14 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Exercises
+    The Basics
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="exercise1-thebasics.html">1. The Basic Basics</a>
+      <a href="whatisr.html">What Is R?</a>
     </li>
-    <li>
-      <a href="exercise2-io.html">2. I/O</a>
-    </li>
-    <li>
-      <a href="exercise3-accessing-data.html">3. Accessing Data</a>
-    </li>
-    <li>
-      <a href="exercise4-tidy-dplyr.html">4. Tidy Data / dplyr()</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Basics
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
     <li>
       <a href="rstudio.html">RStudio</a>
     </li>
@@ -236,11 +215,44 @@ $(document).ready(function () {
       <a href="packages.html">Packages</a>
     </li>
     <li>
+      <a href="basics-base_r.html">Basics of Base R</a>
+    </li>
+    <li>
+      <a href="exercise1-thebasics.html">Exercise: The Basic Basics</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    I/O
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">WORKING WITH FILES</li>
+    <li>
       <a href="import-csv-excel.html">CSV import</a>
     </li>
     <li>
-      <a href="basics-base_r.html">Basics of Base R</a>
+      <a href="excel.html">Microsoft Excel(!)</a>
     </li>
+    <li>
+      <a href="exercise2-io.html">Exercise: I/O</a>
+    </li>
+    <li class="dropdown-header">WORKING WITH APIs</li>
+    <li>
+      <a href="analytics-apis.html">Analytics APIs</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data Structures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">R CLASSES AND SYNTAX</li>
     <li>
       <a href="classes.html">R Classes</a>
     </li>
@@ -248,17 +260,17 @@ $(document).ready(function () {
       <a href="accessing.html">Accessing elements</a>
     </li>
     <li>
+      <a href="exercise3-accessing-data.html">Exercise: Accessing Data</a>
+    </li>
+    <li class="dropdown-header">BASE R vs. TIDY</li>
+    <li>
       <a href="tidyverse.html">Tidy data / Tidyverse</a>
     </li>
     <li>
       <a href="dplyr.html">dplyr()</a>
     </li>
-    <li class="dropdown-header">  Input</li>
     <li>
-      <a href="analytics-apis.html">Analytics APIs</a>
-    </li>
-    <li>
-      <a href="excel.html">Microsoft Excel(!)</a>
+      <a href="exercise4-tidy-dplyr.html">Exercise: Tidy Data / dplyr</a>
     </li>
   </ul>
 </li>
@@ -448,19 +460,19 @@ gg &lt;- ggplot(data = plot_data, aes(x = date)) + theme_minimal()</code></pre>
 <p>Anything you haven’t specified in the global line, you will need to add in the <code>geom</code> you are adding. Note that because we have put the data in the first line, we don’t need to specify it again.</p>
 <pre class="r"><code>## lets make some line plots
 gg + geom_line(aes(y = value))</code></pre>
-<p><img src="ggplot2_files/figure-html/unnamed-chunk-4-1.png" width="960" /></p>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-3-1.png" width="960" /></p>
 <pre class="r"><code>## hmm, too much data in there, lets colour by the channelGroupings
 gg + geom_line(aes(y = value, colour = channelGrouping))</code></pre>
-<p><img src="ggplot2_files/figure-html/unnamed-chunk-4-2.png" width="960" /></p>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-3-2.png" width="960" /></p>
 <pre class="r"><code>## we have desktop, mobile and tablet all in there, lets seperate them out with facet
 gg + geom_line(aes(y = value, colour = channelGrouping)) + facet_grid(. ~ deviceCategory)</code></pre>
-<p><img src="ggplot2_files/figure-html/unnamed-chunk-4-3.png" width="960" /></p>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-3-3.png" width="960" /></p>
 <pre class="r"><code>## I prefer it one other the other
 gg + geom_line(aes(y = value, colour = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
-<p><img src="ggplot2_files/figure-html/unnamed-chunk-4-4.png" width="960" /></p>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-3-4.png" width="960" /></p>
 <pre class="r"><code>## lets try an area plot
 gg + geom_area(aes(y = value, colour = channelGrouping, group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
-<p><img src="ggplot2_files/figure-html/unnamed-chunk-4-5.png" width="960" /></p>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-3-5.png" width="960" /></p>
 <pre class="r"><code>## ok, lets keep that for now
 gg &lt;- gg + geom_area(aes(y = value, group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
 <p>The point above is to show how modifications can be quickly added as you try out ideas.</p>
@@ -477,7 +489,7 @@ gg &lt;- gg + guides(fill = guide_legend(title = &quot;Channel Grouping&quot;))
 gg &lt;- gg + theme(legend.position = &quot;bottom&quot;)
 ## print the final plot
 gg</code></pre>
-<p><img src="ggplot2_files/figure-html/unnamed-chunk-5-1.png" width="960" /></p>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-4-1.png" width="960" /></p>
 <blockquote>
 <p>Disclaimer, I don’t think area plots are very clear but they look pretty ;)</p>
 </blockquote>

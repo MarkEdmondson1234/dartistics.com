@@ -185,9 +185,6 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="whatisr.html">What Is R?</a>
-    </li>
-    <li>
       <a href="example1.html">Example: Trending</a>
     </li>
     <li>
@@ -203,32 +200,14 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Exercises
+    The Basics
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="exercise1-thebasics.html">1. The Basic Basics</a>
+      <a href="whatisr.html">What Is R?</a>
     </li>
-    <li>
-      <a href="exercise2-io.html">2. I/O</a>
-    </li>
-    <li>
-      <a href="exercise3-accessing-data.html">3. Accessing Data</a>
-    </li>
-    <li>
-      <a href="exercise4-tidy-dplyr.html">4. Tidy Data / dplyr()</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Basics
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
     <li>
       <a href="rstudio.html">RStudio</a>
     </li>
@@ -236,11 +215,44 @@ $(document).ready(function () {
       <a href="packages.html">Packages</a>
     </li>
     <li>
+      <a href="basics-base_r.html">Basics of Base R</a>
+    </li>
+    <li>
+      <a href="exercise1-thebasics.html">Exercise: The Basic Basics</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    I/O
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">WORKING WITH FILES</li>
+    <li>
       <a href="import-csv-excel.html">CSV import</a>
     </li>
     <li>
-      <a href="basics-base_r.html">Basics of Base R</a>
+      <a href="excel.html">Microsoft Excel(!)</a>
     </li>
+    <li>
+      <a href="exercise2-io.html">Exercise: I/O</a>
+    </li>
+    <li class="dropdown-header">WORKING WITH APIs</li>
+    <li>
+      <a href="analytics-apis.html">Analytics APIs</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data Structures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">R CLASSES AND SYNTAX</li>
     <li>
       <a href="classes.html">R Classes</a>
     </li>
@@ -248,17 +260,17 @@ $(document).ready(function () {
       <a href="accessing.html">Accessing elements</a>
     </li>
     <li>
+      <a href="exercise3-accessing-data.html">Exercise: Accessing Data</a>
+    </li>
+    <li class="dropdown-header">BASE R vs. TIDY</li>
+    <li>
       <a href="tidyverse.html">Tidy data / Tidyverse</a>
     </li>
     <li>
       <a href="dplyr.html">dplyr()</a>
     </li>
-    <li class="dropdown-header">  Input</li>
     <li>
-      <a href="analytics-apis.html">Analytics APIs</a>
-    </li>
-    <li>
-      <a href="excel.html">Microsoft Excel(!)</a>
+      <a href="exercise4-tidy-dplyr.html">Exercise: Tidy Data / dplyr</a>
     </li>
   </ul>
 </li>
@@ -535,7 +547,7 @@ kable(cor(web_data_metrics))</code></pre>
 <p><em>Does the R that we’re working on learning today have anything to do with the correlation coefficient <em>r</em>? Well…no. Or, at least, only to the extent that you can use R-the-platform to calculate r-the-correlation-coefficient. Good question, though!</em></p>
 <p>When working with correlations, its always a good idea to view an exploratory plot. A handy function for this is <code>pairs()</code> which creates a scatter plot of all the metrics passed in combination:</p>
 <pre class="r"><code>pairs(web_data_metrics)</code></pre>
-<p><img src="correlation_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="correlation_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>Here you can see the correlation numbers in graphical form. For instance, the high correlation of 0.9999923 between sessions and entrances results in an almost perfect straight line. Since a session starts with an entrance, this makes perfect sense! A correlation of less than 1 may be a quick diagnostic that something is wrong with the tracking.</p>
 </div>
 <div id="how-do-web-channels-correlate" class="section level2">
@@ -785,7 +797,7 @@ kable(cor_table)</code></pre>
 </tbody>
 </table>
 <pre class="r"><code>pairs(cor_data)</code></pre>
-<p><img src="correlation_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="correlation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
 <div id="analysis" class="section level3">
 <h3>Analysis</h3>
@@ -802,7 +814,7 @@ gg &lt;- gg +
       geom_line(aes(x = as.Date(date), y = `Paid Search`), col = &quot;blue&quot;)
 
 gg + geom_line(aes(x = as.Date(date), y = `Organic Search`), col = &quot;green&quot;)</code></pre>
-<p><img src="correlation_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="correlation_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>We can see here the trends do look similar, but with a paid search peak in the first quarter (as we look at this, we might want to consider these spikes as outliers – either simply by the visual or using a more defined method for detecting outliers; it would be quite simple to remove this data from the data set and run the analysis again…but we’re not going to go down that particular rabbit hole right now).</p>
 <pre class="r"><code>library(ggplot2)
 gg &lt;- ggplot(data = pivoted) + 
@@ -811,7 +823,7 @@ gg &lt;- ggplot(data = pivoted) +
 gg &lt;- gg + 
       geom_line(aes(x = as.Date(date), y = Social), col = &quot;red&quot;)
 gg + geom_line(aes(x = as.Date(date), y = Video), col = &quot;orange&quot;)</code></pre>
-<p><img src="correlation_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="correlation_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>Here, a peak in <strong>Social</strong> late in the year looks to have coincided with a peak in <em>Video</em>: possibly a campaign driving video views?</p>
 </div>
 </div>
@@ -822,7 +834,7 @@ gg + geom_line(aes(x = as.Date(date), y = Video), col = &quot;orange&quot;)</cod
 <p>This can be a powerful way to find if, say, a TV or Display campaign increased SEO traffic over the course of the few weeks following the campaign.</p>
 <p>The below compares paid search on SEO using the <code>ccf()</code> function. The result is the correlation for different lags of days. We can see a correlation at 0 lag at around 0.5, but the correlation increases if you lag the Social trend up to 10 days before.</p>
 <pre class="r"><code>ccf(pivoted$Social, pivoted$Video)</code></pre>
-<p><img src="correlation_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="correlation_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>You could then conclude that Video was having a lagged effect on Social traffic up to 10 days beforehand. But, beware! The nature of cross-correlation is that if both datasets have a similar looking spike, cross-correlation will highlight it. Careful examination of the raw data trends should be performed to verify it. In some cases a smoother line will help get rid of spikes that affect the data (e.g., do the analysis on weekly or monthly data instead of daily). And, of course, there is no substitue for rational thought: if you find a relationship like this, can you explain it rationally? And, if so, can you conduct further analysis to validate that rationalization? <em>(If only R had an <strong>Easy Button</strong> to do the actual thinking, too. Alas!)</em></p>
 </div>
 

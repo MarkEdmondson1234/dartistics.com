@@ -10,7 +10,7 @@ There are some basics of using R that will quickly become second nature. But, it
 
 ## Basic Operations
 At its most basic, R can perform operations (like math(s)) simply by typing an expression in the console and pressing <Enter>:
-```{r}
+```{r basics-base-r}
 12^2
 ```
 When an expression is entered in the RStudio console, it simply executes and returns the result. In the example above, the results returned is the result is the square of 12.
@@ -116,7 +116,7 @@ A handy keyboard shortcut for **Run** is `CMD-ENTER` (`CTRL-ENTER` on Windows) t
 
 ## Commenting Code
 Comments are critical to any programming language, as their core purpose is to actually embed documentation within the code itself. In R, comments are denoted with a `#`. Comment profusely and often!
-```{r}
+```{r commenting}
 # This is what a comment looks like. If your comment goes on for a while (which)
 # is fine, then press <Enter>, add another '#', and continue commenting.
 ```

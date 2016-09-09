@@ -3,7 +3,7 @@ title: "Welcome to DARTISTICS!"
 author: "Digital Analytics: R and staTISTICS"
 ---
 
-```{r setup, include=FALSE}
+```{r index, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 

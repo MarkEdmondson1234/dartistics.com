@@ -52,7 +52,7 @@ If you need to export the data to a simple, flat, structure, then you can push i
 ### .xlsx
 If you have multiple data frames that you want to place on separate tabs in a single workbook, the `WriteXLS` package (`install.packages("WriteXLS")` and then `library(WriteXLS`) is one option for doing so. This can get a bit more involved, but it can also be quite useful. Let's use an example where we have multiple data frame objects named `df1`, `df2`, and `df3`, and we want to output each data frame to its own worksheet in a workbook called `my_dataframes.xlsx`. We also want to rename the worksheet tabs to be `Data Frame 1`, `Data Frame 2`, and `Data Frame 3`. We would do that with the code below, and even do some light formatting on the output (having the columns automatically adjust their width, making the header row on each worksheet bold, and turning on autofiltering).
 
-```{r eval=FALSE}
+```{r excel, eval=FALSE}
 
   # Create a vector with the names of the data frame objects
   sheet_data <- c("df1", "df2", "df3")

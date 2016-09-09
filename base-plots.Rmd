@@ -10,7 +10,7 @@ For this chapter, we'll use the Search Console + GA data.
 
 ## Loading datasets
 
-```{r}
+```{r base-plots}
 sc_ga_data <- read.csv("./data/search_console_plus_ga.csv", stringsAsFactors = FALSE)
 ```
 

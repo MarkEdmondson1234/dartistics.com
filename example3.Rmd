@@ -2,7 +2,7 @@
 title: "Venn Diagram"
 ---
 
-```{r setup, include=FALSE}
+```{r example3-setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
