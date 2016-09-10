@@ -94,7 +94,6 @@ button.code-folding-btn:focus {
 }
 </style>
 
-
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -458,32 +457,33 @@ head(web_data_tidy)</code></pre>
 library(dplyr)
 plot_data &lt;- web_data_tidy %&gt;% filter(variable == &quot;sessions&quot;)</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>Start up a gg object with a <code>ggplot()</code> call including your data, and any known aesthetics you want to apply to all plots. I tend to also set the theme here, favouring a minimal look:</li>
+<li>Start up a gg object with a <code>ggplot()</code> call including your data, and any known aesthetics you want to apply to all plots. I tend to also set the theme here, favouring a minimal look using <code>theme_minimal</code>.</li>
 </ol>
+<p>As we have made “long” tidy data, we know that our x will be <code>date</code>, but also our y will be in the <code>value</code> column, so we can set these as defaults in the <code>aes()</code> (asthetics) call:</p>
 <pre class="r"><code>library(ggplot2)
 ## I don&#39;t know why, but I always call them gg
-gg &lt;- ggplot(data = plot_data, aes(x = date)) + theme_minimal()</code></pre>
+gg &lt;- ggplot(data = plot_data, aes(x = date, y = value)) + theme_minimal()</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>Now the fun begins - experiment with adding various elements to your <code>gg</code> object using <code>+</code>. Once you have found something you want to keep, assign it to <code>gg</code> and then carry on to the next feature.</li>
 </ol>
 <p>Anything you haven’t specified in the global line, you will need to add in the <code>geom</code> you are adding. Note that because we have put the data in the first line, we don’t need to specify it again.</p>
 <pre class="r"><code>## lets make some line plots
-gg + geom_line(aes(y = value))</code></pre>
+gg + geom_line()</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-3-1.png" width="960" /></p>
 <pre class="r"><code>## hmm, too much data in there, lets colour by the channelGroupings
-gg + geom_line(aes(y = value, colour = channelGrouping))</code></pre>
+gg + geom_line(aes(colour = channelGrouping))</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-3-2.png" width="960" /></p>
 <pre class="r"><code>## we have desktop, mobile and tablet all in there, lets seperate them out with facet
-gg + geom_line(aes(y = value, colour = channelGrouping)) + facet_grid(. ~ deviceCategory)</code></pre>
+gg + geom_line(aes(colour = channelGrouping)) + facet_grid(. ~ deviceCategory)</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-3-3.png" width="960" /></p>
 <pre class="r"><code>## I prefer it one other the other
-gg + geom_line(aes(y = value, colour = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
+gg + geom_line(aes(colour = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-3-4.png" width="960" /></p>
 <pre class="r"><code>## lets try an area plot
-gg + geom_area(aes(y = value, colour = channelGrouping, group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
+gg + geom_area(aes(colour = channelGrouping, group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-3-5.png" width="960" /></p>
 <pre class="r"><code>## ok, lets keep that for now
-gg &lt;- gg + geom_area(aes(y = value, group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
+gg &lt;- gg + geom_area(aes(group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
 <p>The point above is to show how modifications can be quickly added as you try out ideas.</p>
 <p>A little more styling, and we are done with this example:</p>
 <pre class="r"><code>## make the colours nicer
@@ -515,7 +515,6 @@ gg</code></pre>
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
-
 
 </script>
 

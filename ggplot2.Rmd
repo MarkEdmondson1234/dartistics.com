@@ -67,12 +67,14 @@ plot_data <- web_data_tidy %>% filter(variable == "sessions")
 
 ```
 
-3. Start up a gg object with a `ggplot()` call including your data, and any known aesthetics you want to apply to all plots.  I tend to also set the theme here, favouring a minimal look:
+3. Start up a gg object with a `ggplot()` call including your data, and any known aesthetics you want to apply to all plots.  I tend to also set the theme here, favouring a minimal look using `theme_minimal`.
+
+As we have made "long" tidy data, we know that our x will be `date`, but also our y will be in the `value` column, so we can set these as defaults in the `aes()` (asthetics) call:
 
 ```{r}
 library(ggplot2)
 ## I don't know why, but I always call them gg
-gg <- ggplot(data = plot_data, aes(x = date)) + theme_minimal()
+gg <- ggplot(data = plot_data, aes(x = date, y = value)) + theme_minimal()
 ```
 
 4. Now the fun begins - experiment with adding various elements to your `gg` object using `+`.  Once you have found something you want to keep, assign it to `gg` and then carry on to the next feature.
@@ -81,22 +83,22 @@ Anything you haven't specified in the global line, you will need to add in the `
 
 ```{r, fig.height=6, fig.width=10}
 ## lets make some line plots
-gg + geom_line(aes(y = value))
+gg + geom_line()
 
 ## hmm, too much data in there, lets colour by the channelGroupings
-gg + geom_line(aes(y = value, colour = channelGrouping))
+gg + geom_line(aes(colour = channelGrouping))
 
 ## we have desktop, mobile and tablet all in there, lets seperate them out with facet
-gg + geom_line(aes(y = value, colour = channelGrouping)) + facet_grid(. ~ deviceCategory)
+gg + geom_line(aes(colour = channelGrouping)) + facet_grid(. ~ deviceCategory)
 
 ## I prefer it one other the other
-gg + geom_line(aes(y = value, colour = channelGrouping)) + facet_grid(deviceCategory ~ .)
+gg + geom_line(aes(colour = channelGrouping)) + facet_grid(deviceCategory ~ .)
 
 ## lets try an area plot
-gg + geom_area(aes(y = value, colour = channelGrouping, group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)
+gg + geom_area(aes(colour = channelGrouping, group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)
 
 ## ok, lets keep that for now
-gg <- gg + geom_area(aes(y = value, group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)
+gg <- gg + geom_area(aes(group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)
 ```
 
 The point above is to show how modifications can be quickly added as you try out ideas.

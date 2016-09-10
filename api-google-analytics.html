@@ -14,14 +14,14 @@
 <title>Analytics APIs</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -96,7 +96,6 @@ button.code-folding-btn:focus {
   outline: none;
 }
 </style>
-
 
 <style type="text/css">
 /* padding for bootstrap navbar */
@@ -485,12 +484,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <pre class="r"><code>## This installs googleAnalyticsR if you haven&#39;t got it already
 if(!require(googleAnalyticsR)) install.packages(&quot;googleAnalyticsR&quot;)</code></pre>
 <pre><code>## Loading required package: googleAnalyticsR</code></pre>
+<pre><code>## Successfully authenticated via /Users/mark/dev/auth/googleAnalyticsR.httr-oauth</code></pre>
 </div>
 <div id="authentication" class="section level2">
 <h2>Authentication</h2>
 <p>By default you can authenticate using googleAnalyticsR default project:</p>
 <pre class="r"><code>library(googleAnalyticsR)
 ga_auth()</code></pre>
+<pre><code>## Authenticated</code></pre>
 <p>Pause here, as the first time it should open a web browser the first time to your Google login.</p>
 <div class="figure">
 <img src="images/google_auth_login.png" />
@@ -503,6 +504,7 @@ ga_auth()</code></pre>
 <h2>Getting your View Id</h2>
 <p>To get your data, you need to specify which Google Analytics View you want to pull it from.</p>
 <p>The easiest way to find this is to use <code>google_analytics_account_list()</code> to list your Views, then read the number in the <code>viewId</code> column:</p>
+<<<<<<< HEAD
 <pre class="r"><code>my_accounts &lt;- google_analytics_account_list()
 head(my_accounts)</code></pre>
 <pre><code>##   accountId        accountName webPropertyId    webPropertyName
@@ -527,8 +529,35 @@ head(my_accounts)</code></pre>
 ## 5  82999029            cbuswaw.com  WEB    &lt;NA&gt;
 ## 6 107951642 unfiltered cbuswaw.com  WEB    &lt;NA&gt;</code></pre>
 <pre class="r"><code>## The account viewIds (since all columns is a little messy when displayed here)
+=======
+<pre class="r"><code>my_accounts &lt;- google_analytics_account_list()</code></pre>
+<pre><code>## Auto-refreshing stale OAuth token.</code></pre>
+<pre class="r"><code>head(my_accounts)</code></pre>
+<pre><code>##   accountId         accountName webPropertyId          webPropertyName
+## 1  79301104             cloudyr UA-79301104-1      the cloudyr project
+## 2  27488374       Copenhagenish UA-27488374-1            Copenhagenish
+## 3  27488374       Copenhagenish UA-27488374-1            Copenhagenish
+## 4  27488374       Copenhagenish UA-27488374-2                 Test App
+## 5  27488374       Copenhagenish UA-27488374-2                 Test App
+## 6  54516992 Demo Account (Beta) UA-54516992-1 Google Merchandise Store
+##   internalWebPropertyId    level                              websiteUrl
+## 1             118427305 STANDARD                http://cloudyr.github.io
+## 2              52792508 STANDARD                 http://copenhagenish.me
+## 3              52792508 STANDARD                 http://copenhagenish.me
+## 4             107212771 STANDARD                                      --
+## 5             107212771 STANDARD                                      --
+## 6              87479473 STANDARD https://shop.googlemerchandisestore.com
+##      viewId            viewName type starred
+## 1 123875646   All Web Site Data  WEB    &lt;NA&gt;
+## 2 111689181        a mobile app  APP    &lt;NA&gt;
+## 3  53589656       Copenhagenish  WEB    &lt;NA&gt;
+## 4 111672280 All Mobile App Data  APP    &lt;NA&gt;
+## 5 111715378        new view app  APP    &lt;NA&gt;
+## 6  92320289       1 Master View  WEB    &lt;NA&gt;</code></pre>
+<pre class="r"><code>## The account viewIds
+>>>>>>> c5f4c649a5790e257206396fb7fc5fc8ecd25f99
 head(my_accounts$viewId)</code></pre>
-<pre><code>## [1] &quot;86518341&quot;  &quot;54051087&quot;  &quot;51615377&quot;  &quot;52028210&quot;  &quot;82999029&quot;  &quot;107951642&quot;</code></pre>
+<pre><code>## [1] &quot;123875646&quot; &quot;111689181&quot; &quot;53589656&quot;  &quot;111672280&quot; &quot;111715378&quot; &quot;92320289&quot;</code></pre>
 </div>
 <div id="querying-your-data" class="section level2">
 <h2>Querying your data</h2>
@@ -573,7 +602,6 @@ web_data &lt;- google_analytics_4(my_id,
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
-
 
 </script>
 
