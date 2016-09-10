@@ -12,6 +12,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 There are several R packages for reaching the Google Analytics API, but the one we're describing here is `googleAnalyticsR`, as its the one the author wrote!  However you may prefer the syntax of one of the others, which are listed on the [`googleAnalyticsR` homepage](http://code.markedmondson.me/googleAnalyticsR/).
 
+The example below generates a `web_data` object that is used in various exercises throughout this site. So, you may want to build a script based on the instructions on this page and save it for future use as you work through other examples and exercises.
+
 ## Installation
 
 ```{r}
@@ -43,10 +45,9 @@ The easiest way to find this is to use `google_analytics_account_list()` to list
 
 ```{r}
 my_accounts <- google_analytics_account_list()
-
 head(my_accounts)
 
-## The account viewIds
+## The account viewIds (since all columns is a little messy when displayed here)
 head(my_accounts$viewId)
 ```
 
@@ -58,9 +59,11 @@ You can then download your data via the [`v4 reporting API`](https://developers.
 ## change this to your own ViewId
 ## this one will only work if you have access to Mark's blog!
 my_id <- 81416156 
-some_data <- google_analytics_4(my_id, 
+web_data <- google_analytics_4(my_id, 
                                 date_range = c("2016-01-01", "2016-08-01"),
-                                metrics = c("sessions","users","pageviews"),
-                                dimensions = c("date","medium"))
-head(some_data)
+                                metrics = c("sessions","users","pageviews",
+                                            "entrances","bounces"),
+                                dimensions = c("date","deviceCategory",
+                                               "channelGrouping"))
+head(web_data)
 ```
