@@ -61,9 +61,10 @@ You can then download your data via the [`v4 reporting API`](https://developers.
 my_id <- 81416156 
 web_data <- google_analytics_4(my_id, 
                                 date_range = c("2016-01-01", "2016-08-01"),
-                                metrics = c("sessions","users","pageviews",
+                                metrics = c("sessions","pageviews",
                                             "entrances","bounces"),
                                 dimensions = c("date","deviceCategory",
-                                               "channelGrouping"))
+                                               "channelGrouping"),
+                                anti_sample = TRUE)
 head(web_data)
 ```
