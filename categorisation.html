@@ -94,6 +94,7 @@ button.code-folding-btn:focus {
 }
 </style>
 
+
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -384,13 +385,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>In this case, we are looking to how we can classify web data to create different segments created by the data (as opposed to what you may pick), or if you give categories to R if they can help you define those categories via other metrics.</p>
 <div id="decision-trees" class="section level2">
 <h2>Decision trees</h2>
-<p>Decision trees are typically read top to bottom, and represent where the model thinks you can split your data. As you move down</p>
-<pre class="r"><code>library(knitr) # used for kable that makes nice RMarkdown tables
-web_data &lt;- read.csv(&quot;./data/gadata_example_2.csv&quot;, stringsAsFactors = FALSE)
-kable(head(web_data[-1]), row.names = FALSE)</code></pre>
+<p>Decision trees are typically read top to bottom, and represent where the model thinks you can split your data. As you move down the tree, the model splits out the “best fit” branches.</p>
+<p><em>This example requires having a <code>web_data</code> data frame. You can either load up some sample data by completing the <a href="exercise2-io.html">I/O Exercise</a> (which is what is shown in the details below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the <a href="api-google-analytics.html">Google Analytics API page</a>.</em></p>
+<p>Once you have a <code>web_data</code> data frame to work with, the command <code>head(web_data</code> should return a table that, at least structurally, looks something like this:</p>
+<pre class="r"><code>kable(head(web_data))</code></pre>
 <table>
 <thead>
 <tr class="header">
+<th align="right">X</th>
 <th align="left">date</th>
 <th align="left">channelGrouping</th>
 <th align="left">deviceCategory</th>
@@ -402,6 +404,7 @@ kable(head(web_data[-1]), row.names = FALSE)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
+<td align="right">1</td>
 <td align="left">2016-01-01</td>
 <td align="left">(Other)</td>
 <td align="left">desktop</td>
@@ -411,6 +414,7 @@ kable(head(web_data[-1]), row.names = FALSE)</code></pre>
 <td align="right">15</td>
 </tr>
 <tr class="even">
+<td align="right">2</td>
 <td align="left">2016-01-01</td>
 <td align="left">(Other)</td>
 <td align="left">mobile</td>
@@ -420,6 +424,7 @@ kable(head(web_data[-1]), row.names = FALSE)</code></pre>
 <td align="right">82</td>
 </tr>
 <tr class="odd">
+<td align="right">3</td>
 <td align="left">2016-01-01</td>
 <td align="left">(Other)</td>
 <td align="left">tablet</td>
@@ -429,6 +434,7 @@ kable(head(web_data[-1]), row.names = FALSE)</code></pre>
 <td align="right">19</td>
 </tr>
 <tr class="even">
+<td align="right">4</td>
 <td align="left">2016-01-01</td>
 <td align="left">Direct</td>
 <td align="left">desktop</td>
@@ -438,6 +444,7 @@ kable(head(web_data[-1]), row.names = FALSE)</code></pre>
 <td align="right">61</td>
 </tr>
 <tr class="odd">
+<td align="right">5</td>
 <td align="left">2016-01-01</td>
 <td align="left">Direct</td>
 <td align="left">mobile</td>
@@ -447,6 +454,7 @@ kable(head(web_data[-1]), row.names = FALSE)</code></pre>
 <td align="right">172</td>
 </tr>
 <tr class="even">
+<td align="right">6</td>
 <td align="left">2016-01-01</td>
 <td align="left">Direct</td>
 <td align="left">tablet</td>
@@ -457,6 +465,7 @@ kable(head(web_data[-1]), row.names = FALSE)</code></pre>
 </tr>
 </tbody>
 </table>
+<p>We can then transform the data for categorization and store it in a new object called <code>cats</code>:</p>
 <pre class="r"><code>library(dplyr) # data transformation
 cats &lt;- web_data %&gt;% select(deviceCategory, channelGrouping, sessions)
 
@@ -502,17 +511,18 @@ kable(head(cats), row.names = FALSE)</code></pre>
 </tr>
 </tbody>
 </table>
+<p>With that data set, we can quickly make a categorisation tree:</p>
 <pre class="r"><code>library(rpart) # creates decision trees
 
 tree &lt;- rpart(deviceCategory ~ ., cats)
 plot(tree)
 text(tree)</code></pre>
-<p><img src="categorisation_files/figure-html/unnamed-chunk-2-1.png" width="960" /></p>
+<p><img src="categorisation_files/figure-html/unnamed-chunk-3-1.png" width="960" /></p>
 <p>The labels are a bit obscure as they abbreviate the channel names.</p>
 <p>The package <code>rpart.plot</code> makes the plots much nicer and easier to interpret:</p>
 <pre class="r"><code>library(rpart.plot)  # pretty trees
 rpart.plot(tree, type=1)</code></pre>
-<p><img src="categorisation_files/figure-html/unnamed-chunk-3-1.png" width="960" /></p>
+<p><img src="categorisation_files/figure-html/unnamed-chunk-4-1.png" width="960" /></p>
 <p>Each node shows:</p>
 <ul>
 <li>the predicted class (Much worse, worse, …, Much better),</li>
@@ -537,6 +547,7 @@ rpart.plot(tree, type=1)</code></pre>
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 

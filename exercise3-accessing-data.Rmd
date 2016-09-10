@@ -1,5 +1,5 @@
 ---
-title: "Exercise 3 -- Accessing Data"
+title: "Exercise: Accessing Data"
 output:
   html_document:
     toc: true
@@ -12,7 +12,9 @@ output:
 web_data <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE)
 ```
 
-This exercise is dependent on the successful completion of [Exercise 2](exercise2-io.html).The step-by-step instructions for each of the components of this exercised are below. But, what we want to do is:
+_This exercise requires having a `web_data` data frame. You can either load up some sample data by completing the [I/O Exercise](exercise2-io.html) (which is what is shown in the step-by-step instructions below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the [Google Analytics API page](api-google-analytics.html)._
+
+The step-by-step instructions for each of the components of this exercised are below. But, what we want to do is:
 
 1. Inspect the entire data set:
   + View the data as its own tab in RStudio by double-clicking `web_data` in the **Environment** pane

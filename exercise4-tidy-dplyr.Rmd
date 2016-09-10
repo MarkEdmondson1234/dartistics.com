@@ -1,5 +1,5 @@
 ---
-title: "Exercise 4 -- Tidy / dplyr()"
+title: "Exercise: Tidy and dplyr"
 output:
   html_document:
     toc: true
@@ -12,7 +12,7 @@ output:
 web_data <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE)
 ```
 
-This exercise is dependent on the successful completion of [Exercise 2](exercise2-io.html).
+_This exercise requires having a `web_data` data frame. You can either load up some sample data by completing the [I/O Exercise](exercise2-io.html) (which is what is shown in the step-by-step instructions below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the [Google Analytics API page](api-google-analytics.html)._
 
 Our `web_data` data is _already_ in a tidy format. When data is _not_ in a tidy format when you get it, the `tidyr` package has functions to help make it that way. Some day, perhaps we'll have an exercise to do this!
 

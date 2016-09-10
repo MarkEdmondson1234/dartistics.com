@@ -8,13 +8,22 @@ In this case, we are looking to how we can classify web data to create different
 
 ## Decision trees
 
-Decision trees are typically read top to bottom, and represent where the model thinks you can split your data.  As you move down
+Decision trees are typically read top to bottom, and represent where the model thinks you can split your data.  As you move down the tree, the model splits out the "best fit" branches.
 
-```{r categorisation}
+_This example requires having a `web_data` data frame. You can either load up some sample data by completing the [I/O Exercise](exercise2-io.html) (which is what is shown in the details below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the [Google Analytics API page](api-google-analytics.html)._
+
+```{r categorisation, echo=FALSE}
 library(knitr) # used for kable that makes nice RMarkdown tables
 web_data <- read.csv("./data/gadata_example_2.csv", stringsAsFactors = FALSE)
-kable(head(web_data[-1]), row.names = FALSE)
 ```
+
+Once you have a `web_data` data frame to work with, the command `head(web_data` should return a table that, at least structurally, looks something like this:
+
+```{r}
+kable(head(web_data))
+```
+
+We can then transform the data for categorization and store it in a new object called `cats`:
 
 ```{r, message=FALSE}
 library(dplyr) # data transformation
@@ -22,6 +31,8 @@ cats <- web_data %>% select(deviceCategory, channelGrouping, sessions)
 
 kable(head(cats), row.names = FALSE)
 ```
+
+With that data set, we can quickly make a categorisation tree:
 
 ```{r, fig.width=10, fig.height=10}
 library(rpart) # creates decision trees

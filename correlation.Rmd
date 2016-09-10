@@ -22,33 +22,13 @@ But, still, correlation can be very useful: identifying that a relationship exis
 
 ## Performing correlation analysis in R
 
-The base function `cor()` will perform correlations on a `data.frame`. Let's give this a go with some data. We've got two options here, so choose wisely, grasshopper! **Option 1** is preferred, but **Option 2** is a perfectly serviceable fallback.
+The base function `cor()` will perform correlations on a `data.frame`. Let's give this a go with some data. 
 
-### Option 1: YOUR Data
+_This example requires having a `web_data` data frame. You can either load up some sample data by completing the [I/O Exercise](exercise2-io.html) (which is what is shown in the details below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the [Google Analytics API page](api-google-analytics.html)._
 
-To make this interesting, how about we use your data? If you have a Google account with access to Google Analytics, then follow the instructions to authenticate on the [Analytics APIs page](http://code.markedmondson.me/RWorkshopCopenhagen/analytics-apis.html). Once you've done that, then the function below from the `googleAnalyticsR` package should give you the last 60 days of data for the `viewID` you enter:
+Once you've got some data loaded up, you should be able to enter `head(web_data)` and get something that, at least structurally, looks like this:
 
-```{r correlation, eval=FALSE}
-
-start_date <- Sys.Date()-60
-end_date <- Sys.Date()-1
-
-web_data <- google_analytics_4([insert your view ID],
-            date_range = c(start_date,end_date),
-            metrics = c("sessions","pageviews","entrances","bounces"),
-            dimensions = c("date","channelGrouping","deviceCategory"),
-            anti_sample = TRUE)
-
-head(web_data)
-```
-
-Structurally, the output should look very similar to the table shown in **Option 2** below (note that you didn't have to remove the first column!).
-
-### Option 2: Sample Data
-
-If you don't have a Google Analytics account or are not able to access it, then you can use the sample data set already downloaded in earlier exercises:
-
-```{r message=FALSE}
+```{r message=FALSE, echo=FALSE}
 ## used for kable that makes nice RMarkdown tables
 library(knitr)
 web_data <- read.csv("./data/gadata_example_2.csv", stringsAsFactors = FALSE)
@@ -58,16 +38,6 @@ web_data <- web_data[, -1]
 
 kable(head(web_data))
 ```
-
-_Quick Review: What all is going on with the simple code above?_
-
-* _`web_data` is an object (data frame) in this case that we're creating_
-* _We're using the `stringsAsFactors` parameter because...we usually just want to do that when reading in data._
-* _`kable()` is a function that is really just used here so that the data displays a little more cleanly on this page. If you're trying this simply within RStudio...you can omit it._
-* _`head()` is a function that (by default) returns only the first six rows of the object._
-* _`web_data[, -1]` is "the data." the `-1` is saying "don't show the first column" (you could think of this as `web_data[,-1]`, too)_
-
-_Got it? Good. Let's continue with the lesson at hand!_
 
 ## Let's correlate!
 

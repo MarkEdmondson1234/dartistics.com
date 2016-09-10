@@ -1,5 +1,5 @@
 ---
-title: "Exercise 2 -- I/O"
+title: "Exercise: I/O"
 output:
   html_document
 ---

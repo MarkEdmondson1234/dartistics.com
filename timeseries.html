@@ -94,6 +94,7 @@ button.code-folding-btn:focus {
 }
 </style>
 
+
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
@@ -382,17 +383,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <p>Time-series are a special sub-class of data, referring to when you have some ordered observations over time.</p>
 <p>Time-series are often found when dealing with digital analytics, and R uses a special class to deal with them as they have some unique properties. A guide to general R timeseries is <a href="http://www.statmethods.net/advstats/timeseries.html">here</a> and a list of possible packages to use with time-series is in this <a href="https://cran.r-project.org/web/views/TimeSeries.html">CRAN task view</a>. If you want to get into forecasting then another R New-Zealand hero is Rob Hyndman, who has lots of techniques described on his <a href="http://robjhyndman.com/hyndsight/">blog</a>.</p>
-<div id="creating-time-series" class="section level2">
-<h2>Creating time-series</h2>
 <p>Time-series are created in base R via the <code>ts()</code> command, which you will typically feed in some numeric data that is assumed to be in order of observation.</p>
 <p>For most purposes you will be starting from a <code>data.frame</code> and need to transform it into a <code>time-series</code> in order for the R functions to work.</p>
-<pre class="r"><code>## get the web data
-web_data &lt;- read.csv(&quot;./data/gadata_example_2.csv&quot;, stringsAsFactors = FALSE)
-## the data not including first column
-head(web_data[, -1])</code></pre>
+<div id="creating-time-series" class="section level2">
+<h2>Creating time-series</h2>
+<p><em>This example requires having a <code>web_data</code> data frame. You can either load up some sample data by completing the <a href="exercise2-io.html">I/O Exercise</a> (which is what is shown in the details below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the <a href="api-google-analytics.html">Google Analytics API page</a>.</em></p>
+<p>Once you have a <code>web_data</code> data frame to work with, the command <code>head(web_data</code> should return a table that, at least structurally, looks something like this:</p>
+<pre class="r"><code>kable(head(web_data))</code></pre>
 <table>
 <thead>
 <tr class="header">
+<th align="right">X</th>
 <th align="left">date</th>
 <th align="left">channelGrouping</th>
 <th align="left">deviceCategory</th>
@@ -404,6 +405,7 @@ head(web_data[, -1])</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
+<td align="right">1</td>
 <td align="left">2016-01-01</td>
 <td align="left">(Other)</td>
 <td align="left">desktop</td>
@@ -413,6 +415,7 @@ head(web_data[, -1])</code></pre>
 <td align="right">15</td>
 </tr>
 <tr class="even">
+<td align="right">2</td>
 <td align="left">2016-01-01</td>
 <td align="left">(Other)</td>
 <td align="left">mobile</td>
@@ -422,6 +425,7 @@ head(web_data[, -1])</code></pre>
 <td align="right">82</td>
 </tr>
 <tr class="odd">
+<td align="right">3</td>
 <td align="left">2016-01-01</td>
 <td align="left">(Other)</td>
 <td align="left">tablet</td>
@@ -431,6 +435,7 @@ head(web_data[, -1])</code></pre>
 <td align="right">19</td>
 </tr>
 <tr class="even">
+<td align="right">4</td>
 <td align="left">2016-01-01</td>
 <td align="left">Direct</td>
 <td align="left">desktop</td>
@@ -440,6 +445,7 @@ head(web_data[, -1])</code></pre>
 <td align="right">61</td>
 </tr>
 <tr class="odd">
+<td align="right">5</td>
 <td align="left">2016-01-01</td>
 <td align="left">Direct</td>
 <td align="left">mobile</td>
@@ -449,6 +455,7 @@ head(web_data[, -1])</code></pre>
 <td align="right">172</td>
 </tr>
 <tr class="even">
+<td align="right">6</td>
 <td align="left">2016-01-01</td>
 <td align="left">Direct</td>
 <td align="left">tablet</td>
@@ -459,7 +466,7 @@ head(web_data[, -1])</code></pre>
 </tr>
 </tbody>
 </table>
-<p>We will also pivot the data like before:</p>
+<p>We will start by pivoting the data like before:</p>
 <pre class="r"><code>## use tidyverse to pivot the data
 library(dplyr)
 library(tidyr)
@@ -652,6 +659,7 @@ plot(impact)</code></pre>
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 

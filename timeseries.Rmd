@@ -10,27 +10,26 @@ Time-series are a special sub-class of data, referring to when you have some ord
 
 Time-series are often found when dealing with digital analytics, and R uses a special class to deal with them as they have some unique properties. A guide to general R timeseries is [here](http://www.statmethods.net/advstats/timeseries.html) and a list of possible packages to use with time-series is in this [CRAN task view](https://cran.r-project.org/web/views/TimeSeries.html).  If you want to get into forecasting then another R New-Zealand hero is Rob Hyndman, who has lots of techniques described on his [blog](http://robjhyndman.com/hyndsight/).
 
-## Creating time-series
-
 Time-series are created in base R via the `ts()` command, which you will typically feed in some numeric data that is assumed to be in order of observation.
 
 For most purposes you will be starting from a `data.frame` and need to transform it into a `time-series` in order for the R functions to work.
 
-```r
-## get the web data
+## Creating time-series
+
+_This example requires having a `web_data` data frame. You can either load up some sample data by completing the [I/O Exercise](exercise2-io.html) (which is what is shown in the details below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the [Google Analytics API page](api-google-analytics.html)._
+
+```{r categorisation, echo=FALSE}
+library(knitr) # used for kable that makes nice RMarkdown tables
 web_data <- read.csv("./data/gadata_example_2.csv", stringsAsFactors = FALSE)
-## the data not including first column
-head(web_data[, -1])
 ```
 
-```{r, echo=FALSE}
-## get the web data
-library(knitr)
-web_data <- read.csv("./data/gadata_example_2.csv", stringsAsFactors = FALSE)
-kable(head(web_data[-1]), row.names = FALSE)
+Once you have a `web_data` data frame to work with, the command `head(web_data` should return a table that, at least structurally, looks something like this:
+
+```{r}
+kable(head(web_data))
 ```
 
-We will also pivot the data like before:
+We will start by pivoting the data like before:
 
 ```{r}
 ## use tidyverse to pivot the data

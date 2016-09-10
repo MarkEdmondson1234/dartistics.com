@@ -1,5 +1,5 @@
 ---
-title: "Exercise 1 -- The Basic Basics"
+title: "Exercise: The Basic Basics"
 output:
   html_document:
     toc: true
