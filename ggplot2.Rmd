@@ -31,20 +31,30 @@ Another great resource is the [ggplot2 cheatsheet](https://www.rstudio.com/wp-co
 
 ## Workflow
 
+_This example requires having a `web_data` data frame. You can either load up some sample data by completing the [I/O Exercise](exercise2-io.html) (which is what is shown in the details below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the [Google Analytics API page](api-google-analytics.html)._
+
+```{r categorisation, echo=FALSE}
+library(knitr) # used for kable that makes nice RMarkdown tables
+web_data <- read.csv("./data/gadata_example_2.csv", stringsAsFactors = FALSE)
+```
+
+Once you have a `web_data` data frame to work with, the command `head(web_data` should return a table that, at least structurally, looks something like this:
+
+```{r}
+kable(head(web_data))
+```
+
+Now, we can get to visualizing!
+
 1. First get your data ready and tidy.  Whilst its possible to use "wide" data, I find it easiest to always start with tidy "long" data, so you can quickly repeat what you have learnt before.
 
-```{r ggplot2}
-## get the web data
-web_data <- read.csv("./data/gadata_example_2.csv", stringsAsFactors = FALSE)
-
-## remove row name row
-web_data <- web_data[,-1]
-## to date I have been using reshape2's melt() to make the long data:
+```{r ggplot2, message=FALSE}
+## To date I have been using reshape2's melt() to make the long data:
 library(reshape2)
 web_data_long <- melt(web_data)
 head(web_data_long)
 
-## but you should (and I) use the newer tidyr() package and use gather() instead:
+## But you should (and I) use the newer tidyr() package and use gather() instead:
 library(tidyr)
 ## call the key column 'variable' and the value colum 'value' and 
 ## gather all variables apart from date, channelGrouping and deviceCategory
@@ -56,7 +66,7 @@ head(web_data_tidy)
 
 You could also choose to make factors out of your categories, as they let you set the order of colours in legends a bit easier. 
 
-```{r}
+```{r message=FALSE}
 str(web_data_tidy)
 
 web_data_tidy$date <- as.Date(web_data_tidy$date)
