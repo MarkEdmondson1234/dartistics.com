@@ -1,0 +1,66 @@
+---
+title: "Analytics APIs"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r analytics-apis setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+There are several R packages for reaching the Google Analytics API, but the one we're describing here is `googleAnalyticsR`, as its the one the author wrote!  However you may prefer the syntax of one of the others, which are listed on the [`googleAnalyticsR` homepage](http://code.markedmondson.me/googleAnalyticsR/).
+
+## Installation
+
+```{r}
+## This installs googleAnalyticsR if you haven't got it already
+if(!require(googleAnalyticsR)) install.packages("googleAnalyticsR")
+```
+## Authentication
+
+By default you can authenticate using googleAnalyticsR default project:
+
+```{r}
+library(googleAnalyticsR)
+ga_auth()
+```
+
+Pause here, as the first time it should open a web browser the first time to your Google login.  
+
+![](images/google_auth_login.png)
+
+Sign in to give access for your session.  
+
+This will create a `.httr-oauth` file in your working directory folder that contains your authentication details.  Keep this file safe as people could access your data if they have access to it.
+
+## Getting your View Id
+
+To get your data, you need to specify which Google Analytics View you want to pull it from.  
+
+The easiest way to find this is to use `google_analytics_account_list()` to list your Views, then read the number in the `viewId` column:
+
+```{r}
+my_accounts <- google_analytics_account_list()
+
+head(my_accounts)
+
+## The account viewIds
+head(my_accounts$viewId)
+```
+
+## Querying your data
+
+You can then download your data via the [`v4 reporting API`](https://developers.google.com/analytics/devguides/reporting/core/v4/) with the `google_analytics_4()` function.  See `?google_analytics_4` and the website for complete details and examples.
+
+```{r}
+## change this to your own ViewId
+## this one will only work if you have access to Mark's blog!
+my_id <- 81416156 
+some_data <- google_analytics_4(my_id, 
+                                date_range = c("2016-01-01", "2016-08-01"),
+                                metrics = c("sessions","users","pageviews"),
+                                dimensions = c("date","medium"))
+head(some_data)
+```

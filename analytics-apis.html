@@ -19,9 +19,6 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -166,100 +163,6 @@ $(document).ready(function () {
 
 
 
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
-
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.9em;
-  padding-left: 5px;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
-
-
 
 
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
@@ -339,6 +242,15 @@ div.tocify {
     <li class="dropdown-header">WORKING WITH APIs</li>
     <li>
       <a href="analytics-apis.html">Analytics APIs</a>
+    </li>
+    <li>
+      <a href="api-google-analytics.html">Google Analytics</a>
+    </li>
+    <li>
+      <a href="api-adobe-analytics.html">Adobe Analytics</a>
+    </li>
+    <li>
+      <a href="api-other.html">Other APIs</a>
     </li>
   </ul>
 </li>
@@ -421,7 +333,7 @@ div.tocify {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Wrap-Up
+    Resources
      
     <span class="caret"></span>
   </a>
@@ -438,10 +350,10 @@ div.tocify {
     <li>
       <a href="going-further.html">Going further</a>
     </li>
+    <li>
+      <a href="resources.html">R Linkfest</a>
+    </li>
   </ul>
-</li>
-<li>
-  <a href="resources.html">R Linkfest</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -471,258 +383,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <p>One of the most compelling reasons to use R for web analysts is access to the variety of libraries for importing data from Google Analytics and Adobe Analytics.</p>
 <p>Calling from the API can get around limitations in the web UI’s such as sampling and querying certain dimensions and metrics.</p>
-<div id="google-analytics" class="section level1">
-<h1>Google Analytics</h1>
-<p>There are several R packages for reaching the Google Analytics API, but the one chosen to show today is <code>googleAnalyticsR</code> as its the one the author wrote! However you may prefer the syntax of one of the others, which are listed on the <a href="http://code.markedmondson.me/googleAnalyticsR/"><code>googleAnalyticsR</code> homepage</a>.</p>
-<div id="installation" class="section level2">
-<h2>Installation</h2>
-<pre class="r"><code>## This installs googleAnalyticsR if you haven&#39;t got it already
-if(!require(googleAnalyticsR)) install.packages(&quot;googleAnalyticsR&quot;)</code></pre>
-<pre><code>## Loading required package: googleAnalyticsR</code></pre>
-</div>
-<div id="authentication" class="section level2">
-<h2>Authentication</h2>
-<p>By default you can authenticate using googleAnalyticsR default project:</p>
-<pre class="r"><code>library(googleAnalyticsR)
-ga_auth()</code></pre>
-<p>Pause here, as the first time it should open a web browser the first time to your Google login.</p>
-<div class="figure">
-<img src="images/google_auth_login.png" />
-
-</div>
-<p>Sign in to give access for your session.</p>
-<p>This will create a <code>.httr-oauth</code> file in your working directory folder that contains your authentication details. Keep this file safe as people could access your data if they have access to it.</p>
-</div>
-<div id="getting-your-view-id" class="section level2">
-<h2>Getting your View Id</h2>
-<p>To get your data, you need to specify which Google Analytics View you want to pull it from.</p>
-<p>The easiest way to find this is to use <code>google_analytics_account_list()</code> to list your Views, then read the number in the <code>viewId</code> column:</p>
-<pre class="r"><code>my_accounts &lt;- google_analytics_account_list()
-
-head(my_accounts)</code></pre>
-<pre><code>##   accountId        accountName webPropertyId    webPropertyName
-## 1  51323256       African Stay UA-51323256-1       African Stay
-## 2  27778354 Beggin&#39; YT Channel UA-27778354-1 Beggin&#39; YT Channel
-## 3  26328617         Beneful YT UA-26328617-1         Beneful YT
-## 4  26559210        Cat Chow YT UA-26559210-1           Cat Chow
-## 5  48673516            CBUSWAW UA-48673516-1 http://cbuswaw.com
-## 6  48673516            CBUSWAW UA-48673516-1 http://cbuswaw.com
-##   internalWebPropertyId    level                                websiteUrl
-## 1              83512095 STANDARD              http://www.africanstay.co.za
-## 2              53216781 STANDARD        http://www.youtube.com/user/beggin
-## 3              50958444 STANDARD                    http://www.beneful.com
-## 4              51327860 STANDARD http://www.youtube.com/user/purinacatchow
-## 5              80242125 STANDARD                        http://cbuswaw.com
-## 6              80242125 STANDARD                        http://cbuswaw.com
-##      viewId               viewName type starred
-## 1  86518341      All Web Site Data  WEB    &lt;NA&gt;
-## 2  54051087      Beggin YT Channel  WEB    &lt;NA&gt;
-## 3  51615377             Beneful YT  WEB    &lt;NA&gt;
-## 4  52028210               Cat Chow  WEB    &lt;NA&gt;
-## 5  82999029            cbuswaw.com  WEB    &lt;NA&gt;
-## 6 107951642 unfiltered cbuswaw.com  WEB    &lt;NA&gt;</code></pre>
-<pre class="r"><code>## The account viewIds
-head(my_accounts$viewId)</code></pre>
-<pre><code>## [1] &quot;86518341&quot;  &quot;54051087&quot;  &quot;51615377&quot;  &quot;52028210&quot;  &quot;82999029&quot;  &quot;107951642&quot;</code></pre>
-</div>
-<div id="querying-your-data" class="section level2">
-<h2>Querying your data</h2>
-<p>You can then download your data via the <a href="https://developers.google.com/analytics/devguides/reporting/core/v4/"><code>v4 reporting API</code></a> with the <code>google_analytics_4()</code> function. See <code>?google_analytics_4</code> and the website for complete details and examples.</p>
-<pre class="r"><code>## change this to your own ViewId
-## this one will only work if you have access to Mark&#39;s blog!
-my_id &lt;- 81416156 
-some_data &lt;- google_analytics_4(my_id, 
-                                date_range = c(&quot;2016-01-01&quot;, &quot;2016-08-01&quot;),
-                                metrics = c(&quot;sessions&quot;,&quot;users&quot;,&quot;pageviews&quot;),
-                                dimensions = c(&quot;date&quot;,&quot;medium&quot;))</code></pre>
-<pre><code>## Downloaded [644] rows from a total of [644].</code></pre>
-<pre class="r"><code>head(some_data)</code></pre>
-<pre><code>##         date   medium sessions users pageviews
-## 1 2016-01-01   (none)        8     8         9
-## 2 2016-01-01  organic       22    20        25
-## 3 2016-01-01 referral        5     5         7
-## 4 2016-01-02   (none)        9     8        16
-## 5 2016-01-02  organic       28    26        29
-## 6 2016-01-02 referral        3     3         4</code></pre>
-</div>
-</div>
-<div id="adobe-analytics" class="section level1">
-<h1>Adobe Analytics</h1>
-<p>Adobe Analytics access is supplied via Randy Zwitch’s <a href="http://randyzwitch.com/rsitecatalyst/">RSiteCatalyst</a> library.</p>
-<p>Authentication is a little harder to configure for Adobe so a live example is not shown here, but steps to download data are shown below.</p>
-<div id="installation-1" class="section level2">
-<h2>Installation</h2>
-<pre class="r"><code>## This installs a package for downloading Adobe Analytics data
-if(!require(RSiteCatalyst)) install.packages(&quot;RSiteCatalyst&quot;)</code></pre>
-</div>
-<div id="authentication-new" class="section level2">
-<h2>Authentication (New)</h2>
-<p>This is the new OAuth2 method of authentication. Use this one if you can.</p>
-<p>Link your Adobe Analytics login to the Adobe ID account to use this method of signin.</p>
-<div id="create-application" class="section level3">
-<h3>Create Application</h3>
-<p>If you have no application for your Adobe Analytics account, here is how to make one:</p>
-<ol style="list-style-type: decimal">
-<li>Create an app by visiting developer console and navigating to <a href="https://marketing.adobe.com/developer/applications">Developer &gt; Applications</a></li>
-<li>Select “Web Server (Authorization Code)”</li>
-<li>Name the application</li>
-<li>Leave the Redirect Uri field blank.</li>
-</ol>
-<div class="figure">
-<img src="images/setting-up-adobe-application.png" />
-
-</div>
-<p>You should then see this screen to grant permission after running <code>SCAuth</code></p>
-<div class="figure">
-<img src="images/adobe-app-oauth-permission.png" />
-
-</div>
-</div>
-</div>
-<div id="authentication-old" class="section level2">
-<h2>Authentication (Old)</h2>
-<p>This is the deprecated method and will dissappear ‘soon’.</p>
-<p>Get the Web Service key under the Adobe Analytics Account Information page.</p>
-<ul>
-<li>User Name is used as the key</li>
-<li>Sharted Secret is used as the secret</li>
-</ul>
-<div class="figure">
-<img src="images/legacy-authentication-adobe.png" />
-
-</div>
-<p>If you use this method, then you authenticate via:</p>
-<pre class="r"><code>library(RSiteCatalyst)
-
-key &lt;- Sys.getenv(&quot;ADOBE_KEY_OLD&quot;)
-secret &lt;- Sys.getenv(&quot;ADOBE_SECRET_OLD&quot;)
-
-SCAuth(key, secret)</code></pre>
-</div>
-<div id="recording-secret-keys" class="section level2">
-<h2>Recording secret keys</h2>
-<p>I save these values to a <code>.Renviron</code> file in my home directory to keep them safe and call then via the commands below (this stops them being accidently put on github for example)</p>
-<div id="example-.renviron-file" class="section level3">
-<h3>Example .Renviron file</h3>
-<p>This is in my root directory: <code>~/.Renviron</code></p>
-<pre><code>ADOBE_KEY=&quot;a7xxxxx639-iih-nordic-r&quot;
-ADOBE_SECRET=&quot;2eadxxxxx1495ea49&quot;
-ADOBE_KEY_OLD=&quot;mark:XXXXXX&quot;
-ADOBE_SECRET_OLD=&quot;74b46625xxxxx7e89dbe6e0&quot;</code></pre>
-</div>
-</div>
-<div id="calling-adobe-analytics" class="section level2">
-<h2>Calling Adobe Analytics</h2>
-<p>Once you have setup your authentication method, you can call data using the below.</p>
-<p>The <code>SCAuth()</code> function will open your browser or read the existing <code>auth-adobe</code> file if using the newer OAuth2 method, or return <code>[1] &quot;Credentials Saved in RSiteCatalyst Namespace.&quot;</code> if using legacy.</p>
-<pre class="r"><code>library(RSiteCatalyst)
-
-## New OAuth method
-key    &lt;- Sys.getenv(&quot;ADOBE_KEY&quot;)
-secret &lt;- Sys.getenv(&quot;ADOBE_SECRET&quot;)
-
-SCAuth(key, secret, 
-       company = &quot;XXXXX&quot;, 
-       token.file = &quot;auth-adobe&quot;, 
-       auth.method = &quot;OAUTH2&quot;)
-
-## Old legacy method
-key &lt;- Sys.getenv(&quot;ADOBE_KEY_OLD&quot;)
-secret &lt;- Sys.getenv(&quot;ADOBE_SECRET_OLD&quot;)
-
-SCAuth(key, secret)
-</code></pre>
-<p>You should be then able to see the report suites via:</p>
-<pre class="r"><code>suites &lt;- GetReportSuites()
-head(suites)</code></pre>
-</div>
-<div id="pulling-data-reports" class="section level2">
-<h2>Pulling Data Reports</h2>
-<p>There are 5 different types of Adobe Analytics reports that can be pulled out via the API:</p>
-<ul>
-<li>Overtime - <code>QueueOvertime()</code></li>
-<li>Ranked - <code>QueueRanked()</code></li>
-<li>Trended - <code>QueueTrended()</code></li>
-<li>Pathing - <code>QueuePathing()</code></li>
-<li>Fallout - <code>QueueFallout()</code></li>
-</ul>
-<p>See the characteristics of the <a href="https://marketing.adobe.com/developer/documentation/sitecatalyst-reporting/r-queueovertime">reports here</a></p>
-<p>We set some common parameters here:</p>
-<pre class="r"><code>date.from &lt;- &quot;2016-03-01&quot;
-date.to &lt;- &quot;2016-03-29&quot;
-reportsuite.id &lt;- &quot;xxxxxxx&quot;</code></pre>
-<div id="overtime" class="section level3">
-<h3>Overtime</h3>
-<p>Returns an overtime report. This is similar to the key metrics report in that the only granularity allowed is time.</p>
-<p>QueueOvertime requires a start and end date, a reportsuite ID, and a character vector of metrics.</p>
-<pre class="r"><code>metrics &lt;- c(&quot;visits&quot;,&quot;uniquevisitors&quot;,&quot;pageviews&quot;)
-
-report.data &lt;- QueueOvertime(reportsuite.id, date.from, date.to, metrics)
-head(report.data)</code></pre>
-<p>You may also wish to set any of the 5 optional named parameters.</p>
-<pre class="r"><code>report.data &lt;- QueueOvertime(reportsuite.id, 
-                             date.from, date.to, 
-                             metrics,
-                             date.granularity = &quot;hour&quot;,
-                             segment.id = &quot;Visit_Natural_Search&quot;,
-                             anomaly.detection = FALSE,
-                             data.current = TRUE,
-                             expedite = FALSE)  ## only if you have permission
-
-head(report.data)</code></pre>
-<p>A similar workflow is available for the other report types.</p>
-</div>
-</div>
-</div>
-<div id="other-apis" class="section level1">
-<h1>Other APIs</h1>
-<p>Some noteable other APIs useful for digital marketing are described below:</p>
-<div id="search-console" class="section level2">
-<h2>Search Console</h2>
-<p>Get your SEO keywords back after <code>(not provided)</code> via Google’s Search Console.</p>
-<pre class="r"><code>## This installs searchConsoleR if you haven&#39;t got it already
-if(!require(searchConsoleR)) install.packages(&quot;searchConsoleR&quot;)
-library(searchConsoleR)
-
-## authentication similar to googleAnalyticsR
-scr_auth()
-
-seo_data &lt;- search_analytics(&quot;your-website.com&quot;, dimensions = c(&quot;date&quot;,&quot;query&quot;))</code></pre>
-</div>
-<div id="bigquery" class="section level2">
-<h2>BigQuery</h2>
-<p>Useful if you have Big Query exports from Google Analytics 360. See <a href="http://code.markedmondson.me/googleAnalyticsR/big-query.html">BigQuery section</a> of <code>googleAnalyticsR</code>.</p>
-<pre class="r"><code>## This installs bigQueryR if you haven&#39;t got it already
-if(!require(bigQueryR)) install.packages(&quot;bigQueryR&quot;)
-
-library(googleAnalyticsR)
-
-## authentication similar to googleAnalyticsR
-bqr_auth()
-
-## this function turns GA dimensions/metrics into BigQuery SQL
-
-bq &lt;- google_analytics_bq(&quot;project-id&quot;, &quot;dataset-id-ga-viewid&quot;, 
-                           start = &quot;2016-01-01&quot;, end = &quot;2016-02-01&quot;, 
-                           metrics = &quot;users&quot;, 
-                           dimensions = c(&quot;source&quot;,&quot;medium&quot;))
-head(bq)
-             source   medium  users
-1   mavas|blahbs.ru  display  47837
-2          examp.ae referral   6090
-3   lm.facebook.com referral    335
-4       ghtie_yahoo  display 133900
-5      fjsfs_inmobi  display  19887
-6 tripadvisor.co.dk referral    307 
-</code></pre>
-<p>For more general BigQuery extracts, it may be better to use the more developed <a href="https://github.com/rstats-db/bigrquery">bigrquery()</a> instead.</p>
-</div>
-</div>
 
 
 
-</div>
-</div>
 
 </div>
 

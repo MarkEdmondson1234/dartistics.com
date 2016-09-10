@@ -11,7 +11,7 @@
 
 
 
-<title>Github</title>
+<title>Analytics APIs</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,6 +19,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -161,6 +164,100 @@ $(document).ready(function () {
 <!-- code folding -->
 
 
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.9em;
+  padding-left: 5px;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -376,37 +473,88 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-<h1 class="title toc-ignore">Github</h1>
+<h1 class="title toc-ignore">Analytics APIs</h1>
 
 </div>
 
 
-<p>Once you are doing any data programming, it is highly recommended you start using version control, and for R in particular Github is highly recommended due to its thriving R community.</p>
-<p>A full walkthrough on using Github with R can be found in <a href="http://happygitwithr.com/">this Jenny Bryan online book</a> (who is also the author of the <code>googlesheets</code> package for R).</p>
-<p>A few reasons to persuade you to use Github are given below:</p>
-<ul>
-<li>If you have ever created local versions of files <code>final_data.csv</code>, <code>final_data2.csv</code>, <code>final_datav3_minusSEO.csv</code> etc., then you would benefit from version control. Version control lets you freely modify and delete/add to a one file, and not worry that you are losing drafts.</li>
-<li>Github is like a social network for code. You can follow your favourite packages on Github and see how they develop (Comments and feature suggestions on libraries like <a href="https://github.com/MarkEdmondson1234/googleAnalyticsR"><code>googleAnalyticsR</code></a> are warmly welcomed!)</li>
-<li>Once collaborating with someone not in the same room, Github can be invaluable to keep track of who changed what and when.</li>
-<li>It can support any file - once comfortable with Github the author uses it to track all documents such as word documents, PDFs, etc.</li>
-<li>For free you can have unlimited public repositories, for a fixed fee you can have unlimited private ones.</li>
-<li>Github hooks into many other services via its <em>webhooks</em>, that lets you do things like schedule reports, run code every time you commit, push your code to other servers, post to Slack, etc.</li>
-</ul>
-<div id="advice-for-using-github-with-r" class="section level2">
-<h2>Advice for using Github with R</h2>
-<ul>
-<li>RStudio comes with its own Git client installed already, which is ok for basic pulls and pushes, but you may want to consider a Github desktop client such as Github’s or Bitbucket.</li>
-<li>Github is a bit notorious to be arcane, so hang in there and stick with simple tasks for now. If something goes wrong you can always <a href="https://xkcd.com/1597/">save your work to a different folder, delete everything and redownload again</a>. You will still get a lot of value without knowing its intricies.</li>
-<li>Stick with one RStudio project to one Github repo.</li>
-</ul>
+<p>There are several R packages for reaching the Google Analytics API, but the one we’re describing here is <code>googleAnalyticsR</code>, as its the one the author wrote! However you may prefer the syntax of one of the others, which are listed on the <a href="http://code.markedmondson.me/googleAnalyticsR/"><code>googleAnalyticsR</code> homepage</a>.</p>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
+<pre class="r"><code>## This installs googleAnalyticsR if you haven&#39;t got it already
+if(!require(googleAnalyticsR)) install.packages(&quot;googleAnalyticsR&quot;)</code></pre>
+<pre><code>## Loading required package: googleAnalyticsR</code></pre>
 </div>
-<div id="more-reading" class="section level2">
-<h2>More Reading</h2>
-<p>Jenny Bryan has created an <a href="http://happygitwithr.com/">excellent resource</a> for learning more about using R with Git.</p>
+<div id="authentication" class="section level2">
+<h2>Authentication</h2>
+<p>By default you can authenticate using googleAnalyticsR default project:</p>
+<pre class="r"><code>library(googleAnalyticsR)
+ga_auth()</code></pre>
+<p>Pause here, as the first time it should open a web browser the first time to your Google login.</p>
+<div class="figure">
+<img src="images/google_auth_login.png" />
+
+</div>
+<p>Sign in to give access for your session.</p>
+<p>This will create a <code>.httr-oauth</code> file in your working directory folder that contains your authentication details. Keep this file safe as people could access your data if they have access to it.</p>
+</div>
+<div id="getting-your-view-id" class="section level2">
+<h2>Getting your View Id</h2>
+<p>To get your data, you need to specify which Google Analytics View you want to pull it from.</p>
+<p>The easiest way to find this is to use <code>google_analytics_account_list()</code> to list your Views, then read the number in the <code>viewId</code> column:</p>
+<pre class="r"><code>my_accounts &lt;- google_analytics_account_list()
+
+head(my_accounts)</code></pre>
+<pre><code>##   accountId        accountName webPropertyId    webPropertyName
+## 1  51323256       African Stay UA-51323256-1       African Stay
+## 2  27778354 Beggin&#39; YT Channel UA-27778354-1 Beggin&#39; YT Channel
+## 3  26328617         Beneful YT UA-26328617-1         Beneful YT
+## 4  26559210        Cat Chow YT UA-26559210-1           Cat Chow
+## 5  48673516            CBUSWAW UA-48673516-1 http://cbuswaw.com
+## 6  48673516            CBUSWAW UA-48673516-1 http://cbuswaw.com
+##   internalWebPropertyId    level                                websiteUrl
+## 1              83512095 STANDARD              http://www.africanstay.co.za
+## 2              53216781 STANDARD        http://www.youtube.com/user/beggin
+## 3              50958444 STANDARD                    http://www.beneful.com
+## 4              51327860 STANDARD http://www.youtube.com/user/purinacatchow
+## 5              80242125 STANDARD                        http://cbuswaw.com
+## 6              80242125 STANDARD                        http://cbuswaw.com
+##      viewId               viewName type starred
+## 1  86518341      All Web Site Data  WEB    &lt;NA&gt;
+## 2  54051087      Beggin YT Channel  WEB    &lt;NA&gt;
+## 3  51615377             Beneful YT  WEB    &lt;NA&gt;
+## 4  52028210               Cat Chow  WEB    &lt;NA&gt;
+## 5  82999029            cbuswaw.com  WEB    &lt;NA&gt;
+## 6 107951642 unfiltered cbuswaw.com  WEB    &lt;NA&gt;</code></pre>
+<pre class="r"><code>## The account viewIds
+head(my_accounts$viewId)</code></pre>
+<pre><code>## [1] &quot;86518341&quot;  &quot;54051087&quot;  &quot;51615377&quot;  &quot;52028210&quot;  &quot;82999029&quot;  &quot;107951642&quot;</code></pre>
+</div>
+<div id="querying-your-data" class="section level2">
+<h2>Querying your data</h2>
+<p>You can then download your data via the <a href="https://developers.google.com/analytics/devguides/reporting/core/v4/"><code>v4 reporting API</code></a> with the <code>google_analytics_4()</code> function. See <code>?google_analytics_4</code> and the website for complete details and examples.</p>
+<pre class="r"><code>## change this to your own ViewId
+## this one will only work if you have access to Mark&#39;s blog!
+my_id &lt;- 81416156 
+some_data &lt;- google_analytics_4(my_id, 
+                                date_range = c(&quot;2016-01-01&quot;, &quot;2016-08-01&quot;),
+                                metrics = c(&quot;sessions&quot;,&quot;users&quot;,&quot;pageviews&quot;),
+                                dimensions = c(&quot;date&quot;,&quot;medium&quot;))</code></pre>
+<pre><code>## Downloaded [644] rows from a total of [644].</code></pre>
+<pre class="r"><code>head(some_data)</code></pre>
+<pre><code>##         date   medium sessions users pageviews
+## 1 2016-01-01   (none)        8     8         9
+## 2 2016-01-01  organic       22    20        25
+## 3 2016-01-01 referral        5     5         7
+## 4 2016-01-02   (none)        9     8        16
+## 5 2016-01-02  organic       28    26        29
+## 6 2016-01-02 referral        3     3         4</code></pre>
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 

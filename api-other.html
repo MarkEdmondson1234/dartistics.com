@@ -11,7 +11,7 @@
 
 
 
-<title>Github</title>
+<title>Other APIs</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -376,33 +376,51 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-<h1 class="title toc-ignore">Github</h1>
+<h1 class="title toc-ignore">Other APIs</h1>
 
 </div>
 
 
-<p>Once you are doing any data programming, it is highly recommended you start using version control, and for R in particular Github is highly recommended due to its thriving R community.</p>
-<p>A full walkthrough on using Github with R can be found in <a href="http://happygitwithr.com/">this Jenny Bryan online book</a> (who is also the author of the <code>googlesheets</code> package for R).</p>
-<p>A few reasons to persuade you to use Github are given below:</p>
-<ul>
-<li>If you have ever created local versions of files <code>final_data.csv</code>, <code>final_data2.csv</code>, <code>final_datav3_minusSEO.csv</code> etc., then you would benefit from version control. Version control lets you freely modify and delete/add to a one file, and not worry that you are losing drafts.</li>
-<li>Github is like a social network for code. You can follow your favourite packages on Github and see how they develop (Comments and feature suggestions on libraries like <a href="https://github.com/MarkEdmondson1234/googleAnalyticsR"><code>googleAnalyticsR</code></a> are warmly welcomed!)</li>
-<li>Once collaborating with someone not in the same room, Github can be invaluable to keep track of who changed what and when.</li>
-<li>It can support any file - once comfortable with Github the author uses it to track all documents such as word documents, PDFs, etc.</li>
-<li>For free you can have unlimited public repositories, for a fixed fee you can have unlimited private ones.</li>
-<li>Github hooks into many other services via its <em>webhooks</em>, that lets you do things like schedule reports, run code every time you commit, push your code to other servers, post to Slack, etc.</li>
-</ul>
-<div id="advice-for-using-github-with-r" class="section level2">
-<h2>Advice for using Github with R</h2>
-<ul>
-<li>RStudio comes with its own Git client installed already, which is ok for basic pulls and pushes, but you may want to consider a Github desktop client such as Github’s or Bitbucket.</li>
-<li>Github is a bit notorious to be arcane, so hang in there and stick with simple tasks for now. If something goes wrong you can always <a href="https://xkcd.com/1597/">save your work to a different folder, delete everything and redownload again</a>. You will still get a lot of value without knowing its intricies.</li>
-<li>Stick with one RStudio project to one Github repo.</li>
-</ul>
+<p>Some notable other APIs useful for digital marketing are described below:</p>
+<div id="search-console" class="section level2">
+<h2>Search Console</h2>
+<p>Get your SEO keywords back after <code>(not provided)</code> via Google’s Search Console.</p>
+<pre class="r"><code>## This installs searchConsoleR if you haven&#39;t got it already
+if(!require(searchConsoleR)) install.packages(&quot;searchConsoleR&quot;)
+library(searchConsoleR)
+
+## authentication similar to googleAnalyticsR
+scr_auth()
+
+seo_data &lt;- search_analytics(&quot;your-website.com&quot;, dimensions = c(&quot;date&quot;,&quot;query&quot;))</code></pre>
 </div>
-<div id="more-reading" class="section level2">
-<h2>More Reading</h2>
-<p>Jenny Bryan has created an <a href="http://happygitwithr.com/">excellent resource</a> for learning more about using R with Git.</p>
+<div id="bigquery" class="section level2">
+<h2>BigQuery</h2>
+<p>Useful if you have Big Query exports from Google Analytics 360. See <a href="http://code.markedmondson.me/googleAnalyticsR/big-query.html">BigQuery section</a> of <code>googleAnalyticsR</code>.</p>
+<pre class="r"><code>## This installs bigQueryR if you haven&#39;t got it already
+if(!require(bigQueryR)) install.packages(&quot;bigQueryR&quot;)
+
+library(googleAnalyticsR)
+
+## authentication similar to googleAnalyticsR
+bqr_auth()
+
+## this function turns GA dimensions/metrics into BigQuery SQL
+
+bq &lt;- google_analytics_bq(&quot;project-id&quot;, &quot;dataset-id-ga-viewid&quot;, 
+                           start = &quot;2016-01-01&quot;, end = &quot;2016-02-01&quot;, 
+                           metrics = &quot;users&quot;, 
+                           dimensions = c(&quot;source&quot;,&quot;medium&quot;))
+head(bq)
+             source   medium  users
+1   mavas|blahbs.ru  display  47837
+2          examp.ae referral   6090
+3   lm.facebook.com referral    335
+4       ghtie_yahoo  display 133900
+5      fjsfs_inmobi  display  19887
+6 tripadvisor.co.dk referral    307 
+</code></pre>
+<p>For more general BigQuery extracts, it may be better to use the more developed <a href="https://github.com/rstats-db/bigrquery">bigrquery()</a> instead.</p>
 </div>
 
 

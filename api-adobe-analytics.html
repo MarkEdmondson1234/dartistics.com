@@ -11,7 +11,7 @@
 
 
 
-<title>Github</title>
+<title>Analytics APIs</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,6 +19,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -161,6 +164,100 @@ $(document).ready(function () {
 <!-- code folding -->
 
 
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.9em;
+  padding-left: 5px;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -376,37 +473,141 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-<h1 class="title toc-ignore">Github</h1>
+<h1 class="title toc-ignore">Analytics APIs</h1>
 
 </div>
 
 
-<p>Once you are doing any data programming, it is highly recommended you start using version control, and for R in particular Github is highly recommended due to its thriving R community.</p>
-<p>A full walkthrough on using Github with R can be found in <a href="http://happygitwithr.com/">this Jenny Bryan online book</a> (who is also the author of the <code>googlesheets</code> package for R).</p>
-<p>A few reasons to persuade you to use Github are given below:</p>
+<p>Adobe Analytics access is supplied via Randy Zwitch’s <a href="http://randyzwitch.com/rsitecatalyst/">RSiteCatalyst</a> library.</p>
+<p>Authentication is a little harder to configure for Adobe so a live example is not shown here, but steps to download data are shown below.</p>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
+<pre class="r"><code>## This installs a package for downloading Adobe Analytics data
+if(!require(RSiteCatalyst)) install.packages(&quot;RSiteCatalyst&quot;)</code></pre>
+</div>
+<div id="authentication-new" class="section level2">
+<h2>Authentication (New)</h2>
+<p>This is the new OAuth2 method of authentication. Use this one if you can.</p>
+<p>Link your Adobe Analytics login to the Adobe ID account to use this method of signin.</p>
+<div id="create-application" class="section level3">
+<h3>Create Application</h3>
+<p>If you have no application for your Adobe Analytics account, here is how to make one:</p>
+<ol style="list-style-type: decimal">
+<li>Create an app by visiting developer console and navigating to <a href="https://marketing.adobe.com/developer/applications">Developer &gt; Applications</a></li>
+<li>Select “Web Server (Authorization Code)”</li>
+<li>Name the application</li>
+<li>Leave the Redirect Uri field blank.</li>
+</ol>
+<div class="figure">
+<img src="images/setting-up-adobe-application.png" />
+
+</div>
+<p>You should then see this screen to grant permission after running <code>SCAuth</code></p>
+<div class="figure">
+<img src="images/adobe-app-oauth-permission.png" />
+
+</div>
+</div>
+</div>
+<div id="authentication-old" class="section level2">
+<h2>Authentication (Old)</h2>
+<p>This is the deprecated method and will dissappear ‘soon’.</p>
+<p>Get the Web Service key under the Adobe Analytics Account Information page.</p>
 <ul>
-<li>If you have ever created local versions of files <code>final_data.csv</code>, <code>final_data2.csv</code>, <code>final_datav3_minusSEO.csv</code> etc., then you would benefit from version control. Version control lets you freely modify and delete/add to a one file, and not worry that you are losing drafts.</li>
-<li>Github is like a social network for code. You can follow your favourite packages on Github and see how they develop (Comments and feature suggestions on libraries like <a href="https://github.com/MarkEdmondson1234/googleAnalyticsR"><code>googleAnalyticsR</code></a> are warmly welcomed!)</li>
-<li>Once collaborating with someone not in the same room, Github can be invaluable to keep track of who changed what and when.</li>
-<li>It can support any file - once comfortable with Github the author uses it to track all documents such as word documents, PDFs, etc.</li>
-<li>For free you can have unlimited public repositories, for a fixed fee you can have unlimited private ones.</li>
-<li>Github hooks into many other services via its <em>webhooks</em>, that lets you do things like schedule reports, run code every time you commit, push your code to other servers, post to Slack, etc.</li>
+<li>User Name is used as the key</li>
+<li>Sharted Secret is used as the secret</li>
 </ul>
-<div id="advice-for-using-github-with-r" class="section level2">
-<h2>Advice for using Github with R</h2>
+<div class="figure">
+<img src="images/legacy-authentication-adobe.png" />
+
+</div>
+<p>If you use this method, then you authenticate via:</p>
+<pre class="r"><code>library(RSiteCatalyst)
+
+key &lt;- Sys.getenv(&quot;ADOBE_KEY_OLD&quot;)
+secret &lt;- Sys.getenv(&quot;ADOBE_SECRET_OLD&quot;)
+
+SCAuth(key, secret)</code></pre>
+</div>
+<div id="recording-secret-keys" class="section level2">
+<h2>Recording secret keys</h2>
+<p>I save these values to a <code>.Renviron</code> file in my home directory to keep them safe and call then via the commands below (this stops them being accidently put on github for example)</p>
+<div id="example-.renviron-file" class="section level3">
+<h3>Example .Renviron file</h3>
+<p>This is in my root directory: <code>~/.Renviron</code></p>
+<pre><code>ADOBE_KEY=&quot;a7xxxxx639-iih-nordic-r&quot;
+ADOBE_SECRET=&quot;2eadxxxxx1495ea49&quot;
+ADOBE_KEY_OLD=&quot;mark:XXXXXX&quot;
+ADOBE_SECRET_OLD=&quot;74b46625xxxxx7e89dbe6e0&quot;</code></pre>
+</div>
+</div>
+<div id="calling-adobe-analytics" class="section level2">
+<h2>Calling Adobe Analytics</h2>
+<p>Once you have setup your authentication method, you can call data using the below.</p>
+<p>The <code>SCAuth()</code> function will open your browser or read the existing <code>auth-adobe</code> file if using the newer OAuth2 method, or return <code>[1] &quot;Credentials Saved in RSiteCatalyst Namespace.&quot;</code> if using legacy.</p>
+<pre class="r"><code>library(RSiteCatalyst)
+
+## New OAuth method
+key    &lt;- Sys.getenv(&quot;ADOBE_KEY&quot;)
+secret &lt;- Sys.getenv(&quot;ADOBE_SECRET&quot;)
+
+SCAuth(key, secret, 
+       company = &quot;XXXXX&quot;, 
+       token.file = &quot;auth-adobe&quot;, 
+       auth.method = &quot;OAUTH2&quot;)
+
+## Old legacy method
+key &lt;- Sys.getenv(&quot;ADOBE_KEY_OLD&quot;)
+secret &lt;- Sys.getenv(&quot;ADOBE_SECRET_OLD&quot;)
+
+SCAuth(key, secret)
+</code></pre>
+<p>You should be then able to see the report suites via:</p>
+<pre class="r"><code>suites &lt;- GetReportSuites()
+head(suites)</code></pre>
+</div>
+<div id="pulling-data-reports" class="section level2">
+<h2>Pulling Data Reports</h2>
+<p>There are 5 different types of Adobe Analytics reports that can be pulled out via the API:</p>
 <ul>
-<li>RStudio comes with its own Git client installed already, which is ok for basic pulls and pushes, but you may want to consider a Github desktop client such as Github’s or Bitbucket.</li>
-<li>Github is a bit notorious to be arcane, so hang in there and stick with simple tasks for now. If something goes wrong you can always <a href="https://xkcd.com/1597/">save your work to a different folder, delete everything and redownload again</a>. You will still get a lot of value without knowing its intricies.</li>
-<li>Stick with one RStudio project to one Github repo.</li>
+<li>Overtime - <code>QueueOvertime()</code></li>
+<li>Ranked - <code>QueueRanked()</code></li>
+<li>Trended - <code>QueueTrended()</code></li>
+<li>Pathing - <code>QueuePathing()</code></li>
+<li>Fallout - <code>QueueFallout()</code></li>
 </ul>
+<p>See the characteristics of the <a href="https://marketing.adobe.com/developer/documentation/sitecatalyst-reporting/r-queueovertime">reports here</a></p>
+<p>We set some common parameters here:</p>
+<pre class="r"><code>date.from &lt;- &quot;2016-03-01&quot;
+date.to &lt;- &quot;2016-03-29&quot;
+reportsuite.id &lt;- &quot;xxxxxxx&quot;</code></pre>
+<div id="overtime" class="section level3">
+<h3>Overtime</h3>
+<p>Returns an overtime report. This is similar to the key metrics report in that the only granularity allowed is time.</p>
+<p>QueueOvertime requires a start and end date, a reportsuite ID, and a character vector of metrics.</p>
+<pre class="r"><code>metrics &lt;- c(&quot;visits&quot;,&quot;uniquevisitors&quot;,&quot;pageviews&quot;)
+
+report.data &lt;- QueueOvertime(reportsuite.id, date.from, date.to, metrics)
+head(report.data)</code></pre>
+<p>You may also wish to set any of the 5 optional named parameters.</p>
+<pre class="r"><code>report.data &lt;- QueueOvertime(reportsuite.id, 
+                             date.from, date.to, 
+                             metrics,
+                             date.granularity = &quot;hour&quot;,
+                             segment.id = &quot;Visit_Natural_Search&quot;,
+                             anomaly.detection = FALSE,
+                             data.current = TRUE,
+                             expedite = FALSE)  ## only if you have permission
+
+head(report.data)</code></pre>
+<p>A similar workflow is available for the other report types.</p>
 </div>
-<div id="more-reading" class="section level2">
-<h2>More Reading</h2>
-<p>Jenny Bryan has created an <a href="http://happygitwithr.com/">excellent resource</a> for learning more about using R with Git.</p>
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 

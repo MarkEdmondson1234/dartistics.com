@@ -1,0 +1,55 @@
+---
+title: "Other APIs"
+output:
+  html_document
+---
+
+Some notable other APIs useful for digital marketing are described below:
+
+## Search Console
+
+Get your SEO keywords back after `(not provided)` via Google's Search Console.
+
+```r
+## This installs searchConsoleR if you haven't got it already
+if(!require(searchConsoleR)) install.packages("searchConsoleR")
+library(searchConsoleR)
+
+## authentication similar to googleAnalyticsR
+scr_auth()
+
+seo_data <- search_analytics("your-website.com", dimensions = c("date","query"))
+```
+
+## BigQuery
+
+Useful if you have Big Query exports from Google Analytics 360.  See [BigQuery section](http://code.markedmondson.me/googleAnalyticsR/big-query.html) of `googleAnalyticsR`.
+
+```r
+## This installs bigQueryR if you haven't got it already
+if(!require(bigQueryR)) install.packages("bigQueryR")
+
+library(googleAnalyticsR)
+
+## authentication similar to googleAnalyticsR
+bqr_auth()
+
+## this function turns GA dimensions/metrics into BigQuery SQL
+
+bq <- google_analytics_bq("project-id", "dataset-id-ga-viewid", 
+                           start = "2016-01-01", end = "2016-02-01", 
+                           metrics = "users", 
+                           dimensions = c("source","medium"))
+head(bq)
+             source   medium  users
+1   mavas|blahbs.ru  display  47837
+2          examp.ae referral   6090
+3   lm.facebook.com referral    335
+4       ghtie_yahoo  display 133900
+5      fjsfs_inmobi  display  19887
+6 tripadvisor.co.dk referral    307 
+
+```
+
+For more general BigQuery extracts, it may be better to use the more developed [bigrquery()](https://github.com/rstats-db/bigrquery) instead.
+
