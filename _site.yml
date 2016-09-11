@@ -88,6 +88,8 @@ navbar:
         href: rmarkdown-shiny.html
     - text: "Resources"
       menu:
+      - text: "Useful Links"
+        href: resources.html
       - text: "Key topics"
         href: key-topics.html
       - text: "GitHub"
@@ -96,5 +98,3 @@ navbar:
         href: habits.html
       - text: "Going further"
         href: going-further.html
-      - text: "R Linkfest"
-        href: resources.html

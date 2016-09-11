@@ -1,0 +1,11 @@
+<div style= "background-color: #cce6ff; font-style: italic; padding: 10px 10px 10px 10px;">
+This exercise requires having a `web_data` data frame. You can either load up some sample data by completing the [I/O Exercise](exercise2-io.html) (which is what is shown in the step-by-step instructions below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the [Google Analytics API page](api-google-analytics.html).
+
+Once you have a `web_data` data frame to work with, the command `head(web_data)` should return a table that, at least structurally, looks something like this:</div>
+
+```{r echo=FALSE, message = FALSE}
+library(knitr) # used for kable that makes nice RMarkdown tables
+web_data <- read.csv("./data/gadata_example_2.csv", stringsAsFactors = FALSE)
+web_data <- web_data[,-1]
+kable(head(web_data, 3))
+```

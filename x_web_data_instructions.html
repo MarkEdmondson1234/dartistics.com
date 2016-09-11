@@ -11,7 +11,7 @@
 
 
 
-<title>Time Series</title>
+<title></title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -93,6 +93,7 @@ button.code-folding-btn:focus {
   outline: none;
 }
 </style>
+
 
 <style type="text/css">
 /* padding for bootstrap navbar */
@@ -240,6 +241,9 @@ $(document).ready(function () {
     </li>
     <li class="dropdown-header">WORKING WITH APIs</li>
     <li>
+      <a href="analytics-apis.html">Analytics APIs</a>
+    </li>
+    <li>
       <a href="api-google-analytics.html">Google Analytics</a>
     </li>
     <li>
@@ -372,17 +376,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-<h1 class="title toc-ignore">Time Series</h1>
 
 </div>
 
 
-<p>Time-series are a special sub-class of data, referring to when you have some ordered observations over time.</p>
-<p>Time-series are often found when dealing with digital analytics, and R uses a special class to deal with them as they have some unique properties. A guide to general R timeseries is <a href="http://www.statmethods.net/advstats/timeseries.html">here</a> and a list of possible packages to use with time-series is in this <a href="https://cran.r-project.org/web/views/TimeSeries.html">CRAN task view</a>. If you want to get into forecasting then another R New-Zealand hero is Rob Hyndman, who has lots of techniques described on his <a href="http://robjhyndman.com/hyndsight/">blog</a>.</p>
-<p>Time-series are created in base R via the <code>ts()</code> command, which you will typically feed in some numeric data that is assumed to be in order of observation.</p>
-<p>For most purposes you will be starting from a <code>data.frame</code> and need to transform it into a <code>time-series</code> in order for the R functions to work.</p>
-<div id="creating-time-series" class="section level2">
-<h2>Creating time-series</h2>
 <div style="background-color: #cce6ff; font-style: italic; padding: 10px 10px 10px 10px;">
 <p>This exercise requires having a <code>web_data</code> data frame. You can either load up some sample data by completing the <a href="exercise2-io.html">I/O Exercise</a> (which is what is shown in the step-by-step instructions below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the <a href="api-google-analytics.html">Google Analytics API page</a>.</p>
 Once you have a <code>web_data</code> data frame to work with, the command <code>head(web_data)</code> should return a table that, at least structurally, looks something like this:
@@ -429,187 +426,6 @@ Once you have a <code>web_data</code> data frame to work with, the command <code
 </tr>
 </tbody>
 </table>
-<p>We will start by pivoting the data like before:</p>
-<pre class="r"><code>## use tidyverse to pivot the data
-library(dplyr)
-library(tidyr)
-
-## get only desktop rows, and the date, channelGrouping and sessions columns
-pivoted &lt;- web_data %&gt;% 
-  filter(deviceCategory == &quot;desktop&quot;) %&gt;% 
-  select(date, channelGrouping, sessions) %&gt;%
-  spread(channelGrouping, sessions)
-
-## get rid of any NA&#39;s and replace with 0
-pivoted[is.na(pivoted)] &lt;- 0</code></pre>
-<pre class="r"><code>head(pivoted)</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">date</th>
-<th align="right">(Other)</th>
-<th align="right">Direct</th>
-<th align="right">Display</th>
-<th align="right">Email</th>
-<th align="right">Organic Search</th>
-<th align="right">Paid Search</th>
-<th align="right">Referral</th>
-<th align="right">Social</th>
-<th align="right">Video</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">2016-01-01</td>
-<td align="right">19</td>
-<td align="right">133</td>
-<td align="right">307</td>
-<td align="right">17</td>
-<td align="right">431</td>
-<td align="right">555</td>
-<td align="right">131</td>
-<td align="right">68</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">2016-01-02</td>
-<td align="right">156</td>
-<td align="right">1003</td>
-<td align="right">196</td>
-<td align="right">43</td>
-<td align="right">1077</td>
-<td align="right">1060</td>
-<td align="right">226</td>
-<td align="right">158</td>
-<td align="right">3</td>
-</tr>
-<tr class="odd">
-<td align="left">2016-01-03</td>
-<td align="right">35</td>
-<td align="right">1470</td>
-<td align="right">235</td>
-<td align="right">29</td>
-<td align="right">696</td>
-<td align="right">489</td>
-<td align="right">179</td>
-<td align="right">66</td>
-<td align="right">90</td>
-</tr>
-<tr class="even">
-<td align="left">2016-01-04</td>
-<td align="right">31</td>
-<td align="right">1794</td>
-<td align="right">321</td>
-<td align="right">70</td>
-<td align="right">1075</td>
-<td align="right">558</td>
-<td align="right">235</td>
-<td align="right">46</td>
-<td align="right">898</td>
-</tr>
-<tr class="odd">
-<td align="left">2016-01-05</td>
-<td align="right">27</td>
-<td align="right">1899</td>
-<td align="right">309</td>
-<td align="right">74</td>
-<td align="right">1004</td>
-<td align="right">478</td>
-<td align="right">218</td>
-<td align="right">47</td>
-<td align="right">461</td>
-</tr>
-<tr class="even">
-<td align="left">2016-01-06</td>
-<td align="right">21</td>
-<td align="right">1972</td>
-<td align="right">204</td>
-<td align="right">299</td>
-<td align="right">974</td>
-<td align="right">494</td>
-<td align="right">246</td>
-<td align="right">47</td>
-<td align="right">418</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="a-seasonal-time-series" class="section level2">
-<h2>A seasonal time-series</h2>
-<p>For data lengths less than a year, then a weekly seasonality is most likely. Adding this seasonality to your data can be very helpful in creating forecasts as it helps extract a real trend.</p>
-<pre class="r"><code>## make a time-series object
-web_data_ts &lt;- ts(pivoted[-1], frequency = 7)
-
-## time-series are set up to have useful plots
-plot(web_data_ts, axes = FALSE)</code></pre>
-<p><img src="timeseries_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-</div>
-<div id="time-series-appplications" class="section level2">
-<h2>Time-series appplications</h2>
-<div id="decomposition" class="section level3">
-<h3>Decomposition</h3>
-<p>With seasonal data, you can extract the seasonality (weekly in this example) so you can more easily see the overall trend of data:</p>
-<pre class="r"><code>decomp &lt;- decompose(web_data_ts[, &quot;Organic Search&quot;])
-plot(decomp)</code></pre>
-<p><img src="timeseries_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<ul>
-<li><em>Observed</em> - the original data</li>
-<li><em>Trend</em> - the data minus the seasonal</li>
-<li><em>Seasonal</em> - data that fits the specified seasonality (7 days)</li>
-<li><em>Random</em> - everything else left only - useful for anomoloy detection.</li>
-</ul>
-</div>
-<div id="forecasts" class="section level3">
-<h3>Forecasts</h3>
-<p>Forecasting looks at the trend of the data and makes judgements on where the trend will go. A good blog from Hyndman on <a href="http://robjhyndman.com/hyndsight/dailydata/">daily data forecasting</a> is here.</p>
-<p>A couple of example functions:</p>
-<pre class="r"><code>library(forecast)
-## performs decomposition and smoothing
-fit &lt;- ets(web_data_ts[, &quot;Organic Search&quot;])
-## makes the forecast
-fc &lt;- forecast(fit)
-plot(fc)</code></pre>
-<p><img src="timeseries_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p><code>HoltWinters()</code> is a function in base R that also lets you take account of seasonal effects:</p>
-<pre class="r"><code>fit2 &lt;- HoltWinters(web_data_ts[, &quot;Organic Search&quot;])
-## makes the forecast
-fc2 &lt;- forecast(fit2, h = 25)
-plot(fc2)</code></pre>
-<p><img src="timeseries_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-</div>
-</div>
-<div id="converting-to-xts-for-some-packages" class="section level2">
-<h2>Converting to xts for some packages</h2>
-<p>We can only work with numeric data, but we would also like to keep the date information, mainly for labelling purposes. <code>xts</code> lets you create the time-series whilst specifying the date labels like so:</p>
-<pre class="r"><code>library(xts)
-
-## create a time-series zoo object
-web_data_xts &lt;- xts(pivoted[-1], order.by = as.Date(pivoted$date), frequency = 7)</code></pre>
-<p><code>web_data_xts</code> will look similar to when it was a data.frame, but its now in the right class to do some nice related functions.</p>
-</div>
-<div id="causalimpact" class="section level2">
-<h2>CausalImpact</h2>
-<p>A good example of a library that needs <code>xts</code> is <a href="https://google.github.io/CausalImpact/">CausalImpact</a>, which is a fantastic library from Google well suited for digital marketing.</p>
-<p>CausalImpact gives you an estimate on how much effect an event at a certain point of time had on your metrics, in absolute and relative terms. In this case, an event could be a TV campaign starting or changing your Title tags. It also lets you add control segments, so you can adjust for known effects.</p>
-<p>As an example, we assume the observed peak in Social traffic is due to the start of some campaign in May 15th 2016 (in reality you should not cherry pick dates like this!) and we woud like to observe its effect on Video sessions. We also add Direct sessions as a control to help account for general website trends.</p>
-<pre class="r"><code>library(CausalImpact)
-pre.period &lt;- as.Date(c(&quot;2016-02-01&quot;,&quot;2016-05-14&quot;))
-post.period &lt;- as.Date(c(&quot;2016-05-15&quot;,&quot;2016-07-15&quot;))
-
-## data in order of response, predictor1, predictor2, etc.
-model_data &lt;- web_data_xts[,c(&quot;Video&quot;,&quot;Social&quot;,&quot;Direct&quot;)]
-
-
-impact &lt;- CausalImpact(model_data,  pre.period, post.period)
-plot(impact)</code></pre>
-<p><img src="timeseries_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<ul>
-<li><em>original</em> - the original response data, with a forecast (blue) of where it should have been in post event period</li>
-<li><em>pointwise</em> - the difference between the forecast and reality per day</li>
-<li><em>cumulative</em> - the cumuative effect on sessions in the post event period</li>
-</ul>
-<p>CausalImpact is the work-horse behind the <a href="https://gallery.shinyapps.io/ga-effect/">GA Effect app</a>.</p>
-</div>
 
 
 
@@ -622,6 +438,7 @@ plot(impact)</code></pre>
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 

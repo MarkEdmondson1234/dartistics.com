@@ -335,6 +335,9 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="resources.html">Useful Links</a>
+    </li>
+    <li>
       <a href="key-topics.html">Key topics</a>
     </li>
     <li>
@@ -345,9 +348,6 @@ $(document).ready(function () {
     </li>
     <li>
       <a href="going-further.html">Going further</a>
-    </li>
-    <li>
-      <a href="resources.html">R Linkfest</a>
     </li>
   </ul>
 </li>
@@ -395,8 +395,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <div id="performing-correlation-analysis-in-r" class="section level2">
 <h2>Performing correlation analysis in R</h2>
 <p>The base function <code>cor()</code> will perform correlations on a <code>data.frame</code>. Let’s give this a go with some data.</p>
-<p><em>This example requires having a <code>web_data</code> data frame. You can either load up some sample data by completing the <a href="exercise2-io.html">I/O Exercise</a> (which is what is shown in the details below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the <a href="api-google-analytics.html">Google Analytics API page</a>.</em></p>
-<p>Once you’ve got some data loaded up, you should be able to enter <code>head(web_data)</code> and get something that, at least structurally, looks like this:</p>
+<div style="background-color: #cce6ff; font-style: italic; padding: 10px 10px 10px 10px;">
+<p>This exercise requires having a <code>web_data</code> data frame. You can either load up some sample data by completing the <a href="exercise2-io.html">I/O Exercise</a> (which is what is shown in the step-by-step instructions below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the <a href="api-google-analytics.html">Google Analytics API page</a>.</p>
+Once you have a <code>web_data</code> data frame to work with, the command <code>head(web_data)</code> should return a table that, at least structurally, looks something like this:
+</div>
 <table>
 <thead>
 <tr class="header">
@@ -436,33 +438,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <td align="right">41</td>
 <td align="right">24</td>
 <td align="right">19</td>
-</tr>
-<tr class="even">
-<td align="left">2016-01-01</td>
-<td align="left">Direct</td>
-<td align="left">desktop</td>
-<td align="right">133</td>
-<td align="right">423</td>
-<td align="right">133</td>
-<td align="right">61</td>
-</tr>
-<tr class="odd">
-<td align="left">2016-01-01</td>
-<td align="left">Direct</td>
-<td align="left">mobile</td>
-<td align="right">345</td>
-<td align="right">878</td>
-<td align="right">344</td>
-<td align="right">172</td>
-</tr>
-<tr class="even">
-<td align="left">2016-01-01</td>
-<td align="left">Direct</td>
-<td align="left">tablet</td>
-<td align="right">126</td>
-<td align="right">237</td>
-<td align="right">126</td>
-<td align="right">77</td>
 </tr>
 </tbody>
 </table>

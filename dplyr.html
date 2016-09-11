@@ -14,14 +14,14 @@
 <title>dplyr()</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -96,6 +96,7 @@ button.code-folding-btn:focus {
   outline: none;
 }
 </style>
+
 
 <style type="text/css">
 /* padding for bootstrap navbar */
@@ -432,6 +433,9 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="resources.html">Useful Links</a>
+    </li>
+    <li>
       <a href="key-topics.html">Key topics</a>
     </li>
     <li>
@@ -442,9 +446,6 @@ div.tocify {
     </li>
     <li>
       <a href="going-further.html">Going further</a>
-    </li>
-    <li>
-      <a href="resources.html">R Linkfest</a>
     </li>
   </ul>
 </li>
@@ -503,8 +504,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 <div id="an-example-to-illustrate" class="section level2">
 <h2>An Example to Illustrate</h2>
-<p>Let’s consider our web analytics data (<code>webData</code>) that has sessions by date, device category, and channel:</p>
-<pre class="r"><code>head(webData)</code></pre>
+<p>Let’s consider our web analytics data (<code>web_data</code>) that has sessions by date, device category, and channel:</p>
+<pre class="r"><code>head(web_data)</code></pre>
 <pre><code>##         Date  Device Channel Sessions
 ## 1 2016-01-01 desktop (Other)       19
 ## 2 2016-01-01  mobile (Other)      112
@@ -517,7 +518,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h3>Option 1: LONG Form</h3>
 <p>First, the longest way to do this (but, really, okay when you’re starting out – it works!):</p>
 <pre class="r"><code># Get the subset of data that is display traffic
-display_traffic &lt;- webData[webData$Channel == &quot;Display&quot;,]
+display_traffic &lt;- web_data[web_data$Channel == &quot;Display&quot;,]
 
 # Get the subset of *that* traffic that is mobile
 mobile_display &lt;- display_traffic[display_traffic$Device == &quot;mobile&quot;,]
@@ -536,8 +537,8 @@ round(avg,0)</code></pre>
 <h3>Option 2: Short(er)</h3>
 <p>Option 1 was an extreme. So, we may realize that we can combine a bunch of the subsetting operations into a single command:</p>
 <pre class="r"><code># Subset the data in one fell swoop
-final_data &lt;- webData[(webData$Channel == &quot;Display&quot; &amp; webData$Device == &quot;mobile&quot; 
-                       &amp; webData$Sessions &gt; 2000),]
+final_data &lt;- web_data[(web_data$Channel == &quot;Display&quot; &amp; web_data$Device == &quot;mobile&quot; 
+                       &amp; web_data$Sessions &gt; 2000),]
 
 # Calculate, round, and print all at once
 round(mean(final_data$Sessions),0)</code></pre>
@@ -546,8 +547,8 @@ round(mean(final_data$Sessions),0)</code></pre>
 <div id="option-3-excel-like" class="section level3">
 <h3>Option 3: Excel-Like</h3>
 <p>We <em>could</em> get this all down to a single line (although we need line breaks to control the wrapping):</p>
-<pre class="r"><code>round(mean(webData[(webData$Channel == &quot;Display&quot; &amp; webData$Device == &quot;mobile&quot; 
-                       &amp; webData$Sessions &gt; 2000),]$Sessions),0)</code></pre>
+<pre class="r"><code>round(mean(web_data[(web_data$Channel == &quot;Display&quot; &amp; web_data$Device == &quot;mobile&quot; 
+                       &amp; web_data$Sessions &gt; 2000),]$Sessions),0)</code></pre>
 <pre><code>## [1] 3273</code></pre>
 <p>Does this start to remind you of something in Excel? <strong>The dreaded heavy nesting of functions!</strong></p>
 </div>
@@ -557,7 +558,7 @@ round(mean(final_data$Sessions),0)</code></pre>
 <pre class="r"><code># We&#39;ll start to need the dplyr library
 library(dplyr)
 
-webData %&gt;% filter(Channel == &quot;Display&quot;,
+web_data %&gt;% filter(Channel == &quot;Display&quot;,
                    Device == &quot;mobile&quot;,
                    Sessions &gt; 2000) %&gt;%
   summarise(mean(Sessions)) %&gt;%
@@ -572,7 +573,7 @@ webData %&gt;% filter(Channel == &quot;Display&quot;,
 <pre class="r"><code># We&#39;ll start to need the dplyr library
 library(dplyr)
 
-webData %&gt;% filter(.,Channel == &quot;Display&quot;,
+web_data %&gt;% filter(.,Channel == &quot;Display&quot;,
                    Device == &quot;mobile&quot;,
                    Sessions &gt; 2000) %&gt;%
   summarise(.,mean(Sessions)) %&gt;%
@@ -596,6 +597,7 @@ webData %&gt;% filter(.,Channel == &quot;Display&quot;,
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 
