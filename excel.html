@@ -337,9 +337,6 @@ div.tocify {
     </li>
     <li class="dropdown-header">WORKING WITH APIs</li>
     <li>
-      <a href="analytics-apis.html">Analytics APIs</a>
-    </li>
-    <li>
       <a href="api-google-analytics.html">Google Analytics</a>
     </li>
     <li>
@@ -492,13 +489,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h3>.csv</h3>
 <p>The nice thing about <code>.csv</code> files is that they tend to be pretty clean. There are two main functions that are part of <code>utils</code> package (which is loaded by many, many other packages) that can be used to read CSV files into a data frame:</p>
 <ul>
-<li><code>read.csv()</code> – the simplest form of this function is <code>read.csv(&quot;filename&quot;)</code>. This assumes the first row in the file is a header.</li>
+<li><code>read.csv()</code> – the simplest form of this function is <code>read.csv(&quot;filename.csv&quot;)</code>. This assumes the first row in the file is a header.</li>
 <li><code>read.csv2()</code> – this is identically structured as <code>read.csv()</code>, but is built for use in countries where the comma is used as a decimal point and a semicolon is used as a field separator.</li>
 </ul>
 </div>
 <div id="clean-.xlsx" class="section level3">
 <h3>(Clean) .xlsx</h3>
 <p>A “clean” <code>.xlsx</code> file is one where the data is in a fairly raw form – it’s not, for instance, a dashboard with multiple tables arranged within the workbook. There are many options for bringing this sort of data in:</p>
+<ul>
+<li>In RStudio when you select Import Dataset you can select Excel as one of the options. This may prompt you to load <code>readxl</code>:</li>
+</ul>
+<div class="figure">
+<img src="images/fromexcel.png" />
+
+</div>
 <ul>
 <li>The <code>xlsx</code> package has <code>read.xlsx()</code> and <code>read.xlsx2()</code> functions for specifying the workbook and the sheet to bring data in from.</li>
 <li>The <code>gdata</code> package has a <code>read.xls()</code> function that works very similarly to the <code>xlsx</code> package</li>

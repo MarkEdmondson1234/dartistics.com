@@ -23,11 +23,15 @@ In general, it is easier to work with comma-delimited text files (`.csv`) than w
 ### .csv
 The nice thing about `.csv` files is that they tend to be pretty clean. There are two main functions that are part of `utils` package (which is loaded by many, many other packages) that can be used to read CSV files into a data frame:
 
-* `read.csv()` -- the simplest form of this function is `read.csv("filename")`. This assumes the first row in the file is a header.
+* `read.csv()` -- the simplest form of this function is `read.csv("filename.csv")`. This assumes the first row in the file is a header.
 * `read.csv2()` -- this is identically structured as `read.csv()`, but is built for use in countries where the comma is used as a decimal point and a semicolon is used as a field separator.
 
 ### (Clean) .xlsx
 A "clean" `.xlsx` file is one where the data is in a fairly raw form -- it's not, for instance, a dashboard with multiple tables arranged within the workbook. There are many options for bringing this sort of data in:
+
+* In RStudio when you select Import Dataset you can select Excel as one of the options.  This may prompt you to load `readxl`:
+
+![](images/fromexcel.png)
 
 * The `xlsx` package has `read.xlsx()` and `read.xlsx2()` functions for specifying the workbook and the sheet to bring data in from.
 * The `gdata` package has a `read.xls()` function that works very similarly to the `xlsx` package

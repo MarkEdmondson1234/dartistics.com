@@ -40,8 +40,6 @@ navbar:
       - text: "Exercise: I/O"
         href: exercise2-io.html
       - text: "WORKING WITH APIs"
-      - text: "Analytics APIs"
-        href: analytics-apis.html
       - text: "Google Analytics"
         href: api-google-analytics.html
       - text: "Adobe Analytics"
