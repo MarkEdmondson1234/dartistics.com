@@ -436,6 +436,9 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="resources.html">Useful Links</a>
+    </li>
+    <li>
       <a href="key-topics.html">Key topics</a>
     </li>
     <li>
@@ -446,9 +449,6 @@ div.tocify {
     </li>
     <li>
       <a href="going-further.html">Going further</a>
-    </li>
-    <li>
-      <a href="resources.html">R Linkfest</a>
     </li>
   </ul>
 </li>
@@ -478,7 +478,52 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 
 
-<p><em>This exercise requires having a <code>web_data</code> data frame. You can either load up some sample data by completing the <a href="exercise2-io.html">I/O Exercise</a> (which is what is shown in the step-by-step instructions below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the <a href="api-google-analytics.html">Google Analytics API page</a>.</em></p>
+<div style="background-color: #cce6ff; font-style: italic; padding: 10px 10px 10px 10px;">
+<p>This exercise requires having a <code>web_data</code> data frame. You can either load up some sample data by completing the <a href="exercise2-io.html">I/O Exercise</a> (which is what is shown in the step-by-step instructions below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the <a href="api-google-analytics.html">Google Analytics API page</a>.</p>
+Once you have a <code>web_data</code> data frame to work with, the command <code>head(web_data)</code> should return a table that, at least structurally, looks something like this:
+</div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">date</th>
+<th align="left">channelGrouping</th>
+<th align="left">deviceCategory</th>
+<th align="right">sessions</th>
+<th align="right">pageviews</th>
+<th align="right">entrances</th>
+<th align="right">bounces</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">(Other)</td>
+<td align="left">desktop</td>
+<td align="right">19</td>
+<td align="right">23</td>
+<td align="right">19</td>
+<td align="right">15</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">(Other)</td>
+<td align="left">mobile</td>
+<td align="right">112</td>
+<td align="right">162</td>
+<td align="right">112</td>
+<td align="right">82</td>
+</tr>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">(Other)</td>
+<td align="left">tablet</td>
+<td align="right">24</td>
+<td align="right">41</td>
+<td align="right">24</td>
+<td align="right">19</td>
+</tr>
+</tbody>
+</table>
 <p>The step-by-step instructions for each of the components of this exercised are below. But, what we want to do is:</p>
 <ol style="list-style-type: decimal">
 <li>Inspect the entire data set:</li>
@@ -521,13 +566,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <pre class="r"><code>web_data</code></pre>
 <p>Whoa! We’re not showing the results of that here, as it’s 10,000 rows of material quickly flashing past your eyes. But, often, we just want to get a basic sense of the data structure, so just viewing the first few rows of the data will suffice. We can do that with the <code>head()</code> function (remember: <code>?head()</code> will give you documentation on the function):</p>
 <pre class="r"><code>head(web_data)</code></pre>
-<pre><code>##   X       date channelGrouping deviceCategory sessions pageviews entrances
-## 1 1 2016-01-01         (Other)        desktop       19        23        19
-## 2 2 2016-01-01         (Other)         mobile      112       162       112
-## 3 3 2016-01-01         (Other)         tablet       24        41        24
-## 4 4 2016-01-01          Direct        desktop      133       423       133
-## 5 5 2016-01-01          Direct         mobile      345       878       344
-## 6 6 2016-01-01          Direct         tablet      126       237       126
+<pre><code>##         date channelGrouping deviceCategory sessions pageviews entrances
+## 1 2016-01-01         (Other)        desktop       19        23        19
+## 2 2016-01-01         (Other)         mobile      112       162       112
+## 3 2016-01-01         (Other)         tablet       24        41        24
+## 4 2016-01-01          Direct        desktop      133       423       133
+## 5 2016-01-01          Direct         mobile      345       878       344
+## 6 2016-01-01          Direct         tablet      126       237       126
 ##   bounces
 ## 1      15
 ## 2      82
@@ -541,25 +586,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h2>2. Use Row/Column Indices</h2>
 <p>Let’s look at a single value from this data set: the value in the second row and the fifth column:</p>
 <pre class="r"><code>web_data[2,5]</code></pre>
-<pre><code>## [1] 112</code></pre>
+<pre><code>## [1] 162</code></pre>
 <p>Find this value in the data frame that you opened up from the environment (or just find it in the <code>head()</code> data you pulled above). Make sense?</p>
 <p>Now, let’s look at the <em>entire</em> second row.</p>
 <pre class="r"><code>web_data[2,]</code></pre>
-<pre><code>##   X       date channelGrouping deviceCategory sessions pageviews entrances
-## 2 2 2016-01-01         (Other)         mobile      112       162       112
+<pre><code>##         date channelGrouping deviceCategory sessions pageviews entrances
+## 2 2016-01-01         (Other)         mobile      112       162       112
 ##   bounces
 ## 2      82</code></pre>
 <p>Or, we could look at the entire 5th column (not shown here, but feel free to give it a try):</p>
 <pre class="r"><code>web_data[,5]</code></pre>
 <p>We can also look at ranges using these indices. To mimic <code>head(web_data)</code>, we can simply specify we want to see all columns for the first six rows of the data:</p>
 <pre class="r"><code>web_data[1:6,]</code></pre>
-<pre><code>##   X       date channelGrouping deviceCategory sessions pageviews entrances
-## 1 1 2016-01-01         (Other)        desktop       19        23        19
-## 2 2 2016-01-01         (Other)         mobile      112       162       112
-## 3 3 2016-01-01         (Other)         tablet       24        41        24
-## 4 4 2016-01-01          Direct        desktop      133       423       133
-## 5 5 2016-01-01          Direct         mobile      345       878       344
-## 6 6 2016-01-01          Direct         tablet      126       237       126
+<pre><code>##         date channelGrouping deviceCategory sessions pageviews entrances
+## 1 2016-01-01         (Other)        desktop       19        23        19
+## 2 2016-01-01         (Other)         mobile      112       162       112
+## 3 2016-01-01         (Other)         tablet       24        41        24
+## 4 2016-01-01          Direct        desktop      133       423       133
+## 5 2016-01-01          Direct         mobile      345       878       344
+## 6 2016-01-01          Direct         tablet      126       237       126
 ##   bounces
 ## 1      15
 ## 2      82
@@ -569,13 +614,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 ## 6      77</code></pre>
 <p>Or, if we wanted to look at just the second through fifth columns for the first six rows of data:</p>
 <pre class="r"><code>web_data[1:6,2:5]</code></pre>
-<pre><code>##         date channelGrouping deviceCategory sessions
-## 1 2016-01-01         (Other)        desktop       19
-## 2 2016-01-01         (Other)         mobile      112
-## 3 2016-01-01         (Other)         tablet       24
-## 4 2016-01-01          Direct        desktop      133
-## 5 2016-01-01          Direct         mobile      345
-## 6 2016-01-01          Direct         tablet      126</code></pre>
+<pre><code>##   channelGrouping deviceCategory sessions pageviews
+## 1         (Other)        desktop       19        23
+## 2         (Other)         mobile      112       162
+## 3         (Other)         tablet       24        41
+## 4          Direct        desktop      133       423
+## 5          Direct         mobile      345       878
+## 6          Direct         tablet      126       237</code></pre>
 </div>
 <div id="use-column-names" class="section level2">
 <h2>3. Use Column Names</h2>
@@ -594,25 +639,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>Double-click on the <strong>mobile_data* object in your </strong>Environment** to check out this data. (Or, perhaps, view the <code>head()</code> of this new object in your console!)</p>
 <p>What if we wanted to quickly get a list of dates and channels where the channel’s sessions for the day were greater than 2.000 (or 2,000, depending on which continent you are on)? We can perform this on our new <code>mobile_data</code> object:</p>
 <pre class="r"><code>mobile_data[mobile_data$sessions&gt;2000,]</code></pre>
-<pre><code>##         X       date channelGrouping deviceCategory sessions pageviews
-## 8       8 2016-01-01         Display         mobile     3266      3772
-## 33     33 2016-01-02         Display         mobile     2375      2745
-## 42     42 2016-01-02     Paid Search         mobile     2270      4405
-## 59     59 2016-01-03         Display         mobile     2377      2697
-## 86     86 2016-01-04         Display         mobile     2535      2821
-## 113   113 2016-01-05         Display         mobile     2067      2386
-## 1200 1200 2016-02-14     Paid Search         mobile     2225      4361
-## 1227 1227 2016-02-15     Paid Search         mobile    10216     15883
-## 1242 1242 2016-02-16          Direct         mobile     2352     13527
-## 1251 1251 2016-02-16  Organic Search         mobile     3063     17671
-## 1254 1254 2016-02-16     Paid Search         mobile     7151     12634
-## 1281 1281 2016-02-17     Paid Search         mobile     3039      5357
-## 3471 3471 2016-05-09          Direct         mobile     2694     17043
-## 3582 3582 2016-05-13         Display         mobile     7955     13157
-## 3608 3608 2016-05-14         Display         mobile     3151      4462
-## 3635 3635 2016-05-15         Display         mobile     2459      3257
-## 4540 4540 2016-06-17          Social         mobile     2088      2769
-## 4567 4567 2016-06-18          Social         mobile     2112      3243
+<pre><code>##            date channelGrouping deviceCategory sessions pageviews
+## 8    2016-01-01         Display         mobile     3266      3772
+## 33   2016-01-02         Display         mobile     2375      2745
+## 42   2016-01-02     Paid Search         mobile     2270      4405
+## 59   2016-01-03         Display         mobile     2377      2697
+## 86   2016-01-04         Display         mobile     2535      2821
+## 113  2016-01-05         Display         mobile     2067      2386
+## 1200 2016-02-14     Paid Search         mobile     2225      4361
+## 1227 2016-02-15     Paid Search         mobile    10216     15883
+## 1242 2016-02-16          Direct         mobile     2352     13527
+## 1251 2016-02-16  Organic Search         mobile     3063     17671
+## 1254 2016-02-16     Paid Search         mobile     7151     12634
+## 1281 2016-02-17     Paid Search         mobile     3039      5357
+## 3471 2016-05-09          Direct         mobile     2694     17043
+## 3582 2016-05-13         Display         mobile     7955     13157
+## 3608 2016-05-14         Display         mobile     3151      4462
+## 3635 2016-05-15         Display         mobile     2459      3257
+## 4540 2016-06-17          Social         mobile     2088      2769
+## 4567 2016-06-18          Social         mobile     2112      3243
 ##      entrances bounces
 ## 8         3253    2904
 ## 33        2366    2118
@@ -634,25 +679,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 ## 4567      2098    1720</code></pre>
 <p>Could we have gotten this same result from our base <code>web_data</code> data set? We could – by combining criteria:</p>
 <pre class="r"><code>web_data[(web_data$sessions&gt;2000 &amp; web_data$deviceCategory==&quot;mobile&quot;),]</code></pre>
-<pre><code>##         X       date channelGrouping deviceCategory sessions pageviews
-## 8       8 2016-01-01         Display         mobile     3266      3772
-## 33     33 2016-01-02         Display         mobile     2375      2745
-## 42     42 2016-01-02     Paid Search         mobile     2270      4405
-## 59     59 2016-01-03         Display         mobile     2377      2697
-## 86     86 2016-01-04         Display         mobile     2535      2821
-## 113   113 2016-01-05         Display         mobile     2067      2386
-## 1200 1200 2016-02-14     Paid Search         mobile     2225      4361
-## 1227 1227 2016-02-15     Paid Search         mobile    10216     15883
-## 1242 1242 2016-02-16          Direct         mobile     2352     13527
-## 1251 1251 2016-02-16  Organic Search         mobile     3063     17671
-## 1254 1254 2016-02-16     Paid Search         mobile     7151     12634
-## 1281 1281 2016-02-17     Paid Search         mobile     3039      5357
-## 3471 3471 2016-05-09          Direct         mobile     2694     17043
-## 3582 3582 2016-05-13         Display         mobile     7955     13157
-## 3608 3608 2016-05-14         Display         mobile     3151      4462
-## 3635 3635 2016-05-15         Display         mobile     2459      3257
-## 4540 4540 2016-06-17          Social         mobile     2088      2769
-## 4567 4567 2016-06-18          Social         mobile     2112      3243
+<pre><code>##            date channelGrouping deviceCategory sessions pageviews
+## 8    2016-01-01         Display         mobile     3266      3772
+## 33   2016-01-02         Display         mobile     2375      2745
+## 42   2016-01-02     Paid Search         mobile     2270      4405
+## 59   2016-01-03         Display         mobile     2377      2697
+## 86   2016-01-04         Display         mobile     2535      2821
+## 113  2016-01-05         Display         mobile     2067      2386
+## 1200 2016-02-14     Paid Search         mobile     2225      4361
+## 1227 2016-02-15     Paid Search         mobile    10216     15883
+## 1242 2016-02-16          Direct         mobile     2352     13527
+## 1251 2016-02-16  Organic Search         mobile     3063     17671
+## 1254 2016-02-16     Paid Search         mobile     7151     12634
+## 1281 2016-02-17     Paid Search         mobile     3039      5357
+## 3471 2016-05-09          Direct         mobile     2694     17043
+## 3582 2016-05-13         Display         mobile     7955     13157
+## 3608 2016-05-14         Display         mobile     3151      4462
+## 3635 2016-05-15         Display         mobile     2459      3257
+## 4540 2016-06-17          Social         mobile     2088      2769
+## 4567 2016-06-18          Social         mobile     2112      3243
 ##      entrances bounces
 ## 8         3253    2904
 ## 33        2366    2118

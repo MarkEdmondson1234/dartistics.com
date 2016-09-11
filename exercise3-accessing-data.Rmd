@@ -7,12 +7,9 @@ output:
 
 ---
 
-```{r exercise3, echo=FALSE}
-# We need to load the file behind the scenes to work with it.
-web_data <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE)
+```{r child = 'x_web_data_instructions.Rmd'}
+# This simply loads a standard snippet about where to go to get 'web_data' created
 ```
-
-_This exercise requires having a `web_data` data frame. You can either load up some sample data by completing the [I/O Exercise](exercise2-io.html) (which is what is shown in the step-by-step instructions below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the [Google Analytics API page](api-google-analytics.html)._
 
 The step-by-step instructions for each of the components of this exercised are below. But, what we want to do is:
 

@@ -16,17 +16,8 @@ For most purposes you will be starting from a `data.frame` and need to transform
 
 ## Creating time-series
 
-_This example requires having a `web_data` data frame. You can either load up some sample data by completing the [I/O Exercise](exercise2-io.html) (which is what is shown in the details below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the [Google Analytics API page](api-google-analytics.html)._
-
-```{r categorisation, echo=FALSE}
-library(knitr) # used for kable that makes nice RMarkdown tables
-web_data <- read.csv("./data/gadata_example_2.csv", stringsAsFactors = FALSE)
-```
-
-Once you have a `web_data` data frame to work with, the command `head(web_data` should return a table that, at least structurally, looks something like this:
-
-```{r}
-kable(head(web_data))
+```{r child = 'x_web_data_instructions.Rmd'}
+# Instrucions for getting 'web_data' created, as well as loads up 'web_data'
 ```
 
 We will start by pivoting the data like before:

@@ -42,16 +42,16 @@ The second bullet above is confusing...so just file it away. You'll know it when
 
 ## An Example to Illustrate
 
-Let's consider our web analytics data (`webData`) that has sessions by date, device category, and channel:
+Let's consider our web analytics data (`web_data`) that has sessions by date, device category, and channel:
 
 ```{r dplyr, echo=FALSE}
-webData <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE)
-webData <- webData[,c("date","deviceCategory","channelGrouping","sessions")]
-colnames(webData) <- c("Date","Device","Channel","Sessions")
+web_data <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE)
+web_data <- web_data[,c("date","deviceCategory","channelGrouping","sessions")]
+colnames(web_data) <- c("Date","Device","Channel","Sessions")
 ```
 
 ```{r}
-head(webData)
+head(web_data)
 ```
 
 Now, suppose we want to find the _average_ number of sessions for **Display** traffic _when_ the **Display** traffic from mobile for the day was greater than 2 000 sessions.
@@ -61,7 +61,7 @@ First, the longest way to do this (but, really, okay when you're starting out --
 
 ```{r}
 # Get the subset of data that is display traffic
-display_traffic <- webData[webData$Channel == "Display",]
+display_traffic <- web_data[web_data$Channel == "Display",]
 
 # Get the subset of *that* traffic that is mobile
 mobile_display <- display_traffic[display_traffic$Device == "mobile",]
@@ -81,8 +81,8 @@ round(avg,0)
 Option 1 was an extreme. So, we may realize that we can combine a bunch of the subsetting operations into a single command:
 ```{r}
 # Subset the data in one fell swoop
-final_data <- webData[(webData$Channel == "Display" & webData$Device == "mobile" 
-                       & webData$Sessions > 2000),]
+final_data <- web_data[(web_data$Channel == "Display" & web_data$Device == "mobile" 
+                       & web_data$Sessions > 2000),]
 
 # Calculate, round, and print all at once
 round(mean(final_data$Sessions),0)
@@ -91,8 +91,8 @@ round(mean(final_data$Sessions),0)
 ### Option 3: Excel-Like
 We _could_ get this all down to a single line (although we need line breaks to control the wrapping):
 ```{r}
-round(mean(webData[(webData$Channel == "Display" & webData$Device == "mobile" 
-                       & webData$Sessions > 2000),]$Sessions),0)
+round(mean(web_data[(web_data$Channel == "Display" & web_data$Device == "mobile" 
+                       & web_data$Sessions > 2000),]$Sessions),0)
 
 ```
 Does this start to remind you of something in Excel? **The dreaded heavy nesting of functions!**
@@ -104,7 +104,7 @@ With the pipe and some `dplyr` functions, we can perform these operations in a w
 # We'll start to need the dplyr library
 library(dplyr)
 
-webData %>% filter(Channel == "Display",
+web_data %>% filter(Channel == "Display",
                    Device == "mobile",
                    Sessions > 2000) %>%
   summarise(mean(Sessions)) %>%
@@ -129,7 +129,7 @@ But, in our example above, we simply used `round(0)`. That's because the first a
 # We'll start to need the dplyr library
 library(dplyr)
 
-webData %>% filter(.,Channel == "Display",
+web_data %>% filter(.,Channel == "Display",
                    Device == "mobile",
                    Sessions > 2000) %>%
   summarise(.,mean(Sessions)) %>%

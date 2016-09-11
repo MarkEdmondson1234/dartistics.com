@@ -436,6 +436,9 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="resources.html">Useful Links</a>
+    </li>
+    <li>
       <a href="key-topics.html">Key topics</a>
     </li>
     <li>
@@ -446,9 +449,6 @@ div.tocify {
     </li>
     <li>
       <a href="going-further.html">Going further</a>
-    </li>
-    <li>
-      <a href="resources.html">R Linkfest</a>
     </li>
   </ul>
 </li>
@@ -478,7 +478,52 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 
 
-<p><em>This exercise requires having a <code>web_data</code> data frame. You can either load up some sample data by completing the <a href="exercise2-io.html">I/O Exercise</a> (which is what is shown in the step-by-step instructions below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the <a href="api-google-analytics.html">Google Analytics API page</a>.</em></p>
+<div style="background-color: #cce6ff; font-style: italic; padding: 10px 10px 10px 10px;">
+<p>This exercise requires having a <code>web_data</code> data frame. You can either load up some sample data by completing the <a href="exercise2-io.html">I/O Exercise</a> (which is what is shown in the step-by-step instructions below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the <a href="api-google-analytics.html">Google Analytics API page</a>.</p>
+Once you have a <code>web_data</code> data frame to work with, the command <code>head(web_data)</code> should return a table that, at least structurally, looks something like this:
+</div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">date</th>
+<th align="left">channelGrouping</th>
+<th align="left">deviceCategory</th>
+<th align="right">sessions</th>
+<th align="right">pageviews</th>
+<th align="right">entrances</th>
+<th align="right">bounces</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">(Other)</td>
+<td align="left">desktop</td>
+<td align="right">19</td>
+<td align="right">23</td>
+<td align="right">19</td>
+<td align="right">15</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">(Other)</td>
+<td align="left">mobile</td>
+<td align="right">112</td>
+<td align="right">162</td>
+<td align="right">112</td>
+<td align="right">82</td>
+</tr>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">(Other)</td>
+<td align="left">tablet</td>
+<td align="right">24</td>
+<td align="right">41</td>
+<td align="right">24</td>
+<td align="right">19</td>
+</tr>
+</tbody>
+</table>
 <p>Our <code>web_data</code> data is <em>already</em> in a tidy format. When data is <em>not</em> in a tidy format when you get it, the <code>tidyr</code> package has functions to help make it that way. Some day, perhaps we’ll have an exercise to do this!</p>
 <p>For this exercise, complete the following tasks with <code>web_data</code>:</p>
 <ol style="list-style-type: decimal">
@@ -497,18 +542,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <pre><code>## Source: local data frame [27 x 3]
 ## Groups: deviceCategory [?]
 ## 
-##    deviceCategory channelGrouping `mean(pageviews)`
-##             &lt;chr&gt;           &lt;chr&gt;             &lt;dbl&gt;
-## 1         desktop         (Other)          108.4413
-## 2         desktop          Direct         2220.2394
-## 3         desktop         Display          576.0329
-## 4         desktop           Email          246.8169
-## 5         desktop  Organic Search         2902.8826
-## 6         desktop     Paid Search         1927.7136
-## 7         desktop        Referral         1401.0094
-## 8         desktop          Social          368.0798
-## 9         desktop           Video          584.2358
-## 10         mobile         (Other)          193.7981
+##    deviceCategory channelGrouping mean(pageviews)
+##             &lt;chr&gt;           &lt;chr&gt;           &lt;dbl&gt;
+## 1         desktop         (Other)        108.4413
+## 2         desktop          Direct       2220.2394
+## 3         desktop         Display        576.0329
+## 4         desktop           Email        246.8169
+## 5         desktop  Organic Search       2902.8826
+## 6         desktop     Paid Search       1927.7136
+## 7         desktop        Referral       1401.0094
+## 8         desktop          Social        368.0798
+## 9         desktop           Video        584.2358
+## 10         mobile         (Other)        193.7981
 ## # ... with 17 more rows</code></pre>
 <p>This function uses the <code>group_by</code> function to take the data set (<code>web_data</code>) and specify that it should be grouped together by two fields: <strong>deviceCategory</strong> and <strong>channelGrouping</strong>. That, in and of itself, isn’t enough. If we’re going to group by those, then we need to also specify how we want to handle the multiple rows that get collapsed with that grouping.</p>
 <p>For that, we put the <code>group_by()</code> function inside a <code>summarise()</code> function and tell the <code>summarise()</code> function that we want to include <strong>pageviews</strong> as a metric, and we want to collapse the grouped rows by averaging (<code>mean()</code>) <strong>pageviews</strong>.</p>
@@ -517,18 +562,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <pre><code>## Source: local data frame [27 x 4]
 ## Groups: deviceCategory [?]
 ## 
-##    deviceCategory channelGrouping `mean(pageviews)` `sum(sessions)`
-##             &lt;chr&gt;           &lt;chr&gt;             &lt;dbl&gt;           &lt;int&gt;
-## 1         desktop         (Other)          108.4413           10820
-## 2         desktop          Direct         2220.2394          297580
-## 3         desktop         Display          576.0329           88688
-## 4         desktop           Email          246.8169           22350
-## 5         desktop  Organic Search         2902.8826          156144
-## 6         desktop     Paid Search         1927.7136          154535
-## 7         desktop        Referral         1401.0094           75253
-## 8         desktop          Social          368.0798           22434
-## 9         desktop           Video          584.2358           92885
-## 10         mobile         (Other)          193.7981           29115
+##    deviceCategory channelGrouping mean(pageviews) sum(sessions)
+##             &lt;chr&gt;           &lt;chr&gt;           &lt;dbl&gt;         &lt;int&gt;
+## 1         desktop         (Other)        108.4413         10820
+## 2         desktop          Direct       2220.2394        297580
+## 3         desktop         Display        576.0329         88688
+## 4         desktop           Email        246.8169         22350
+## 5         desktop  Organic Search       2902.8826        156144
+## 6         desktop     Paid Search       1927.7136        154535
+## 7         desktop        Referral       1401.0094         75253
+## 8         desktop          Social        368.0798         22434
+## 9         desktop           Video        584.2358         92885
+## 10         mobile         (Other)        193.7981         29115
 ## # ... with 17 more rows</code></pre>
 </div>
 <div id="add-two-columns" class="section level2">
@@ -552,19 +597,19 @@ head(web_data[c(&quot;date&quot;,&quot;channelGrouping&quot;,&quot;deviceCategor
 <h2>3. Bounce Rate</h2>
 <p>This is a little bit of a trick question. Since we’ve already calculated the bounce rate and added that as a new column in our <strong>web_data</strong> data frame, we may be tempted to simply average those values:</p>
 <pre class="r"><code>summarise(group_by(web_data,deviceCategory), mean(bounce_rate))</code></pre>
-<pre><code>## # A tibble: 3 × 2
-##   deviceCategory `mean(bounce_rate)`
-##            &lt;chr&gt;               &lt;dbl&gt;
-## 1        desktop           0.5614256
-## 2         mobile           0.6041581
-## 3         tablet           0.5981690</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##   deviceCategory mean(bounce_rate)
+##            &lt;chr&gt;             &lt;dbl&gt;
+## 1        desktop         0.5614256
+## 2         mobile         0.6041581
+## 3         tablet         0.5981690</code></pre>
 <p>This would be incorrect, though, wouldn’t it? This would be the <em>daily average bounce rate</em>, but we want just the <em>average bounce rate</em>. Note that <em>R is not going to point this out. We still have to use our analytical brains</em>.</p>
 <p>What we need to do is to <em>first</em> summarise the data and sum the metrics we need to use for the bounce rate calculation and <em>then</em> perform the bounce rate calculation. This is where the pipe really starts to come in handy for code readability:</p>
 <pre class="r"><code>summarise(group_by(web_data,deviceCategory), 
           entrances = sum(entrances), 
           bounces = sum(bounces)) %&gt;%
   mutate(bounce_rate = bounces / entrances)</code></pre>
-<pre><code>## # A tibble: 3 × 4
+<pre><code>## # A tibble: 3 x 4
 ##   deviceCategory entrances bounces bounce_rate
 ##            &lt;chr&gt;     &lt;int&gt;   &lt;int&gt;       &lt;dbl&gt;
 ## 1        desktop    914621  565252   0.6180177

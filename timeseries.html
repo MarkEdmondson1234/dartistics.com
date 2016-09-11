@@ -339,6 +339,9 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="resources.html">Useful Links</a>
+    </li>
+    <li>
       <a href="key-topics.html">Key topics</a>
     </li>
     <li>
@@ -349,9 +352,6 @@ $(document).ready(function () {
     </li>
     <li>
       <a href="going-further.html">Going further</a>
-    </li>
-    <li>
-      <a href="resources.html">R Linkfest</a>
     </li>
   </ul>
 </li>
@@ -387,13 +387,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>For most purposes you will be starting from a <code>data.frame</code> and need to transform it into a <code>time-series</code> in order for the R functions to work.</p>
 <div id="creating-time-series" class="section level2">
 <h2>Creating time-series</h2>
-<p><em>This example requires having a <code>web_data</code> data frame. You can either load up some sample data by completing the <a href="exercise2-io.html">I/O Exercise</a> (which is what is shown in the details below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the <a href="api-google-analytics.html">Google Analytics API page</a>.</em></p>
-<p>Once you have a <code>web_data</code> data frame to work with, the command <code>head(web_data</code> should return a table that, at least structurally, looks something like this:</p>
-<pre class="r"><code>kable(head(web_data))</code></pre>
+<div style="background-color: #cce6ff; font-style: italic; padding: 10px 10px 10px 10px;">
+<p>This exercise requires having a <code>web_data</code> data frame. You can either load up some sample data by completing the <a href="exercise2-io.html">I/O Exercise</a> (which is what is shown in the step-by-step instructions below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the <a href="api-google-analytics.html">Google Analytics API page</a>.</p>
+Once you have a <code>web_data</code> data frame to work with, the command <code>head(web_data)</code> should return a table that, at least structurally, looks something like this:
+</div>
 <table>
 <thead>
 <tr class="header">
-<th align="right">X</th>
 <th align="left">date</th>
 <th align="left">channelGrouping</th>
 <th align="left">deviceCategory</th>
@@ -405,7 +405,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">1</td>
 <td align="left">2016-01-01</td>
 <td align="left">(Other)</td>
 <td align="left">desktop</td>
@@ -415,7 +414,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <td align="right">15</td>
 </tr>
 <tr class="even">
-<td align="right">2</td>
 <td align="left">2016-01-01</td>
 <td align="left">(Other)</td>
 <td align="left">mobile</td>
@@ -425,7 +423,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <td align="right">82</td>
 </tr>
 <tr class="odd">
-<td align="right">3</td>
 <td align="left">2016-01-01</td>
 <td align="left">(Other)</td>
 <td align="left">tablet</td>
@@ -433,36 +430,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <td align="right">41</td>
 <td align="right">24</td>
 <td align="right">19</td>
-</tr>
-<tr class="even">
-<td align="right">4</td>
-<td align="left">2016-01-01</td>
-<td align="left">Direct</td>
-<td align="left">desktop</td>
-<td align="right">133</td>
-<td align="right">423</td>
-<td align="right">133</td>
-<td align="right">61</td>
-</tr>
-<tr class="odd">
-<td align="right">5</td>
-<td align="left">2016-01-01</td>
-<td align="left">Direct</td>
-<td align="left">mobile</td>
-<td align="right">345</td>
-<td align="right">878</td>
-<td align="right">344</td>
-<td align="right">172</td>
-</tr>
-<tr class="even">
-<td align="right">6</td>
-<td align="left">2016-01-01</td>
-<td align="left">Direct</td>
-<td align="left">tablet</td>
-<td align="right">126</td>
-<td align="right">237</td>
-<td align="right">126</td>
-<td align="right">77</td>
 </tr>
 </tbody>
 </table>
