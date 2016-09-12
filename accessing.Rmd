@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This chapter looks at how to most easily access your data once they are in R objects.  
 
-Note this uses "Base R" but you may prefer using `dplyr()` when workign with data.frames, which does similar in an (arguably) easier to understand syntax.  
+Note this uses "Base R" but you may prefer using `dplyr()` when working with data.frames, which does similar in an (arguably) easier to understand syntax.  
 
 But, it's worth knowing how to do this without relying on a package if possible.
 
