@@ -3,6 +3,7 @@ output_dir: "."
 output: 
   html_document:
     theme: flatly
+    title-prefix: "Digital Analytics R and Statistics Tutorials"
     includes:
       before_body: includes/analytics.html
 navbar:

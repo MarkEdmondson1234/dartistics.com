@@ -10,7 +10,36 @@ knitr::opts_chunk$set(echo = TRUE)
 
 We first load the libraries we will need later, authenticate with Google, and set the View Id we want to pull data from. 
 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+library(googleAnalyticsR)
+library(knitr)
+
+cache_file <- "./data/example1_gadata.RData"
+
+if(file.exists(cache_file)){
+  ## avoid calling API
+  load(cache_file)
+} else {
+  ## call API, save data in cache
+  ga_auth()
+
+  ## replace with your own Google Analytics View Id
+  view_id <- 81416156
+
+  trend_data <- google_analytics_4(view_id,
+                                 date_range = c(Sys.Date() - 400, Sys.Date()),
+                                 dimensions = c("date"),
+                                 metrics = "sessions",
+                                 pivots = pivot_ga4("medium","sessions"),
+                                 max = -1)
+  save(trend_data, file = "./data/example1_gadata.RData")
+  
+}
+
+
+```
+
+```r
 library(googleAnalyticsR)
 library(knitr)
 ga_auth()
@@ -22,7 +51,7 @@ view_id <- 81416156
 
 This is the actual API call.  We take advantage of Google Analytics v4's pivot function, to do some data transformation for us:
 
-```{r, message=FALSE, warning=FALSE}
+```r
 ## get data, use pivot to get columns of medium sessions
 trend_data <- google_analytics_4(view_id,
                                  date_range = c(Sys.Date() - 400, Sys.Date()),
@@ -32,6 +61,10 @@ trend_data <- google_analytics_4(view_id,
                                  max = -1)
 
 ## Note the medium columns created by the pivot
+head(trend_data)
+```
+
+```{r, echo=FALSE}
 kable(head(trend_data))
 ```
 
