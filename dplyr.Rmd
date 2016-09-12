@@ -8,7 +8,7 @@ output:
 ---
 
 ## dplyr
-The `dplyr()` package is one of those packages that, consistently, newcomers to R do not know about and who then get confused by some (one) aspect of it...but experienced R users seldom right a script without using it.
+The `dplyr()` package is one of those packages that, consistently, newcomers to R do not know about and who then get confused by some (one) aspect of it...but experienced R users seldom write a script without using it.
 
 ## The dplyr Functions
 `dplyr` has just a handful of functions, all of which are geared towards doing basic manipulation of data sets with fairly straightforward functions. We're not going to go into all of the details of using these functions, as there are plenty of write-ups of that (like [this one](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)). But, we will at least provide a brief description of the functions and, at a high level, what they do:

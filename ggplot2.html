@@ -548,18 +548,21 @@ gg + geom_line(aes(colour = channelGrouping))</code></pre>
 <pre class="r"><code>## we have desktop, mobile and tablet all in there, lets seperate them out with facet
 gg + geom_line(aes(colour = channelGrouping)) + facet_grid(. ~ deviceCategory)</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-4-3.png" width="960" /></p>
-<pre class="r"><code>## I prefer it one other the other
+<pre class="r"><code>## I prefer it one over the other
 gg + geom_line(aes(colour = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-4-4.png" width="960" /></p>
 <pre class="r"><code>## lets try an area plot
-gg + geom_area(aes(colour = channelGrouping, group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
+gg + geom_area(aes(colour = channelGrouping, group = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-4-5.png" width="960" /></p>
+<pre class="r"><code>## ahh, area plots colour by scale &#39;fill&#39; rather than scale &#39;colour&#39; (see ?geom_area)
+gg + geom_area(aes(fill = channelGrouping, group = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-4-6.png" width="960" /></p>
 <pre class="r"><code>## ok, lets keep that for now
 gg &lt;- gg + geom_area(aes(group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
 <p>The point above is to show how modifications can be quickly added as you try out ideas.</p>
 <p>A little more styling, and we are done with this example:</p>
 <pre class="r"><code>## make the colours nicer
-gg &lt;- gg + scale_fill_brewer(palette = &quot;Paired&quot;)
+gg &lt;- gg + scale_fill_brewer(palette = &quot;Blues&quot;)
 ## add a title
 gg &lt;- gg + ggtitle(&quot;Sessions per device category&quot;)
 ## rename the x and y axis

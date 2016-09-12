@@ -11,7 +11,7 @@
 
 
 
-<title>Importing data - Excel and CSV</title>
+<title>Importing data - CSV</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -373,7 +373,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-<h1 class="title toc-ignore">Importing data - Excel and CSV</h1>
+<h1 class="title toc-ignore">Importing data - CSV</h1>
 
 </div>
 
@@ -430,40 +430,6 @@ head(mydata)
 4 2015-01-04      8   75.00000
 5 2015-01-05     21   76.19048
 6 2015-01-06     20   95.00000</code></pre>
-</div>
-</div>
-<div id="importing-excel" class="section level2">
-<h2>Importing Excel</h2>
-<p>Importing from Excel can be problematic, as its not a fixed format. For example, a Danish workbook can hold different date and currency formats and use characters (ø, å etc.) that aren’t available. Here are a few strategies:</p>
-<div id="import-a-csv-instead" class="section level3">
-<h3>Import a csv instead</h3>
-<p>By far the most simple and reliable way for tabular Excel data is to avoid importing it at all, and instead save your worksheet as a <code>.csv</code>.</p>
-<p>In Excel, this is achieved by clicking <code>File &gt; Save As</code> and selecting the CSV format.</p>
-<p>You can then import this to R via <code>read.csv()</code>.</p>
-</div>
-<div id="import-using-rstudios-import-dataset" class="section level3">
-<h3>Import using RStudio’s Import Dataset</h3>
-<p>The second easiest option is to use the <code>Import Dataset</code> button in the <code>Environment</code> tab of RStudio. In the latest versions of RStudio this calls <code>library(readxl)</code> to import the Excel data in for you.</p>
-</div>
-<div id="libraryreadxl" class="section level3">
-<h3>library(readxl)</h3>
-<p>If you have an older version of RStudio or importing non-interactivly via a script, you can call <code>library(readxl)</code> yourself once installed. This Hadley Wickham library has presets to handle Excel data for you. There are other libraries out there to read from Excel, but some require Java or similar to work. <code>readxl</code> is the best and quickest one the author has found so far.</p>
-</div>
-</div>
-<div id="exporting-to-excel" class="section level2">
-<h2>Exporting to Excel</h2>
-<p>Note none of the above lets you write or save files to Excel - the author would prefer you use one of R’s superior formats instead. ;-)</p>
-<p>But if you need it, then there are some options:</p>
-<div id="import-a-csv-into-excel" class="section level3">
-<h3>Import a csv into Excel</h3>
-<p>This is the one used the most - export as a CSV then use Excel’s <code>Import Data</code> option in the top ribbon to import the file. Set the delimiter to “,” or “;” as necessary, and you are good to go.</p>
-</div>
-<div id="use-a-write-to-excel-library" class="section level3">
-<h3>Use a write to Excel library</h3>
-<p>There are other options to write to Excel using R libraries:</p>
-<pre class="r"><code>## need to install Java
-library(xlsx)
-write.xlsx(mydata, &quot;c:/mydata.xlsx&quot;) </code></pre>
 </div>
 </div>
 

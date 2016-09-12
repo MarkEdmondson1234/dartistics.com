@@ -101,11 +101,14 @@ gg + geom_line(aes(colour = channelGrouping))
 ## we have desktop, mobile and tablet all in there, lets seperate them out with facet
 gg + geom_line(aes(colour = channelGrouping)) + facet_grid(. ~ deviceCategory)
 
-## I prefer it one other the other
+## I prefer it one over the other
 gg + geom_line(aes(colour = channelGrouping)) + facet_grid(deviceCategory ~ .)
 
 ## lets try an area plot
-gg + geom_area(aes(colour = channelGrouping, group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)
+gg + geom_area(aes(colour = channelGrouping, group = channelGrouping)) + facet_grid(deviceCategory ~ .)
+
+## ahh, area plots colour by scale 'fill' rather than scale 'colour' (see ?geom_area)
+gg + geom_area(aes(fill = channelGrouping, group = channelGrouping)) + facet_grid(deviceCategory ~ .)
 
 ## ok, lets keep that for now
 gg <- gg + geom_area(aes(group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)
@@ -117,7 +120,7 @@ A little more styling, and we are done with this example:
 
 ```{r, fig.height=15, fig.width=10}
 ## make the colours nicer
-gg <- gg + scale_fill_brewer(palette = "Paired")
+gg <- gg + scale_fill_brewer(palette = "Blues")
 ## add a title
 gg <- gg + ggtitle("Sessions per device category")
 ## rename the x and y axis
