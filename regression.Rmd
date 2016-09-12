@@ -18,9 +18,15 @@ Simple linear regression is performed between two variables, of the form:
 y = Ax + e
 ```
 
-Where `y` is the metric you want to predict (*dependent variable*), `x` the metric you want to use to predict `y` (*regressors/predictors*), `A` being the *regression coefficient* of variable `x` and `e` being the bit not predicted, sometimes called *noise*.
+Where `y` is the metrics you want to predict (*dependent variable*), `x` a vector of metrics you want to use to predict `y` (*regressors/predictors*), `A` is the matrix of *regression coefficients* of for the variables in `x` and `e` being the bit not predicted, sometimes called *noise*.
 
-This you may also recognise as the equation for a straight line on a x-y plot, where A is the slope and e is the intercept, and that is pretty much what linear regression is, where the technique of least-squares is used to fit a line to some points.
+In two dimensions this is the same as
+
+```
+y = mx + c + e
+```
+
+Which you may recognise as the equation for a straight line on a x-y plot, where m is the slope, c is the intercept, and e the random noise. That is pretty much what linear regression is, where the technique of least-squares is used to fit a line to some points.
 
 > An example applied to digital marketing would be predicting transactions from sessions.  The regression coefficient in this case would represent a derived conversion rate.
 
