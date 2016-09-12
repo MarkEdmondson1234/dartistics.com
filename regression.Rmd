@@ -18,7 +18,7 @@ Simple linear regression is performed between two variables, of the form:
 y = Ax + e
 ```
 
-Where `y` is the metrics you want to predict (*dependent variable*), `x` a vector of metrics you want to use to predict `y` (*regressors/predictors*), `A` is the matrix of *regression coefficients* of for the variables in `x` and `e` being the bit not predicted, sometimes called *noise*.
+Where `y` is the metric you want to predict (*dependent variable*), `x` a vector of metrics you want to use to predict `y` (*regressors/predictors*), `A` is the matrix of *regression coefficients* of for the variables in `x` and `e` being the bit not predicted, sometimes called *noise*.
 
 In two dimensions this is the same as
 
@@ -26,13 +26,23 @@ In two dimensions this is the same as
 y = mx + c + e
 ```
 
-Which you may recognise as the equation for a straight line on a x-y plot, where m is the slope, c is the intercept, and e the random noise. That is pretty much what linear regression is, where the technique of least-squares is used to fit a line to some points.
+Which you may recognise as the equation for a straight line on a x-y plot, where m is the slope, c is the intercept, and e the random noise.
+
+In three or more dimensions this expands to
+
+```
+y = a_0 + a_1 * x_1 + a_2 * x_2 + ... + a_n * x_n
+```
+
+Where `a_0` is the intercept, `a_1`, `a_2`, etc. are the regression coefficients and `x_1`, `x_2` etc. are the regressions/predictors.
+
+That is pretty much what ordinary linear regression is, where the technique of least-squares is used to fit a line/plane to some points.
 
 > An example applied to digital marketing would be predicting transactions from sessions.  The regression coefficient in this case would represent a derived conversion rate.
 
 ### Example with Search Console Impressions
 
-If you already have a conversion rate, there isn't much to gain from creating another via linear regression, but in many cases you don't have that linked up view which is where regression can come into play.  An example below looks for a relationship to a website's SEO impressions in Google to the amount of transactions that day.
+If you already have a conversion rate, there isn't much to gain from creating another via linear regression, but in many cases you don't have that linked up view which is where regression can come into play.  An example below looks for a relationship to a website's SEO impressions in Google to the amount of transactions that day. This example is in two dimensions which makes it much easier to plot charts showing what is going on.
 
 For this example we shall use the dataset `search_console_plus_ga.csv`, which is two datasets joined on date - SEO impressions and other metrics from Search Console via the `searchConsoleR` package, and Google Analytics total sessions and transactions from `googleAnalyticsR`
 
