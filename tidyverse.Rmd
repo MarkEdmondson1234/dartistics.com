@@ -30,7 +30,7 @@ Tidy data isn't necessarily data that is easiest to read by a human, but it is w
 
 `Tidyverse` is the new name for the `Hadleyverse`, which is a collection of R packages created or supported by Hadley Wickham.
 
-These packages aim to cover the whole spectrum of data analysis within R, each supporting the other in concepts and output.  The main packages within are:
+These packages aim to cover the whole spectrum of data analysis within R, each supporting the other in concepts and output.  The main packages within it are are:
 
 * [`tibble`](https://github.com/hadley/tibble) - creating more user-friendly data.frames 
 * [`dplyr`](https://github.com/hadley/dplyr) - data manipulation of data.frames
@@ -39,5 +39,7 @@ These packages aim to cover the whole spectrum of data analysis within R, each s
 * [`purrr`](https://github.com/hadley/purrr) - more general data manipulation tools
 * [`magrittr`](https://github.com/smbache/magrittr) - the origin of `%>%`, extensivly used in the tidyverse
 * [`broom`](https://cran.r-project.org/web/packages/broom/vignettes/broom.html) - turn statistical models into tidy data.frames/tiddles
+
+This list is just a subset of the tidyverse packages, but, the tidyverse has grown so much in popularity that you can now simply install the ['tidyverse' package](https://blog.rstudio.org/2016/09/15/tidyverse-1-0-0/), which will install all of these packages (and a few more) all at once.
 
 Whilst you can achieve what the above packages do in base R or with other packages (`data.table()` a noteable alternative to `dplyr()`), if you embrace the `tidyverse` then you will need to become familiar with some if not all the packages above.
