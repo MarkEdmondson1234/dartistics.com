@@ -1,72 +1,41 @@
 ---
-title: "Analytics APIs"
-output:
+title: "Adobe Analytics - R Connector"
+author: "Mark Edmondson"
+date: "26 September 2016"
+output: 
   html_document:
     toc: true
     toc_float: true
+    toc_depth: 2
+
 ---
 
-```{r analytics-apis setup, include=FALSE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Adobe Analytics access is supplied via Randy Zwitch's [RSiteCatalyst](http://randyzwitch.com/rsitecatalyst/) library.
+# Initial Setup
 
-Authentication is a little harder to configure for Adobe so a live example is not shown here, but steps to download data are shown below.
+First download and install [R](https://cran.r-project.org/mirrors.html) from CRAN and [RStudio](https://www.rstudio.com/)
 
-## Installation
+* CRAN is the organisation that maintains and distributes R
+* R is the programming language itself
+* RStudio is a program that makes using R a lot easier
+
+# Installation
 
 ```r
 ## This installs a package for downloading Adobe Analytics data
-if(!require(RSiteCatalyst)) install.packages("RSiteCatalyst")
+install.packages("RSiteCatalyst")
 ```
 
-## Authentication (New)
-
-This is the new OAuth2 method of authentication.  Use this one if you can.
-
-Link your Adobe Analytics login to the Adobe ID account to use this method of signin. 
-
-### Create Application
-
-If you have no application for your Adobe Analytics account, here is how to make one:
-
-1. Create an app by visiting developer console and navigating to [Developer > Applications](https://marketing.adobe.com/developer/applications)
-2. Select "Web Server (Authorization Code)"
-3. Name the application
-4. Leave the Redirect Uri field blank.
-
-![](images/setting-up-adobe-application.png)
-
-You should then see this screen to grant permission after running `SCAuth`
-
-![](images/adobe-app-oauth-permission.png)
-
-## Authentication (Old)
-
-This is the deprecated method and will dissappear 'soon'.
-
-Get the Web Service key under the Adobe Analytics Account Information page.
-
-* User Name is used as the key
-* Sharted Secret is used as the secret
-
-![](images/legacy-authentication-adobe.png)
-
-If you use this method, then you authenticate via:
-
-```{r}
-library(RSiteCatalyst)
-
-key <- Sys.getenv("ADOBE_KEY_OLD")
-secret <- Sys.getenv("ADOBE_SECRET_OLD")
-
-SCAuth(key, secret)
-```
+Check out the resources made by its creator, [Randy Zwitch](http://randyzwitch.com/rsitecatalyst/)
 
 ## Recording secret keys
 
-I save these values to a `.Renviron` file in my home directory to keep them safe and call then via the commands below (this stops them being accidently put on github for example)
+I save these values to a `.Renviron` file in my home directory to keep them safe and call them via the the R command `Sys.envir`.
+
+This keeps them out of your working folder that may be shared and compromise your security.
 
 ### Example .Renviron file
 
@@ -75,16 +44,36 @@ This is in my root directory: `~/.Renviron`
 ```
 ADOBE_KEY="a7xxxxx639-iih-nordic-r"
 ADOBE_SECRET="2eadxxxxx1495ea49"
-ADOBE_KEY_OLD="mark:XXXXXX"
+ADOBE_KEY_OLD="mark:XXXX"
 ADOBE_SECRET_OLD="74b46625xxxxx7e89dbe6e0"
 ```
 
-## Calling Adobe Analytics
+# Authentication (New)
 
-Once you have setup your authentication method, you can call data using the below.
+This is the new OAuth2 method of authentication.  
 
-The `SCAuth()` function will open your browser or read the existing `auth-adobe` file if using the newer OAuth2 method, or return `[1] "Credentials Saved in RSiteCatalyst Namespace."` if using legacy.
+Use this one if you can, but at time of writing MobileLife does not have this activated for its account. 
 
+Link your Adobe Analytics login to the Adobe ID account to use this method of signin. 
+
+## Create Application
+
+If you have no application for your Adobe Analytics account, here is how to make one:
+
+1. Create an app by visiting developer console and navigating to [Developer > Applications](https://marketing.adobe.com/developer/applications)
+2. Select "Web Server (Authorization Code)"
+3. Name the application
+4. Leave the Redirect Uri field blank.
+
+![setting-up-application](setting-up-adobe-application.png)
+
+You should then see this screen to grant permission after running `SCAuth`
+
+![adobe permission](adobe-app-oauth-permission.png)
+
+Authentication is done via the below.
+
+The `SCAuth()` function will open your browser or read the existing `auth-adobe` file.
 
 ```r
 library(RSiteCatalyst)
@@ -97,24 +86,75 @@ SCAuth(key, secret,
        company = "XXXXX", 
        token.file = "auth-adobe", 
        auth.method = "OAUTH2")
+```
 
-## Old legacy method
+# Authentication (Old)
+
+This is the deprecated method and will dissappear 'soon'.
+
+Get the Web Service key under the Adobe Analytics Account Information page.
+
+* User Name is used as the key
+* Shared Secret is used as the secret
+
+![legacy webservice](legacy-authentication-adobe.png)
+
+If you use this method, then you authenticate via:
+
+```{r}
+library(RSiteCatalyst)
+
 key <- Sys.getenv("ADOBE_KEY_OLD")
 secret <- Sys.getenv("ADOBE_SECRET_OLD")
 
 SCAuth(key, secret)
-
 ```
 
-You should be then able to see the report suites via:
+The `SCAuth()` function will return `[1] "Credentials Saved in RSiteCatalyst Namespace."`
 
-```r
+# Fetching Report Suites
+
+Once you have setup your authentication method, call the SCAuth() function at the start of every new R session. 
+
+You can test the connection by calling the account report suites via:
+
+```{r}
 suites <- GetReportSuites()
 head(suites)
 ```
 
-## Pulling Data Reports
+# Various other meta data
 
+These are useful to keep for calling data reports.
+
+Descriptions of various elements, metrics etc. for the [1.4 version of the API is found here.](https://marketing.adobe.com/developer/documentation/analytics-reporting-1-4/elements)
+
+```{R metadata, message=FALSE, warning=FALSE}
+segments <- GetSegments("grecodemystified")
+segments
+
+calc_metrics <- GetCalculatedMetrics("grecodemystified")
+calc_metrics
+
+classifications <- GetClassifications("grecodemystified")
+classifications
+
+elements <- GetElements("grecodemystified")
+head(elements)
+
+metrics <- GetMetrics("grecodemystified")
+head(metrics)
+
+props <- GetProps("grecodemystified")
+head(props)
+
+evars <- GetEvars("grecodemystified")
+head(evars)
+```
+
+Read the RSiteCatalyst help files for a full function list.
+
+# Fetching Data Reports
 
 There are 5 different types of Adobe Analytics reports that can be pulled out via the API:
 
