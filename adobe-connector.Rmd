@@ -101,7 +101,7 @@ Get the Web Service key under the Adobe Analytics Account Information page.
 
 If you use this method, then you authenticate via:
 
-```{r}
+```{r authenticate}
 library(RSiteCatalyst)
 
 key <- Sys.getenv("ADOBE_KEY_OLD")

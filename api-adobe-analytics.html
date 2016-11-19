@@ -11,7 +11,7 @@
 
 
 
-<title>Analytics APIs</title>
+<title>The Adobe Analytics API</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -27,7 +27,7 @@
 <script src="site_libs/dygraphs-1.1.1/dygraph-combined.js"></script>
 <script src="site_libs/moment-2.8.4/moment.js"></script>
 <script src="site_libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
-<script src="site_libs/dygraphs-binding-0.9/dygraphs.js"></script>
+<script src="site_libs/dygraphs-binding-1.1.1.3/dygraphs.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -476,27 +476,30 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-<h1 class="title toc-ignore">Analytics APIs</h1>
+<h1 class="title toc-ignore">The Adobe Analytics API</h1>
 
 </div>
 
 
 <p>Adobe Analytics access is supplied via Randy Zwitch’s <a href="http://randyzwitch.com/rsitecatalyst/">RSiteCatalyst</a> library.</p>
 <p>Authentication is a little harder to configure for Adobe so a live example is not shown here, but steps to download data are shown below.</p>
-<div id="installation" class="section level2">
-<h2>Installation</h2>
+<div id="installation" class="section level1">
+<h1>Installation</h1>
 <pre class="r"><code>## This installs a package for downloading Adobe Analytics data
 if(!require(RSiteCatalyst)) install.packages(&quot;RSiteCatalyst&quot;)</code></pre>
 </div>
-<div id="authentication-new" class="section level2">
-<h2>Authentication (New)</h2>
+<div id="authentication" class="section level1">
+<h1>Authentication</h1>
+<p>There are two options for authenticating with Adobe Analytics. The newer way uses OAuth2, which is objectively “better” from a security and general elegance perspective, but it’s a bit more involved to set up. The older way simply relies on a couple of keys (a user name and a “secret”) and, at some point, will likely be deprecated.</p>
+<div id="authentication---new" class="section level2">
+<h2>Authentication - New</h2>
 <p>This is the new OAuth2 method of authentication. Use this one if you can.</p>
-<p>Link your Adobe Analytics login to the Adobe ID account to use this method of signin.</p>
+<p>First, you will need to link your Adobe Analytics login to the Adobe ID account to use this method of signin.</p>
 <div id="create-application" class="section level3">
 <h3>Create Application</h3>
 <p>If you have no application for your Adobe Analytics account, here is how to make one:</p>
 <ol style="list-style-type: decimal">
-<li>Create an app by visiting developer console and navigating to <a href="https://marketing.adobe.com/developer/applications">Developer &gt; Applications</a></li>
+<li>Create an app by visiting the Adobe developer console and navigating to <a href="https://marketing.adobe.com/developer/applications">Developer &gt; Applications</a></li>
 <li>Select “Web Server (Authorization Code)”</li>
 <li>Name the application</li>
 <li>Leave the Redirect Uri field blank.</li>
@@ -512,9 +515,9 @@ if(!require(RSiteCatalyst)) install.packages(&quot;RSiteCatalyst&quot;)</code></
 </div>
 </div>
 </div>
-<div id="authentication-old" class="section level2">
-<h2>Authentication (Old)</h2>
-<p>This is the deprecated method and will dissappear ‘soon’.</p>
+<div id="authentication---old" class="section level2">
+<h2>Authentication - Old</h2>
+<p>This is the deprecated method and will dissappear “soon.”</p>
 <p>Get the Web Service key under the Adobe Analytics Account Information page.</p>
 <ul>
 <li>User Name is used as the key</li>
@@ -531,22 +534,19 @@ key &lt;- Sys.getenv(&quot;ADOBE_KEY_OLD&quot;)
 secret &lt;- Sys.getenv(&quot;ADOBE_SECRET_OLD&quot;)
 
 SCAuth(key, secret)</code></pre>
-<pre><code>## [1] &quot;Credentials Saved in RSiteCatalyst Namespace.&quot;</code></pre>
-</div>
-<div id="recording-secret-keys" class="section level2">
-<h2>Recording secret keys</h2>
+<div id="recording-secret-keys" class="section level3">
+<h3>Recording secret keys</h3>
 <p>I save these values to a <code>.Renviron</code> file in my home directory to keep them safe and call then via the commands below (this stops them being accidently put on github for example)</p>
-<div id="example-.renviron-file" class="section level3">
-<h3>Example .Renviron file</h3>
-<p>This is in my root directory: <code>~/.Renviron</code></p>
+<p>As an example, this is the <code>.Renviron</code> file in my root directory: <code>~/.Renviron</code></p>
 <pre><code>ADOBE_KEY=&quot;a7xxxxx639-iih-nordic-r&quot;
 ADOBE_SECRET=&quot;2eadxxxxx1495ea49&quot;
 ADOBE_KEY_OLD=&quot;mark:XXXXXX&quot;
 ADOBE_SECRET_OLD=&quot;74b46625xxxxx7e89dbe6e0&quot;</code></pre>
 </div>
 </div>
-<div id="calling-adobe-analytics" class="section level2">
-<h2>Calling Adobe Analytics</h2>
+</div>
+<div id="calling-adobe-analytics" class="section level1">
+<h1>Calling Adobe Analytics</h1>
 <p>Once you have setup your authentication method, you can call data using the below.</p>
 <p>The <code>SCAuth()</code> function will open your browser or read the existing <code>auth-adobe</code> file if using the newer OAuth2 method, or return <code>[1] &quot;Credentials Saved in RSiteCatalyst Namespace.&quot;</code> if using legacy.</p>
 <pre class="r"><code>library(RSiteCatalyst)
@@ -569,7 +569,6 @@ SCAuth(key, secret)
 <p>You should be then able to see the report suites via:</p>
 <pre class="r"><code>suites &lt;- GetReportSuites()
 head(suites)</code></pre>
-</div>
 <div id="pulling-data-reports" class="section level2">
 <h2>Pulling Data Reports</h2>
 <p>There are 5 different types of Adobe Analytics reports that can be pulled out via the API:</p>
@@ -596,6 +595,7 @@ head(suites)</code></pre>
 <li>The first call is most expensive - subsequent calls are cached.</li>
 </ul>
 </div>
+</div>
 <div id="demo-api-calls" class="section level1">
 <h1>Demo API calls</h1>
 <p>We set some common parameters here:</p>
@@ -604,29 +604,14 @@ date.to &lt;- &quot;2016-03-8&quot;
 reportsuite.id &lt;- &quot;grecodemystified&quot;</code></pre>
 <div id="overtime" class="section level2">
 <h2>Overtime</h2>
-<p>Returns an overtime report. This is similar to the key metrics report in that the only granularity allowed is time.</p>
+<p>Returns an overtime report. Or, rather, maybe this is “over time,” since it’s trending data across a time period, and we’re not paying time-and-a-half to the API to get the data.</p>
+<p>This is similar to the key metrics report in that the only granularity allowed is time.</p>
 <p>QueueOvertime requires a start and end date, a reportsuite ID, and a character vector of metrics.</p>
 <pre class="r"><code>metrics &lt;- c(&quot;visits&quot;,&quot;uniquevisitors&quot;,&quot;pageviews&quot;)
 
 ## wrap in system.time to report how long it takes
-overtime.data &lt;- QueueOvertime(reportsuite.id, date.from, date.to, metrics)</code></pre>
-<pre><code>## [1] &quot;Requesting URL attempt #1&quot;
-## [1] &quot;Received overtime report.&quot;</code></pre>
-<pre class="r"><code>head(overtime.data)</code></pre>
-<pre><code>##     datetime              name year month day segment.id segment.name
-## 1 2016-03-01 Tue.  1 Mar. 2016 2016     3   1                        
-## 2 2016-03-02 Wed.  2 Mar. 2016 2016     3   2                        
-## 3 2016-03-03 Thu.  3 Mar. 2016 2016     3   3                        
-## 4 2016-03-04 Fri.  4 Mar. 2016 2016     3   4                        
-## 5 2016-03-05 Sat.  5 Mar. 2016 2016     3   5                        
-## 6 2016-03-06 Sun.  6 Mar. 2016 2016     3   6                        
-##   visits uniquevisitors pageviews
-## 1   1554           1475      2100
-## 2   1518           1419      2049
-## 3   1454           1352      1973
-## 4   1118           1045      1577
-## 5    395            362       556
-## 6    663            626      1040</code></pre>
+overtime.data &lt;- QueueOvertime(reportsuite.id, date.from, date.to, metrics)
+head(overtime.data)</code></pre>
 <p>You may also wish to set any of the 5 optional named parameters.</p>
 <pre class="r"><code>metrics &lt;- c(&quot;visits&quot;,&quot;uniquevisitors&quot;,&quot;pageviews&quot;)
 date.granularity &lt;- &quot;hour&quot;
@@ -643,8 +628,6 @@ overtime.data &lt;- QueueOvertime(reportsuite.id,
                                            anomaly.detection = anomaly.detection,
                                            data.current = data.current,
                                            expedite = expedite)</code></pre>
-<pre><code>## [1] &quot;Requesting URL attempt #1&quot;
-## [1] &quot;Received overtime report.&quot;</code></pre>
 <div id="data-format" class="section level3">
 <h3>Data format</h3>
 <p>Report data is returned with the following R classes:</p>
@@ -769,11 +752,6 @@ overtime.data &lt;- QueueOvertime(reportsuite.id,
 elements &lt;- c(&quot;page&quot;,&quot;geoCountry&quot;,&quot;geoCity&quot;)
 
 ranked.data &lt;- QueueRanked(reportsuite.id, date.from, date.to, metrics, elements)</code></pre>
-<pre><code>## [1] &quot;Requesting URL attempt #1&quot;
-## [1] &quot;Requesting URL attempt #2&quot;
-## [1] &quot;Requesting URL attempt #3&quot;
-## [1] &quot;Requesting URL attempt #4&quot;
-## [1] &quot;Received ranked report.&quot;</code></pre>
 <p>You may also wish to set any of the 6 optional named parameters. The 1.4 API only supports this for the first element specified. In the example below, selected applies to the first element, page.</p>
 <pre class="r"><code>metrics &lt;- c(&quot;visits&quot;,&quot;uniquevisitors&quot;,&quot;pageviews&quot;,&quot;event1&quot;,&quot;event2&quot;)
 elements &lt;- c(&quot;page&quot;,&quot;geoCountry&quot;,&quot;geoCity&quot;)
@@ -794,14 +772,9 @@ ranked.data &lt;- QueueRanked(reportsuite.id,
                            selected = selected,
                            segment.id = segment.id,
                            data.current = data.current,
-                           expedite = expedite)</code></pre>
-<pre><code>## [1] &quot;Requesting URL attempt #1&quot;
-## [1] &quot;Requesting URL attempt #2&quot;
-## [1] &quot;Requesting URL attempt #3&quot;
-## [1] &quot;Received ranked report.&quot;</code></pre>
-<pre class="r"><code>unique(ranked.data$page)</code></pre>
-<pre><code>## [1] &quot;excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/&quot;     
-## [2] &quot;excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/&quot;</code></pre>
+                           expedite = expedite)
+
+unique(ranked.data$page)</code></pre>
 <div id="data-format-1" class="section level3">
 <h3>Data format</h3>
 <p>Report data is returned with the following R classes:</p>
@@ -918,17 +891,6 @@ ranked.data &lt;- QueueRanked(reportsuite.id,
 elements &lt;- c(&quot;page&quot;,&quot;geoCountry&quot;,&quot;geoCity&quot;)
 
 trended.data &lt;- QueueTrended(reportsuite.id, date.from, date.to, metrics, elements)</code></pre>
-<pre><code>## [1] &quot;Requesting URL attempt #1&quot;
-## [1] &quot;Requesting URL attempt #2&quot;
-## [1] &quot;Requesting URL attempt #3&quot;
-## [1] &quot;Requesting URL attempt #4&quot;
-## [1] &quot;Requesting URL attempt #5&quot;
-## [1] &quot;Requesting URL attempt #6&quot;
-## [1] &quot;Requesting URL attempt #7&quot;
-## [1] &quot;Requesting URL attempt #8&quot;
-## [1] &quot;Requesting URL attempt #9&quot;
-## [1] &quot;Requesting URL attempt #10&quot;
-## [1] &quot;Received trended report.&quot;</code></pre>
 <p>You may also wish to set any of the 7 optional named parameters. As with <code>QueueRanked()</code> the 1.4 API only supports selected for the first element specified.</p>
 <pre class="r"><code>metrics &lt;- c(&quot;visits&quot;,&quot;uniquevisitors&quot;,&quot;pageviews&quot;,&quot;event1&quot;)
 elements &lt;- c(&quot;page&quot;,&quot;geoCountry&quot;,&quot;geoCity&quot;)
@@ -951,13 +913,6 @@ trended.data &lt;- QueueTrended(reportsuite.id,
                             segment.id = segment.id,
                             data.current = data.current,
                             expedite = expedite)</code></pre>
-<pre><code>## [1] &quot;Requesting URL attempt #1&quot;
-## [1] &quot;Requesting URL attempt #2&quot;
-## [1] &quot;Requesting URL attempt #3&quot;
-## [1] &quot;Requesting URL attempt #4&quot;
-## [1] &quot;Requesting URL attempt #5&quot;
-## [1] &quot;Requesting URL attempt #6&quot;
-## [1] &quot;Received trended report.&quot;</code></pre>
 <div id="data-format-2" class="section level3">
 <h3>Data format</h3>
 <p>Report data is returned with the following R classes:</p>
@@ -1083,8 +1038,6 @@ pathing.data &lt;- QueuePathing(reportsuite.id,
                              metric, 
                              element, 
                              pattern)</code></pre>
-<pre><code>## [1] &quot;Requesting URL attempt #1&quot;
-## [1] &quot;Received pathing report.&quot;</code></pre>
 <div id="data-format-3" class="section level3">
 <h3>Data format</h3>
 <p>Report data is returned with the following R classes:</p>
@@ -1172,9 +1125,6 @@ checkpoints &lt;- c(&quot;excel-tips/excel-dropdowns-done-right-data-validation-
                  &quot;excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/&quot;)
 
 fallout.data &lt;- QueueFallout(reportsuite.id, date.from, date.to, metrics, element, checkpoints)</code></pre>
-<pre><code>## [1] &quot;Requesting URL attempt #1&quot;
-## [1] &quot;Requesting URL attempt #2&quot;
-## [1] &quot;Received fallout report.&quot;</code></pre>
 <div id="data-format-4" class="section level3">
 <h3>Data format</h3>
 <p>Report data is returned with the following R classes:</p>
@@ -1263,8 +1213,6 @@ overtime.data &lt;- QueueOvertime(reportsuite.id,
                                metrics,
                                date.granularity = date.granularity,
                                segment.id = segment.id)</code></pre>
-<pre><code>## [1] &quot;Requesting URL attempt #1&quot;
-## [1] &quot;Received overtime report.&quot;</code></pre>
 <p>The data is in this format:</p>
 <pre class="r"><code>str(overtime.data)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    274 obs. of  8 variables:
@@ -1287,7 +1235,7 @@ model_data &lt;- overtime.data[,c(&#39;datetime&#39;, &#39;visits&#39;)]
 model_data$datetime &lt;- as.Date(model_data$datetime)</code></pre>
 <p>A quick exploratory plot:</p>
 <pre class="r"><code>plot(model_data, type = &quot;l&quot;)</code></pre>
-<p><img src="api-adobe-analytics_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="api-adobe-analytics_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
 <div id="statistical-modelling" class="section level2">
 <h2>Statistical modelling</h2>
@@ -1311,9 +1259,9 @@ post.period &lt;- as.Date(c(&quot;2016-07-11&quot;,&quot;2016-09-25&quot;))
 impact &lt;- CausalImpact(model_zoo, pre.period, post.period) </code></pre>
 <p>CausalImpact includes a verbal report and plot to show its findings:</p>
 <pre class="r"><code>impact$report</code></pre>
-<pre><code>## [1] &quot;\n\nDuring the post-intervention period, the response variable had an average value of approx. 962. In the absence of an intervention, we would have expected an average response of 852. The 95% interval of this counterfactual prediction is [732, 982]. Subtracting this prediction from the observed response yields an estimate of the causal effect the intervention had on the response variable. This effect is 110 with a 95% interval of [-20, 230]. For a discussion of the significance of this effect, see below.\n\nSumming up the individual data points during the post-intervention period (which can only sometimes be meaningfully interpreted), the response variable had an overall value of 74.08K. Had the intervention not taken place, we would have expected a sum of 65.6K. The 95% interval of this prediction is [56.36K, 75.62K].\n\nThe above results are given in terms of absolute numbers. In relative terms, the response variable showed an increase of +13%. The 95% interval of this percentage is [-2%, +27%].\n\nThis means that, although the intervention appears to have caused a positive effect, this effect is not statistically significant when considering the entire post-intervention period as a whole. Individual days or shorter stretches within the intervention period may of course still have had a significant effect, as indicated whenever the lower limit of the impact time series (lower plot) was above zero. The apparent effect could be the result of random fluctuations that are unrelated to the intervention. This is often the case when the intervention period is very long and includes much of the time when the effect has already worn off. It can also be the case when the intervention period is too short to distinguish the signal from the noise. Finally, failing to find a significant effect can happen when there are not enough control variables or when these variables do not correlate well with the response variable during the learning period.\n\nThe probability of obtaining this effect by chance is p = 0.05. This means the effect may be spurious and would generally not be considered statistically significant.&quot;</code></pre>
+<pre><code>## [1] &quot;\n\nDuring the post-intervention period, the response variable had an average value of approx. 959.71. In the absence of an intervention, we would have expected an average response of 849.12. The 95% interval of this counterfactual prediction is [726.15, 974.47]. Subtracting this prediction from the observed response yields an estimate of the causal effect the intervention had on the response variable. This effect is 110.60 with a 95% interval of [-14.76, 233.57]. For a discussion of the significance of this effect, see below.\n\nSumming up the individual data points during the post-intervention period (which can only sometimes be meaningfully interpreted), the response variable had an overall value of 73.90K. Had the intervention not taken place, we would have expected a sum of 65.38K. The 95% interval of this prediction is [55.91K, 75.03K].\n\nThe above results are given in terms of absolute numbers. In relative terms, the response variable showed an increase of +13%. The 95% interval of this percentage is [-2%, +28%].\n\nThis means that, although the intervention appears to have caused a positive effect, this effect is not statistically significant when considering the entire post-intervention period as a whole. Individual days or shorter stretches within the intervention period may of course still have had a significant effect, as indicated whenever the lower limit of the impact time series (lower plot) was above zero. The apparent effect could be the result of random fluctuations that are unrelated to the intervention. This is often the case when the intervention period is very long and includes much of the time when the effect has already worn off. It can also be the case when the intervention period is too short to distinguish the signal from the noise. Finally, failing to find a significant effect can happen when there are not enough control variables or when these variables do not correlate well with the response variable during the learning period.\n\nThe probability of obtaining this effect by chance is very small (Bayesian one-sided tail-area probability p = 0.043). This means the causal effect can be considered statistically significant.&quot;</code></pre>
 <pre class="r"><code>plot(impact)</code></pre>
-<p><img src="api-adobe-analytics_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="api-adobe-analytics_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 </div>
 <div id="review-output" class="section level2">
 <h2>Review output</h2>
@@ -1338,8 +1286,8 @@ dygraph(data=plot_data[,c(&#39;cum.effect&#39;, &#39;cum.effect.lower&#39;, &#39
   dyRangeSelector() %&gt;%
   dyEvent(x = as.Date(&quot;2016-03-10&quot;), &quot;TV Campaign&quot;) %&gt;%
   dySeries(c(&#39;cum.effect.lower&#39;, &#39;cum.effect&#39;, &#39;cum.effect.upper&#39;), label=&#39;Cumulative Effect&#39;)</code></pre>
-<div id="htmlwidget-79da2e386a69c8ee4a0e" style="width:672px;height:480px;" class="dygraphs html-widget"></div>
-<script type="application/json" data-for="htmlwidget-79da2e386a69c8ee4a0e">{"x":{"attrs":{"title":"Cumulative Impact of Event (95% confidence level)","labels":["day","Cumulative Effect"],"legend":"auto","retainDateWindow":false,"axes":{"x":{"pixelsPerLabel":60}},"showRangeSelector":true,"rangeSelectorHeight":40,"rangeSelectorPlotFillColor":" #A7B1C4","rangeSelectorPlotStrokeColor":"#808FAB","interactionModel":"Dygraph.Interaction.defaultModel","customBars":true,"series":{"Cumulative Effect":{"axis":"y"}}},"scale":"daily","group":"ci","annotations":[],"shadings":[],"events":[{"pos":"2016-03-10T00:00:00Z","label":"TV Campaign","labelLoc":"top","color":"black","strokePattern":[7,3],"axis":"x"}],"format":"date","data":[["2015-12-31T00:00:00Z","2016-01-01T00:00:00Z","2016-01-02T00:00:00Z","2016-01-03T00:00:00Z","2016-01-04T00:00:00Z","2016-01-05T00:00:00Z","2016-01-06T00:00:00Z","2016-01-07T00:00:00Z","2016-01-08T00:00:00Z","2016-01-09T00:00:00Z","2016-01-10T00:00:00Z","2016-01-11T00:00:00Z","2016-01-12T00:00:00Z","2016-01-13T00:00:00Z","2016-01-14T00:00:00Z","2016-01-15T00:00:00Z","2016-01-16T00:00:00Z","2016-01-17T00:00:00Z","2016-01-18T00:00:00Z","2016-01-19T00:00:00Z","2016-01-20T00:00:00Z","2016-01-21T00:00:00Z","2016-01-22T00:00:00Z","2016-01-23T00:00:00Z","2016-01-24T00:00:00Z","2016-01-25T00:00:00Z","2016-01-26T00:00:00Z","2016-01-27T00:00:00Z","2016-01-28T00:00:00Z","2016-01-29T00:00:00Z","2016-01-30T00:00:00Z","2016-01-31T00:00:00Z","2016-02-01T00:00:00Z","2016-02-02T00:00:00Z","2016-02-03T00:00:00Z","2016-02-04T00:00:00Z","2016-02-05T00:00:00Z","2016-02-06T00:00:00Z","2016-02-07T00:00:00Z","2016-02-08T00:00:00Z","2016-02-09T00:00:00Z","2016-02-10T00:00:00Z","2016-02-11T00:00:00Z","2016-02-12T00:00:00Z","2016-02-13T00:00:00Z","2016-02-14T00:00:00Z","2016-02-15T00:00:00Z","2016-02-16T00:00:00Z","2016-02-17T00:00:00Z","2016-02-18T00:00:00Z","2016-02-19T00:00:00Z","2016-02-20T00:00:00Z","2016-02-21T00:00:00Z","2016-02-22T00:00:00Z","2016-02-23T00:00:00Z","2016-02-24T00:00:00Z","2016-02-25T00:00:00Z","2016-02-26T00:00:00Z","2016-02-27T00:00:00Z","2016-02-28T00:00:00Z","2016-02-29T00:00:00Z","2016-03-01T00:00:00Z","2016-03-02T00:00:00Z","2016-03-03T00:00:00Z","2016-03-04T00:00:00Z","2016-03-05T00:00:00Z","2016-03-06T00:00:00Z","2016-03-07T00:00:00Z","2016-03-08T00:00:00Z","2016-03-09T00:00:00Z","2016-03-10T00:00:00Z","2016-03-11T00:00:00Z","2016-03-12T00:00:00Z","2016-03-13T00:00:00Z","2016-03-14T00:00:00Z","2016-03-15T00:00:00Z","2016-03-16T00:00:00Z","2016-03-17T00:00:00Z","2016-03-18T00:00:00Z","2016-03-19T00:00:00Z","2016-03-20T00:00:00Z","2016-03-21T00:00:00Z","2016-03-22T00:00:00Z","2016-03-23T00:00:00Z","2016-03-24T00:00:00Z","2016-03-25T00:00:00Z","2016-03-26T00:00:00Z","2016-03-27T00:00:00Z","2016-03-28T00:00:00Z","2016-03-29T00:00:00Z","2016-03-30T00:00:00Z","2016-03-31T00:00:00Z","2016-04-01T00:00:00Z","2016-04-02T00:00:00Z","2016-04-03T00:00:00Z","2016-04-04T00:00:00Z","2016-04-05T00:00:00Z","2016-04-06T00:00:00Z","2016-04-07T00:00:00Z","2016-04-08T00:00:00Z","2016-04-09T00:00:00Z","2016-04-10T00:00:00Z","2016-04-11T00:00:00Z","2016-04-12T00:00:00Z","2016-04-13T00:00:00Z","2016-04-14T00:00:00Z","2016-04-15T00:00:00Z","2016-04-16T00:00:00Z","2016-04-17T00:00:00Z","2016-04-18T00:00:00Z","2016-04-19T00:00:00Z","2016-04-20T00:00:00Z","2016-04-21T00:00:00Z","2016-04-22T00:00:00Z","2016-04-23T00:00:00Z","2016-04-24T00:00:00Z","2016-04-25T00:00:00Z","2016-04-26T00:00:00Z","2016-04-27T00:00:00Z","2016-04-28T00:00:00Z","2016-04-29T00:00:00Z","2016-04-30T00:00:00Z","2016-05-01T00:00:00Z","2016-05-02T00:00:00Z","2016-05-03T00:00:00Z","2016-05-04T00:00:00Z","2016-05-05T00:00:00Z","2016-05-06T00:00:00Z","2016-05-07T00:00:00Z","2016-05-08T00:00:00Z","2016-05-09T00:00:00Z","2016-05-10T00:00:00Z","2016-05-11T00:00:00Z","2016-05-12T00:00:00Z","2016-05-13T00:00:00Z","2016-05-14T00:00:00Z","2016-05-15T00:00:00Z","2016-05-16T00:00:00Z","2016-05-17T00:00:00Z","2016-05-18T00:00:00Z","2016-05-19T00:00:00Z","2016-05-20T00:00:00Z","2016-05-21T00:00:00Z","2016-05-22T00:00:00Z","2016-05-23T00:00:00Z","2016-05-24T00:00:00Z","2016-05-25T00:00:00Z","2016-05-26T00:00:00Z","2016-05-27T00:00:00Z","2016-05-28T00:00:00Z","2016-05-29T00:00:00Z","2016-05-30T00:00:00Z","2016-05-31T00:00:00Z","2016-06-01T00:00:00Z","2016-06-02T00:00:00Z","2016-06-03T00:00:00Z","2016-06-04T00:00:00Z","2016-06-05T00:00:00Z","2016-06-06T00:00:00Z","2016-06-07T00:00:00Z","2016-06-08T00:00:00Z","2016-06-09T00:00:00Z","2016-06-10T00:00:00Z","2016-06-11T00:00:00Z","2016-06-12T00:00:00Z","2016-06-13T00:00:00Z","2016-06-14T00:00:00Z","2016-06-15T00:00:00Z","2016-06-16T00:00:00Z","2016-06-17T00:00:00Z","2016-06-18T00:00:00Z","2016-06-19T00:00:00Z","2016-06-20T00:00:00Z","2016-06-21T00:00:00Z","2016-06-22T00:00:00Z","2016-06-23T00:00:00Z","2016-06-24T00:00:00Z","2016-06-25T00:00:00Z","2016-06-26T00:00:00Z","2016-06-27T00:00:00Z","2016-06-28T00:00:00Z","2016-06-29T00:00:00Z","2016-06-30T00:00:00Z","2016-07-01T00:00:00Z","2016-07-02T00:00:00Z","2016-07-03T00:00:00Z","2016-07-04T00:00:00Z","2016-07-05T00:00:00Z","2016-07-06T00:00:00Z","2016-07-07T00:00:00Z","2016-07-08T00:00:00Z","2016-07-09T00:00:00Z","2016-07-10T00:00:00Z","2016-07-11T00:00:00Z","2016-07-12T00:00:00Z","2016-07-13T00:00:00Z","2016-07-14T00:00:00Z","2016-07-15T00:00:00Z","2016-07-16T00:00:00Z","2016-07-17T00:00:00Z","2016-07-18T00:00:00Z","2016-07-19T00:00:00Z","2016-07-20T00:00:00Z","2016-07-21T00:00:00Z","2016-07-22T00:00:00Z","2016-07-23T00:00:00Z","2016-07-24T00:00:00Z","2016-07-25T00:00:00Z","2016-07-26T00:00:00Z","2016-07-27T00:00:00Z","2016-07-28T00:00:00Z","2016-07-29T00:00:00Z","2016-07-30T00:00:00Z","2016-07-31T00:00:00Z","2016-08-01T00:00:00Z","2016-08-02T00:00:00Z","2016-08-03T00:00:00Z","2016-08-04T00:00:00Z","2016-08-05T00:00:00Z","2016-08-06T00:00:00Z","2016-08-07T00:00:00Z","2016-08-08T00:00:00Z","2016-08-09T00:00:00Z","2016-08-10T00:00:00Z","2016-08-11T00:00:00Z","2016-08-12T00:00:00Z","2016-08-13T00:00:00Z","2016-08-14T00:00:00Z","2016-08-15T00:00:00Z","2016-08-16T00:00:00Z","2016-08-17T00:00:00Z","2016-08-18T00:00:00Z","2016-08-19T00:00:00Z","2016-08-20T00:00:00Z","2016-08-21T00:00:00Z","2016-08-22T00:00:00Z","2016-08-23T00:00:00Z","2016-08-24T00:00:00Z","2016-08-25T00:00:00Z","2016-08-26T00:00:00Z","2016-08-27T00:00:00Z","2016-08-28T00:00:00Z","2016-08-29T00:00:00Z","2016-08-30T00:00:00Z","2016-08-31T00:00:00Z","2016-09-01T00:00:00Z","2016-09-02T00:00:00Z","2016-09-03T00:00:00Z","2016-09-04T00:00:00Z","2016-09-05T00:00:00Z","2016-09-06T00:00:00Z","2016-09-07T00:00:00Z","2016-09-08T00:00:00Z","2016-09-09T00:00:00Z","2016-09-10T00:00:00Z","2016-09-11T00:00:00Z","2016-09-12T00:00:00Z","2016-09-13T00:00:00Z","2016-09-14T00:00:00Z","2016-09-15T00:00:00Z","2016-09-16T00:00:00Z","2016-09-17T00:00:00Z","2016-09-18T00:00:00Z","2016-09-19T00:00:00Z","2016-09-20T00:00:00Z","2016-09-21T00:00:00Z","2016-09-22T00:00:00Z","2016-09-23T00:00:00Z","2016-09-24T00:00:00Z","2016-09-25T00:00:00Z","2016-09-26T00:00:00Z","2016-09-27T00:00:00Z","2016-09-28T00:00:00Z","2016-09-29T00:00:00Z"],[[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[-297.257145549767,422.284450315477,1125.99215717282],[-257.700700141897,883.755867623186,1942.56804058141],[-66.7080559273163,1332.31806182713,2646.26205595167],[-99.7249571885623,1416.80060478582,2891.77251460848],[-861.684315848921,847.258873950617,2533.55093529572],[-1428.20593439366,431.765323325351,2312.92043930101],[-1120.71762182095,865.950445069073,3022.90415428717],[-934.709606956429,1343.15174829363,3531.74715171779],[-508.446139601147,1810.50155329256,4128.92431502735],[-194.900964760309,2238.89263875711,4875.15415810137],[-161.314815134348,2306.1411228006,5076.29751470877],[-1006.02173335708,1702.30096111889,4696.74584696285],[-1505.69767657945,1249.349675315,4295.48528359516],[-1312.91877700076,1768.3848494222,4929.93061086176],[-839.562495605176,2275.22911908467,5583.66855670164],[-644.120504836435,2780.03780608888,6209.78799029284],[-331.216535554908,3182.61872245197,6665.37298616124],[-557.413511912047,3220.18098036939,6777.6769115574],[-1148.10863985412,2629.74628842575,6300.40676012351],[-1588.11552776452,2157.12866587675,6038.12730259987],[-1268.86730032924,2518.44118111121,6412.07963518906],[-1073.5776406661,3005.67747630892,6991.33480333214],[-632.522679355985,3507.99742326551,7563.6798651999],[-224.967520599253,3995.37015499908,8182.56337281529],[-106.301989511587,4076.60123863455,8389.99992736892],[-898.387132268836,3494.94759886916,7850.5772367926],[-1593.1538601059,3067.31273755548,7453.59814929671],[-1251.77136527895,3496.55795944802,7991.91616198618],[-691.701345396839,4085.67726486249,8679.51078564659],[-232.547775273124,4630.85665398405,9473.4679959926],[248.224597352673,5038.88531235344,9937.3298836457],[55.210073231865,5151.95406759865,10096.462104619],[-822.854715765978,4563.29477677451,9518.85078927453],[-1272.09583152321,4110.6798361851,9243.10961728336],[-1137.62876819458,4364.1897174053,9576.72442049716],[-839.10389398376,4811.65267717736,10163.3422171123],[-598.576236663532,5240.91639257935,10657.5296573491],[-211.635530820873,5609.22243177006,11165.682627881],[-224.068467762845,5722.2771810625,11403.4997191457],[-928.331498811225,5133.15404330619,10724.0503442179],[-1362.43151276515,4706.89858900776,10317.0562801435],[-991.563588378427,5071.62018661469,10964.9179736419],[-320.881188871135,5531.27396726745,11378.164370436],[42.9569657084357,6060.04057677928,12003.8282165331],[282.548229343578,6416.71635968218,12493.7386831048],[158.472606430267,6516.38038598059,12901.2917543216],[-536.022688015102,5943.94352450065,12196.3368028729],[-1176.62997606344,5515.3353267067,12129.3708342011],[-841.530626238731,5857.76831351861,12768.161964262],[-517.756699760532,6289.32101118821,13199.0804950221],[-192.937491457444,6712.96598328889,13633.8351470986],[-305.392480569571,6763.53481805488,13873.545042413],[-472.576596259372,6754.11261383092,13882.256290489],[-1228.60487863346,6147.78371726657,13308.1284549692],[-1824.74776281344,5649.28195401016,12819.8505336518],[-1961.53384183929,5499.61100323236,12623.2949124241],[-2012.30320348538,5836.0047126626,13322.8730931571],[-1557.86103069363,6269.47631763018,13755.9774533917],[-1043.36423905729,6665.76477859973,14117.3799734581],[-1345.27321772077,6769.91616216581,14491.9762226306],[-2127.01338506606,6177.26640873673,13874.0991229775],[-2575.32815460919,5730.5737870826,13526.845400574],[-2335.58384004806,6080.73873961862,13927.0762217797],[-1551.68064577959,6503.89513437089,14572.3604471518],[-1414.50960311477,6927.00409510182,15000.6691329233],[-1014.14686055089,7364.84175366876,15550.0108273122],[-1073.06184244453,7501.63534398103,15820.4529067905],[-1817.86035499559,6974.36141885506,15339.7242927558],[-2282.97313679091,6550.03195923372,15141.6120947321],[-1925.20545160014,7025.83431860793,15550.9505950138],[-1546.42693492904,7579.74746853433,16368.8972067693],[-1213.23584024911,8081.62915196177,16681.2111415346],[-961.689399915922,8606.75918986218,17322.7579353022],[-721.355029201339,8789.98114158626,17565.5020633964],[-1688.78318092439,8215.48578213176,17067.6636229573],[-2158.63311254294,7841.89838590461,16757.5920889853],[-1546.55092084155,8476.2925600695,17716.2805816244],[null,null,null],[null,null,null],[null,null,null],[null,null,null]]]},"evals":["attrs.interactionModel"],"jsHooks":[]}</script>
+<div id="htmlwidget-1cbcbd38c550cd3618de" style="width:672px;height:480px;" class="dygraphs html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1cbcbd38c550cd3618de">{"x":{"attrs":{"title":"Cumulative Impact of Event (95% confidence level)","labels":["day","Cumulative Effect"],"legend":"auto","retainDateWindow":false,"axes":{"x":{"pixelsPerLabel":60}},"showRangeSelector":true,"rangeSelectorHeight":40,"rangeSelectorPlotFillColor":" #A7B1C4","rangeSelectorPlotStrokeColor":"#808FAB","interactionModel":"Dygraph.Interaction.defaultModel","customBars":true,"series":{"Cumulative Effect":{"axis":"y"}}},"scale":"daily","group":"ci","annotations":[],"shadings":[],"events":[{"pos":"2016-03-10T00:00:00.000Z","label":"TV Campaign","labelLoc":"top","color":"black","strokePattern":[7,3],"axis":"x"}],"format":"date","data":[["2016-01-01T00:00:00.000Z","2016-01-02T00:00:00.000Z","2016-01-03T00:00:00.000Z","2016-01-04T00:00:00.000Z","2016-01-05T00:00:00.000Z","2016-01-06T00:00:00.000Z","2016-01-07T00:00:00.000Z","2016-01-08T00:00:00.000Z","2016-01-09T00:00:00.000Z","2016-01-10T00:00:00.000Z","2016-01-11T00:00:00.000Z","2016-01-12T00:00:00.000Z","2016-01-13T00:00:00.000Z","2016-01-14T00:00:00.000Z","2016-01-15T00:00:00.000Z","2016-01-16T00:00:00.000Z","2016-01-17T00:00:00.000Z","2016-01-18T00:00:00.000Z","2016-01-19T00:00:00.000Z","2016-01-20T00:00:00.000Z","2016-01-21T00:00:00.000Z","2016-01-22T00:00:00.000Z","2016-01-23T00:00:00.000Z","2016-01-24T00:00:00.000Z","2016-01-25T00:00:00.000Z","2016-01-26T00:00:00.000Z","2016-01-27T00:00:00.000Z","2016-01-28T00:00:00.000Z","2016-01-29T00:00:00.000Z","2016-01-30T00:00:00.000Z","2016-01-31T00:00:00.000Z","2016-02-01T00:00:00.000Z","2016-02-02T00:00:00.000Z","2016-02-03T00:00:00.000Z","2016-02-04T00:00:00.000Z","2016-02-05T00:00:00.000Z","2016-02-06T00:00:00.000Z","2016-02-07T00:00:00.000Z","2016-02-08T00:00:00.000Z","2016-02-09T00:00:00.000Z","2016-02-10T00:00:00.000Z","2016-02-11T00:00:00.000Z","2016-02-12T00:00:00.000Z","2016-02-13T00:00:00.000Z","2016-02-14T00:00:00.000Z","2016-02-15T00:00:00.000Z","2016-02-16T00:00:00.000Z","2016-02-17T00:00:00.000Z","2016-02-18T00:00:00.000Z","2016-02-19T00:00:00.000Z","2016-02-20T00:00:00.000Z","2016-02-21T00:00:00.000Z","2016-02-22T00:00:00.000Z","2016-02-23T00:00:00.000Z","2016-02-24T00:00:00.000Z","2016-02-25T00:00:00.000Z","2016-02-26T00:00:00.000Z","2016-02-27T00:00:00.000Z","2016-02-28T00:00:00.000Z","2016-02-29T00:00:00.000Z","2016-03-01T00:00:00.000Z","2016-03-02T00:00:00.000Z","2016-03-03T00:00:00.000Z","2016-03-04T00:00:00.000Z","2016-03-05T00:00:00.000Z","2016-03-06T00:00:00.000Z","2016-03-07T00:00:00.000Z","2016-03-08T00:00:00.000Z","2016-03-09T00:00:00.000Z","2016-03-10T00:00:00.000Z","2016-03-11T00:00:00.000Z","2016-03-12T00:00:00.000Z","2016-03-13T00:00:00.000Z","2016-03-14T00:00:00.000Z","2016-03-15T00:00:00.000Z","2016-03-16T00:00:00.000Z","2016-03-17T00:00:00.000Z","2016-03-18T00:00:00.000Z","2016-03-19T00:00:00.000Z","2016-03-20T00:00:00.000Z","2016-03-21T00:00:00.000Z","2016-03-22T00:00:00.000Z","2016-03-23T00:00:00.000Z","2016-03-24T00:00:00.000Z","2016-03-25T00:00:00.000Z","2016-03-26T00:00:00.000Z","2016-03-27T00:00:00.000Z","2016-03-28T00:00:00.000Z","2016-03-29T00:00:00.000Z","2016-03-30T00:00:00.000Z","2016-03-31T00:00:00.000Z","2016-04-01T00:00:00.000Z","2016-04-02T00:00:00.000Z","2016-04-03T00:00:00.000Z","2016-04-04T00:00:00.000Z","2016-04-05T00:00:00.000Z","2016-04-06T00:00:00.000Z","2016-04-07T00:00:00.000Z","2016-04-08T00:00:00.000Z","2016-04-09T00:00:00.000Z","2016-04-10T00:00:00.000Z","2016-04-11T00:00:00.000Z","2016-04-12T00:00:00.000Z","2016-04-13T00:00:00.000Z","2016-04-14T00:00:00.000Z","2016-04-15T00:00:00.000Z","2016-04-16T00:00:00.000Z","2016-04-17T00:00:00.000Z","2016-04-18T00:00:00.000Z","2016-04-19T00:00:00.000Z","2016-04-20T00:00:00.000Z","2016-04-21T00:00:00.000Z","2016-04-22T00:00:00.000Z","2016-04-23T00:00:00.000Z","2016-04-24T00:00:00.000Z","2016-04-25T00:00:00.000Z","2016-04-26T00:00:00.000Z","2016-04-27T00:00:00.000Z","2016-04-28T00:00:00.000Z","2016-04-29T00:00:00.000Z","2016-04-30T00:00:00.000Z","2016-05-01T00:00:00.000Z","2016-05-02T00:00:00.000Z","2016-05-03T00:00:00.000Z","2016-05-04T00:00:00.000Z","2016-05-05T00:00:00.000Z","2016-05-06T00:00:00.000Z","2016-05-07T00:00:00.000Z","2016-05-08T00:00:00.000Z","2016-05-09T00:00:00.000Z","2016-05-10T00:00:00.000Z","2016-05-11T00:00:00.000Z","2016-05-12T00:00:00.000Z","2016-05-13T00:00:00.000Z","2016-05-14T00:00:00.000Z","2016-05-15T00:00:00.000Z","2016-05-16T00:00:00.000Z","2016-05-17T00:00:00.000Z","2016-05-18T00:00:00.000Z","2016-05-19T00:00:00.000Z","2016-05-20T00:00:00.000Z","2016-05-21T00:00:00.000Z","2016-05-22T00:00:00.000Z","2016-05-23T00:00:00.000Z","2016-05-24T00:00:00.000Z","2016-05-25T00:00:00.000Z","2016-05-26T00:00:00.000Z","2016-05-27T00:00:00.000Z","2016-05-28T00:00:00.000Z","2016-05-29T00:00:00.000Z","2016-05-30T00:00:00.000Z","2016-05-31T00:00:00.000Z","2016-06-01T00:00:00.000Z","2016-06-02T00:00:00.000Z","2016-06-03T00:00:00.000Z","2016-06-04T00:00:00.000Z","2016-06-05T00:00:00.000Z","2016-06-06T00:00:00.000Z","2016-06-07T00:00:00.000Z","2016-06-08T00:00:00.000Z","2016-06-09T00:00:00.000Z","2016-06-10T00:00:00.000Z","2016-06-11T00:00:00.000Z","2016-06-12T00:00:00.000Z","2016-06-13T00:00:00.000Z","2016-06-14T00:00:00.000Z","2016-06-15T00:00:00.000Z","2016-06-16T00:00:00.000Z","2016-06-17T00:00:00.000Z","2016-06-18T00:00:00.000Z","2016-06-19T00:00:00.000Z","2016-06-20T00:00:00.000Z","2016-06-21T00:00:00.000Z","2016-06-22T00:00:00.000Z","2016-06-23T00:00:00.000Z","2016-06-24T00:00:00.000Z","2016-06-25T00:00:00.000Z","2016-06-26T00:00:00.000Z","2016-06-27T00:00:00.000Z","2016-06-28T00:00:00.000Z","2016-06-29T00:00:00.000Z","2016-06-30T00:00:00.000Z","2016-07-01T00:00:00.000Z","2016-07-02T00:00:00.000Z","2016-07-03T00:00:00.000Z","2016-07-04T00:00:00.000Z","2016-07-05T00:00:00.000Z","2016-07-06T00:00:00.000Z","2016-07-07T00:00:00.000Z","2016-07-08T00:00:00.000Z","2016-07-09T00:00:00.000Z","2016-07-10T00:00:00.000Z","2016-07-11T00:00:00.000Z","2016-07-12T00:00:00.000Z","2016-07-13T00:00:00.000Z","2016-07-14T00:00:00.000Z","2016-07-15T00:00:00.000Z","2016-07-16T00:00:00.000Z","2016-07-17T00:00:00.000Z","2016-07-18T00:00:00.000Z","2016-07-19T00:00:00.000Z","2016-07-20T00:00:00.000Z","2016-07-21T00:00:00.000Z","2016-07-22T00:00:00.000Z","2016-07-23T00:00:00.000Z","2016-07-24T00:00:00.000Z","2016-07-25T00:00:00.000Z","2016-07-26T00:00:00.000Z","2016-07-27T00:00:00.000Z","2016-07-28T00:00:00.000Z","2016-07-29T00:00:00.000Z","2016-07-30T00:00:00.000Z","2016-07-31T00:00:00.000Z","2016-08-01T00:00:00.000Z","2016-08-02T00:00:00.000Z","2016-08-03T00:00:00.000Z","2016-08-04T00:00:00.000Z","2016-08-05T00:00:00.000Z","2016-08-06T00:00:00.000Z","2016-08-07T00:00:00.000Z","2016-08-08T00:00:00.000Z","2016-08-09T00:00:00.000Z","2016-08-10T00:00:00.000Z","2016-08-11T00:00:00.000Z","2016-08-12T00:00:00.000Z","2016-08-13T00:00:00.000Z","2016-08-14T00:00:00.000Z","2016-08-15T00:00:00.000Z","2016-08-16T00:00:00.000Z","2016-08-17T00:00:00.000Z","2016-08-18T00:00:00.000Z","2016-08-19T00:00:00.000Z","2016-08-20T00:00:00.000Z","2016-08-21T00:00:00.000Z","2016-08-22T00:00:00.000Z","2016-08-23T00:00:00.000Z","2016-08-24T00:00:00.000Z","2016-08-25T00:00:00.000Z","2016-08-26T00:00:00.000Z","2016-08-27T00:00:00.000Z","2016-08-28T00:00:00.000Z","2016-08-29T00:00:00.000Z","2016-08-30T00:00:00.000Z","2016-08-31T00:00:00.000Z","2016-09-01T00:00:00.000Z","2016-09-02T00:00:00.000Z","2016-09-03T00:00:00.000Z","2016-09-04T00:00:00.000Z","2016-09-05T00:00:00.000Z","2016-09-06T00:00:00.000Z","2016-09-07T00:00:00.000Z","2016-09-08T00:00:00.000Z","2016-09-09T00:00:00.000Z","2016-09-10T00:00:00.000Z","2016-09-11T00:00:00.000Z","2016-09-12T00:00:00.000Z","2016-09-13T00:00:00.000Z","2016-09-14T00:00:00.000Z","2016-09-15T00:00:00.000Z","2016-09-16T00:00:00.000Z","2016-09-17T00:00:00.000Z","2016-09-18T00:00:00.000Z","2016-09-19T00:00:00.000Z","2016-09-20T00:00:00.000Z","2016-09-21T00:00:00.000Z","2016-09-22T00:00:00.000Z","2016-09-23T00:00:00.000Z","2016-09-24T00:00:00.000Z","2016-09-25T00:00:00.000Z","2016-09-26T00:00:00.000Z","2016-09-27T00:00:00.000Z","2016-09-28T00:00:00.000Z","2016-09-29T00:00:00.000Z","2016-09-30T00:00:00.000Z"],[[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[-313.516205058491,457.442059074587,1234.12502530108],[-191.132972730804,880.974332257392,1956.19465727857],[27.3266599347116,1343.43419867862,2753.90492890439],[278.873721223048,1792.79625589248,3349.45497990992],[139.554082025876,1878.19725809067,3611.28898114519],[-643.462219764842,1309.69485169792,3198.73800201766],[-1201.24887444008,895.350999749891,2932.75376349836],[-954.366775153947,1331.20291605049,3504.01672092795],[-493.262195034637,1810.00024104556,4146.08158073557],[-171.051259990592,2278.62798961069,4757.86277029809],[25.944951602869,2708.24422706389,5424.43469589145],[4.03756955295103,2776.7623453307,5613.24271153129],[-815.779345986492,2174.21308267205,5153.12707386099],[-1249.30376692137,1722.60893432924,4880.17111112477],[-845.051212080318,2243.18365076765,5277.21463052556],[-370.802512452792,2751.66862858707,6051.61136074619],[-20.6759014493437,3258.03086101776,6571.03984359113],[242.814307443216,3662.4761123303,7198.69513289408],[202.473121493036,3701.86769620673,7435.99631488463],[-611.616584679985,3113.38770022971,6817.94193653949],[-1055.44069845745,2643.2331136734,6493.74356237178],[-930.305866445531,3006.87226046788,7121.13606267328],[-646.13010277893,3496.34132771436,7589.8410000322],[-368.498939013487,4000.77959591095,8261.37039731804],[-37.2221426139295,4490.18393762657,8839.14879725542],[-125.492493740341,4573.50546486705,8982.223431347],[-868.490888390224,3993.9231396853,8475.89218845952],[-1272.8704114398,3568.23831370426,8291.12545302694],[-804.558695853775,3999.51076073732,8745.69349439326],[-187.02835448191,4590.64744450228,9520.84188310086],[95.3065650040517,5137.67612913169,10152.2400787107],[272.796325751609,5547.84662160653,10788.3720604224],[135.851198755816,5663.13054343153,10764.7244921605],[-572.880713520601,5076.45305505954,10345.8591278405],[-1180.47162092978,4625.79354431873,10058.835929876],[-978.268763191969,4881.47016473603,10347.6124748321],[-744.025715657917,5331.22097838356,10728.4921051254],[-464.927238410804,5763.10425060382,11076.0314054966],[-300.448426579213,6133.99934892941,11627.4185509639],[-211.055858742999,6249.8237814598,11836.4146283096],[-964.188970890478,5663.57751913538,11487.1985382105],[-1525.89248758115,5240.50903679151,11400.0899230845],[-1283.05710251199,5608.44403430654,11702.8655102034],[-1028.02375428559,6071.37646391545,12289.2986584425],[-261.674961317214,6603.3790083463,12810.9396643766],[-304.392691552872,6963.44042816636,13156.5725462153],[-231.014994936268,7066.62135745556,13464.0633707456],[-824.152614516177,6497.80734029063,12861.1400219549],[-1134.1509134564,6073.0372350947,12582.7023585055],[-1045.48915925244,6419.4110691135,13216.278703389],[-646.832169659727,6854.82194506447,13665.7814267419],[-164.83353692852,7282.37524311279,14183.8522726612],[-268.908572251792,7337.04947771947,14234.5921667526],[-390.630920295516,7331.70845627913,14371.3482901356],[-974.002218119305,6729.22249496076,13844.4923378558],[-1475.58371301522,6234.75458158564,13601.2517278257],[-1704.30226010474,6089.20935373049,13648.0430651505],[-1376.68701856947,6429.63100153705,14143.3320995803],[-1101.61377977562,6867.1779622107,14757.9541819812],[-783.51387762939,7267.68800142052,15234.7331749965],[-781.781717517588,7376.20633804801,15369.2137039046],[-1397.06003701341,6787.71132652496,14864.4349937837],[-1978.66897377258,6345.20675674727,14706.0109767587],[-1667.15941230283,6699.79326421174,15073.8751325987],[-1326.81233154767,7127.3311351618,15629.8866395519],[-1119.68475048646,7554.69095546176,16225.3017691239],[-759.271902852139,7996.83442745285,16824.3283618665],[-500.647238251782,8137.90503290438,17218.6734131858],[-1075.30734806627,7615.11282891172,16730.4708072855],[-1640.46595423113,7195.44027904695,16284.0906008262],[-1145.34445640436,7675.66869672653,16600.8231213059],[-673.971909226035,8233.74574303877,17309.0752834334],[-332.013640008576,8740.02595857583,17757.9519913775],[-60.2782358444529,9269.31142560058,18666.9497311099],[77.2647346595477,9456.33965240457,18796.0371013662],[-750.043012682989,8885.63713217684,18422.1253455916],[-1136.35864660121,8515.84905323898,17984.628298289],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null]]]},"evals":["attrs.interactionModel"],"jsHooks":[]}</script>
 </div>
 <div id="automate" class="section level2">
 <h2>Automate?</h2>
@@ -1360,6 +1308,196 @@ dygraph(data=plot_data[,c(&#39;cum.effect&#39;, &#39;cum.effect.lower&#39;, &#39
 <li>Export Data Warehouse exports via secure FTP to a folder, then read the csv files into R.</li>
 <li>Build robust scripts that retry timeouts from the API and batch and recombine data over a long period.</li>
 </ol>
+</div>
+<div id="generating-web_data" class="section level1">
+<h1>Generating web_data</h1>
+<p>Throughout this site, examples and exercise use a data frame called <code>web_data</code>. That example data was initially built using Google Analytics data, and instructions for generating that data with your own Google Analytic data are on the <a href="http://www.dartistics.com/api-google-analytics.html">Google Analytics API</a> page.</p>
+<p>But, you’re reading about the Adobe Analytics API here, so we can assume you might want to do these same exercises with Adobe Analytics data. To do that, we can use <strong>Last Touch Channel</strong> (Adobe) in lieu of <strong>Default Channel Grouping</strong> (Google Analytics), as well as swap out some other values for comparable dimensions and metrics. If you are not using <strong>Marketing Channels</strong> in Adobe Analytics, then you will need to adjust the code below by replacing the <code>lasttouchchannel</code> dimension with the appropriate dimension.</p>
+<p>To do that, first follow the steps for one of the authentication options described earlier on this page. Once that is done, you can use the following overtime command to pull the base data.</p>
+<pre class="r"><code># reportsuite.id &lt;- [uncomment this line and insert your RSID]
+date.from &lt;- &quot;2016-01-01&quot;
+date.to &lt;- &quot;2016-08-01&quot;
+metrics &lt;- c(&quot;visits&quot;,&quot;pageviews&quot;,&quot;entries&quot;,&quot;bounces&quot;)
+elements &lt;- c(&quot;mobiledevicetype&quot;,&quot;lasttouchchannel&quot;)
+top &lt;- 10
+date.granularity &lt;- &quot;day&quot;
+
+web_data &lt;- QueueTrended(reportsuite.id, 
+                         date.from, date.to,
+                         metrics,
+                         elements,
+                         top = top)</code></pre>
+<p>This should give us a table that looks something like this:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">datetime</th>
+<th align="left">mobiledevicetype</th>
+<th align="left">lasttouchchannel</th>
+<th align="right">visits</th>
+<th align="right">pageviews</th>
+<th align="right">entries</th>
+<th align="right">bounces</th>
+<th align="left">segment.id</th>
+<th align="left">segment.name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">Other</td>
+<td align="left">Natural Search</td>
+<td align="right">2839</td>
+<td align="right">13261</td>
+<td align="right">2776</td>
+<td align="right">1077</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">Other</td>
+<td align="left">Paid Search</td>
+<td align="right">1499</td>
+<td align="right">9755</td>
+<td align="right">1479</td>
+<td align="right">546</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">Other</td>
+<td align="left">Direct</td>
+<td align="right">1448</td>
+<td align="right">6864</td>
+<td align="right">1448</td>
+<td align="right">802</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">Other</td>
+<td align="left">Natural Search-Bloomreach</td>
+<td align="right">1080</td>
+<td align="right">2901</td>
+<td align="right">1042</td>
+<td align="right">602</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">Other</td>
+<td align="left">Referring Domains</td>
+<td align="right">502</td>
+<td align="right">2192</td>
+<td align="right">479</td>
+<td align="right">234</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">Other</td>
+<td align="left">Internal</td>
+<td align="right">238</td>
+<td align="right">1007</td>
+<td align="right">238</td>
+<td align="right">79</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p>We need to do a little bit of adjustments to the data to, well, Google-ify it – make it structurally match what’s expected for the other examples on this site.</p>
+<p>First, let’s drop the <code>segment.id</code> and <code>segment.name</code> columns and rename the columns:</p>
+<pre class="r"><code>library(dplyr)  # We&#39;ll use the select() function from dplyr
+
+web_data &lt;- select(web_data,-segment.id,-segment.name)
+colnames(web_data) &lt;- c(&quot;date&quot;,&quot;deviceCategory&quot;,&quot;channelGrouping&quot;,&quot;sessions&quot;,
+                        &quot;pageviews&quot;,&quot;entrances&quot;,&quot;bounces&quot;)</code></pre>
+<p>And, now, we need to do a few additional things <em>just</em> to make the data match the sort of data that comes out of a similar query to Google Analytics, which will make the object more compatible with other examples on this site.</p>
+<pre class="r"><code># Change the `date` format to be `Date` rather than `POSIXlt.`
+web_data$date &lt;- as.Date(web_data$date)
+
+# Change the `Other` value to be `Desktop` for `deviceCategory.`
+web_data[web_data$deviceCategory==&quot;Other&quot;,&quot;deviceCategory&quot;] = &quot;Desktop&quot;
+
+#Change `Natural Search` to `Organic Search` for `channelGrouping.`
+web_data[web_data$channelGrouping==&quot;Natural Search&quot;,&quot;channelGrouping&quot;] = &quot;Organic Search&quot;</code></pre>
+<p>This should give us a table that looks something like this:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">date</th>
+<th align="left">deviceCategory</th>
+<th align="left">channelGrouping</th>
+<th align="right">sessions</th>
+<th align="right">pageviews</th>
+<th align="right">entrances</th>
+<th align="right">bounces</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">Desktop</td>
+<td align="left">Organic Search</td>
+<td align="right">2839</td>
+<td align="right">13261</td>
+<td align="right">2776</td>
+<td align="right">1077</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">Desktop</td>
+<td align="left">Paid Search</td>
+<td align="right">1499</td>
+<td align="right">9755</td>
+<td align="right">1479</td>
+<td align="right">546</td>
+</tr>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">Desktop</td>
+<td align="left">Direct</td>
+<td align="right">1448</td>
+<td align="right">6864</td>
+<td align="right">1448</td>
+<td align="right">802</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">Desktop</td>
+<td align="left">Natural Search-Bloomreach</td>
+<td align="right">1080</td>
+<td align="right">2901</td>
+<td align="right">1042</td>
+<td align="right">602</td>
+</tr>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">Desktop</td>
+<td align="left">Referring Domains</td>
+<td align="right">502</td>
+<td align="right">2192</td>
+<td align="right">479</td>
+<td align="right">234</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">Desktop</td>
+<td align="left">Internal</td>
+<td align="right">238</td>
+<td align="right">1007</td>
+<td align="right">238</td>
+<td align="right">79</td>
+</tr>
+</tbody>
+</table>
+<p>And, this <em>should</em> be a data frame that can now be used in other examples on this site.</p>
 </div>
 
 

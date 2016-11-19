@@ -1,5 +1,5 @@
 ---
-title: "Analytics APIs"
+title: "The Adobe Analytics API"
 output:
   html_document:
     toc: true
@@ -8,30 +8,35 @@ output:
 
 ```{r analytics-apis setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
 ```
 
 Adobe Analytics access is supplied via Randy Zwitch's [RSiteCatalyst](http://randyzwitch.com/rsitecatalyst/) library.
 
 Authentication is a little harder to configure for Adobe so a live example is not shown here, but steps to download data are shown below.
 
-## Installation
+# Installation
 
 ```r
 ## This installs a package for downloading Adobe Analytics data
 if(!require(RSiteCatalyst)) install.packages("RSiteCatalyst")
 ```
 
-## Authentication (New)
+# Authentication
+
+There are two options for authenticating with Adobe Analytics. The newer way uses OAuth2, which is objectively "better" from a security and general elegance perspective, but it's a bit more involved to set up. The older way simply relies on a couple of keys (a user name and a "secret") and, at some point, will likely be deprecated.
+
+## Authentication - New
 
 This is the new OAuth2 method of authentication.  Use this one if you can.
 
-Link your Adobe Analytics login to the Adobe ID account to use this method of signin. 
+First, you will need to link your Adobe Analytics login to the Adobe ID account to use this method of signin. 
 
 ### Create Application
 
 If you have no application for your Adobe Analytics account, here is how to make one:
 
-1. Create an app by visiting developer console and navigating to [Developer > Applications](https://marketing.adobe.com/developer/applications)
+1. Create an app by visiting the Adobe developer console and navigating to [Developer > Applications](https://marketing.adobe.com/developer/applications)
 2. Select "Web Server (Authorization Code)"
 3. Name the application
 4. Leave the Redirect Uri field blank.
@@ -42,9 +47,10 @@ You should then see this screen to grant permission after running `SCAuth`
 
 ![](images/adobe-app-oauth-permission.png)
 
-## Authentication (Old)
 
-This is the deprecated method and will dissappear 'soon'.
+## Authentication - Old
+
+This is the deprecated method and will dissappear "soon."
 
 Get the Web Service key under the Adobe Analytics Account Information page.
 
@@ -55,7 +61,7 @@ Get the Web Service key under the Adobe Analytics Account Information page.
 
 If you use this method, then you authenticate via:
 
-```{r}
+```{r message=FALSE, results='hide'}
 library(RSiteCatalyst)
 
 key <- Sys.getenv("ADOBE_KEY_OLD")
@@ -64,13 +70,11 @@ secret <- Sys.getenv("ADOBE_SECRET_OLD")
 SCAuth(key, secret)
 ```
 
-## Recording secret keys
+### Recording secret keys
 
 I save these values to a `.Renviron` file in my home directory to keep them safe and call then via the commands below (this stops them being accidently put on github for example)
 
-### Example .Renviron file
-
-This is in my root directory: `~/.Renviron`
+As an example, this is the `.Renviron` file in my root directory: `~/.Renviron`
 
 ```
 ADOBE_KEY="a7xxxxx639-iih-nordic-r"
@@ -79,7 +83,7 @@ ADOBE_KEY_OLD="mark:XXXXXX"
 ADOBE_SECRET_OLD="74b46625xxxxx7e89dbe6e0"
 ```
 
-## Calling Adobe Analytics
+# Calling Adobe Analytics
 
 Once you have setup your authentication method, you can call data using the below.
 
@@ -150,11 +154,13 @@ reportsuite.id <- "grecodemystified"
 
 ## Overtime
 
-Returns an overtime report.  This is similar to the key metrics report in that the only granularity allowed is time.
+Returns an overtime report. Or, rather, maybe this is "over time," since it's trending data across a time period, and we're not paying time-and-a-half to the API to get the data.
+
+This is similar to the key metrics report in that the only granularity allowed is time.
 
 QueueOvertime requires a start and end date, a reportsuite ID, and a character vector of metrics.
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, message=FALSE, results='hide'}
 metrics <- c("visits","uniquevisitors","pageviews")
 
 ## wrap in system.time to report how long it takes
@@ -164,7 +170,7 @@ head(overtime.data)
 
 You may also wish to set any of the 5 optional named parameters.
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, message=FALSE, results='hide'}
 metrics <- c("visits","uniquevisitors","pageviews")
 date.granularity <- "hour"
 segment.id <- "Visit_Natural_Search"
@@ -202,7 +208,7 @@ Returns a ranked report. This is an ordered list of elements and associated metr
 
 QueueRanked requires a start and end date, a reportsuite ID, a character vector of elements and a character vector of metrics.
 
-```{r}
+```{r queueranked, message=FALSE, results='hide'}
 metrics <- c("visits","uniquevisitors","pageviews","event1")
 elements <- c("page","geoCountry","geoCity")
 
@@ -211,7 +217,7 @@ ranked.data <- QueueRanked(reportsuite.id, date.from, date.to, metrics, elements
 
 You may also wish to set any of the 6 optional named parameters. The 1.4 API only supports this for the first element specified. In the example below, selected applies to the first element, page.
 
-```{r, warning=FALSE}
+```{r queueranked optional, warning=FALSE, message=FALSE, results='hide'}
 metrics <- c("visits","uniquevisitors","pageviews","event1","event2")
 elements <- c("page","geoCountry","geoCity")
 top <- 10
@@ -255,7 +261,7 @@ Returns a trended report. This is an ordered list of elements and associated met
 
 QueueTrended requires a start and end date, a reportsuite ID, a character vector of elements and a character vector of metrics.
 
-```{r}
+```{r queuetrended, message=FALSE, results='hide'}
 metrics <- c("visits","uniquevisitors","pageviews","event1")
 elements <- c("page","geoCountry","geoCity")
 
@@ -265,7 +271,7 @@ trended.data <- QueueTrended(reportsuite.id, date.from, date.to, metrics, elemen
 
 You may also wish to set any of the 7 optional named parameters. As with `QueueRanked()` the 1.4 API only supports selected for the first element specified.
 
-```{r}
+```{r queuetrended optional, message=FALSE, results='hide'}
 metrics <- c("visits","uniquevisitors","pageviews","event1")
 elements <- c("page","geoCountry","geoCity")
 top <- 100
@@ -309,7 +315,7 @@ Returns a pathing report. This is an ordered list of paths matching the specifie
 
 QueuePathing requires a start and end date, a reportsuite ID, a single element, a single metric and a pattern of element values that defined the path.
 
-```{r}
+```{r pathing, message=FALSE, results='hide'}
 metric <- "pageviews"
 element <- "page"
 pattern <- c("excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/",
@@ -341,7 +347,7 @@ Returns a fallout report. This is a pathed list of elements, with fallout values
 
 QueuePathing requires a start and end date, a reportsuite ID, a single element, a character vector of metrics and a character vector of element values that defined the checkpoints.
 
-```{r}
+```{r fallout, message=FALSE, results='hide'}
 metrics <- "pageviews"
 element <- "page"
 checkpoints <- c("excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/",
@@ -391,7 +397,7 @@ We require sessions in the Natural Search traffic segment trended over time.
 
 ## Download sample
 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, results='hide'}
 date.from <- "2016-01-01"
 date.to <- "2016-09-30"
 reportsuite.id <- "grecodemystified"
@@ -435,7 +441,7 @@ plot(model_data, type = "l")
 
 We will now use the [CausalImpact](https://google.github.io/CausalImpact/) package to test the effect of a pretend TV campaign starting around March 10th
 
-```{R, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE}
 ## install CausalImpact if you don't already have it
 ## https://google.github.io/CausalImpact/
 
@@ -508,3 +514,86 @@ In that instance, other strategies used are, in rough order of performance:
     + R is also integrated into Spark, so Hadoop/SparkR integrations are used.
 2. Export Data Warehouse exports via secure FTP to a folder, then read the csv files into R.
 3. Build robust scripts that retry timeouts from the API and batch and recombine data over a long period.
+
+# Generating web_data
+
+Throughout this site, examples and exercise use a data frame called `web_data`. That example data was initially built using Google Analytics data, and instructions for generating that data with your own Google Analytic data are on the [Google Analytics API](http://www.dartistics.com/api-google-analytics.html) page.
+
+But, you're reading about the Adobe Analytics API here, so we can assume you might want to do these same exercises with Adobe Analytics data. To do that, we can use **Last Touch Channel** (Adobe) in lieu of **Default Channel Grouping** (Google Analytics), as well as swap out some other values for  comparable dimensions and metrics. If you are not using **Marketing Channels** in Adobe Analytics, then you will need to adjust the code below by replacing the `lasttouchchannel` dimension with the appropriate dimension.
+
+To do that, first follow the steps for one of the authentication options described earlier on this page. Once that is done, you can use the following overtime command to pull the base data.
+
+```{r base_settings, echo=FALSE, eval=TRUE, message=FALSE, results='hide'}
+# Unfortunately, Greco, Inc. doesn't use Marketing Channels, so this cuts
+# over to a different account. It'll be a bit of a pain to rebuild this file,
+# I realize. Hopefully, we won't need to do that very often!
+
+reportsuite.id <- "mscprod"
+key <- Sys.getenv("ADOBE_KEY_OLD_ALT")
+secret <- Sys.getenv("ADOBE_SECRET_OLD_ALT")
+
+SCAuth(key, secret)
+
+```
+
+
+```{r web_data, message=FALSE, results='hide'}
+
+# reportsuite.id <- [uncomment this line and insert your RSID]
+date.from <- "2016-01-01"
+date.to <- "2016-08-01"
+metrics <- c("visits","pageviews","entries","bounces")
+elements <- c("mobiledevicetype","lasttouchchannel")
+top <- 10
+date.granularity <- "day"
+
+web_data <- QueueTrended(reportsuite.id, 
+                         date.from, date.to,
+                         metrics,
+                         elements,
+                         top = top)
+```
+
+This should give us a table that looks something like this:
+
+```{r raw web_data, echo=FALSE, message=FALSE}
+kable(head(web_data))
+```
+
+
+
+We need to do a little bit of adjustments to the data to, well, Google-ify it -- make it structurally match what's expected for the other examples on this site.
+
+First, let's drop the `segment.id` and `segment.name` columns and rename the columns:
+
+```{r web_data cleanup 1, message=FALSE, results='hide'}
+library(dplyr)  # We'll use the select() function from dplyr
+
+web_data <- select(web_data,-segment.id,-segment.name)
+colnames(web_data) <- c("date","deviceCategory","channelGrouping","sessions",
+                        "pageviews","entrances","bounces")
+
+```
+
+And, now, we need to do a few additional things _just_ to make the data match the sort of data that comes out of a similar query to Google Analytics, which will make the object more compatible with other examples on this site.
+
+```{r web_data cleanup 2, message=FALSE, results='hide'}
+
+# Change the `date` format to be `Date` rather than `POSIXlt.`
+web_data$date <- as.Date(web_data$date)
+
+# Change the `Other` value to be `Desktop` for `deviceCategory.`
+web_data[web_data$deviceCategory=="Other","deviceCategory"] = "Desktop"
+
+#Change `Natural Search` to `Organic Search` for `channelGrouping.`
+web_data[web_data$channelGrouping=="Natural Search","channelGrouping"] = "Organic Search"
+
+```
+
+This should give us a table that looks something like this:
+
+```{r cleaned web_data, echo=FALSE, message=FALSE}
+kable(head(web_data))
+```
+
+And, this _should_ be a data frame that can now be used in other examples on this site.

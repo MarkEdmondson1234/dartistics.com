@@ -387,14 +387,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h2>Simple linear regression</h2>
 <p>Simple linear regression is performed between two variables, of the form:</p>
 <pre><code>y = Ax + e</code></pre>
-<p>Where <code>y</code> is the metric you want to predict (<em>dependent variable</em>), <code>x</code> the metric you want to use to predict <code>y</code> (<em>regressors/predictors</em>), <code>A</code> being the <em>regression coefficient</em> of variable <code>x</code> and <code>e</code> being the bit not predicted, sometimes called <em>noise</em>.</p>
-<p>This you may also recognise as the equation for a straight line on a x-y plot, where A is the slope and e is the intercept, and that is pretty much what linear regression is, where the technique of least-squares is used to fit a line to some points.</p>
+<p>Where <code>y</code> is the metric you want to predict (<em>dependent variable</em>), <code>x</code> a vector of metrics you want to use to predict <code>y</code> (<em>regressors/predictors</em>), <code>A</code> is the matrix of <em>regression coefficients</em> of for the variables in <code>x</code> and <code>e</code> being the bit not predicted, sometimes called <em>noise</em>.</p>
+<p>In two dimensions this is the same as</p>
+<pre><code>y = mx + c + e</code></pre>
+<p>Which you may recognise as the equation for a straight line on a x-y plot, where m is the slope, c is the intercept, and e the random noise.</p>
+<p>In three or more dimensions this expands to</p>
+<pre><code>y = a_0 + a_1 * x_1 + a_2 * x_2 + ... + a_n * x_n</code></pre>
+<p>Where <code>a_0</code> is the intercept, <code>a_1</code>, <code>a_2</code>, etc. are the regression coefficients and <code>x_1</code>, <code>x_2</code> etc. are the regressions/predictors.</p>
+<p>That is pretty much what ordinary linear regression is, where the technique of least-squares is used to fit a line/plane to some points.</p>
 <blockquote>
 <p>An example applied to digital marketing would be predicting transactions from sessions. The regression coefficient in this case would represent a derived conversion rate.</p>
 </blockquote>
 <div id="example-with-search-console-impressions" class="section level3">
 <h3>Example with Search Console Impressions</h3>
-<p>If you already have a conversion rate, there isn’t much to gain from creating another via linear regression, but in many cases you don’t have that linked up view which is where regression can come into play. An example below looks for a relationship to a website’s SEO impressions in Google to the amount of transactions that day.</p>
+<p>If you already have a conversion rate, there isn’t much to gain from creating another via linear regression, but in many cases you don’t have that linked up view which is where regression can come into play. An example below looks for a relationship to a website’s SEO impressions in Google to the amount of transactions that day. This example is in two dimensions which makes it much easier to plot charts showing what is going on.</p>
 <p>For this example we shall use the dataset <code>search_console_plus_ga.csv</code>, which is two datasets joined on date - SEO impressions and other metrics from Search Console via the <code>searchConsoleR</code> package, and Google Analytics total sessions and transactions from <code>googleAnalyticsR</code></p>
 <pre class="r"><code>library(knitr) # nice tables
 sc_ga_data &lt;- read.csv(&quot;./data/search_console_plus_ga.csv&quot;, stringsAsFactors = FALSE)

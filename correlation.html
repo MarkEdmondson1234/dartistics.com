@@ -397,7 +397,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h2>Performing correlation analysis in R</h2>
 <p>The base function <code>cor()</code> will perform correlations on a <code>data.frame</code>. Let’s give this a go with some data.</p>
 <div style="background-color: #cce6ff; font-style: italic; padding: 10px 10px 10px 10px;">
-<p>This exercise requires having a <code>web_data</code> data frame. You can either load up some sample data by completing the <a href="exercise2-io.html">I/O Exercise</a> (which is what is shown in the step-by-step instructions below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the <a href="api-google-analytics.html">Google Analytics API page</a>.</p>
+<p>This exercise requires having a <code>web_data</code> data frame. You can either load up some sample data by completing the <a href="exercise2-io.html">I/O Exercise</a> (which is what is shown in the step-by-step instructions below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the <a href="api-google-analytics.html">Google Analytics API page</a>. <em>Or</em>, if you have access to an Adobe Analytics account, then you can use your own data by following the <strong>Generating web_data</strong> steps on the <a href="api-adobe-analytics.html#generating_web_data">Adobe Analytics API page</a>.</p>
 Once you have a <code>web_data</code> data frame to work with, the command <code>head(web_data)</code> should return a table that, at least structurally, looks something like this:
 </div>
 <table>
@@ -753,8 +753,9 @@ kable(cor_table)</code></pre>
 <blockquote>
 <p>Correlation has help us zero in on possibly interesting relationships</p>
 </blockquote>
-<pre class="r"><code>library(ggplot2)
-gg &lt;- ggplot(data = pivoted) + 
+<pre class="r"><code>library(ggplot2)</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.3.2</code></pre>
+<pre class="r"><code>gg &lt;- ggplot(data = pivoted) + 
       theme_minimal() + 
       ggtitle(&quot;Paid (blue) vs Organic (green) search&quot;)
 gg &lt;- gg + 

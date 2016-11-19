@@ -1,5 +1,5 @@
 <div style= "background-color: #cce6ff; font-style: italic; padding: 10px 10px 10px 10px;">
-This exercise requires having a `web_data` data frame. You can either load up some sample data by completing the [I/O Exercise](exercise2-io.html) (which is what is shown in the step-by-step instructions below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the [Google Analytics API page](api-google-analytics.html).
+This exercise requires having a `web_data` data frame. You can either load up some sample data by completing the [I/O Exercise](exercise2-io.html) (which is what is shown in the step-by-step instructions below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the [Google Analytics API page](api-google-analytics.html). _Or_, if you have access to an Adobe Analytics account, then you can use your own data by following the **Generating web_data** steps on the [Adobe Analytics API page](api-adobe-analytics.html#generating_web_data).
 
 Once you have a `web_data` data frame to work with, the command `head(web_data)` should return a table that, at least structurally, looks something like this:</div>
 
