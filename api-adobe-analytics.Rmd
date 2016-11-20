@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
 ```
 
-Adobe Analytics access is supplied via Randy Zwitch's [RSiteCatalyst](http://randyzwitch.com/rsitecatalyst/) library.
+Adobe Analytics access is supplied via Randy Zwitch's [RSiteCatalyst](http://randyzwitch.com/RSiteCatalyst/) library. There are _tons_ of explanations and examples in the [content that Randy created for the library](http://randyzwitch.com/RSiteCatalyst/).
 
 Authentication is a little harder to configure for Adobe so a live example is not shown here, but steps to download data are shown below.
 
