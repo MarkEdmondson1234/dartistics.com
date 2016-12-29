@@ -15,7 +15,7 @@ Some of the keys we covered early in the day and then have repeated already to t
 * **The Console vs. Scripts** -- you will curse VBA for not having this capability, should you ever get back into it!
 * **Packages** -- they have to first be installed (`install.packages()`) and then have to be loaded (`library()`) to use them.
 * **Help!(?)** -- to get help on a function, simply type `?` and then the function name.
-* **Case Sensitivity** -- R is case-sEnsItiVe. This can trip you up. But, it's a good reason to follow a consistent _coding style_.
+* **Case Sensitivity** -- R is case-sEnsItiVe. This can trip you up. But, it's a good reason to follow a consistent [coding style](habits.html).
 * **<-** -- to assign a value (or function) to an object, use `<-` rather than `=`.
 
 ### Possibly Starting to Sink In
@@ -26,7 +26,7 @@ Beyond the basics, we covered other topics that can take a while to wrap your he
 * **Coercion** -- this is simply a fancy way of saying "you can often convert a value from one class to another" using `as.` functions (`as.character()`, `as.numeric()`, etc.)
 * **Vectors** -- vectors are simply a set of values with the same atomic class.
 * **Data Frames** -- data frames are super handy and are like an Excel spreadsheet on steroids; the one catch is that each column in a data frame can only be a single atomic class.
-* **Lists** -- lists are like data frames...but way more confusing. They can be variable length, have nested values, and have all sorts of combinations of classes. They are confusing...but also hold much of the power of R.
+* **Lists** -- lists are like data frames...but way more confusing. They can hold multiple elements of variable length, have nested values, and have all sorts of combinations of classes. They are confusing...but also hold much of the power of R.
 * **Subsetting** -- there are _many_ ways to subset data, including using the `$` operator, using `[]` notation, and doing all manner of things inside those `[]`. There is also `dplyr()`...
 
 ### Almost Certainly "More Study Required"

@@ -2,7 +2,7 @@
 title: "Base plots"
 ---
 
-Whilst you will likely get sexier plots using other libraries, sometimes you just need to quickly peek or see the shape of your data without going through all the other sytax.  This chapter hopefully should give you some tools to quickly make exploratory plots in base R.
+Whilst you will likely get sexier plots using other libraries, sometimes you just need to quickly peek or see the shape of your data without going through all the other syntax.  This chapter hopefully should give you some tools to quickly make exploratory plots in base R.
 
 There are lots of guides out there for base R plots, as a start try [Quick-R's Basic Graphs](http://www.statmethods.net/graphs/) and [R Base plots - an idiots guide](http://rstudio-pubs-static.s3.amazonaws.com/7953_4e3efd5b9415444ca065b1167862c349.html).
 
@@ -39,7 +39,7 @@ pivoted[is.na(pivoted)] <- 0
 
 ## The function plot()
 
-`plot()` is actually a gateway to many different types of plots, using R's class system.  In most cases R will try to judge what you want to see when you pass an object to plot and react occrdingly, although in some cases you may want to start adding customisations.  
+`plot()` is actually a gateway to many different types of plots, using R's class system.  In most cases R will try to judge what you want to see when you pass an object to plot and react accordingly, although in some cases you may want to start adding customisations.  
 
 For instance, passing a single vector produces a scatterplot, with the x-axis being the position in the vector:
 
@@ -50,7 +50,7 @@ plot(sc_ga_data$sessions)
 ## make it a line graph
 plot(sc_ga_data$sessions, type = "l")
 
-## plot against date - will error if you pass in a character Date, needs Date class
+## plot against date - will error if you pass in a vector of class character, needs Date class
 plot(as.Date(sc_ga_data$date), sc_ga_data$sessions, type = "l", main = "Line plot of date vs sessions")
 ```
 

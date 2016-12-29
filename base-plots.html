@@ -19,12 +19,11 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="site_libs/highlight/default.css"
-      type="text/css" />
-<script src="site_libs/highlight/highlight.js"></script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -151,7 +150,6 @@ $(document).ready(function () {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
@@ -378,7 +376,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 
 
-<p>Whilst you will likely get sexier plots using other libraries, sometimes you just need to quickly peek or see the shape of your data without going through all the other sytax. This chapter hopefully should give you some tools to quickly make exploratory plots in base R.</p>
+<p>Whilst you will likely get sexier plots using other libraries, sometimes you just need to quickly peek or see the shape of your data without going through all the other syntax. This chapter hopefully should give you some tools to quickly make exploratory plots in base R.</p>
 <p>There are lots of guides out there for base R plots, as a start try <a href="http://www.statmethods.net/graphs/">Quick-R’s Basic Graphs</a> and <a href="http://rstudio-pubs-static.s3.amazonaws.com/7953_4e3efd5b9415444ca065b1167862c349.html">R Base plots - an idiots guide</a>.</p>
 <p>For this chapter, we’ll use the Search Console + GA data.</p>
 <div id="loading-datasets" class="section level2">
@@ -402,7 +400,7 @@ pivoted[is.na(pivoted)] &lt;- 0</code></pre>
 </div>
 <div id="the-function-plot" class="section level2">
 <h2>The function plot()</h2>
-<p><code>plot()</code> is actually a gateway to many different types of plots, using R’s class system. In most cases R will try to judge what you want to see when you pass an object to plot and react occrdingly, although in some cases you may want to start adding customisations.</p>
+<p><code>plot()</code> is actually a gateway to many different types of plots, using R’s class system. In most cases R will try to judge what you want to see when you pass an object to plot and react accordingly, although in some cases you may want to start adding customisations.</p>
 <p>For instance, passing a single vector produces a scatterplot, with the x-axis being the position in the vector:</p>
 <pre class="r"><code>## a simple scatterplot
 plot(sc_ga_data$sessions)</code></pre>
@@ -410,7 +408,7 @@ plot(sc_ga_data$sessions)</code></pre>
 <pre class="r"><code>## make it a line graph
 plot(sc_ga_data$sessions, type = &quot;l&quot;)</code></pre>
 <p><img src="base-plots_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
-<pre class="r"><code>## plot against date - will error if you pass in a character Date, needs Date class
+<pre class="r"><code>## plot against date - will error if you pass in a vector of class character, needs Date class
 plot(as.Date(sc_ga_data$date), sc_ga_data$sessions, type = &quot;l&quot;, main = &quot;Line plot of date vs sessions&quot;)</code></pre>
 <p><img src="base-plots_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
 <p>Once you have a plot, there are some functions such as <code>abline()</code>, <code>lines()</code>, and <code>points()</code> that when you run on the next line will appear over the previous plot:</p>
@@ -465,8 +463,11 @@ title(xlab = &quot;2016 Weeks&quot;)</code></pre>
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
 
 

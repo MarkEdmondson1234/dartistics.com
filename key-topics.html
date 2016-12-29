@@ -19,12 +19,11 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="site_libs/highlight/default.css"
-      type="text/css" />
-<script src="site_libs/highlight/highlight.js"></script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -151,7 +150,6 @@ $(document).ready(function () {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
@@ -391,7 +389,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li><strong>The Console vs. Scripts</strong> – you will curse VBA for not having this capability, should you ever get back into it!</li>
 <li><strong>Packages</strong> – they have to first be installed (<code>install.packages()</code>) and then have to be loaded (<code>library()</code>) to use them.</li>
 <li><strong>Help!(?)</strong> – to get help on a function, simply type <code>?</code> and then the function name.</li>
-<li><strong>Case Sensitivity</strong> – R is case-sEnsItiVe. This can trip you up. But, it’s a good reason to follow a consistent <em>coding style</em>.</li>
+<li><strong>Case Sensitivity</strong> – R is case-sEnsItiVe. This can trip you up. But, it’s a good reason to follow a consistent <a href="habits.html">coding style</a>.</li>
 <li><strong>&lt;-</strong> – to assign a value (or function) to an object, use <code>&lt;-</code> rather than <code>=</code>.</li>
 </ul>
 </div>
@@ -403,7 +401,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li><strong>Coercion</strong> – this is simply a fancy way of saying “you can often convert a value from one class to another” using <code>as.</code> functions (<code>as.character()</code>, <code>as.numeric()</code>, etc.)</li>
 <li><strong>Vectors</strong> – vectors are simply a set of values with the same atomic class.</li>
 <li><strong>Data Frames</strong> – data frames are super handy and are like an Excel spreadsheet on steroids; the one catch is that each column in a data frame can only be a single atomic class.</li>
-<li><strong>Lists</strong> – lists are like data frames…but way more confusing. They can be variable length, have nested values, and have all sorts of combinations of classes. They are confusing…but also hold much of the power of R.</li>
+<li><strong>Lists</strong> – lists are like data frames…but way more confusing. They can hold multiple elements of variable length, have nested values, and have all sorts of combinations of classes. They are confusing…but also hold much of the power of R.</li>
 <li><strong>Subsetting</strong> – there are <em>many</em> ways to subset data, including using the <code>$</code> operator, using <code>[]</code> notation, and doing all manner of things inside those <code>[]</code>. There is also <code>dplyr()</code>…</li>
 </ul>
 </div>
@@ -437,8 +435,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
 
 

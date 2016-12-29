@@ -19,12 +19,11 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="site_libs/highlight/default.css"
-      type="text/css" />
-<script src="site_libs/highlight/highlight.js"></script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -151,7 +150,6 @@ $(document).ready(function () {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
@@ -406,7 +404,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <div id="workflow" class="section level2">
 <h2>Workflow</h2>
 <p><em>This example requires having a <code>web_data</code> data frame. You can either load up some sample data by completing the <a href="exercise2-io.html">I/O Exercise</a> (which is what is shown in the details below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the <a href="api-google-analytics.html">Google Analytics API page</a>.</em></p>
-<p>Once you have a <code>web_data</code> data frame to work with, the command <code>head(web_data</code> should return a table that, at least structurally, looks something like this:</p>
+<pre><code>## Warning: package &#39;knitr&#39; was built under R version 3.2.5</code></pre>
+<p>Once you have a <code>web_data</code> data frame to work with, the command <code>head(web_data)</code> should return a table that, at least structurally, looks something like this:</p>
 <pre class="r"><code>kable(head(web_data))</code></pre>
 <table>
 <thead>
@@ -489,8 +488,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li>First get your data ready and tidy. Whilst its possible to use “wide” data, I find it easiest to always start with tidy “long” data, so you can quickly repeat what you have learnt before.</li>
 </ol>
 <pre class="r"><code>## To date I have been using reshape2&#39;s melt() to make the long data:
-library(reshape2)
-web_data_long &lt;- melt(web_data)
+library(reshape2)</code></pre>
+<pre><code>## Warning: package &#39;reshape2&#39; was built under R version 3.2.5</code></pre>
+<pre class="r"><code>web_data_long &lt;- melt(web_data)
 head(web_data_long)</code></pre>
 <pre><code>##         date channelGrouping deviceCategory variable value
 ## 1 2016-01-01         (Other)        desktop        X     1
@@ -500,8 +500,9 @@ head(web_data_long)</code></pre>
 ## 5 2016-01-01          Direct         mobile        X     5
 ## 6 2016-01-01          Direct         tablet        X     6</code></pre>
 <pre class="r"><code>## But you should (and I) use the newer tidyr() package and use gather() instead:
-library(tidyr)
-## call the key column &#39;variable&#39; and the value colum &#39;value&#39; and 
+library(tidyr)</code></pre>
+<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.2.5</code></pre>
+<pre class="r"><code>## call the key column &#39;variable&#39; and the value colum &#39;value&#39; and 
 ## gather all variables apart from date, channelGrouping and deviceCategory
 web_data_tidy &lt;- web_data %&gt;% gather(variable, value, -date, -channelGrouping, -deviceCategory)
 head(web_data_tidy)</code></pre>
@@ -513,7 +514,7 @@ head(web_data_tidy)</code></pre>
 ## 5 2016-01-01          Direct         mobile        X     5
 ## 6 2016-01-01          Direct         tablet        X     6</code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li>Make sure all your columsn are the right class. In this case, I make the date column a <code>Date</code> object.</li>
+<li>Make sure all your columns are the right class. In this case, I make the date column a <code>Date</code> object.</li>
 </ol>
 <p>You could also choose to make factors out of your categories, as they let you set the order of colours in legends a bit easier.</p>
 <pre class="r"><code>str(web_data_tidy)</code></pre>
@@ -526,38 +527,40 @@ head(web_data_tidy)</code></pre>
 <pre class="r"><code>web_data_tidy$date &lt;- as.Date(web_data_tidy$date)
 
 ## we will only look at sessions
-library(dplyr)
-plot_data &lt;- web_data_tidy %&gt;% filter(variable == &quot;sessions&quot;)</code></pre>
+library(dplyr)</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.2.5</code></pre>
+<pre class="r"><code>plot_data &lt;- web_data_tidy %&gt;% filter(variable == &quot;sessions&quot;)</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Start up a gg object with a <code>ggplot()</code> call including your data, and any known aesthetics you want to apply to all plots. I tend to also set the theme here, favouring a minimal look using <code>theme_minimal</code>.</li>
 </ol>
-<p>As we have made “long” tidy data, we know that our x will be <code>date</code>, but also our y will be in the <code>value</code> column, so we can set these as defaults in the <code>aes()</code> (asthetics) call:</p>
-<pre class="r"><code>library(ggplot2)
-## I don&#39;t know why, but I always call them gg
+<p>As we have made “long” tidy data, we know that our x variable will be <code>date</code>, but also our y variable will be in the <code>value</code> column, so we can set these as defaults in the <code>aes()</code> (aesthetics) call:</p>
+<pre class="r"><code>library(ggplot2)</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.2.5</code></pre>
+<pre class="r"><code>## I don&#39;t know why, but I always call them gg
 gg &lt;- ggplot(data = plot_data, aes(x = date, y = value)) + theme_minimal()</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>Now the fun begins - experiment with adding various elements to your <code>gg</code> object using <code>+</code>. Once you have found something you want to keep, assign it to <code>gg</code> and then carry on to the next feature.</li>
 </ol>
-<p>Anything you haven’t specified in the global line, you will need to add in the <code>geom</code> you are adding. Note that because we have put the data in the first line, we don’t need to specify it again.</p>
-<pre class="r"><code>## lets make some line plots
+<p>Any aesthetics or statistics you haven’t specified in the global line, you will need to add in the <code>geom</code> you are adding. Note that because we have put the data in the first line, we don’t need to specify it again.</p>
+<pre class="r"><code>## let&#39;s make some line plots
 gg + geom_line()</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-4-1.png" width="960" /></p>
-<pre class="r"><code>## hmm, too much data in there, lets colour by the channelGroupings
+<pre class="r"><code>## hmm, too much data in there, let&#39;s colour by the channelGroupings
 gg + geom_line(aes(colour = channelGrouping))</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-4-2.png" width="960" /></p>
-<pre class="r"><code>## we have desktop, mobile and tablet all in there, lets seperate them out with facet
+<pre class="r"><code>## we have desktop, mobile and tablet all in there, let&#39;s seperate them out with facet
 gg + geom_line(aes(colour = channelGrouping)) + facet_grid(. ~ deviceCategory)</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-4-3.png" width="960" /></p>
 <pre class="r"><code>## I prefer it one over the other
 gg + geom_line(aes(colour = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-4-4.png" width="960" /></p>
-<pre class="r"><code>## lets try an area plot
+<pre class="r"><code>## let&#39;s try an area plot
 gg + geom_area(aes(colour = channelGrouping, group = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-4-5.png" width="960" /></p>
 <pre class="r"><code>## ahh, area plots colour by scale &#39;fill&#39; rather than scale &#39;colour&#39; (see ?geom_area)
 gg + geom_area(aes(fill = channelGrouping, group = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-4-6.png" width="960" /></p>
-<pre class="r"><code>## ok, lets keep that for now
+<pre class="r"><code>## ok, let&#39;s keep that for now
 gg &lt;- gg + geom_area(aes(group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
 <p>The point above is to show how modifications can be quickly added as you try out ideas.</p>
 <p>A little more styling, and we are done with this example:</p>
@@ -587,8 +590,11 @@ gg</code></pre>
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
 
 
