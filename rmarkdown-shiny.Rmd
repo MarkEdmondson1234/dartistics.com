@@ -10,7 +10,11 @@ You can schedule reports by scheduling the RMarkdown document like you would any
 
 Options include: PDFs, HTML, MS Word, Slides, books, websites (like this one).
 
-The default RMarkdown document has the below text:
+By default, a new RMarkdown document will contain the text below (shown in light gray).
+
+---------------------------------------
+
+<div style="margin-left:30px; color:gray">
 
 ## R Markdown
 
@@ -31,6 +35,10 @@ plot(pressure)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+</div>
+
+---------------------------------------
 
 # Shiny
 

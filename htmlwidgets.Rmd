@@ -33,7 +33,7 @@ pivoted[is.na(pivoted)] <- 0
 
 ### Dygraphs
 
-Good for time-series.  Click the plot to zoom.
+Good for time-series.  Click and drag on the plot to zoom. Double-click to reset.
 
 ```{r, message=FALSE, warning=FALSE}
 library(dygraphs)

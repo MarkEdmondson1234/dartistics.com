@@ -16,7 +16,7 @@ A few reasons to persuade you to use Github are given below:
 ## Advice for using Github with R
 
 * RStudio comes with its own Git client installed already, which is ok for basic pulls and pushes, but you may want to consider a Github desktop client such as Github's or Bitbucket.
-* Github is a bit notorious to be arcane, so hang in there and stick with simple tasks for now.  If something goes wrong you can always [save your work to a different folder, delete everything and redownload again](https://xkcd.com/1597/).  You will still get a lot of value without knowing its intricies.
+* Github is a bit notorious for being arcane, so hang in there and stick with simple tasks for now.  If something goes wrong you can always [save your work to a different folder, delete everything and redownload again](https://xkcd.com/1597/).  You will still get a lot of value without knowing its intricies.
 * Stick with one RStudio project to one Github repo.
 
 ## More Reading

@@ -38,7 +38,7 @@ library(knitr) # used for kable that makes nice RMarkdown tables
 web_data <- read.csv("./data/gadata_example_2.csv", stringsAsFactors = FALSE)
 ```
 
-Once you have a `web_data` data frame to work with, the command `head(web_data` should return a table that, at least structurally, looks something like this:
+Once you have a `web_data` data frame to work with, the command `head(web_data)` should return a table that, at least structurally, looks something like this:
 
 ```{r}
 kable(head(web_data))
@@ -62,7 +62,7 @@ web_data_tidy <- web_data %>% gather(variable, value, -date, -channelGrouping, -
 head(web_data_tidy)
 ```
 
-2. Make sure all your columsn are the right class.  In this case, I make the date column a `Date` object.
+2. Make sure all your columns are the right class.  In this case, I make the date column a `Date` object.
 
 You could also choose to make factors out of your categories, as they let you set the order of colours in legends a bit easier. 
 
@@ -79,7 +79,7 @@ plot_data <- web_data_tidy %>% filter(variable == "sessions")
 
 3. Start up a gg object with a `ggplot()` call including your data, and any known aesthetics you want to apply to all plots.  I tend to also set the theme here, favouring a minimal look using `theme_minimal`.
 
-As we have made "long" tidy data, we know that our x will be `date`, but also our y will be in the `value` column, so we can set these as defaults in the `aes()` (asthetics) call:
+As we have made "long" tidy data, we know that our x variable will be `date`, but also our y variable will be in the `value` column, so we can set these as defaults in the `aes()` (aesthetics) call:
 
 ```{r}
 library(ggplot2)
@@ -89,28 +89,28 @@ gg <- ggplot(data = plot_data, aes(x = date, y = value)) + theme_minimal()
 
 4. Now the fun begins - experiment with adding various elements to your `gg` object using `+`.  Once you have found something you want to keep, assign it to `gg` and then carry on to the next feature.
 
-Anything you haven't specified in the global line, you will need to add in the `geom` you are adding.  Note that because we have put the data in the first line, we don't need to specify it again.
+Any aesthetics or statistics you haven't specified in the global line, you will need to add in the `geom` you are adding.  Note that because we have put the data in the first line, we don't need to specify it again.
 
 ```{r, fig.height=6, fig.width=10}
-## lets make some line plots
+## let's make some line plots
 gg + geom_line()
 
-## hmm, too much data in there, lets colour by the channelGroupings
+## hmm, too much data in there, let's colour by the channelGroupings
 gg + geom_line(aes(colour = channelGrouping))
 
-## we have desktop, mobile and tablet all in there, lets seperate them out with facet
+## we have desktop, mobile and tablet all in there, let's seperate them out with facet
 gg + geom_line(aes(colour = channelGrouping)) + facet_grid(. ~ deviceCategory)
 
 ## I prefer it one over the other
 gg + geom_line(aes(colour = channelGrouping)) + facet_grid(deviceCategory ~ .)
 
-## lets try an area plot
+## let's try an area plot
 gg + geom_area(aes(colour = channelGrouping, group = channelGrouping)) + facet_grid(deviceCategory ~ .)
 
 ## ahh, area plots colour by scale 'fill' rather than scale 'colour' (see ?geom_area)
 gg + geom_area(aes(fill = channelGrouping, group = channelGrouping)) + facet_grid(deviceCategory ~ .)
 
-## ok, lets keep that for now
+## ok, let's keep that for now
 gg <- gg + geom_area(aes(group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)
 ```
 

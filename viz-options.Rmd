@@ -7,7 +7,7 @@ There are three main options for visualizing data with R. These options are not 
 Base R comes with some basic plotting capabilties. It is useful for quickly visualizing data, but seldom produces visualizations that you would want to include in a final deliverable due to the lack of formatting and control available.
 
 ## ggplot2
-The `ggplot2` package is the _de facto_ standard visualization package. It was developed by Hadley Wickham and is based on the "grammar of graphics," which was an academic exercise conducted some time back that looked to break down all of the possible components of a data visualization into component parts, with the idea that, if such an exercise resulted in a finite number of components, then those components could be assembled in a nearly infinite number of ways.
+The `ggplot2` package is the _de facto_ standard visualization package. It was developed by Hadley Wickham and is based on the "grammar of graphics," which was an academic exercise conducted some time back that looked to break down all of the possible components of a data visualization into component parts. The idea was that, if such an exercise resulted in a finite number of components, then those components could be assembled in a nearly infinite number of ways.
 
 As it turns out...this works!
 
