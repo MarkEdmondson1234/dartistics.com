@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Training</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">DARTISTICS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Overview
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="example1.html">Example: Trending</a>
+    </li>
+    <li>
+      <a href="example2.html">Example: Data Explorer</a>
+    </li>
+    <li>
+      <a href="example3.html">Example: Venn Diagram</a>
+    </li>
+    <li>
+      <a href="example4.html">Example: GA Effect</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    The Basics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="whatisr.html">What Is R?</a>
+    </li>
+    <li>
+      <a href="rstudio.html">RStudio</a>
+    </li>
+    <li>
+      <a href="packages.html">Packages</a>
+    </li>
+    <li>
+      <a href="basics-base_r.html">Basics of Base R</a>
+    </li>
+    <li>
+      <a href="exercise1-thebasics.html">Exercise: The Basic Basics</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    I/O
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">WORKING WITH FILES</li>
+    <li>
+      <a href="import-csv-excel.html">CSV import</a>
+    </li>
+    <li>
+      <a href="excel.html">Microsoft Excel(!)</a>
+    </li>
+    <li>
+      <a href="exercise2-io.html">Exercise: I/O</a>
+    </li>
+    <li class="dropdown-header">WORKING WITH APIs</li>
+    <li>
+      <a href="api-google-analytics.html">Google Analytics</a>
+    </li>
+    <li>
+      <a href="api-adobe-analytics.html">Adobe Analytics</a>
+    </li>
+    <li>
+      <a href="api-other.html">Other APIs</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data Structures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">R CLASSES AND SYNTAX</li>
+    <li>
+      <a href="classes.html">R Classes</a>
+    </li>
+    <li>
+      <a href="accessing.html">Accessing elements</a>
+    </li>
+    <li>
+      <a href="exercise3-accessing-data.html">Exercise: Accessing Data</a>
+    </li>
+    <li class="dropdown-header">BASE R vs. TIDY</li>
+    <li>
+      <a href="tidyverse.html">Tidy data / Tidyverse</a>
+    </li>
+    <li>
+      <a href="dplyr.html">dplyr()</a>
+    </li>
+    <li>
+      <a href="exercise4-tidy-dplyr.html">Exercise: Tidy Data / dplyr</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="modelling-intro.html">Introduction</a>
+    </li>
+    <li>
+      <a href="correlation.html">Correlation</a>
+    </li>
+    <li>
+      <a href="regression.html">Regression</a>
+    </li>
+    <li>
+      <a href="timeseries.html">Time-series</a>
+    </li>
+    <li>
+      <a href="categorisation.html">Categorisation</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Output
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="viz-options.html">Visualisation Options</a>
+    </li>
+    <li>
+      <a href="base-plots.html">Base Plots</a>
+    </li>
+    <li>
+      <a href="ggplot2.html">ggplot2()</a>
+    </li>
+    <li>
+      <a href="htmlwidgets.html">htmlwidgets()</a>
+    </li>
+    <li>
+      <a href="rmarkdown-shiny.html">RMarkdown + Shiny</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="resources.html">Useful Links</a>
+    </li>
+    <li>
+      <a href="key-topics.html">Key topics</a>
+    </li>
+    <li>
+      <a href="github.html">GitHub</a>
+    </li>
+    <li>
+      <a href="habits.html">Good Habits</a>
+    </li>
+    <li>
+      <a href="going-further.html">Going further</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-N4DF7T"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N4DF7T');</script>
+<!-- End Google Tag Manager -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Training</h1>
+
+</div>
+
+
+<p>If you are a digital analyst who is looking to dive into R and statistics – at all or, simply, more deeply – then this training is for you. <strong>Pre-registration is available <a href="https://goo.gl/forms/dxUo02OVlg68gLOS2">here</a></strong>.</p>
+<div id="when-and-where" class="section level2">
+<h2>When and Where</h2>
+<p>The class will be held in Columbus, Ohio, June 13-15, 2017.</p>
+</div>
+<div id="course-description" class="section level2">
+<h2>Course Description</h2>
+<p>The course is a combination of lectures and hands-on examples. The goal is that every attendee will leave with a clear understanding of:</p>
+<ul>
+<li>The syntax and structure of the <a href="https://cran.r-project.org/">R language</a>, as well as the <a href="https://www.rstudio.com/">RStudio</a> interface</li>
+<li>How to automatically pull data from web analytics and other platforms</li>
+<li>How to transform and manipulate data using R</li>
+<li>How to visualize data with R</li>
+<li>How to troubleshoot R scripts</li>
+<li>Various options for producing deliverables directly from R</li>
+<li>The application of core statistics concepts and methods to digital analytics data</li>
+</ul>
+<p>The course is broken down into three core units, with each day being devoted to a specific unit, and the third day bringing together the material taught on the first two days:</p>
+<div class="figure">
+<img src="images/3day_class.png" />
+
+</div>
+<p>The first and third days have a heavy hands-on component to them, so students are expected to bring a laptop so they can work through the exercises on their own. (Let us know if a laptop is not available and we will do our best to provide one, although we cannot guarantee this.)</p>
+</div>
+<div id="who-should-attend" class="section level2">
+<h2>Who Should Attend</h2>
+<p>This training is primarily for digital analysts who have hit the limits of what can be done effectively with Microsoft Excel, the native interfaces of digital analytics platforms, and third party platforms like Tableau. Specifically, it is for digital analysts who are looking to:</p>
+<ul>
+<li><strong>Improve their efficiency and effectiveness</strong> when it comes to accessing and manipulating data from digital/social/mobile/internal platforms</li>
+<li><strong>Increase the analytical rigor they are able to apply to their work</strong> – applying statistical techniques like correlation, regression, standardization, and chi square so they can increase the value they deliver to their organizations</li>
+</ul>
+<p>Attendees should be relatively well-versed in digital analytics data. We will primarily be working with Google Analytics data sets in the course, but the material itself is not platform-specific, and the class discussion will include other platforms as warranted based on the make-up of the attendees.</p>
+<p>Attendees who currently work (or have dabbled with) R or statistics are welcome. The material goes “beyond the basics” on both subjects. But, attendees who have not used R at all will be fine. We start with the basics, and those basics are reinforced throughout the course.</p>
+</div>
+<div id="evening-activities" class="section level2">
+<h2>Evening Activities</h2>
+<p>Optional evening activities are included in the registration. These are an opportunity to unwind a bit after attendees brains have been filled up during the day.</p>
+<p>Transportation will be provided to and from both activities:</p>
+<ul>
+<li><p><strong>Tuesday, June 13th</strong> – <a href="http://www.milb.com/index.jsp?sid=t445">Columbus Clippers</a> baseball game. This is the local Triple-A (one step below the major leagues) baseball team. The stadium was built in 2009, and it provides a fun and casual atmosphere to relax in the heart of Columbus, regardless of whether you are a baseball fan or not (and, if you are, you have the opportunity to see some quality baseball get played!).</p></li>
+<li><p><strong>Wednesday, June 14th</strong> – <a href="http://cbuswaw.com">Columbus Web Analytics Wednesday</a>. As one of the largest and longest continuously running WAWs, attendees will get to hang out over drinks and dinner with the analysts and digital marketers from a range of organizations that all call Columbus home.</p></li>
+</ul>
+<p>These events are both entirely optional, but, for those who attend, dinner will be provided.</p>
+</div>
+<div id="course-instructors" class="section level2">
+<h2>Course Instructors</h2>
+<div id="mark-edmondson" class="section level3">
+<h3>Mark Edmondson</h3>
+<p>Mark has been actively contributing to and enabling the adoption of R by digital analysts for several years. He is an Englishman based in Copenhagen who has developed many R packages that are widely used by digital analysts who have adopted the platform, including: <a href="http://code.markedmondson.me/googleAnalyticsR/">googleAnalyticsR</a> (the first and only package that makes use of v4 of the Google Analytics API), <a href="http://code.markedmondson.me/searchConsoleR/">searchConsoleR</a> (for accessing Google Search Console data), <a href="http://code.markedmondson.me/googleAuthR/">googleAuthR</a> (usable across any application that needs to use Google authentication), and <a href="http://code.markedmondson.me/googleCloudStorageR/">googleCloudStorageR</a> (for working with Google Cloud Storage). He also developed <a href="http://markedmondson.me/how-i-made-ga-effect-creating-an-online-statistics-dashboard-using-reais">Google Analytics Effect</a>, an online tool for assessing and quantifying the impact of changes made to a web site by applying Bayesian structural time-series techniques (using R!). And more! He regularly blogs at <a href="http://markedmondson.me">markedmondson.me</a>, where he churns out code and explanations that analysts can directly put to use. And, along with Tim, he built and maintains this very site! By day, he is a Data Insight Developer with <a href="http://iihnordic.com/">IIH Nordic</a>, where, among other things, he is tasked with driving efficiencies in the analytics team using technology to the point that they can cut down to a 4-hour workweek (we’re not kidding). And he’s getting close!</p>
+</div>
+<div id="tim-wilson" class="section level3">
+<h3>Tim Wilson</h3>
+<p>Tim is somewhat newer to R, first having explored the platform in 2013, and then diving in in earnest in the fall of 2015. He is a Texan based in Ohio who spent 2016 not only drastically improving his capabilities with the platform, but taking careful note of where the biggest stumbling blocks were for a digital analyst diving into that world. Those notes were key to the development of this course – ensuring that the most confusing concepts are addressed clearly and cleanly, as well as ensuring that 100% of the material is grounded in the perspective of a digital analyst. He speaks regularly at industry events around the world on a range of topics, although many of his speaking engagements in 2016 centered around the application and future of R, statistics, and data science in the realm of digital analytics. Tim and Mark teamed up to develop this site, and this 3-day course is the result of their on-going collaboration. By day, Tim is a Senior Partner at <a href="http://analyticsdemystified.com">Analytics Demystified</a>, where he <a href="http://tim.analyticsdemystified.com">blogs regularly</a> while also working with large clients across a variety of industries to get as much value as they can out of their digital and other data.</p>
+</div>
+<div id="dr.michael-levin" class="section level3">
+<h3>Dr. Michael Levin</h3>
+<p>Michael is an Associate Professor of Marketing and the Economics Department Chair at <a href="http://otterbein.edu">Otterbein University</a> in Westerville, Ohio. His research focuses on motivations to use marketing technology, as well as intellectual property and antitrust issues related to technology and retail. He has published in several journals including <em>International Journal of Retail and Distribution Management</em>, the <em>Journal of Personal Selling and Sales Management</em> and <em>Marketing Management Journal</em>, and has presented at several management and marketing conferences. He served as the special editor for the <em>Marketing Education Review’s</em> special issue on teaching innovation. He teaches integrated marketing communications, marketing analytics, retail management, and sales, where he has won multiple teaching innovation awards. He is also a regular attendee and one of the most popular presenters at Columbus Web Analytics Wednesdays.</p>
+</div>
+</div>
+<div id="pricing-and-registration" class="section level2">
+<h2>Pricing and Registration</h2>
+<p>The course pricing:</p>
+<ul>
+<li><strong>Early bird</strong> (through March 15, 2017): <strong>$1,695</strong></li>
+<li><strong>Full registration</strong> (after March 15, 2017): <strong>$1,995</strong></li>
+</ul>
+<p>We have set a course minimum that we will need to meet in order for the course to be viable, so we are currently only accepting pre-registration (<a href="https://goo.gl/forms/dxUo02OVlg68gLOS2">here</a>). Individuals who pre-register will not be charged until we reach our registration minimum. We will notify pre-registrants by March 31, 2017, as to whether the course will occur. We fully expect to hit our course minimum.</p>
+<p>The pre-registration form is available <a href="https://goo.gl/forms/dxUo02OVlg68gLOS2">here</a>.</p>
+</div>
+<div id="faq" class="section level2">
+<h2>FAQ</h2>
+<div id="why-should-i-attend-this-course-instead-of-just-taking-classes-through-coursera-or-other-moocs" class="section level3">
+<h3>Why should I attend this course instead of just taking classes through Coursera (or other MOOCs)?</h3>
+<p>While the material available online for both R and for statistics is vast, and much of that is freely available, what we’ve seen (and feedback we’ve gotten from others) is that it is daunting to actually make the leap from “general examples” – many of which are person-level, social science data – to “how do we apply this with digital analytics (web analytics, specifically, but also social, mobile, and other marketing analytics data) specifically?” That is the gap this course aims to fill. It is built around digital analytics examples and scenarios. As such, the course is designed to provide an accelerated path to putting these tools (R and statistics) to real-world use.</p>
+</div>
+<div id="what-should-attendees-know-beforehand" class="section level3">
+<h3>What should attendees know beforehand?</h3>
+<p>The only prerequisite for this class is that the student is relatively well-versed in web analytics (any platform). The course starts “from scratch” with R itself (although it doesn’t hurt to already be using the platform – there is plenty of useful material for those users, too!). And, the course starts “from scratch” with the the statistics material.</p>
+</div>
+<div id="will-this-course-be-offered-online-virtually" class="section level3">
+<h3>Will this course be offered online / virtually?</h3>
+<p>Not at this time. We believe the intense and and hands-on nature of the material, as well as the fact that the material builds on itself over the course of the three days, requires that it be delivered online.</p>
+</div>
+<div id="will-this-course-be-offered-again-if-so-when-and-where" class="section level3">
+<h3>Will this course be offered again? If so, when and where?</h3>
+<p>We hope (and expect) the course to be successful. If it is, then the instructors are all committed to offering it on a regular basis, and we expect to offer it in various locations based on demand. If you are interested in being updated as future offerings are developed, send an email to <a href="mailto:tim@analyticsdemystified.com">tim@analyticsdemystified.com</a>, including where you are located geographically.</p>
+</div>
+<div id="will-there-be-any-post-class-support-provided" class="section level3">
+<h3>Will there be any post-class support provided?</h3>
+<p>Yes. All three instructors will be available through email and other channels to answer follow-up questions related to the course material and how students can apply that material to their specific data.</p>
+</div>
+<div id="is-there-a-discount-for-students-or-non-profits" class="section level3">
+<h3>Is there a discount for students or non-profits?</h3>
+<p>Contact <a href="mailto:tim@analyticsdemystified.com">tim@analyticsdemystified.com</a> and we will see what we can do.</p>
+</div>
+<div id="why-doesnt-this-faq-answer-my-specific-question" class="section level3">
+<h3>Why doesn’t this FAQ answer my specific question?</h3>
+<p>Because it was an oversight. Send your question to <a href="mailto:tim@analyticsdemystified.com">tim@analyticsdemystified.com</a>, and we will both get it answered and, as appropriate, add it here.</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
