@@ -90,7 +90,7 @@ While the material available online for both R and for statistics is vast, and m
 The only prerequisite for this class is that the student is relatively well-versed in web analytics (any platform). The course starts “from scratch” with R itself (although it doesn’t hurt to already be using the platform -- there is plenty of useful material for those users, too!). And, the course starts “from scratch” with the the statistics material. 
 
 ### Will this course be offered online / virtually?
-Not at this time. We believe the intense and and hands-on nature of the material, as well as the fact that the material builds on itself over the course of the three days, requires that it be delivered online.
+Not at this time. We believe the intense and and hands-on nature of the material, as well as the fact that the material builds on itself over the course of the three days, requires that it be delivered in person.
 
 ### Will this course be offered again? If so, when and where?
 We hope (and expect) the course to be successful. If it is, then the instructors are all committed to offering it on a regular basis, and we expect to offer it in various locations based on demand. If you are interested in being updated as future offerings are developed, send an email to [tim@analyticsdemystified.com](mailto:tim@analyticsdemystified.com), including where you are located geographically.
