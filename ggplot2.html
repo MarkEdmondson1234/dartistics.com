@@ -346,7 +346,10 @@ $(document).ready(function () {
       <a href="habits.html">Good Habits</a>
     </li>
     <li>
-      <a href="going-further.html">Going further</a>
+      <a href="going-further.html">Going Further</a>
+    </li>
+    <li>
+      <a href="r-and-statistics-class.html">3-Day Training</a>
     </li>
   </ul>
 </li>
@@ -404,7 +407,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <div id="workflow" class="section level2">
 <h2>Workflow</h2>
 <p><em>This example requires having a <code>web_data</code> data frame. You can either load up some sample data by completing the <a href="exercise2-io.html">I/O Exercise</a> (which is what is shown in the details below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the <a href="api-google-analytics.html">Google Analytics API page</a>.</em></p>
-<pre><code>## Warning: package &#39;knitr&#39; was built under R version 3.2.5</code></pre>
 <p>Once you have a <code>web_data</code> data frame to work with, the command <code>head(web_data)</code> should return a table that, at least structurally, looks something like this:</p>
 <pre class="r"><code>kable(head(web_data))</code></pre>
 <table>
@@ -488,9 +490,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li>First get your data ready and tidy. Whilst its possible to use “wide” data, I find it easiest to always start with tidy “long” data, so you can quickly repeat what you have learnt before.</li>
 </ol>
 <pre class="r"><code>## To date I have been using reshape2&#39;s melt() to make the long data:
-library(reshape2)</code></pre>
-<pre><code>## Warning: package &#39;reshape2&#39; was built under R version 3.2.5</code></pre>
-<pre class="r"><code>web_data_long &lt;- melt(web_data)
+library(reshape2)
+web_data_long &lt;- melt(web_data)
 head(web_data_long)</code></pre>
 <pre><code>##         date channelGrouping deviceCategory variable value
 ## 1 2016-01-01         (Other)        desktop        X     1
@@ -500,9 +501,8 @@ head(web_data_long)</code></pre>
 ## 5 2016-01-01          Direct         mobile        X     5
 ## 6 2016-01-01          Direct         tablet        X     6</code></pre>
 <pre class="r"><code>## But you should (and I) use the newer tidyr() package and use gather() instead:
-library(tidyr)</code></pre>
-<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.2.5</code></pre>
-<pre class="r"><code>## call the key column &#39;variable&#39; and the value colum &#39;value&#39; and 
+library(tidyr)
+## call the key column &#39;variable&#39; and the value colum &#39;value&#39; and 
 ## gather all variables apart from date, channelGrouping and deviceCategory
 web_data_tidy &lt;- web_data %&gt;% gather(variable, value, -date, -channelGrouping, -deviceCategory)
 head(web_data_tidy)</code></pre>
@@ -527,16 +527,14 @@ head(web_data_tidy)</code></pre>
 <pre class="r"><code>web_data_tidy$date &lt;- as.Date(web_data_tidy$date)
 
 ## we will only look at sessions
-library(dplyr)</code></pre>
-<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.2.5</code></pre>
-<pre class="r"><code>plot_data &lt;- web_data_tidy %&gt;% filter(variable == &quot;sessions&quot;)</code></pre>
+library(dplyr)
+plot_data &lt;- web_data_tidy %&gt;% filter(variable == &quot;sessions&quot;)</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Start up a gg object with a <code>ggplot()</code> call including your data, and any known aesthetics you want to apply to all plots. I tend to also set the theme here, favouring a minimal look using <code>theme_minimal</code>.</li>
 </ol>
 <p>As we have made “long” tidy data, we know that our x variable will be <code>date</code>, but also our y variable will be in the <code>value</code> column, so we can set these as defaults in the <code>aes()</code> (aesthetics) call:</p>
-<pre class="r"><code>library(ggplot2)</code></pre>
-<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.2.5</code></pre>
-<pre class="r"><code>## I don&#39;t know why, but I always call them gg
+<pre class="r"><code>library(ggplot2)
+## I don&#39;t know why, but I always call them gg
 gg &lt;- ggplot(data = plot_data, aes(x = date, y = value)) + theme_minimal()</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>Now the fun begins - experiment with adding various elements to your <code>gg</code> object using <code>+</code>. Once you have found something you want to keep, assign it to <code>gg</code> and then carry on to the next feature.</li>

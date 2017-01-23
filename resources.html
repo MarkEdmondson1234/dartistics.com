@@ -19,12 +19,11 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="site_libs/highlight/default.css"
-      type="text/css" />
-<script src="site_libs/highlight/highlight.js"></script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -151,7 +150,6 @@ $(document).ready(function () {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
@@ -348,7 +346,10 @@ $(document).ready(function () {
       <a href="habits.html">Good Habits</a>
     </li>
     <li>
-      <a href="going-further.html">Going further</a>
+      <a href="going-further.html">Going Further</a>
+    </li>
+    <li>
+      <a href="r-and-statistics-class.html">3-Day Training</a>
     </li>
   </ul>
 </li>
@@ -474,6 +475,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>
 <b><a href="https://github.com/gilliganondata/aa-ga-compare" target='_blank'>Adobe Analytics / Google Analytics: Comparison of Key Metrics</a></b> <span style="font-size:12px; color:#666666"> - R SCRIPT/PROJECT (DOWNLOADABLE)</span><br>Compare how the results for key metrics compare between Adobe Analytics and Google Analytics. This is an R script that can be customized with the user’s authentication credentials, as well as to adjust what metrics get compared. The output is an RMarkdown HTML file.<br><span style="font-size:12px; color:#8c8c8c">CONTENT FOCUS:</span> R<br>
 </p>
+<p>
+<b><a href="https://github.com/calligross/ggthemeassist" target='_blank'>ggtheme assist</a></b> <span style="font-size:12px; color:#666666"> - R PACKAGE</span><br>An RStudio addin which gives you a GUI to edit your plots and generate reproducible plot code.<br><span style="font-size:12px; color:#8c8c8c">CONTENT FOCUS:</span> R<br><span style="font-size:12px; color:#8c8c8c">CONTRIBUTED BY: DONAL PHIPPS</span>
+</p>
 </div>
 <div id="general-reference" class="section level3">
 <h3>General Reference</h3>
@@ -507,6 +511,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>
 <b><a href="http://www.computerworld.com/article/2921176/business-intelligence/great-r-packages-for-data-import-wrangling-visualization.html" target='_blank'>Great R packages for data import, wrangling &amp; visualization</a></b> <span style="font-size:12px; color:#666666"> - BLOG POST / ARTICLE</span><br>Lengthy list of a number of handy R packages, including a description and the package creator (was it or was it not Hadley Wickham?!).<br><span style="font-size:12px; color:#8c8c8c">CONTENT FOCUS:</span> R<br>
 </p>
+<p>
+<b><a href="http://fresh2refresh.com/c-programming/calling-c-r-programming-language/" target='_blank'>Calling C from R programming</a></b> <span style="font-size:12px; color:#666666"> - BLOG POST / ARTICLE</span><br>Calling C from R programming<br><span style="font-size:12px; color:#8c8c8c">CONTENT FOCUS:</span> R<br><span style="font-size:12px; color:#8c8c8c">CONTRIBUTED BY: THIYAGARAJAN S</span>
+</p>
 </div>
 </div>
 
@@ -518,8 +525,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
 
 

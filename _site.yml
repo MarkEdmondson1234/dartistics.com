@@ -97,5 +97,7 @@ navbar:
         href: github.html
       - text: "Good Habits"
         href: habits.html
-      - text: "Going further"
+      - text: "Going Further"
         href: going-further.html
+      - text: "3-Day Training"
+        href: r-and-statistics-class.html

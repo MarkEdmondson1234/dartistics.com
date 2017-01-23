@@ -22,12 +22,11 @@
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="site_libs/highlight/default.css"
-      type="text/css" />
-<script src="site_libs/highlight/highlight.js"></script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -154,7 +153,6 @@ $(document).ready(function () {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
@@ -180,7 +178,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0
@@ -239,8 +237,9 @@ div.tocify {
 }
 
 .tocify-subheader .tocify-item {
-  font-size: 0.9em;
-  padding-left: 5px;
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -445,7 +444,10 @@ div.tocify {
       <a href="habits.html">Good Habits</a>
     </li>
     <li>
-      <a href="going-further.html">Going further</a>
+      <a href="going-further.html">Going Further</a>
+    </li>
+    <li>
+      <a href="r-and-statistics-class.html">3-Day Training</a>
     </li>
   </ul>
 </li>
@@ -500,32 +502,33 @@ ga_auth()</code></pre>
 <h2>Getting your View Id</h2>
 <p>To get your data, you need to specify which Google Analytics View you want to pull it from.</p>
 <p>The easiest way to find this is to use <code>google_analytics_account_list()</code> to list your Views, then read the number in the <code>viewId</code> column:</p>
-<pre class="r"><code>my_accounts &lt;- google_analytics_account_list()
-head(my_accounts)</code></pre>
-<pre><code>##   accountId        accountName webPropertyId    webPropertyName
-## 1  51323256       African Stay UA-51323256-1       African Stay
-## 2  27778354 Beggin&#39; YT Channel UA-27778354-1 Beggin&#39; YT Channel
-## 3  26328617         Beneful YT UA-26328617-1         Beneful YT
-## 4  26559210        Cat Chow YT UA-26559210-1           Cat Chow
-## 5  48673516            CBUSWAW UA-48673516-1 http://cbuswaw.com
-## 6  48673516            CBUSWAW UA-48673516-1 http://cbuswaw.com
+<pre class="r"><code>my_accounts &lt;- google_analytics_account_list()</code></pre>
+<pre><code>## Auto-refreshing stale OAuth token.</code></pre>
+<pre class="r"><code>head(my_accounts)</code></pre>
+<pre><code>##   accountId            accountName webPropertyId    webPropertyName
+## 1  27778354     Beggin&#39; YT Channel UA-27778354-1 Beggin&#39; YT Channel
+## 2  26328617             Beneful YT UA-26328617-1         Beneful YT
+## 3  26559210            Cat Chow YT UA-26559210-1           Cat Chow
+## 4  48673516                CBUSWAW UA-48673516-1 http://cbuswaw.com
+## 5  48673516                CBUSWAW UA-48673516-1 http://cbuswaw.com
+## 6  13054329 County Health Rankings UA-13054329-6  Analytics Testing
 ##   internalWebPropertyId    level                                websiteUrl
-## 1              83512095 STANDARD              http://www.africanstay.co.za
-## 2              53216781 STANDARD        http://www.youtube.com/user/beggin
-## 3              50958444 STANDARD                    http://www.beneful.com
-## 4              51327860 STANDARD http://www.youtube.com/user/purinacatchow
-## 5              80242125 STANDARD                        http://cbuswaw.com
-## 6              80242125 STANDARD                        http://cbuswaw.com
+## 1              53216781 STANDARD        http://www.youtube.com/user/beggin
+## 2              50958444 STANDARD                    http://www.beneful.com
+## 3              51327860 STANDARD http://www.youtube.com/user/purinacatchow
+## 4              80242125 STANDARD                       https://cbuswaw.com
+## 5              80242125 STANDARD                       https://cbuswaw.com
+## 6             112664276 STANDARD             http://stage.chr.forumone.com
 ##      viewId               viewName type starred
-## 1  86518341      All Web Site Data  WEB    &lt;NA&gt;
-## 2  54051087      Beggin YT Channel  WEB    &lt;NA&gt;
-## 3  51615377             Beneful YT  WEB    &lt;NA&gt;
-## 4  52028210               Cat Chow  WEB    &lt;NA&gt;
-## 5  82999029            cbuswaw.com  WEB    &lt;NA&gt;
-## 6 107951642 unfiltered cbuswaw.com  WEB    &lt;NA&gt;</code></pre>
+## 1  54051087      Beggin YT Channel  WEB    &lt;NA&gt;
+## 2  51615377             Beneful YT  WEB    &lt;NA&gt;
+## 3  52028210               Cat Chow  WEB    &lt;NA&gt;
+## 4  82999029            cbuswaw.com  WEB    &lt;NA&gt;
+## 5 107951642 unfiltered cbuswaw.com  WEB    &lt;NA&gt;
+## 6 117646186      All Web Site Data  WEB    &lt;NA&gt;</code></pre>
 <pre class="r"><code>## The account viewIds (since all columns is a little messy when displayed here)
 head(my_accounts$viewId)</code></pre>
-<pre><code>## [1] &quot;86518341&quot;  &quot;54051087&quot;  &quot;51615377&quot;  &quot;52028210&quot;  &quot;82999029&quot;  &quot;107951642&quot;</code></pre>
+<pre><code>## [1] &quot;54051087&quot;  &quot;51615377&quot;  &quot;52028210&quot;  &quot;82999029&quot;  &quot;107951642&quot; &quot;117646186&quot;</code></pre>
 </div>
 <div id="querying-your-data" class="section level2">
 <h2>Querying your data</h2>
@@ -572,8 +575,11 @@ web_data &lt;- google_analytics_4(my_id,
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
 
 
