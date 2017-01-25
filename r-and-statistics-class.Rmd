@@ -1,5 +1,5 @@
 ---
-title: "Training"
+title: "3-Day Training: R & Statistics for the Digital Analyst"
 output: 
   html_document:
     toc: true
