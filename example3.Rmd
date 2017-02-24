@@ -1,12 +1,10 @@
 ---
-title: "Venn Diagram"
+title: "Example 3: Venn Diagram"
 ---
 
 ```{r example3-setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-## Example 3: Venn Diagram
 
 This is an example of a visualization built using `shiny` (web-enablement) that was then repurposed for an entirely different use.
 

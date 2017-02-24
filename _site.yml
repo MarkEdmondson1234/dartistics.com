@@ -9,7 +9,7 @@ output:
 navbar:
   title: "DARTISTICS"
   left:
-    - text: "Overview"
+    - text: "Examples"
       menu:
       - text: "Example: Trending"
         href: example1.html
@@ -19,6 +19,10 @@ navbar:
         href: example3.html
       - text: "Example: GA Effect"
         href: example4.html
+      - text: "Example: Heatmap"
+        href: example5.html
+      - text: "Example: Forecasting"
+        href: example6.html
     - text: "The Basics"
       menu:
       - text: "What Is R?"

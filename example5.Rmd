@@ -1,0 +1,104 @@
+---
+title: "Example 5: Visualizing Sessions in a Heatmap"
+---
+
+```{r example1-setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+```
+
+This example shows a visualization of traffic to a site broken down by day of week and hour of day.
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+library(googleAnalyticsR)
+library(dplyr)
+library(tidyr)
+library(highcharter)
+
+
+## If a cache file exists, load it from there
+if(file.exists("./data/index_gadata.RData")){
+  load("./data/index_gadata.RData")
+} else {
+  
+  ## Otherwise, fetch  the data using the Google Analytics API.
+  view_id <- 81416156
+  ga_auth()
+
+  gadata <- google_analytics_4(view_id, 
+                             date_range = c(Sys.Date() - 400, Sys.Date()),
+                             metrics = "sessions", 
+                             dimensions = c("date","hour"),
+                             max = -1)
+
+  gadata$weekday <- ordered(weekdays(gadata$date, FALSE), 
+                          levels = c("Monday","Tuesday","Wednesday",
+                                     "Thursday","Friday","Saturday","Sunday")) 
+  ## save cache
+  save(gadata, file = "./data/index_gadata.RData")
+  
+}
+
+```
+
+```r
+# Start by loading the libraries we'll want to use.
+library(googleAnalyticsR)
+library(dplyr)
+library(tidyr)
+library(highcharter)
+
+# Set the view ID that we'll be using. You can get the view ID for a specific view
+# that you have access to by logging into the Google Analytics Query Explorer at
+# https://ga-dev-tools.appspot.com/query-explorer/. It's the "ids" value.
+view_id <- 81416156
+
+# Authorize Google Analytics
+ga_auth()
+
+# Pull the data. This is set to pull the last 400 days of data.
+gadata <- google_analytics_4(view_id, 
+                             date_range = c(Sys.Date() - 400, Sys.Date()),
+                             metrics = "sessions", 
+                             dimensions = c("date","hour"),
+                             max = -1)
+
+# Added a column to the data with the weekday.
+gadata$weekday <- ordered(weekdays(gadata$date, FALSE), 
+                          levels = c("Monday","Tuesday","Wednesday",
+                                     "Thursday","Friday","Saturday","Sunday")) 
+```
+Let's look at the first few rows (the "head") of our data to see where we stand so far:
+
+```{r initial-data, echo=FALSE}
+kable(head(gadata))
+```
+
+Now that we have the data, we just have to do a little bit of additional work to get the data arranged properly to generate the heatmap. The code for this could be a lot simpler/shorter, but it's split out here into separate lines to make it easier to follow. Trust us -- this looks like it's a lot, but it's really just doing the equivalent of generating a pivot table with a very specific structure:
+
+```{r, message=FALSE, warning=FALSE}
+
+# Subset the data to just be the weekday, hour of the day, and sessions. (This
+# means we're getting rid of the "date" column)
+heatmap_data <- select(gadata, weekday, hour, sessions)
+
+# Summarize the data by weekday-hour
+heatmap_sums <- group_by(heatmap_data, weekday, hour) %>%
+  summarise(sessions = sum(sessions))
+
+# Now, "spread" the data out so it's heatmap-ready
+heatmap_recast <- spread(heatmap_sums, hour, sessions)
+
+# Make this "data frame" into a "matrix"
+heatmap_matrix <- as.matrix(heatmap_recast[-1])
+
+# Name the rows to match the weeks
+row.names(heatmap_matrix) <- c("Monday","Tuesday","Wednesday",
+                               "Thursday","Friday","Saturday","Sunday")
+
+# Generate the heatmap of weekdays per hour
+hchart(heatmap_matrix, type = "heatmap")
+
+```
+
+There we have it! Mouse over it to see the specific values.

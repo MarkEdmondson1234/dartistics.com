@@ -1,325 +1,345 @@
 ---
-title: "Google Analytics Data Explorer"
+title: "Example 2: Google Analytics Interactive Data Explorer"
 ---
 
 ```{r example2-setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Example 2: Google Analytics 2-D data explorer
-
-This was Tim's first web-based, interactive R applications. In hindsight...it was ambitious. It's available at [https://gilligan.shinyapps.io/ga_explorer_demo/](https://gilligan.shinyapps.io/ga_explorer_demo/).
+This is an example of a "Shiny" application built with R -- a web-based application that allows the user to interact with the data directly. You can try it out at  [https://gilligan.shinyapps.io/ga-data-explorer/](https://gilligan.shinyapps.io/ga-data-explorer/).
 
 ![](images/example2_ga-explorer.png)
 
 Some keys to the underlying functionality used to build this:
 
-* The `RGA` package -- one of several packages available for pulling data from Google Analytics 
+* The `googleAnalyticsR` package -- one of several packages available for pulling data from Google Analytics 
 * The `shiny` package -- Shiny is a package that makes R scripts interactive and web-based.
 * The `ggplot2` package -- the visualizations are all built using the plotting capabilities of ggplot2
 
 ## The Code
 
-This code does _not_ use best practices for coding in general or for R in particular. But...it works. And, in this case, that's what mattered. The typical way to build Shiny apps is to have two scripts: one defines the front end (**ui.R**) and the other defines the behind-the-scenes work (**server.R**). They reference each other, and it can be confusing as to how exactly that happens.
-
-### ui.R
+This code may look a bit intimidating. But, notice that much of the "code" is actually just comments explaining what the code is doing. So, even without fully following all aspects of the code, it is relatively easy for someone moderately familiary with R to take the code and tweak it here and there to suit their specific needs. 
 
 ```{r eval=FALSE}
 
-library(shiny)
+#
+# App to explore Google Analytics metrics across two dimensions. The user has to authenticate
+# and choose a view.
+#
 
-shinyUI(fluidPage(
+library(shiny)              # We must web-enable this whole thing
+library(googleAuthR)        # To prompt for authentication by the user
+library(googleAnalyticsR)   # For the pulling of the data
+library(tidyverse)          # For data transformations -- primarily just uses dplyr commands
+library(scales)             # Cuz, ya' know, commas in displayed numbers
 
-  # This feels a little hacky, but the default <h2> is just too big.
-  HTML('<style type="text/css">h2 {font-size: 150%;}</style>'),
+####################
+# Set up the different options for interaction
+####################
+
+# DATE OPTIONS
+# This could also be set as date selectors easily enough, but, for now, it's just set
+# as some preset options. As a note, even though the values are being set as numerics 
+# here, they actually get treated as characters, so they have to be converted 
+# back to numerics when setting start_date in the get_data() function.
+daterange_options <- list("Last 7 Days" = 7,
+                          "Last 30 Days" = 30,
+                          "Last 60 Days" = 60,
+                          "Last 90 Days" = 90)
+
+# METRIC OPTIONS
+# As currently written, these can only be # summable metrics, as the data gets pulled
+# once as daily data and # then gets aggregated (and would require much more 
+# hoop-jumping to then do weighted averages to get 'rates' of any sort).
+metric_options <- list("Sessions" = "sessions",
+                       "Pageviews" = "pageviews",
+                       "Total Events" = "totalEvents",
+                       "Bounces" = "bounces",
+                       "New Users" = "newUsers")
+
+# DIMENSION OPTIONS
+# The first value can be anything, but the second value needs to be the Google 
+# Analytics API value.
+dimension_options <- list("New vs. Returning" = "userType",
+                          "Device Category" = "deviceCategory",
+                          "Mobile Device Brand" = "mobileDeviceBranding",
+                          "Country" = "country",
+                          "Browser" = "browser",
+                          "Operating System" = "operatingSystem",
+                          "Default Channel Grouping" = "channelGrouping",
+                          "Source" = "source",
+                          "Medium" = "medium",
+                          "Campaign" = "campaign")
+
+####################
+# Define base theme You have an option of tweaking settings
+# here OR in the actual functions/output that use default_theme
+####################
+
+default_theme <-   theme_bw() +
+  theme(axis.text = element_text(face = "bold", size = 14, colour = "grey10"),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.line = element_blank(),
+        legend.title = element_blank(),
+        legend.background = element_blank(),
+        legend.position = "none",
+        legend.justification = "center",
+        strip.text.x = element_text(face = "bold", size = 14, colour = "grey10"),
+        strip.text.y = element_text(face = "bold", size = 14, colour = "grey10", angle = 180),
+        strip.background = element_blank(),
+        panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.spacing = unit(0,"in"),
+        panel.background = element_rect(fill = NA, color = "gray90"))
+
+################
+# Define non-reactive functions (used by reactive conductors). This should keep
+# from needlessly querying/crunching the data multiple times when an update is
+# made. The raw data is needed for both visualizations, but we only need to pull
+# it once.
+################
+
+# Get the values to be used for the X dimension. This is based on the *totals* for
+# the selected metric *just* for the X dimension values (ignores the Y-dimension)
+# values -- sorting all of the results and then taking the top values based on
+# the slider selection. 
+calc_dim_x_includes <- function(data, dim_count){
+  group_by(data, dim_x) %>% summarise(total = sum(metric)) %>%
+    arrange(-total) %>% top_n(dim_count, total) %>% select(dim_x)
+}
+
+# This does the same as the above, but for the Y dimension. These probably could
+# have been a single function, as they're very similar, but it seemed a little
+# more readable just to do them separately.
+calc_dim_y_includes <- function(data, dim_count){
+  group_by(data, dim_y) %>% summarise(total = sum(metric)) %>%
+    arrange(total) %>% top_n(dim_count, total) %>% select(dim_y) 
+}
+
+######################
+# Define the UI
+######################
+
+ui <- fluidPage(
+  
+  # Include Google Tag Manager container (put the file in the same
+  # folder as app.R). Remove the <script> tags and the comments from the GTM script.
+  tags$head(includeScript("gtm.js")),
+  
+  theme = "cosmo",   # Change to a different theme to slightly alter the look and feel as desired
   
   # Application title
-  titlePanel(
-    "Traffic Explorer"),
+  titlePanel("Google Analytics 2-D Data Explorer"),
+  "Log in and select a view to explore how a metric breaks down across two dimensions.",
+  "Adjust the sliders to vary the number of values to include in the display, and adjust ",
+  "the dropdowns to change the dimensions and metric being used.",
   
-  fluidRow(
-    column(4,wellPanel(
+  tags$hr(),
+  
+  # Sidebar with the user-controllable inputs 
+  sidebarLayout(
+    sidebarPanel(
       
-      # 'start' is hacked to default to the last full months; this needs to be cleaned up  
-      dateRangeInput('dateRange',
-                     label = 'Select date range:',
-                     start = Sys.Date()-15, end = Sys.Date()-1
+      # A bit of a hack, I suspect, but just centering the login button
+      tags$div(style="text-align: center;",
+               
+               # Get the user to log in and then select a view. This uses the JS version
+               # because it seems to be less finicky.
+               gar_auth_jsUI("auth_module", login_text = "Login with Google")
       ),
       
-      # Brand Selector
-      uiOutput("brandSelector"),
-    
-      # X Dimension Selector
-      uiOutput("dimXSelector"),
+      # Get the account/property/view
+      authDropdownUI("auth_menu"),
       
-      # Y Dimension Selector
-      uiOutput("dimYSelector"),
-    
-       # Date Granularity
-      uiOutput("granularitySelector"),
-           
-      # Metric Selector
-      uiOutput("metricSelector")
-    
-    )),
-    
-    column(8,plotOutput("plotTotal"),
-           hr(),
-           plotOutput("plotTrends"))
-    )))
-
-```
-
-### server.R
-
-```{r eval=FALSE}
-
-library(shiny) # Package for making this thing run
-library(RGA) # Package for getting GA data
-library(ggplot2) # Package for rendering the graphics
-library(dplyr) # Efficient manipulation of the data output.
-library(scales) # To allow numbers to be formatted with commas and improved date formatting
-
-# Authorize the Google Analytics account
-ga_token <- authorize(client.id = "[insert Google Analytics API client ID]", 
-                      client.secret = "[insert Google Analytics API client secret]",
-                      cache = "token")
-
-#########################
-# Configuration and loading of options
-#########################
-
-# List of sites to choose from. This includes the name for the site as well as
-# the view ID for the site. Replace the values in brackets (and the brackets) with
-# site names and corresponding view IDs. This list can be as long or as short as you
-# want it to be.
-brandMaster <- list("[Site 1 Display Name]"="[View ID]",
-                    "[Site 2 Display Name]"="[View ID]",
-                    "[Site 3 Display Name]"="[View ID]")
-
-########################
-# No additional edits are REQUIRED after this point in order for the app to work. You certainly
-# CAN make additional edits, but only the values in brackets above must have updated valued.
-########################
-
-# Define the segment snippets. This is just a matrix where each row has the group name in the 1st column,
-# the individual segment name in the second column, and the segment definition in the third column.
-# The segment definitions use GA's "dynamic segment" syntax. NOTE: the "sessions::" or "users::"
-# component of the segment definition is NOT included here because that gets added later. This 
-# script combines the snippets to make a segment for each "box" on the grid of results. Generally
-# speaking, the segment snippets within any individual group should be mutually exclusive. Otherwise,
-# the results will be tricky to interpret. Feel free to add additional groups/segments to this list!
-segMaster <- matrix(c("Paid vs. Non-Paid","Paid Traffic",
-                      "condition::ga:channelGrouping=~(Paid.Search)|(Display)|(Video)|(Social)|(Email)|(Other)"),1,3)
-segMaster <- rbind(segMaster,c("Paid vs. Non-Paid","Non-Paid Traffic",
-                               "condition::ga:channelGrouping=~(Organic.Search)|(Direct)|(Referral)"))
-segMaster <- rbind(segMaster,c("Device Category","Desktop",
-                               "condition::ga:deviceCategory==desktop"))
-segMaster <- rbind(segMaster,c("Device Category","Tablet",
-                               "condition::ga:deviceCategory==tablet"))
-segMaster <- rbind(segMaster,c("Device Category","Mobile",
-                               "condition::ga:deviceCategory==mobile"))
-segMaster <- rbind(segMaster,c("New vs. Returning","New Visitors",
-                               "condition::ga:userType==New Visitor"))
-segMaster <- rbind(segMaster,c("New vs. Returning","Returning Visitors",
-                               "condition::ga:userType==Returning Visitor"))
-
-colnames(segMaster) <- c("group","segName","segDef")
-
-# Set up the data granularity options                   
-granularityMaster <- list("By Day"="ga:date",
-                          "By Week"="ga:week",
-                          "By Month"="ga:yearMonth")
-
-# Set up the available metrics. With this version of the code, the only metrics that will be reliable
-# are ones that are additive. In other words, ga:users will pull in data...but it will be misleading.
-metricMaster <- list("Sessions"="ga:sessions",
-                     "Page Views"="ga:pageviews",
-                     "Bounces"="ga:bounces")
-
-# Initialize a list that will hold the detailed data.
-##### QUESTION: Is this needed? Is this where it should be? #####
-allData <- data.frame(brand=character(0),viewId=character(0),segment.X=character(0),
-                      segment.Y=character(0), date=character(0),metric=numeric(0))
-
-# Define the base theme for the plots. Each plot will selectively override this stuff as needed
-baseTheme <- theme(plot.title = element_text(face = "bold", size=16, colour="gray10"),
-                   axis.line = element_blank(),
-                   axis.text = element_text(face = "bold", size = 15, colour = "gray40"),
-                   axis.ticks = element_blank(),
-                   panel.grid.major = element_blank(),
-                   panel.grid.minor = element_blank(),
-                   panel.border = element_blank(),
-                   panel.background = element_rect(fill="gray99"),
-                   legend.position = "none",
-                   strip.background = element_blank(),
-                   strip.text = element_text(face = "bold", size = 15, colour = "gray40"))
-
-
-shinyServer(function(input, output) {
-  
-  ######################################################################################
-  # Set up Input Selectors
-  ######################################################################################
-  
-  # Set up the list to allow the user to choose which brand/site to use
-  output$brandSelector <- renderUI ({
-    brands <- names(brandMaster)  # Grab just the brands (not the view IDs)
-    defaultBrand <- brands[1] # Set the brand that is selected by default as the first one in the list
-    selectInput("brand", label = "Choose a site:", 
-                choices = brands, 
-                selected = defaultBrand)
-  })
-  
-  # Set up the list to allow the user to choose what to use for the Y dimension
-  output$dimXSelector <- renderUI ({
-    dimOptions <- unique(segMaster[,1]) 
-    defaultDimX <- dimOptions[1] # Set the group that is selected by default as the first one in the list
-    selectInput("dimX", label = "Choose the X dimension:", 
-                choices = dimOptions, 
-                selected = defaultDimX)
-  })
-  
-  # Set up the list to allow the user to choose what to use for the Y dimension
-  output$dimYSelector <- renderUI ({
-    dimOptions <- unique(segMaster[,1]) 
-    defaultDimY <- dimOptions[2] # Set the group that is selected by default as the first one in the list
-    selectInput("dimY", label = "Choose the Y dimension:", 
-                choices = dimOptions, 
-                selected = defaultDimY)
-  })
-  
-  # Set up the list to allow the user to choose the data granularity for the trendlines
-  output$granularitySelector <- renderUI ({
-    granularityOptions <- names(granularityMaster)  # Grab just the brands (not the view IDs)
-    # Set the granularity that is selected by default as the first one in the list
-    defaultGranularity <- granularityOptions[1] 
-    selectInput("granularity", label = "Choose trendline resolution:", 
-                choices = granularityOptions, 
-                selected = defaultGranularity)
-  })
-  
-  # Set up the list to allow the user to choose the metric to use for the results
-  output$metricSelector <- renderUI ({
-    metricOptions <- names(metricMaster)  # Grab just the brands (not the view IDs)
-    defaultMetric <- metricOptions[1] # Set the metric that is selected by default as the 1st in the list
-    selectInput("metric", label = "Choose metric:", 
-                choices = metricOptions, 
-                selected = defaultMetric)
-  })
-  
-  #############################
-  # Main function to pull the data based on selected inputs.
-  #############################
-  
-  getDataFromGA <- reactive({
-    
-    req(input$brand)  ########## Do I need this if I have a default value set?
-    
-    c.brandName <- input$brand
-    c.viewId <- brandMaster[[input$brand]]
-    c.metric <- metricMaster[[input$metric]]
-    c.granularity <- granularityMaster[[input$granularity]]
-    c.dimXlabel <- input$dimX
-    c.dimYlabel <- input$dimY
-    
-    segmentNames.X <- segMaster[segMaster[,"group"]==c.dimXlabel,2]
-    segmentDefinitions.X <- segMaster[segMaster[,"group"]==c.dimXlabel,3]
-    
-    segmentNames.Y <- segMaster[segMaster[,"group"]==c.dimYlabel,2]
-    segmentDefinitions.Y <- segMaster[segMaster[,"group"]==c.dimYlabel,3]
-    
-    # Pull data for each segment. This is just a loop that goes through and makes successive calls to 
-    # GA and then builds out the data frame with the data.
-    for (j in 1:length(segmentDefinitions.X)) {
+      # Horizontal line just to break up the settings a bit.
+      tags$hr(style="border-color: #777777;"),
       
-      # Get the segment details for the x-axis
-      c.segmentName.X <- segmentNames.X[j]
-      c.segmentDefinition.X <- segmentDefinitions.X[j]
+      # The date range dropdown, including a default value
+      selectInput("daterange", label = "Select a date range:", 
+                  choices = daterange_options, 
+                  selected = 30),
       
-      for (i in 1:length(segmentDefinitions.Y)) {
-        
-        # Get the segment details for the x-axis
-        c.segmentName.Y <- segmentNames.Y[i]
-        c.segmentDefinition.Y <- segmentDefinitions.Y[i]
-        
-        # Combine the two segments. This is, basically, the segment to get "1 box" on the 
-        # heatmap (and the trended detail)
-        c.segmentDefinition.XY <- paste(c("sessions::",c.segmentDefinition.X,";",
-                                          c.segmentDefinition.Y),collapse="")
-        
-        # Get the users who visit from that segment -- by month
-        gaData <- get_ga(profileId = c.viewId, 
-                         start.date = input$dateRange[1], end.date = input$dateRange[2], 
-                         metrics = c.metric, dimensions = c.granularity, sort = NULL, filters = NULL,
-                         segment = c.segmentDefinition.XY, samplingLevel = "HIGHER_PRECISION", 
-                         start.index = NULL, max.results = NULL, include.empty.rows = NULL, 
-                         fetch.by = NULL, ga_token)
-        # Combine the data with the meta data about it
-        tempData <- data.frame(brand = c.brandName, viewId=c.viewId, 
-                               segment.X=c.segmentName.X, segment.Y=c.segmentName.Y,
-                               date = gaData[,1], metric = gaData[,2])
-        # Add the data to the data frame
-        allData <- rbind(allData,tempData)
-      }
-    }
+      # Horizontal line just to break up the settings a bit.
+      tags$hr(style="border-color: #777777;"),
+      
+      # The metric dropdown
+      selectInput("metric", label = "Select a metric:", 
+                  choices = metric_options, 
+                  selected = "sessions"),
+      
+      # Horizontal line just to break up the settings a bit.
+      tags$hr(style="border-color: #777777;"),
+      
+      # The dimension selector (dropdown) for the X-dimension
+      selectInput("x_dim", label = "Select the X dimension and how many values to show:", 
+                  choices = dimension_options, 
+                  selected = "deviceCategory"),
+      
+      # Select the max number of values to show in the X dimension
+      sliderInput("dim_x_count",
+                  label = NULL,
+                  min = 1,
+                  max = 10,
+                  value = 3),
+      
+      # Horizontal line just to break up the settings a bit.
+      tags$hr(style="border-color: #777777;"),
+      
+      # The dimension selector (dropdown) for the X-dimension
+      selectInput("y_dim", label = "Select the Y dimension and how many values to show:", 
+                  choices = dimension_options, 
+                  selected = "channelGrouping"),
+      
+      # Select the max number of values to show in the Y dimension
+      sliderInput("dim_y_count",
+                  label = NULL,
+                  min = 1,
+                  max = 10,
+                  value = 6)
+    ),
     
-    # Reset the column names just to make sure they're right. The absence of this was causing
-    # the last column to not be named "metric" in some cases, which caused issues later in the code.
-    colnames(allData) <- c("brand",   "viewId", "segment.X", "segment.Y", "date", "metric")
-    return(allData)
+    # Show the heatmap and sparklines
+    mainPanel(
+      tags$h4("Heatmap of Metric Totals"),
+      plotOutput("heatmap"),
+      tags$hr(),
+      tags$h4("Daily Trendlines for the Metric"),
+      plotOutput("sparklines")
+    )
+  )
+)
+
+################
+# Define server logic
+################
+
+server <- function(input, output) {
+  
+  # Get the view ID (user-selected). I'd be lying if I said I fully understood this
+  # piece -- pretty much lifted it straight from Mark Edmondson's example at:
+  # http://code.markedmondson.me/googleAnalyticsR/shiny.html. Except... used the
+  # JS option: https://mark.shinyapps.io/googleAuthRMarkdown/
+  access_token <- callModule(gar_auth_js, "auth_module")
+  
+  # Get the accounts list
+  ga_account <- reactive({
+    validate(
+      need(access_token(), "Authenticate")
+    )
+    
+    with_shiny(google_analytics_account_list, shiny_access_token = access_token())
+  })
+  
+  view_id <- callModule(authDropdown, "auth_menu", ga.table = ga_account)
+  
+  # Get auth code from return URL
+  # access_token  <- callModule(googleAuth, "auth1")
+  
+  # Function to actually pull the data. I'm a little concerned that this may be
+  # running twice every time a new API call is triggered -- had it working
+  # as a reactive conductor function originally so this wouldn't be the case,
+  # but I couldn't manage to keep that structure once I introduced the Google
+  # login.
+  base_data <- reactive({
+    
+    # Calculate the start and end dates.
+    start_date <- as.character(Sys.Date()-as.numeric(input$daterange)-1)
+    end_date <- as.character(Sys.Date()-1)
+    
+    # Set up the dimensions being used. If you trace this back, x_dim and y_dim
+    # are fed by a reactive conductor.
+    dimensions <- c("date",input$x_dim, input$y_dim)
+    
+    # Pull the data.
+    ga_data <- with_shiny(google_analytics,
+                          id = view_id(),
+                          start = start_date,
+                          end = end_date,
+                          metrics = input$metric,
+                          dimensions = dimensions,
+                          shiny_access_token = access_token())
+    
+    # Rename the columns to be generic names -- that just makes it easier
+    # for all future transformations
+    colnames(ga_data) <- c("date","dim_x","dim_y","metric")
+    
+    # We want to return the entire data frame -- not just the column names,
+    # so throw the data frame here as the last object in the function.
+    ga_data
     
   })
   
-  ###############################
-  # Plot the data
-  ###############################
+  # We want to get the "top X" values for each dimension based on the dim_x_count 
+  # settings. We're going to use these values in a few places, so we're setting them
+  # up as reactive conductors
+  dim_x_includes <- reactive({calc_dim_x_includes(base_data(), input$dim_x_count)})
+  dim_y_includes <- reactive({calc_dim_y_includes(base_data(), input$dim_y_count)})
   
-  # Make the heatmap plot
-  output$plotTotal <- renderPlot({
-    allData <- getDataFromGA()
+  # Build the heatmap
+  output$heatmap <- renderPlot({
     
-    #   Collapse the values to remove the monthly breakdown
-    allData_total <- allData %>% group_by(segment.X, segment.Y) %>% 
-      summarise(metric = sum(metric)) %>% 
-      ungroup()
+    # Make sure an access token is present before trying to render anything
+    req(access_token())
     
-    # We're going to display the % of total, too, so going ahead and calculating
-    # the total
-    metricTotal <- sum(allData_total$metric)
+    x_includes <- dim_x_includes()
+    y_includes <- dim_y_includes()
     
-    # Plot the result total
-    ggplot(allData_total,aes(x = segment.X, y = segment.Y, fill = metric)) +
-      geom_tile() + scale_fill_gradient(low="white", high="green") + 
-      geom_text(aes(fill = allData_total$metric, label = comma(allData_total$metric)), 
-                size=8, colour = "black", position = position_nudge(y = 0.1)) +
-      geom_text(aes(fill = allData_total$metric, label = percent(allData_total$metric/metricTotal)), 
-                size=6, colour = "gray40", position = position_nudge(y = -0.1)) +
-      labs(title = paste(c("Total " ,input$metric," (",comma(sum(allData_total$metric)),")"),collapse="")) +
-      baseTheme + theme(panel.background = element_blank()) +
-      scale_x_discrete("") +
-      scale_y_discrete("")
+    plot_data <- base_data()
+    
+    # Filter the data down to just include the "top X" dimensions (for both values) and
+    # then total them up.
+    plot_totals <- plot_data %>% as.data.frame() %>% 
+      filter(dim_x %in% x_includes$dim_x, dim_y %in% y_includes$dim_y) %>%
+      group_by(dim_x, dim_y) %>% 
+      summarise(total = sum(metric))
+    
+    # Make the totals heatmap
+    ggplot(plot_totals, aes(dim_x, dim_y)) + 
+      geom_tile(aes(fill = total), color="white", size = 1) +
+      scale_fill_gradient(low = "white", high = "green") +
+      scale_x_discrete(limits = x_includes$dim_x) +
+      scale_y_discrete(limits = y_includes$dim_y) +
+      geom_text(aes(label = comma(total)), size = 7) +
+      default_theme +
+      theme(panel.border = element_rect(fill=NA, colour = "white"))
   })
   
-  # Plot trendlines for each block.
-  output$plotTrends <- renderPlot({
-    allData <- getDataFromGA()
-    # Reverse the order of the y-axis factors so the facets will appear in the
-    # same order as the heatmap totals above. This seemed like it was going to be
-    # unbelievably messy to do... but this does it.
-    allData$segment.Y <- factor(allData$segment.Y, levels=rev(levels(allData$segment.Y)))
+  output$sparklines <- renderPlot({
     
-    ggplot(data = allData, mapping = aes(x = date, y = metric, group=1)) + 
+    # Make sure an access token is present before trying to render anything
+    req(access_token())
+    
+    x_includes <- dim_x_includes()
+    y_includes <- dim_y_includes()
+    
+    plot_data <- base_data()
+    
+    plot_trends <- filter(plot_data, dim_x %in% x_includes$dim_x, dim_y %in% y_includes$dim_y)
+    
+    # To control the facet order, we need to change dim1 and dim2 to be factors. The
+    # order comes from the dim_x_includes$dimx values
+    plot_trends$dim_x <- factor(plot_trends$dim_x,
+                                levels = as.character(x_includes$dim_x))
+    
+    plot_trends$dim_y <- factor(plot_trends$dim_y,
+                                levels = as.character(rev(y_includes$dim_y)))
+    
+    # Generate the actual plot. Ideally, the strip labels on the y-axis would be
+    # right-justified, but this turns out to be trickier than you would think, and
+    # the solutions I found to make that happen...I couldn't get to work.
+    ggplot(plot_trends, aes(date, metric)) +
       geom_line() +
-      facet_grid(segment.Y ~ segment.X, switch="y") +
-      baseTheme +
-      labs(title = paste(c(input$metric," Trended " ,input$granularity),collapse="")) +
-      scale_y_continuous(name="", labels = comma) +
-      theme(axis.title = element_blank(),axis.text.x = element_blank(), 
-            strip.text.y = element_text(angle=180, hjust=1), 
-            axis.text = element_text(face = "plain", size = 11, colour = "gray40"))
+      facet_grid(dim_y~dim_x,
+                 switch = "both") +
+      default_theme +
+      theme(axis.text = element_blank())
+    
   })
   
-})
+}
 
+# Run the application 
+shinyApp(ui = ui, server = server)
 ```

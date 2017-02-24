@@ -1,12 +1,12 @@
 ---
-title: "Trending Google Analytics sessions"
+title: "Example 1: Trending Google Analytics Sessions"
 ---
 
 ```{r example1-setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Example 1: Trending Google Analytics sessions
+This is a pretty straightforward example. It simply walks through getting daily sessions data from Google Analytics, and then a few different ways to trend it. Is it a sexy example? No. Or yes. You be the judge.
 
 We first load the libraries we will need later, authenticate with Google, and set the View Id we want to pull data from. 
 

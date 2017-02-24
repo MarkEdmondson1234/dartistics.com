@@ -1,5 +1,5 @@
 ---
-title: "GA Effect"
+title: "Example 4: GA Effect"
 ---
 
 ```{r example4-setup, include=FALSE}

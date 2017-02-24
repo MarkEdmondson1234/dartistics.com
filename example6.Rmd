@@ -1,0 +1,79 @@
+---
+title: "Example 6: Forecasting with Holt-Winters"
+---
+
+```{r example1-setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+```
+
+Long gone (can) be the days of forecasting simply by dropping a trendline on some data. This example uses the Holt-Winters method (which uses [time-series decomposition](http://www.dartistics.com/timeseries.html#decomposition) -- a topic you can jump ahead to if you must) to apply some smoothing and seasonality to the base data to build a forecast that includes the likely range of values.
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+library(highcharter)
+library(googleAnalyticsR)
+library(forecast)
+
+view_id <- 81416156
+ga_auth()
+
+## if file exists, fetch data from there
+if(file.exists("./data/index_gadata2.RData")){
+  
+  load("./data/index_gadata2.RData")
+  
+} else {
+  ## fetch from API
+  gadata2 <- google_analytics_4(view_id, 
+                             date_range = c("2013-08-01", "2016-07-31"),
+                             metrics = "sessions", 
+                             dimensions = c("yearMonth"),
+                             max = -1)
+  save(gadata, file = "./data/index_gadata2.RData")
+  
+}
+
+```
+
+```r
+
+# Load up a few libraries we'll need to retrieve and work with the data
+library(highcharter)
+library(googleAnalyticsR)
+library(forecast)
+
+# Set the view ID that we'll be using. You can get the view ID for a specific view
+# that you have access to by logging into the Google Analytics Query Explorer at
+# https://ga-dev-tools.appspot.com/query-explorer/. It's the "ids" value.
+view_id <- 81416156
+
+# Authorize Google Analytics
+ga_auth()
+
+# Get the data from Google Analytics
+gadata <- google_analytics_4(view_id, 
+                             date_range = c("2013-08-01", "2016-07-31"),
+                             metrics = "sessions", 
+                             dimensions = c("yearMonth"),
+                             max = -1)
+                             
+# Convert the data to be officially "time-series" data
+ga_ts <- ts(gadata$sessions, start = c(2013,08), end = c(2016,07), frequency = 12)
+
+# Compute the Holt-Winters filtering for the data
+forecast1 <- HoltWinters(ga_ts)
+
+# Generate a forecast for next 12 months of the blog sessions
+hchart(forecast(forecast1, h = 12))
+
+```
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+ga_ts <- ts(gadata2$sessions, start = c(2013,08), end = c(2016,07), frequency = 12)
+
+forecast1 <- HoltWinters(ga_ts)
+
+## forecast for next 12 months of the blog sessions
+hchart(forecast(forecast1, h = 12))
+
+```
