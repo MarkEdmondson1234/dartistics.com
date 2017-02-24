@@ -27,8 +27,8 @@ navbar:
       menu:
       - text: "What Is R?"
         href: whatisr.html
-      - text: "RStudio"
-        href: rstudio.html
+      - text: "Getting Started"
+        href: gettingstarted.html
       - text: "Packages"
         href: packages.html
       - text: "Basics of Base R"
