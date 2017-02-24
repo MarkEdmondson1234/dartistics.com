@@ -9,7 +9,10 @@ output:
 If you are a digital analyst who is looking to dive into R and statistics -- at all or, simply, more deeply -- then this training is for you. **Pre-registration is available [here](https://goo.gl/forms/dxUo02OVlg68gLOS2)**.
 
 ## When and Where
-The class will be held in Columbus, Ohio, June 13-15, 2017.
+
+* **When:** June 13-15, 2017
+* **Where:** 95 Liberty Street, Columbus, Ohio
+* **Venue:** [Vue Columbus](http://vuecolumbus.com/meeting-rooms/#rooms) (The Green Room)
 
 ## Course Description
 The course is a combination of lectures and hands-on examples. The goal is that every attendee will leave with a clear understanding of:
@@ -86,6 +89,19 @@ The pre-registration form is available [here](https://goo.gl/forms/dxUo02OVlg68g
 ### Why should I attend this course instead of just taking classes through Coursera (or other MOOCs)?
 While the material available online for both R and for statistics is vast, and much of that is freely available, what we’ve seen (and feedback we’ve gotten from others) is that it is daunting to actually make the leap from “general examples” -- many of which are person-level, social science data -- to “how do we apply this with digital analytics (web analytics, specifically, but also social, mobile, and other marketing analytics data) specifically?” That is the gap this course aims to fill. It is built around digital analytics examples and scenarios. As such, the course is designed to provide an accelerated path to putting these tools (R and statistics) to real-world use.
 
+### How can I best pitch this class to my manager / my organization?
+This is a tough question to answer, as the specific needs of every organization are different. **If** your organization is looking towards the world of "data science," and you and/or your digital analytics organization needs to move in that direction, then this course is a great jumpstart for that. (To be clear, this course will not turn the attendees into data scientists in three days, but the entire course is about bringing _aspects_ of data science into the world of digital analysts).
+
+If your manager/organization is more motivated by visual things, then, perhaps, one or more of these examples will be useful from a, "I'll be equipped to do things like this" perspective:
+
+* [GA Effect](http://online-behavior.com/analytics/statistical-significance) -- an application of a Bayesian structural time-series method to answer the question, "What was the impact of that event (campaign, redesign, channel change, etc.)?" While this was built for use with Google Analytics (by one of the instructors for this course!), the concept and approach is applicable to data from any platform.
+* [Forecasting](http://www.dartistics.com/example6.html) -- this is a very simple illustration of forecasting using the Holt-Winters method and R. If you think forecasting isn't something of much use to you, then check out [this post](http://analyticsdemystified.com/adobe-analytics/r-adobe-analytics-metric-move-significantly-part-2-3/) about how forecasts can be used to objectively assess recent results.
+* [Text Mining Site Search Data](http://analyticsdemystified.com/google-analytics/exploring-site-search-help-r/) -- if you are using Google Analytics, you can actually [try this out with your own data](https://gilligan.shinyapps.io/ga-site-search/?utm_source=dartistics&utm_campaign=site-search-ga&utm_medium=blog) without doing any coding at all. (A version for use with Adobe Analytics is in the works.)
+* [BigQuery Visualizer](http://markedmondson.me/bigquery-visualiser-shiny-app-now-free-and-open-sourced) -- IF you use BigQuery, then this is an app that you can use (or create and extend locally) using R.
+* [Random Forests and K-Means Clustering](http://markedmondson.me/intro-to-machine-learning-with-web-analytics-random-forests-and-k-means) -- these are some examples that would appeal to the "I just know we need to be doing more advanced stuff!" mentality. There are several examples there.
+
+The list above doesn't capture the efficiency gains of using R from the perspective of how it can just make it much faster and more readily repeatable to pull data from one or more systems and manipulate it. That, alone, would likely justify the value of adding the platform to your toolset. But, it's a tougher value to illustrate with a pretty picture.
+
 ### What should attendees know beforehand?
 The only prerequisite for this class is that the student is relatively well-versed in web analytics (any platform). The course starts “from scratch” with R itself (although it doesn’t hurt to already be using the platform -- there is plenty of useful material for those users, too!). And, the course starts “from scratch” with the the statistics material. 
 
@@ -100,6 +116,12 @@ Yes. All three instructors will be available through email and other channels to
 
 ### Is there a discount for students or non-profits?
 Contact [tim@analyticsdemystified.com](mailto:tim@analyticsdemystified.com) and we will see what we can do.
+
+### Is there a recommended hotel?
+Two hotels within a 10-minute walk of the training space are:
+* [The Westin Columbus](http://www.westincolumbus.com/), 310 S. High Street, Columbus, Ohio
+* [Comfort Inn & Suites Downtown](https://www.choicehotels.com/ohio/columbus/comfort-inn-hotels/oh508), 650 S High St, Columbus, Ohio
+The shuttles for the evening activities will drop off at both of these hotels.
 
 ### Why doesn’t this FAQ answer my specific question?
 Because it was an oversight. Send your question to [tim@analyticsdemystified.com](mailto:tim@analyticsdemystified.com), and we will both get it answered and, as appropriate, add it here.
