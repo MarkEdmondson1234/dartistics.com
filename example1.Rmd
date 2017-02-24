@@ -8,7 +8,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This is a pretty straightforward example. It simply walks through getting daily sessions data from Google Analytics, and then a few different ways to trend it. Is it a sexy example? No. Or yes. You be the judge.
 
-We first load the libraries we will need later, authenticate with Google, and set the View Id we want to pull data from. 
+We first load the libraries we will need later, authenticate with Google, and set the View ID we want to pull data from. You can get the view ID for a specific view that you have access to by logging into the [Google Analytics Query Explorer](https://ga-dev-tools.appspot.com/query-explorer/). It's the "ids" value.
 
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 library(googleAnalyticsR)
@@ -35,8 +35,6 @@ if(file.exists(cache_file)){
   save(trend_data, file = "./data/example1_gadata.RData")
   
 }
-
-
 ```
 
 ```r
@@ -44,7 +42,7 @@ library(googleAnalyticsR)
 library(knitr)
 ga_auth()
 
-## replace with your own Google Analytics View Id
+# Replace with your own Google Analytics view ID
 view_id <- 81416156
 
 ```
@@ -52,7 +50,7 @@ view_id <- 81416156
 This is the actual API call.  We take advantage of Google Analytics v4's pivot function, to do some data transformation for us:
 
 ```r
-## get data, use pivot to get columns of medium sessions
+# Get the data. Use the "pivots" parameter to get columns of medium sessions.
 trend_data <- google_analytics_4(view_id,
                                  date_range = c(Sys.Date() - 400, Sys.Date()),
                                  dimensions = c("date"),
@@ -60,7 +58,7 @@ trend_data <- google_analytics_4(view_id,
                                  pivots = pivot_ga4("medium","sessions"),
                                  max = -1)
 
-## Note the medium columns created by the pivot
+# Note the medium columns that were created by using the pivots= setting
 head(trend_data)
 ```
 
@@ -68,60 +66,79 @@ head(trend_data)
 kable(head(trend_data))
 ```
 
-Now we have the data, we transform it a little to a format suitable for the plot functions:
+Now we have the data, but we still need to transform it a little to a format suitable for the plot functions.
 
 ```{r}
-## format the names
+# The "names" are the column headings. Let's see what those are (these are the same as the headings
+# in the table above -- we just want to double-check that that's what we're about to change).
 names(trend_data)
-names(trend_data) <- c("Date","Total","Referral","Direct","Social")
 
-## check the data R classes
-## This time all look good - Date objects for date and numeric for the metrics
-str(trend_data)
+# Now, let's actually change those values to be a bit more user-friendly.
+names(trend_data) <- c("Date","Total","Referral","Direct","Social")
 ```
 
-Looks good to try some plots:
+We've now updated the colum headings in our data:
 
-### Base plots
+```{r, echo=FALSE}
+kable(head(trend_data))
+```
 
-Good for quick explorations, but takes arcane work to make presentable for final publication
+Let's now plot the data a few different ways.
 
-```{r}
-## make a time-series object
-trend_ts <- ts(trend_data[-1], frequency = 7)
-plot(Total ~ Date, data = trend_data, type = "l")
-axis(1, trend_data$Date, format(trend_data$Date, "%b"))
+### Base Plots
+
+"Base R" includes plotting functionality. These are good for some quick explorations, but can take some pretty arcane work to make presentable for final publication.
+
+```{r fig.width=10}
+# Plot the Total (total sessions) by date as a line chart (type = "l"). Oh... and we want to
+# turn off the tick marks on the x-axis, which uses the oh-so-obvious "xaxt=" parameter
+plot(Total ~ Date, data = trend_data, type = "l", xaxt="n")
+
+# Now, add to that plot the x-axis using the date values and format them with the 3-letter
+# month ("%b") and 2-digit year ("%y")
+axis(1, trend_data$Date, format(trend_data$Date, "%b-%y"), tick = FALSE)
 ```
 
 ### ggplot
 
-You need to learn the syntax, but its more consistent than base R's.  
-You slowly build up your plot via geoms, and the end results can be very professional looking.
+**ggplot** is a separate R package for creating visualizations. The "gg" is for "Grammar of Graphics." That "grammar" is very powerful, but it's also a bit mind-bending to learn. You will need to learn the syntax, but, once you do, it's more consistent across all visualizations than base R's is.
 
-```{r}
+Essentially, you slowly "build up" your plot via "geoms" (different core "geometries" -- a line, a bar, a point, text, etc"), and you control the style through "themes" that are very similar to CSS in web development. The end results can be very professional looking.
+
+```{r message=FALSE, fig.width=10}
 library(ggplot2)
-library(reshape2)
+library(tidyr)
 
-## change data into 'long' format
-trend_long <- melt(trend_data, id = "Date")
+# Change the data into a 'long' format. This is "tidy data," which we'll cover
+# elsewhere in more detail.
+trend_long <- gather(trend_data, Channel, Sessions, -Date)
+
+# Check out the first few rows of the 'long' version of the data
 head(trend_long)
 
-## build up the plot
-gg <- ggplot(trend_long, aes(x = Date, y = value, group = variable)) + theme_minimal()
-gg <- gg + geom_line(aes(colour = variable))
+# Build up the plot.
+# Create a basic plot object that says to use Sessions as the plotted variable, and to split
+# out each Channel into a different data series. For now, don't actually *plot* it -- just
+# make it a "plot object" that we're calling "gg" (we haven't yet said *how* to plot it --
+# we've just sort of set up "here's the data and here's how we're looking at it.")
+gg <- ggplot(trend_long, aes(x = Date, y = Sessions, group = Channel)) + theme_minimal()
+
+# Now, add on to that base plot definition that we want to plot the results as a line chart,
+# and we want to make each Channel's data a different color.
+gg <- gg + geom_line(aes(colour = Channel))
+
+# Finally, actually output the plot.
 gg
 ```
 
-### highcharter (example of htmlwidgets)
+### highcharter (Example of htmlwidgets)
 
-Uses JavaScript libraries to render your data.  Only works in HTML, but fancy and interactive. 
+The plot above is a static image. But, if we use JavaScript libraries to render the data, we get something that is more interactive (but only works in HTML). Note how you can mouse over the chart below and see the specific values.
 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, fig.width=10}
 library(highcharter)
-library(reshape2)
 
-## change data into 'long' format
-trend_long <- melt(trend_data, id = "Date")
-hchart(trend_long, type = "line", x = Date, y = value, group = variable)
+# Use the hchart function to generate a line chart with the data.
+hchart(trend_long, type = "line", x = Date, y = Sessions, group = Channel)
 
 ```
