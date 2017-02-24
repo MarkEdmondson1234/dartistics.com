@@ -6,11 +6,13 @@ title: "Package Ecosystem"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-A large part of R's success is the ecosystem of open-sourced packages that add extra functionality to what R comes with (referred to as "base R").
+A large part of R's success is the ecosystem of open-sourced packages that add extra functionality to what the core installation of R (referred to as "base R") includes.
 
 ## CRAN
 
-CRAN is the official central repository for R packages, where human reviewed packages go through quality checks for publishing on the CRAN network around the world.  It is through CRAN that you install packages with the `install.package()` function, or via the Packages pane in the bottom left of RStudio.
+[The Comprehensive R Archive Network (CRAN)](https://cran.r-project.org/) is the official central repository for R packages, where human-reviewed packages go through quality checks for publishing on the CRAN network around the world. It is through CRAN that you install packages with the `install.packages()` function, or via the **Packages** pane in the bottom right of RStudio.
+
+One of the nicer aspects of having CRAN as a centralized resource is that, well, you don't actually have to visit the site very often. When you use the `install.packages()` function without any of the optional parameters, R automatically looks for the package on CRAN, downloads it, and installs it. _There is no need to download a file and then double-click to install it._
 
 ## Using a Package
 
@@ -18,7 +20,7 @@ This will become absolutely second nature, but it's one of those things that is 
 
 1. **The package has to be installed.** This is what is described above. The first time you use a package, you will need to type `install.packages(\[the package name\])` in the console and press <Enter>. That will pull the package (and any packages the package depends on -- few packages are built entirely from scratch!) from CRAN. And...it will show up in the **Packages** tab in the bottom right of your RStudio environment. This is a one-time step, although there is no harm in installing the same package multiple times, and, occasionally, you will find that a package has been updated and needs to be re-installed.
 
-2. **The package has to be loaded.** In your script (or in the console), enter `library(\[the package name\])`. Typically, you will have a list of these at the beginning of your scripts (although there are other techniques for centralizing a list of packages you commonly use...we're not going to go there). Once a package is loaded, it will show with a checkbox next to it in the **Packages** list in your RStudio environment.
+2. **The package has to be loaded.** In your script (or in the console), enter `library(\[the package name\])`. Typically, you will have a list of these at the beginning of your scripts (although there are other techniques for centralizing a list of packages you commonly use...we're not going to go there for now). Once a package is loaded, it will show with a checkbox next to it in the **Packages** list in your RStudio environment.
 
 _When you get a "function not found" error when running a script, 9 times out of 10 that's because the function you're calling is in a package that isn't loaded._
 
@@ -30,12 +32,11 @@ This list simply cannot be comprehensive, but, to give you a sense of the breadt
 
 Many of the platforms that digital analysts work with already have one or more packages developed for accessing their data quickly and easily:
 
-* **[googleAnalyticsR](http://code.markedmondson.me/googleAnalyticsR/)** -- this is officially Tim's favorite package (which may or may not be him sucking up to Mark). It uses the v4 API from Google Analytics which (right now) makes it unique.
-* **[RGA](https://github.com/artemklevtsov/RGA)** -- another package for accessing Google Analytics data. This used to be our favorite. (See above.)
-* **[rga](https://github.com/skardhamar/rga)** -- you guessed it..._another_ package for accessing Google Analytics data. **Subtle Point:** R is _case-sensitive_ (and it's unfortunate that we wound up with two different-but-similar-packages!) throughout the code. It's easy for this to trip things up!
+* **[googleAnalyticsR](http://code.markedmondson.me/googleAnalyticsR/)** -- this is a great package for accessing Google Analytics data. It uses the v4 API from Google Analytics which (right now) makes it unique.
 * **[RSiteCatalyst](http://randyzwitch.com/rsitecatalyst/)** -- a package for accessing data from Adobe Analytics! This package works really well...but it's dependent on constraints in the Adobe Analytics API.
 * **[twitteR](https://cran.r-project.org/web/packages/twitteR/twitteR.pdf)** -- a package for accessing Twitter data.
 * **[searchConsoleR](http://code.markedmondson.me/searchConsoleR/)** -- yup... you guessed it. Google Search Console data (oh...and Mark wrote this one, too; fun fact that Tim discovered when he was creating this content!)
+* **[bigQueryR](http://code.markedmondson.me/bigQueryR/) -- a package for accessing Google BigQuery
 
 ### Some Other Packages You Will Get Familiar With
 You _will_ learn to know the name "Hadley Wickham," as he is quite possibly the most influential R user (and package and content creator) of the modern era. He also now works for RStudio. All of the packages below are part of what has been dubbed "the Hadleyverse," because Wickham was key in their creation. He's actually been working to rebrand this "the tidyverse" because, well, that's how he rolls.
@@ -47,11 +48,13 @@ For a more comprehensive list of packages in the Hadley-tidyverse, you can check
 * **[lubridate](https://rpubs.com/davoodastaraky/lubridate)** -- it's a play on words:  you're "lubricating the process of working with dates" (I think). Dates come in all sorts of formats and structures, and this package makes short work of working with them.
 * **[tidyr](https://blog.rstudio.org/2014/07/22/introducing-tidyr/)** -- this is a package for getting your data into a "tidy" format...which, put in Excel terms, means a bunch of rows and a limited number of columns so that you could pivot the data very easily (because data that can be easily pivoted can be easily subsetted, plotted, summarized, and aggregated).
 
+If you're not worried about cluttering up your system with too much stuff, ther is actually a [tidyverse package](http://tidyverse.org/) that is just a collection of all of the packages in the tidyverse. So, you get all of the above (and a lot, lot more) with just `install.packages("tidyverse")`, which you can then load and use with `library(tidyverse)`.
+
 ## Github
 
-There are also thousands of more experimental packages that are only available through Github.  These packages have come much easier to work with since the introduction of the package `devtools`, which via its function `install_github` means access to this universe.
+There are also thousands of more experimental packages that are only available through Github. These packages have become much easier to work with since the introduction of the package `devtools`, which via its function `install_github` provides access to this universe of packages through scriptable commands.
 
-Beware though that the packages on Github are by their nature more experimental, so due care should be excercised to ensure they are trustworthy.
+Beware, though, that the packages on Github are, by their nature, more experimental, so exercise due care to ensure they are trustworthy!
 
 
 

@@ -489,26 +489,37 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>At its most basic, R can perform operations (like math(s)) simply by typing an expression in the console and pressing <Enter>:</p>
 <pre class="r"><code>12^2</code></pre>
 <pre><code>## [1] 144</code></pre>
-<p>When an expression is entered in the RStudio console, it simply executes and returns the result. In the example above, the results returned is the result is the square of 12.</p>
+<p>When an expression is entered in the RStudio console, it simply executes and returns the result. In the example above, the result returned is the result of the square of 12.</p>
+<p>This is also an example of using the console as a “scratchpad” – we just wanted to do something, get the result, and move on along. So, we didn’t put this operation in a script.</p>
 </div>
 <div id="section" class="section level2">
 <h2>&lt;-</h2>
-<p>As a programming language, R has variables (or “objects”) that “things” get assigned to (values, functions, other variables). These assignments use the <code>&lt;-</code> operator. For instance, to assign the value <code>1</code> to a variable called <code>x</code>, we write:</p>
+<p>As a programming language, R has variables (or “objects”) that “things” get assigned to (values, functions, other variables). These assignments use the <code>&lt;-</code> operator. For instance, to assign the value <code>5</code> to a variable called <code>x</code>, we write:</p>
 <pre class="r"><code>x &lt;- 5</code></pre>
-<p>You may wonder why this isn’t <code>x=5</code>…and a real programmer could probably give you a great explanation. The <code>=</code> does get used in R, and it <em>can</em> often be used instead of <code>&lt;-</code>, but that’s not generally a good idea. When we <em>define</em> functions and when we <em>call</em> functions, we <em>do</em> use the <code>=</code> sign to assign or pass values into the function. But, that will become clear later.</p>
-<p>We now have an object <code>x</code> that is stored with a value of <code>5</code> in our environment, so we can perform operations on x:</p>
+<p>You may wonder why this isn’t <code>x=5</code>…and a real programmer could probably give you a great explanation. The <code>=</code> <em>does</em> get used in R, and it <em>can</em> often be used instead of <code>&lt;-</code>, but that’s not generally a good idea. When we <em>define</em> functions and when we <em>call</em> functions, we <em>do</em> use the <code>=</code> sign to assign or pass values into the function. But, that will become clear later.</p>
+<p>We now have an object <code>x</code> that has a value of <code>5</code> in our environment. As a matter of fact, if we check out the <strong>Environment</strong> pane at the top right of RStudio, we’ll see that that is the case:</p>
+<div align="center">
+<img src="images/environment_x_5.png" />
+</div>
+<p>That’s a pretty boring <strong>Environment</strong> for the moment. But, as we start doing real work with R, it will get loaded up with lots of objects – and objects of different types (“classes”) – at which point it will start to get really handy.</p>
+<p>So, we have an object <code>x</code>, and we can perform operations on that object from the script editor or, for now, from the console:</p>
 <pre class="r"><code>x * 1000</code></pre>
 <pre><code>## [1] 5000</code></pre>
 <p>Or, we can use x in an expression that creates another object:</p>
 <pre class="r"><code>y &lt;- x^3</code></pre>
-<p>We now have an object named <code>y</code>, which we can inspect by typing <code>y</code> at the prompt:</p>
+<p>Now, if we check out the <strong>Environment</strong> pane, we’ll see <em>two</em> objects in it:</p>
+<div align="center">
+<img src="images/environment_x_y.png" />
+</div>
+<p>This still isn’t exciting, but what did you expect from “the basics?” We can also inspect our new object by typing <code>y</code> at the prompt:</p>
 <pre class="r"><code>y</code></pre>
 <pre><code>## [1] 125</code></pre>
-<p>A handy keyboard shortcut for **** is <code>ALT -</code>.</p>
+<p><strong>Handy shortcut</strong>: Press <code>ALT -</code> to create the assignment operator, <code>&lt;-</code>.</p>
 </div>
 <div id="r-is-case-sensitive" class="section level2">
 <h2>R is Case-Sensitive</h2>
-<p>R is case-sensitive, so <code>gaData</code> is a totally different object from <code>gadata</code> (and <code>x</code> is different from <code>X</code> for that matter). Depending on how well you type and how closely you pay attention to the details, this is an easy way to get tripped up.</p>
+<p>R is case-sensitive, so <code>gaData</code> is a totally different object from <code>gadata</code> (and <code>x</code> is different from <code>X</code>). Depending on how well you type and how closely you pay attention to the details, this is an easy way to get tripped up.</p>
+<p>One more time: <strong>R IS CASE-SENSITIVE</strong>.</p>
 </div>
 <div id="functions" class="section level2">
 <h2>Functions</h2>
@@ -522,7 +533,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 <div id="defined-in-packages" class="section level3">
 <h3>Defined in Packages</h3>
-<p>When you install a package, what you’re really doing is adding more functions to the universe in which you are working. These work <em>exactly</em> like the Base R functions described above. Although, as described in the <a href="packages.html">packages</a> section, you have to have the package installed (using the Base R function <code>install.packages()</code> to install the package and then the <code>library()</code> function – within your script – to load the package).</p>
+<p>When you install a package, what you’re really doing is adding more functions to the universe in which you are working. These work <em>exactly</em> like the Base R functions described above. Although, as described in the <a href="packages.html">packages</a> section, you have to have the package installed (using the Base R function <code>install.packages()</code> to install the package and then the <code>library()</code> function – within your script – to load it).</p>
+<p><em>Annoying aside</em>: Are you wondering what happens if you have two packages installed and loaded that have an identically named function? It happens! By default, if you call a function that exists in two different packages that are both loaded, then the version of the function from the <em>last</em> package loaded will be used. But, you can also specify which package you want to use the function from using a <code>::</code>. For instance, if you have both the <code>plyr</code> and <code>dplyr</code> packages loaded, and you want to ensure that you use the <code>summarise</code> function from the <code>dplyr</code> package, you can call the function using <code>dplr::summarise</code>.</p>
 </div>
 <div id="defined-in-your-script" class="section level3">
 <h3>Defined in Your Script</h3>
@@ -539,21 +551,32 @@ for (i in 1:3){
 <pre><code>## The cube of 1 is 1.
 ## The cube of 2 is 8.
 ## The cube of 3 is 27.</code></pre>
-<p>The example above should look very familiar if you’ve worked in almost any programming language: * We defined a function named <code>cubeValue</code> (using the <code>&lt;-</code> assignment operator) * That function was set up to take in a single value (functions can take multiple parameters, and those parameters can be assigned names, but we’re keeping it simple here), and that value is then used in the function as <code>x</code>. * A loop goes through and successfully calls the function with the values <code>1</code>, <code>2</code>, and then <code>3</code>.</p>
-<p>One thing that is fairly unique to R is that, in general, loops should be avoided. R has the ability to “apply” a function to an entire list of values at once. Consider the code below:</p>
-<pre class="r"><code># Define a function called &#39;cubeValue&#39;
+<p>The example above should look very familiar if you’ve worked in almost any programming language:</p>
+<ul>
+<li>We defined a function named <code>cubeValue</code> (using the <code>&lt;-</code> assignment operator)</li>
+<li>That function was set up to take in a single value (functions can take multiple parameters, and those parameters can be assigned names, but we’re keeping it simple here), and that value is then used in the function as <code>x</code>.</li>
+<li>A loop goes through and successfully calls the function with the values <code>1</code>, <code>2</code>, and then <code>3</code>.</li>
+</ul>
+<p>One thing that is fairly unique to R is that, in general, <em>loops should be avoided</em>. R has the ability to “apply” a function to an entire list of values at once. Consider the code below:</p>
+<pre class="r"><code># Define a function called &#39;cubeValue&#39;. Note this is identical to the function
+# defined in the first example above.
 cubeValue &lt;- function(x){
-  paste0(&quot;The cube of &quot;,x,&quot; is &quot;,x^3)
+  cat(&quot;The cube of &quot;,x,&quot; is &quot;,x^3,&quot;.\n&quot;,sep=&quot;&quot;)
 }
 
-# Apply the function to a list of values: 1 through 3.
-sapply(c(1:3), cubeValue)</code></pre>
-<pre><code>## [1] &quot;The cube of 1 is 1&quot;  &quot;The cube of 2 is 8&quot;  &quot;The cube of 3 is 27&quot;</code></pre>
+# Apply the function to a list of values: 1 through 3. This actually returns a list,
+# which we&#39;ll cover later, and we&#39;re assigning that to an object called &#39;foo&#39; that
+# we&#39;re not actually doing anything with.
+foo &lt;- sapply(c(1:3), cubeValue)</code></pre>
+<pre><code>## The cube of 1 is 1.
+## The cube of 2 is 8.
+## The cube of 3 is 27.</code></pre>
 <p>Becoming familiar with the <code>apply</code> functions (mainly <code>sapply()</code> and <code>lapply()</code>) will help unlock a lot of R’s power.</p>
+<p>We’ll dig much more deeply into functions later, as they not only are very powerful, but their proper use is key to good programming practices.</p>
 </div>
 <div id="function-help" class="section level3">
 <h3>Function Help</h3>
-<p>There will be countless functions that we start to use, and it’s often handy to quickly see the documentation for a function. The <code>?</code> provides quick access on that front. Type <code>?cat</code> and, in the lower right pane in RStudio, the help file for the <code>cat()</code> function will appear. As we start to use more complicated functions, the help files are often a very handy reference. Unfortunately, the quality of that documentation can vary, so, with functions embedded in specialized packages, the <code>?</code> help may just be a jumping off point, after which more digging online is required to get workable code examples. Function help files often use a lot of shortcuts that assume a moderate level of R knowledge on the part of the reader, so they can seem like Greek at first. The more you use R and get comfortable with the style of the help files, though, the easier they become to read.</p>
+<p>There will be countless functions that we start to use, and it’s often handy to quickly see the documentation for a function. The <code>?</code> provides quick access on that front. Type <code>?cat</code> or <code>?cat()</code> and, in the lower right pane in RStudio, the help file for the <code>cat()</code> function will appear. As we start to use more complicated functions, the help files are often a very handy reference. Unfortunately, the quality of that documentation can vary, so, with functions embedded in specialized packages, the <code>?</code> help may just be a jumping off point, after which more digging online is required to get workable code examples. Function help files often use a lot of shortcuts that assume a moderate level of R knowledge on the part of the reader, so they can seem like Greek at first. The more you use R and get comfortable with the style of the help files, though, the easier they become to read.</p>
 </div>
 </div>
 <div id="the-working-directory" class="section level2">
@@ -572,15 +595,15 @@ sapply(c(1:3), cubeValue)</code></pre>
 <li><strong>Run</strong> – when you click <strong>Run</strong>, only the <em>selected portion</em> of the script runs.</li>
 </ul>
 <p><strong>Run</strong> comes in very handy when, for instance, you already have data loaded into your environment (possibly through API calls that took a little time to run), and you just want to debug and add to additional code. Or, when you’re trying to figure out the exact syntax for getting to the subset of data you’re looking for and want to repeatedly run the same small section of a script as you tweak it.</p>
-<p>A handy keyboard shortcut for <strong>Run</strong> is <code>CMD-ENTER</code> (<code>CTRL-ENTER</code> on Windows) that will run all of the highlighted code.</p>
+<p><strong>Handy shortcut:</strong> The keyboard shortcut for <strong>Run</strong> is <code>CMD-ENTER</code> (<code>CTRL-ENTER</code> on Windows). If you simply have the cursor on a line of code, it will run just that line of code. If you have code <em>highlighted</em> when you use this shortcut, then it will run the highlighted code.</p>
 </div>
 <div id="commenting-code" class="section level2">
 <h2>Commenting Code</h2>
 <p>Comments are critical to any programming language, as their core purpose is to actually embed documentation within the code itself. In R, comments are denoted with a <code>#</code>. Comment profusely and often!</p>
-<pre class="r"><code># This is what a comment looks like. If your comment goes on for a while (which)
-# is fine, then press &lt;Enter&gt;, add another &#39;#&#39;, and continue commenting.</code></pre>
+<pre class="r"><code># This is what a comment looks like. If your comment goes on for a while (which
+# is fine), then press &lt;Enter&gt;, add another &#39;#&#39;, and continue commenting.</code></pre>
 <p>Comments are <em>also</em> handy for temporarily halting the execution of portions of your script. If, for instance, you’re trying a couple of different ways to do something, you may want to keep the original way, but just comment it out while you try an alternative.</p>
-<p>To quickly comment/un-comment a section of code in RStudio, highlight the rows you want to toggle commenting on and press <code>CMD-SHIFT-C</code> (<code>CTRL-SHIFT-C</code> on Windows).</p>
+<p><strong>Handy shortcut:</strong> To quickly comment/un-comment a section of code in RStudio, highlight the rows you want to toggle commenting on and press <code>CMD-SHIFT-C</code> (<code>CTRL-SHIFT-C</code> on Windows).</p>
 </div>
 <div id="the-up-arrow" class="section level2">
 <h2>The Up Arrow</h2>

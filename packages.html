@@ -385,17 +385,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 
 
-<p>A large part of R’s success is the ecosystem of open-sourced packages that add extra functionality to what R comes with (referred to as “base R”).</p>
+<p>A large part of R’s success is the ecosystem of open-sourced packages that add extra functionality to what the core installation of R (referred to as “base R”) includes.</p>
 <div id="cran" class="section level2">
 <h2>CRAN</h2>
-<p>CRAN is the official central repository for R packages, where human reviewed packages go through quality checks for publishing on the CRAN network around the world. It is through CRAN that you install packages with the <code>install.package()</code> function, or via the Packages pane in the bottom left of RStudio.</p>
+<p><a href="https://cran.r-project.org/">The Comprehensive R Archive Network (CRAN)</a> is the official central repository for R packages, where human-reviewed packages go through quality checks for publishing on the CRAN network around the world. It is through CRAN that you install packages with the <code>install.packages()</code> function, or via the <strong>Packages</strong> pane in the bottom right of RStudio.</p>
+<p>One of the nicer aspects of having CRAN as a centralized resource is that, well, you don’t actually have to visit the site very often. When you use the <code>install.packages()</code> function without any of the optional parameters, R automatically looks for the package on CRAN, downloads it, and installs it. <em>There is no need to download a file and then double-click to install it.</em></p>
 </div>
 <div id="using-a-package" class="section level2">
 <h2>Using a Package</h2>
 <p>This will become absolutely second nature, but it’s one of those things that is not 100% intuitive at first. When you’re using a package (which, really, means you’re using one or more of the functions <em>in</em> a package), there are two things that have to happen:</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>The package has to be installed.</strong> This is what is described above. The first time you use a package, you will need to type <code>install.packages(\[the package name\])</code> in the console and press <Enter>. That will pull the package (and any packages the package depends on – few packages are built entirely from scratch!) from CRAN. And…it will show up in the <strong>Packages</strong> tab in the bottom right of your RStudio environment. This is a one-time step, although there is no harm in installing the same package multiple times, and, occasionally, you will find that a package has been updated and needs to be re-installed.</p></li>
-<li><p><strong>The package has to be loaded.</strong> In your script (or in the console), enter <code>library(\[the package name\])</code>. Typically, you will have a list of these at the beginning of your scripts (although there are other techniques for centralizing a list of packages you commonly use…we’re not going to go there). Once a package is loaded, it will show with a checkbox next to it in the <strong>Packages</strong> list in your RStudio environment.</p></li>
+<li><p><strong>The package has to be loaded.</strong> In your script (or in the console), enter <code>library(\[the package name\])</code>. Typically, you will have a list of these at the beginning of your scripts (although there are other techniques for centralizing a list of packages you commonly use…we’re not going to go there for now). Once a package is loaded, it will show with a checkbox next to it in the <strong>Packages</strong> list in your RStudio environment.</p></li>
 </ol>
 <p><em>When you get a “function not found” error when running a script, 9 times out of 10 that’s because the function you’re calling is in a package that isn’t loaded.</em></p>
 </div>
@@ -406,12 +407,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h3>Accessing Web Analytics, Search, and Social Media Data</h3>
 <p>Many of the platforms that digital analysts work with already have one or more packages developed for accessing their data quickly and easily:</p>
 <ul>
-<li><strong><a href="http://code.markedmondson.me/googleAnalyticsR/">googleAnalyticsR</a></strong> – this is officially Tim’s favorite package (which may or may not be him sucking up to Mark). It uses the v4 API from Google Analytics which (right now) makes it unique.</li>
-<li><strong><a href="https://github.com/artemklevtsov/RGA">RGA</a></strong> – another package for accessing Google Analytics data. This used to be our favorite. (See above.)</li>
-<li><strong><a href="https://github.com/skardhamar/rga">rga</a></strong> – you guessed it…<em>another</em> package for accessing Google Analytics data. <strong>Subtle Point:</strong> R is <em>case-sensitive</em> (and it’s unfortunate that we wound up with two different-but-similar-packages!) throughout the code. It’s easy for this to trip things up!</li>
+<li><strong><a href="http://code.markedmondson.me/googleAnalyticsR/">googleAnalyticsR</a></strong> – this is a great package for accessing Google Analytics data. It uses the v4 API from Google Analytics which (right now) makes it unique.</li>
 <li><strong><a href="http://randyzwitch.com/rsitecatalyst/">RSiteCatalyst</a></strong> – a package for accessing data from Adobe Analytics! This package works really well…but it’s dependent on constraints in the Adobe Analytics API.</li>
 <li><strong><a href="https://cran.r-project.org/web/packages/twitteR/twitteR.pdf">twitteR</a></strong> – a package for accessing Twitter data.</li>
 <li><strong><a href="http://code.markedmondson.me/searchConsoleR/">searchConsoleR</a></strong> – yup… you guessed it. Google Search Console data (oh…and Mark wrote this one, too; fun fact that Tim discovered when he was creating this content!)</li>
+<li>**<a href="http://code.markedmondson.me/bigQueryR/">bigQueryR</a> – a package for accessing Google BigQuery</li>
 </ul>
 </div>
 <div id="some-other-packages-you-will-get-familiar-with" class="section level3">
@@ -424,12 +424,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li><strong><a href="https://rpubs.com/davoodastaraky/lubridate">lubridate</a></strong> – it’s a play on words: you’re “lubricating the process of working with dates” (I think). Dates come in all sorts of formats and structures, and this package makes short work of working with them.</li>
 <li><strong><a href="https://blog.rstudio.org/2014/07/22/introducing-tidyr/">tidyr</a></strong> – this is a package for getting your data into a “tidy” format…which, put in Excel terms, means a bunch of rows and a limited number of columns so that you could pivot the data very easily (because data that can be easily pivoted can be easily subsetted, plotted, summarized, and aggregated).</li>
 </ul>
+<p>If you’re not worried about cluttering up your system with too much stuff, ther is actually a <a href="http://tidyverse.org/">tidyverse package</a> that is just a collection of all of the packages in the tidyverse. So, you get all of the above (and a lot, lot more) with just <code>install.packages(&quot;tidyverse&quot;)</code>, which you can then load and use with <code>library(tidyverse)</code>.</p>
 </div>
 </div>
 <div id="github" class="section level2">
 <h2>Github</h2>
-<p>There are also thousands of more experimental packages that are only available through Github. These packages have come much easier to work with since the introduction of the package <code>devtools</code>, which via its function <code>install_github</code> means access to this universe.</p>
-<p>Beware though that the packages on Github are by their nature more experimental, so due care should be excercised to ensure they are trustworthy.</p>
+<p>There are also thousands of more experimental packages that are only available through Github. These packages have become much easier to work with since the introduction of the package <code>devtools</code>, which via its function <code>install_github</code> provides access to this universe of packages through scriptable commands.</p>
+<p>Beware, though, that the packages on Github are, by their nature, more experimental, so exercise due care to ensure they are trustworthy!</p>
 </div>
 
 
