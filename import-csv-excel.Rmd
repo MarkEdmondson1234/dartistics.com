@@ -1,38 +1,38 @@
 ---
-title: "Importing data - CSV"
+title: "Importing Data from a CSV File"
 ---
   
 ```{r import-csv-excel-setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Importing CSV
+The most universal data format is `.csv` (comma-separated values). This is a format that almost every program can open, and that most data-creation platforms can export data to. And, it has the advantage of being human-readable if you open it for examination with, say, **Notepad**. 
 
-The most universal data format is `.csv` (comma-separated variables). 
+## read.csv()
 
-`.csv` is a format that almost every program can open, and also has the advantage of being human-readable if you open it for examination with, say, notepad. 
+See `?read.csv` to get an overview of the arguments for importing `.csv` files. If you read carefully, you'll see that `read.csv` is actually a derived function from the more general `read.table` function, which can read other formats as well, such as tab-separated (`.tsv`).  
 
-### read.csv()
+`read.csv()` basically hardcodes defaults suitable for `.csv` in the UK/US, while `read.csv2()` has defaults set for European formats where currency uses a comma, `,`, which, to avoid confusion, means a semi-colon `;` is used instead to seperate values.
 
-See `?read.csv` to get an overview of the arguments for importing csv.
+A helpful argument to also include is `stringsAsFactors = FALSE`. **This is a classic R quirk**. We won't get into it here, but know that it will avoid future problems where R treats strings as "factors", which can cause unexpected results or, in other cases, prevent functions from working at all. (Factors are handy at times. It just seems like it's more common to want values to _not_ be factors, and, by default, R tends to have a bias towards viewing string-based data as factors; maybe that's all well and good in social sciences or elsewhere, but it can trip things up in our world.)
 
-When you do, you see that `read.csv` is a derived function from the more general `read.table` function that can read other formats such as tab seperated (`.tsv`).  
+## Example CSV Import
 
-`read.csv()` basically hardcodes defaults suitable for `.csv` in the UK/US, whilst `read.csv2()` has defaults set for European formats where currency uses a comma, `,`, which to avoid confusion means a semi-colon `;` is used instead to seperate values.
+A demo file called `td.csv` is available from [http://bit.ly/rSampleGA](http://bit.ly/rSampleGA).
 
-A helpful argument to also include is `stringsAsFactors = FALSE` - a classic R quirk, it stops future problems where R treats strings as factors that may cause unexpected results.
-
-
-### Example import csv
-
-A demo .csv file is available from [http://bit.ly/rSampleGA](http://bit.ly/rSampleGA).
-
-Saving it to the `./data/` folder of the project then allows you to import the data via below:
+If you save it to the `./data/` folder of the project you're working with, then you can import it into your environment using the code below:
 
 ```r
-## a csv available from the data folder
+# Set the name/location of the file. We could put this inside the read.csv function,
+# but it tends to make for cleaner, more manageable code to first assign it to an object.
+# In this case, we're calling that object 'filename.' Clever, right?
 filename <- "./data/td.csv"
+
+# Now, actually read the file in and put the data in a data frame called 'mydata'.
 mydata <- read.csv(filename, stringsAsFactors = FALSE)
+
+# Finally, as a quick check, view the first six rows of data in the data frame using the
+# head() function.
 head(mydata)
       X       date sessions bounceRate      ratio
 1     1 2015-01-01        6   83.33333 0.07200000
@@ -43,9 +43,7 @@ head(mydata)
 6     6 2015-01-06       20   95.00000 0.21052632
 ```
 
-I then often use `str()` on the data.frame to check the types and possibly change them, and `names()` to change the column names to more descriptive or useful names.
-
-In this example the redundant `X` column (row number) and `ratio` (useless) is also deleted by setting it to NULL:
+When first bringing data in, it can be useful to do a quick check on the _structure_ of the data. As luck would have it, there's a function for that: `str()`. This function provides a quick check of the data types, as well as provides a few sample values (when possible). 
 
 ```r
 str(mydata)
@@ -55,15 +53,26 @@ str(mydata)
  $ sessions  : int  6 15 7 8 21 20 13 23 16 13 ...
  $ bounceRate: num  83.3 93.3 100 75 76.2 ...
  $ ratio     : num  0.072 0.161 0.07 0.107 0.276 ...
- 
-## get rid of X and ratio column
+```
+
+From looking at the structure (and/or the head), we can see that the `X` column is redundant and the `ratio` column is useless, so we can delete those by setting them to `NULL`:
+
+```r
+# Get rid of the `X` and `ratio` columns.
 mydata$X <- NULL
 mydata$ratio <- NULL
+```
 
-## change the names
+Raw data often arrives with less-than-ideal column names, and the `names()` function can be used to get _or set_ the column heading names. So, we can go ahead and use that function to put in some cleaner column names:
+
+```r
+# Change the names
 names(mydata) <- c("Date", "Visits", "BounceRate")
+```
 
-## see top 6 rows
+Now, if we run our `head()` function again, we can see that we've got a cleaner data frame.
+
+```r
 head(mydata)
         Date Visits BounceRate
 1 2015-01-01      6   83.33333
@@ -73,3 +82,5 @@ head(mydata)
 5 2015-01-05     21   76.19048
 6 2015-01-06     20   95.00000
 ```
+
+Hopefully, it's obvious that, not only did we walk through after importing the data and do some cleanup, but we did so with code that can now be included as part of a script and reused with future data that we know will be arriving in the same format. (We wouldn't necessarily include the `str()` and `head()` functions in that script, but we could/would include all of the operations that actually adjust the data.)

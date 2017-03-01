@@ -11,7 +11,7 @@
 
 
 
-<title>Importing data - CSV</title>
+<title>Importing Data from a CSV File</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -380,29 +380,32 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-<h1 class="title toc-ignore">Importing data - CSV</h1>
+<h1 class="title toc-ignore">Importing Data from a CSV File</h1>
 
 </div>
 
 
-<div id="importing-csv" class="section level2">
-<h2>Importing CSV</h2>
-<p>The most universal data format is <code>.csv</code> (comma-separated variables).</p>
-<p><code>.csv</code> is a format that almost every program can open, and also has the advantage of being human-readable if you open it for examination with, say, notepad.</p>
-<div id="read.csv" class="section level3">
-<h3>read.csv()</h3>
-<p>See <code>?read.csv</code> to get an overview of the arguments for importing csv.</p>
-<p>When you do, you see that <code>read.csv</code> is a derived function from the more general <code>read.table</code> function that can read other formats such as tab seperated (<code>.tsv</code>).</p>
-<p><code>read.csv()</code> basically hardcodes defaults suitable for <code>.csv</code> in the UK/US, whilst <code>read.csv2()</code> has defaults set for European formats where currency uses a comma, <code>,</code>, which to avoid confusion means a semi-colon <code>;</code> is used instead to seperate values.</p>
-<p>A helpful argument to also include is <code>stringsAsFactors = FALSE</code> - a classic R quirk, it stops future problems where R treats strings as factors that may cause unexpected results.</p>
+<p>The most universal data format is <code>.csv</code> (comma-separated values). This is a format that almost every program can open, and that most data-creation platforms can export data to. And, it has the advantage of being human-readable if you open it for examination with, say, <strong>Notepad</strong>.</p>
+<div id="read.csv" class="section level2">
+<h2>read.csv()</h2>
+<p>See <code>?read.csv</code> to get an overview of the arguments for importing <code>.csv</code> files. If you read carefully, you’ll see that <code>read.csv</code> is actually a derived function from the more general <code>read.table</code> function, which can read other formats as well, such as tab-separated (<code>.tsv</code>).</p>
+<p><code>read.csv()</code> basically hardcodes defaults suitable for <code>.csv</code> in the UK/US, while <code>read.csv2()</code> has defaults set for European formats where currency uses a comma, <code>,</code>, which, to avoid confusion, means a semi-colon <code>;</code> is used instead to seperate values.</p>
+<p>A helpful argument to also include is <code>stringsAsFactors = FALSE</code>. <strong>This is a classic R quirk</strong>. We won’t get into it here, but know that it will avoid future problems where R treats strings as “factors”, which can cause unexpected results or, in other cases, prevent functions from working at all. (Factors are handy at times. It just seems like it’s more common to want values to <em>not</em> be factors, and, by default, R tends to have a bias towards viewing string-based data as factors; maybe that’s all well and good in social sciences or elsewhere, but it can trip things up in our world.)</p>
 </div>
-<div id="example-import-csv" class="section level3">
-<h3>Example import csv</h3>
-<p>A demo .csv file is available from <a href="http://bit.ly/rSampleGA" class="uri">http://bit.ly/rSampleGA</a>.</p>
-<p>Saving it to the <code>./data/</code> folder of the project then allows you to import the data via below:</p>
-<pre class="r"><code>## a csv available from the data folder
+<div id="example-csv-import" class="section level2">
+<h2>Example CSV Import</h2>
+<p>A demo file called <code>td.csv</code> is available from <a href="http://bit.ly/rSampleGA" class="uri">http://bit.ly/rSampleGA</a>.</p>
+<p>If you save it to the <code>./data/</code> folder of the project you’re working with, then you can import it into your environment using the code below:</p>
+<pre class="r"><code># Set the name/location of the file. We could put this inside the read.csv function,
+# but it tends to make for cleaner, more manageable code to first assign it to an object.
+# In this case, we&#39;re calling that object &#39;filename.&#39; Clever, right?
 filename &lt;- &quot;./data/td.csv&quot;
+
+# Now, actually read the file in and put the data in a data frame called &#39;mydata&#39;.
 mydata &lt;- read.csv(filename, stringsAsFactors = FALSE)
+
+# Finally, as a quick check, view the first six rows of data in the data frame using the
+# head() function.
 head(mydata)
       X       date sessions bounceRate      ratio
 1     1 2015-01-01        6   83.33333 0.07200000
@@ -411,25 +414,23 @@ head(mydata)
 4     4 2015-01-04        8   75.00000 0.10666667
 5     5 2015-01-05       21   76.19048 0.27562500
 6     6 2015-01-06       20   95.00000 0.21052632</code></pre>
-<p>I then often use <code>str()</code> on the data.frame to check the types and possibly change them, and <code>names()</code> to change the column names to more descriptive or useful names.</p>
-<p>In this example the redundant <code>X</code> column (row number) and <code>ratio</code> (useless) is also deleted by setting it to NULL:</p>
+<p>When first bringing data in, it can be useful to do a quick check on the <em>structure</em> of the data. As luck would have it, there’s a function for that: <code>str()</code>. This function provides a quick check of the data types, as well as provides a few sample values (when possible).</p>
 <pre class="r"><code>str(mydata)
 &#39;data.frame&#39;:   545 obs. of  5 variables:
  $ X         : int  1 2 3 4 5 6 7 8 9 10 ...
  $ date      : chr  &quot;2015-01-01&quot; &quot;2015-01-02&quot; &quot;2015-01-03&quot; &quot;2015-01-04&quot; ...
  $ sessions  : int  6 15 7 8 21 20 13 23 16 13 ...
  $ bounceRate: num  83.3 93.3 100 75 76.2 ...
- $ ratio     : num  0.072 0.161 0.07 0.107 0.276 ...
- 
-## get rid of X and ratio column
+ $ ratio     : num  0.072 0.161 0.07 0.107 0.276 ...</code></pre>
+<p>From looking at the structure (and/or the head), we can see that the <code>X</code> column is redundant and the <code>ratio</code> column is useless, so we can delete those by setting them to <code>NULL</code>:</p>
+<pre class="r"><code># Get rid of the `X` and `ratio` columns.
 mydata$X &lt;- NULL
-mydata$ratio &lt;- NULL
-
-## change the names
-names(mydata) &lt;- c(&quot;Date&quot;, &quot;Visits&quot;, &quot;BounceRate&quot;)
-
-## see top 6 rows
-head(mydata)
+mydata$ratio &lt;- NULL</code></pre>
+<p>Raw data often arrives with less-than-ideal column names, and the <code>names()</code> function can be used to get <em>or set</em> the column heading names. So, we can go ahead and use that function to put in some cleaner column names:</p>
+<pre class="r"><code># Change the names
+names(mydata) &lt;- c(&quot;Date&quot;, &quot;Visits&quot;, &quot;BounceRate&quot;)</code></pre>
+<p>Now, if we run our <code>head()</code> function again, we can see that we’ve got a cleaner data frame.</p>
+<pre class="r"><code>head(mydata)
         Date Visits BounceRate
 1 2015-01-01      6   83.33333
 2 2015-01-02     15   93.33333
@@ -437,7 +438,7 @@ head(mydata)
 4 2015-01-04      8   75.00000
 5 2015-01-05     21   76.19048
 6 2015-01-06     20   95.00000</code></pre>
-</div>
+<p>Hopefully, it’s obvious that, not only did we walk through after importing the data and do some cleanup, but we did so with code that can now be included as part of a script and reused with future data that we know will be arriving in the same format. (We wouldn’t necessarily include the <code>str()</code> and <code>head()</code> functions in that script, but we could/would include all of the operations that actually adjust the data.)</p>
 </div>
 
 
