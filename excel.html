@@ -487,16 +487,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <ul>
 <li><strong>As a Data Input</strong> – for platforms where there is no API or where there is not already a reasonably mature R package for accessing the API, it can make sense to simply export data into a format like Microsoft Excel and then import it into R to use it.</li>
 <li><strong>As an Output/Deliverable Vehicle</strong> – many of your stakeholders likely won’t <em>have</em> R, and it’s not always going to make sense to deliver information to them as a web-based platform, a presentation, or a PDF. Excel can be a good way to deliver both raw data, as well as data with some base-level interactivity (using dropdowns and/or slicers in Excel).</li>
-<li><strong>For Data Visualization</strong> – we will cover the <code>ggplot2</code> package later today, but, especially as you are ramping up on R, it can be time-consuming to figure out an entirely different data visualization paradigm on top of all of the other aspects of R that are new and unique. It is <em>perfectly acceptable</em> to use R to efficiently access and crunch the data…but then switch to Excel for the final visualization. Just recognize that that does require hopping between platforms. We don’t recommend this approach as your long-term standard.</li>
+<li><strong>For Data Visualization</strong> – we will cover the <code>ggplot2</code> package later, but, especially as you are ramping up on R, it can be time-consuming to figure out an entirely different data visualization paradigm on top of all of the other aspects of R that are new and unique. It is <em>perfectly acceptable</em> to use R to efficiently access and crunch the data…but then switch to Excel for the final visualization. Just recognize that that does require hopping between platforms. We don’t recommend this approach as your long-term standard.</li>
 </ul>
 <p>Really, the second two items above are two sides of the same coin.</p>
 <hr />
 <div id="importing-from-excel" class="section level2">
 <h2>Importing From Excel</h2>
-<p>In general, it is easier to work with comma-delimited text files (<code>.csv</code>) than with native Excel files (<code>.xlsx</code>). So, when you have a choice for exporting data from a platform, is .csv is an option, it’s generally best to go that route. But, there are options for bringing data in from <code>.xlsx</code> files, too.</p>
+<p>In general, it is easier to work with comma-delimited text files (<code>.csv</code>) than with native Excel files (<code>.xlsx</code>). So, when you have a choice for exporting data from a platform, if <code>.csv</code> is an option, it’s generally best to go that route. But, there are options for bringing data in from <code>.xlsx</code> files, too.</p>
 <div id="csv" class="section level3">
 <h3>.csv</h3>
-<p>The nice thing about <code>.csv</code> files is that they tend to be pretty clean. There are two main functions that are part of <code>utils</code> package (which is loaded by many, many other packages) that can be used to read CSV files into a data frame:</p>
+<p>The nice thing about <code>.csv</code> files is that they tend to be pretty clean. There are two main functions that are part of the <code>utils</code> package (which is loaded by many, many other packages) that can be used to read CSV files into a data frame:</p>
 <ul>
 <li><code>read.csv()</code> – the simplest form of this function is <code>read.csv(&quot;filename.csv&quot;)</code>. This assumes the first row in the file is a header.</li>
 <li><code>read.csv2()</code> – this is identically structured as <code>read.csv()</code>, but is built for use in countries where the comma is used as a decimal point and a semicolon is used as a field separator.</li>
@@ -508,13 +508,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <ul>
 <li>In RStudio when you select Import Dataset you can select Excel as one of the options. This may prompt you to load <code>readxl</code>:</li>
 </ul>
+<div style="text-align: center">
 <div class="figure">
 <img src="images/fromexcel.png" />
 
 </div>
+</div>
 <ul>
-<li>The <code>xlsx</code> package has <code>read.xlsx()</code> and <code>read.xlsx2()</code> functions for specifying the workbook and the sheet to bring data in from.</li>
-<li>The <code>gdata</code> package has a <code>read.xls()</code> function that works very similarly to the <code>xlsx</code> package</li>
+<li>The <code>xlsx</code> package has <code>read.xlsx()</code> and <code>read.xlsx2()</code> functions for specifying the workbook and the sheet from which you wisth to bring data in.</li>
+<li>The <code>gdata</code> package has a <code>read.xls()</code> function that works very similarly to the <code>xlsx</code> package.</li>
 <li>The <code>XLConnect</code> package works a little bit differently, in that you first “load” the workbook (with <code>loadworkbook()</code>) and then “read” a workssheet from the workbook with a separate function (<code>readworksheet()</code>).</li>
 </ul>
 <p>There are enough quirks across platforms and files that it may take some experimentation to find the package and functions that work best in your situation.</p>
@@ -522,7 +524,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <div id="messy-.xlsx" class="section level3">
 <h3>(Messy) .xlsx</h3>
 <p>The least optimal type of data to bring in from Excel is one where the workbook has been formatted and organized – when the data it includes is not the “raw” data. If the workbook has “presentation layer” worksheets that are set up being highly formatted, while also having “raw data” worksheets that are flat tables, then, if it’s the raw data you need, you can likely use one of the packages described above.</p>
-<p>However, if <em>that</em> is not the case, then the ’jailbreakr` package may enable you to reliably import data: <a href="http://blog.revolutionanalytics.com/2016/08/jailbreakr.html" class="uri">http://blog.revolutionanalytics.com/2016/08/jailbreakr.html</a>.</p>
+<p>However, if that is <em>not</em> the case, then the <code>jailbreakr</code> package may enable you to reliably import data: <a href="http://blog.revolutionanalytics.com/2016/08/jailbreakr.html" class="uri">http://blog.revolutionanalytics.com/2016/08/jailbreakr.html</a>.</p>
 </div>
 </div>
 <div id="exporting-to-excel" class="section level2">
@@ -530,7 +532,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>In many ways, exporting data is similar to importing data, in that the simpler/cleaner the requirements, the easier it is to perform the export.</p>
 <div id="csv-1" class="section level3">
 <h3>.csv</h3>
-<p>If you need to export the data to a simple, flat, structure, then you can push it out as a simple .csv file. These two functions – both in the <code>utils</code> package – do the trick quite nicely:</p>
+<p>If you need to export the data to a simple, flat, structure, then you can push it out as a simple <code>.csv</code> file. These two functions – both in the <code>utils</code> package – do the trick quite nicely:</p>
 <ul>
 <li><code>write.csv()</code> – simply specify what to output and the filename to which to output it. Type <code>?write.csv</code> for the complete documentation</li>
 <li><code>write.csv2()</code> – just like <code>read.csv2()</code>, <code>write.csv2()</code> is designed for use in countries where a comma is used for a decimal point and a semicolon is used as the delimiter.</li>
@@ -538,21 +540,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 <div id="xlsx" class="section level3">
 <h3>.xlsx</h3>
-<p>If you have multiple data frames that you want to place on separate tabs in a single workbook, the <code>WriteXLS</code> package (<code>install.packages(&quot;WriteXLS&quot;)</code> and then <code>library(WriteXLS</code>) is one option for doing so. This can get a bit more involved, but it can also be quite useful. Let’s use an example where we have multiple data frame objects named <code>df1</code>, <code>df2</code>, and <code>df3</code>, and we want to output each data frame to its own worksheet in a workbook called <code>my_dataframes.xlsx</code>. We also want to rename the worksheet tabs to be <code>Data Frame 1</code>, <code>Data Frame 2</code>, and <code>Data Frame 3</code>. We would do that with the code below, and even do some light formatting on the output (having the columns automatically adjust their width, making the header row on each worksheet bold, and turning on autofiltering).</p>
-<pre class="r"><code>  # Create a vector with the names of the data frame objects
-  sheet_data &lt;- c(&quot;df1&quot;, &quot;df2&quot;, &quot;df3&quot;)
+<p>If you have multiple data frames that you want to place on separate tabs in a single workbook, the <code>WriteXLS</code> package (<code>install.packages(&quot;WriteXLS&quot;)</code>) and then <code>library(WriteXLS</code>) is one option for doing so. This can get a bit more involved, but it can also be quite useful. Let’s use an example where we have multiple data frame objects named <code>df1</code>, <code>df2</code>, and <code>df3</code>, and we want to output each data frame to its own worksheet in a workbook called <code>my_dataframes.xlsx</code>. We also want to rename the worksheet tabs to be <code>Data Frame 1</code>, <code>Data Frame 2</code>, and <code>Data Frame 3</code>. We would do that with the code below, and even do some light formatting on the output (having the columns automatically adjust their width, making the header row on each worksheet bold, and turning on autofiltering).</p>
+<pre class="r"><code># Create a vector with the names of the data frame objects
+sheet_data &lt;- c(&quot;df1&quot;, &quot;df2&quot;, &quot;df3&quot;)
 
-  # Create a vector with the worksheet names we want to use
-  sheet_names &lt;- c(&quot;Data Frame 1&quot;, &quot;Data Frame 2&quot;, &quot;Data Frame 3&quot;)
+# Create a vector with the worksheet names we want to use
+sheet_names &lt;- c(&quot;Data Frame 1&quot;, &quot;Data Frame 2&quot;, &quot;Data Frame 3&quot;)
   
-  file_name &lt;- paste(c_reportsuiteID,&quot;.xlsx&quot;,sep=&quot;&quot;)
-  
-  # Write out an Excel file with auto-width columns, a bolded header 
-  # row and filters turned on.
-  WriteXLS(sheet_data, 
-           ExcelFileName = &quot;my_dataframes.xlsx&quot;, 
-           SheetNames = sheet_names,
-           AdjWidth = TRUE, BoldHeaderRow = TRUE, AutoFilter = TRUE)</code></pre>
+# Write out an Excel file with auto-width columns, a bolded header 
+# row, and filters turned on.
+WriteXLS(sheet_data,
+         ExcelFileName = &quot;my_dataframes.xlsx&quot;,
+         SheetNames = sheet_names,
+         AdjWidth = TRUE, BoldHeaderRow = TRUE, AutoFilter = TRUE)</code></pre>
 </div>
 </div>
 <div id="opening-files-in-excel" class="section level2">
@@ -560,7 +560,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>Opening files generated by R from Excel is just like opening files generated by any other platform:</p>
 <ul>
 <li><code>.csv</code> files – depending on the version of Excel and your operating system, the file may open automatically, or it may require that you tell Excel that the file is delimited and what the delimiter is (comma, semicolon, or other)</li>
-<li><code>xlsx</code> files – these <em>should</em> be native Excel file formats. If not – if there is an error when you try to open a <code>.xlsx</code> file generated from R – then the best bet is to try a different package for creating the file.</li>
+<li><code>.xlsx</code> files – these <em>should</em> be native Excel file formats. If not – if there is an error when you try to open a <code>.xlsx</code> file generated from R – then the best bet is to try a different package for creating the file.</li>
 </ul>
 </div>
 

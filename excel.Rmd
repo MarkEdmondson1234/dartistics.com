@@ -11,17 +11,17 @@ As interesting as the world would be if the emergence of R removed Microsoft Exc
 
 * **As a Data Input** -- for platforms where there is no API or where there is not already a reasonably mature R package for accessing the API, it can make sense to simply export data into a format like Microsoft Excel and then import it into R to use it. 
 * **As an Output/Deliverable Vehicle** -- many of your stakeholders likely won't _have_ R, and it's not always going to make sense to deliver information to them as a web-based platform, a presentation, or a PDF. Excel can be a good way to deliver both raw data, as well as data with some base-level interactivity (using dropdowns and/or slicers in Excel).
-* **For Data Visualization** -- we will cover the `ggplot2` package later today, but, especially as you are ramping up on R, it can be time-consuming to figure out an entirely different data visualization paradigm on top of all of the other aspects of R that are new and unique. It is _perfectly acceptable_ to use R to efficiently access and crunch the data...but then switch to Excel for the final visualization. Just recognize that that does require hopping between platforms. We don't recommend this approach as your long-term standard.
+* **For Data Visualization** -- we will cover the `ggplot2` package later, but, especially as you are ramping up on R, it can be time-consuming to figure out an entirely different data visualization paradigm on top of all of the other aspects of R that are new and unique. It is _perfectly acceptable_ to use R to efficiently access and crunch the data...but then switch to Excel for the final visualization. Just recognize that that does require hopping between platforms. We don't recommend this approach as your long-term standard.
 
 Really, the second two items above are two sides of the same coin.
 
 -------------
 
 ## Importing From Excel
-In general, it is easier to work with comma-delimited text files (`.csv`) than with native Excel files (`.xlsx`). So, when you have a choice for exporting data from a platform, is .csv is an option, it's generally best to go that route. But, there are options for bringing data in from `.xlsx` files, too.
+In general, it is easier to work with comma-delimited text files (`.csv`) than with native Excel files (`.xlsx`). So, when you have a choice for exporting data from a platform, if `.csv` is an option, it's generally best to go that route. But, there are options for bringing data in from `.xlsx` files, too.
 
 ### .csv
-The nice thing about `.csv` files is that they tend to be pretty clean. There are two main functions that are part of `utils` package (which is loaded by many, many other packages) that can be used to read CSV files into a data frame:
+The nice thing about `.csv` files is that they tend to be pretty clean. There are two main functions that are part of the `utils` package (which is loaded by many, many other packages) that can be used to read CSV files into a data frame:
 
 * `read.csv()` -- the simplest form of this function is `read.csv("filename.csv")`. This assumes the first row in the file is a header.
 * `read.csv2()` -- this is identically structured as `read.csv()`, but is built for use in countries where the comma is used as a decimal point and a semicolon is used as a field separator.
@@ -31,10 +31,13 @@ A "clean" `.xlsx` file is one where the data is in a fairly raw form -- it's not
 
 * In RStudio when you select Import Dataset you can select Excel as one of the options.  This may prompt you to load `readxl`:
 
-![](images/fromexcel.png)
+<div style="text-align: center">
 
-* The `xlsx` package has `read.xlsx()` and `read.xlsx2()` functions for specifying the workbook and the sheet to bring data in from.
-* The `gdata` package has a `read.xls()` function that works very similarly to the `xlsx` package
+![](images/fromexcel.png)
+</div>
+
+* The `xlsx` package has `read.xlsx()` and `read.xlsx2()` functions for specifying the workbook and the sheet from which you wisth to bring data in.
+* The `gdata` package has a `read.xls()` function that works very similarly to the `xlsx` package.
 * The `XLConnect` package works a little bit differently, in that you first "load" the workbook (with `loadworkbook()`) and then "read" a workssheet from the workbook with a separate function (`readworksheet()`).
 
 There are enough quirks across platforms and files that it may take some experimentation to find the package and functions that work best in your situation.
@@ -42,40 +45,38 @@ There are enough quirks across platforms and files that it may take some experim
 ### (Messy) .xlsx
 The least optimal type of data to bring in from Excel is one where the workbook has been formatted and organized -- when the data it includes is not the "raw" data. If the workbook has "presentation layer" worksheets that are set up being highly formatted, while also having "raw data" worksheets that are flat tables, then, if it's the raw data you need, you can likely use one of the packages described above.
 
-However, if _that_ is not the case, then the 'jailbreakr` package may enable you to reliably import data: [http://blog.revolutionanalytics.com/2016/08/jailbreakr.html](http://blog.revolutionanalytics.com/2016/08/jailbreakr.html).
+However, if that is _not_ the case, then the `jailbreakr` package may enable you to reliably import data: [http://blog.revolutionanalytics.com/2016/08/jailbreakr.html](http://blog.revolutionanalytics.com/2016/08/jailbreakr.html).
 
 ## Exporting to Excel
 In many ways, exporting data is similar to importing data, in that the simpler/cleaner the requirements, the easier it is to perform the export.
 
 ### .csv
-If you need to export the data to a simple, flat, structure, then you can push it out as a simple .csv file. These two functions -- both in the `utils` package -- do the trick quite nicely:
+If you need to export the data to a simple, flat, structure, then you can push it out as a simple `.csv` file. These two functions -- both in the `utils` package -- do the trick quite nicely:
 
 * `write.csv()` -- simply specify what to output and the filename to which to output it. Type `?write.csv` for the complete documentation
 * `write.csv2()` -- just like `read.csv2()`, `write.csv2()` is designed for use in countries where a comma is used for a decimal point and a semicolon is used as the delimiter.
 
 ### .xlsx
-If you have multiple data frames that you want to place on separate tabs in a single workbook, the `WriteXLS` package (`install.packages("WriteXLS")` and then `library(WriteXLS`) is one option for doing so. This can get a bit more involved, but it can also be quite useful. Let's use an example where we have multiple data frame objects named `df1`, `df2`, and `df3`, and we want to output each data frame to its own worksheet in a workbook called `my_dataframes.xlsx`. We also want to rename the worksheet tabs to be `Data Frame 1`, `Data Frame 2`, and `Data Frame 3`. We would do that with the code below, and even do some light formatting on the output (having the columns automatically adjust their width, making the header row on each worksheet bold, and turning on autofiltering).
+If you have multiple data frames that you want to place on separate tabs in a single workbook, the `WriteXLS` package (`install.packages("WriteXLS")`) and then `library(WriteXLS`) is one option for doing so. This can get a bit more involved, but it can also be quite useful. Let's use an example where we have multiple data frame objects named `df1`, `df2`, and `df3`, and we want to output each data frame to its own worksheet in a workbook called `my_dataframes.xlsx`. We also want to rename the worksheet tabs to be `Data Frame 1`, `Data Frame 2`, and `Data Frame 3`. We would do that with the code below, and even do some light formatting on the output (having the columns automatically adjust their width, making the header row on each worksheet bold, and turning on autofiltering).
 
 ```{r excel, eval=FALSE}
 
-  # Create a vector with the names of the data frame objects
-  sheet_data <- c("df1", "df2", "df3")
+# Create a vector with the names of the data frame objects
+sheet_data <- c("df1", "df2", "df3")
 
-  # Create a vector with the worksheet names we want to use
-  sheet_names <- c("Data Frame 1", "Data Frame 2", "Data Frame 3")
+# Create a vector with the worksheet names we want to use
+sheet_names <- c("Data Frame 1", "Data Frame 2", "Data Frame 3")
   
-  file_name <- paste(c_reportsuiteID,".xlsx",sep="")
-  
-  # Write out an Excel file with auto-width columns, a bolded header 
-  # row and filters turned on.
-  WriteXLS(sheet_data, 
-           ExcelFileName = "my_dataframes.xlsx", 
-           SheetNames = sheet_names,
-           AdjWidth = TRUE, BoldHeaderRow = TRUE, AutoFilter = TRUE)
+# Write out an Excel file with auto-width columns, a bolded header 
+# row, and filters turned on.
+WriteXLS(sheet_data,
+         ExcelFileName = "my_dataframes.xlsx",
+         SheetNames = sheet_names,
+         AdjWidth = TRUE, BoldHeaderRow = TRUE, AutoFilter = TRUE)
 ```
 
 ## Opening Files in Excel
 Opening files generated by R from Excel is just like opening files generated by any other platform:
 
  * `.csv` files -- depending on the version of Excel and your operating system, the file may open automatically, or it may require that you tell Excel that the file is delimited and what the delimiter is (comma, semicolon, or other)
- * `xlsx` files -- these _should_ be native Excel file formats. If not -- if there is an error when you try to open a `.xlsx` file generated from R -- then the best bet is to try a different package for creating the file.
+ * `.xlsx` files -- these _should_ be native Excel file formats. If not -- if there is an error when you try to open a `.xlsx` file generated from R -- then the best bet is to try a different package for creating the file.
