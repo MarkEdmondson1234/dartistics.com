@@ -6,7 +6,7 @@ output:
 
 ## Load Up Some Sample Data
 
-We're going to skip the step of actually pulling data directly using an API (for now), so just download the file at [http://bit.ly/r_web_data](http://bit.ly/r_webData). Upload that file to your working directory, and then load that file into your R environment as an object (data frame) named `web_data`:
+We're going to skip the step of actually pulling data directly using an API (for now), so just download [this file](data/gadata_example_2.csv) to your working directory, and then load that file into your R environment as an object (data frame) named `web_data`:
 
 ```{r exercise2, eval=FALSE}
 web_data <- read.csv("gadata_example_2.csv", stringsAsFactors = FALSE)
@@ -26,4 +26,4 @@ Note that the data, if it _were_ in Excel, would be primed and ready to have a p
 
 There are situations where we may want to move a dimension into the columns, certainly, and there are very quick and easy ways to do this, but, if we aim for tidy data as the default, we'll be in good shape. Luckily, when pulling data from the Google Analytics or Adobe Analytics API, that's the format the data arrives in.
 
-That's really it for this exercise. Now that we have some data loaded up into our environment, though, we can start working with it, which we'll do in the [next exercise](exercise3-munging.html).
+That's really it for this exercise. Now that we have some data loaded up into our environment, though, we can start working with it, which we'll do in the [next exercise](exercise3-accessing-data.html).
