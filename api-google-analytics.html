@@ -483,65 +483,52 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 
 
-<p>There are several R packages for reaching the Google Analytics API, but the one we’re describing here is <code>googleAnalyticsR</code>, as its the one the author wrote! However you may prefer the syntax of one of the others, which are listed on the <a href="http://code.markedmondson.me/googleAnalyticsR/"><code>googleAnalyticsR</code> homepage</a>.</p>
+<p>There are several R packages for accessing the Google Analytics API, but the one we’re describing here is <code>googleAnalyticsR</code>, as it’s the one that one of the creators of this site created (and the co-creator of this site, as well as many, many users, have found to be fantastic)! However, if you want to check out some of others, see the list on the <code>googleAnalyticsR</code> <a href="http://code.markedmondson.me/googleAnalyticsR/">home page</a>.</p>
 <p>The example below generates a <code>web_data</code> object that is used in various exercises throughout this site. So, you may want to build a script based on the instructions on this page and save it for future use as you work through other examples and exercises.</p>
 <div id="installation" class="section level2">
 <h2>Installation</h2>
-<pre class="r"><code>## This installs googleAnalyticsR if you haven&#39;t got it already
+<pre class="r"><code># This installs googleAnalyticsR if you haven&#39;t got it installed already
 if(!require(googleAnalyticsR)) install.packages(&quot;googleAnalyticsR&quot;)</code></pre>
-<pre><code>## Loading required package: googleAnalyticsR</code></pre>
 </div>
 <div id="authentication" class="section level2">
 <h2>Authentication</h2>
-<p>By default you can authenticate using googleAnalyticsR default project:</p>
+<p>By default you can authenticate using the <code>googleAnalyticsR</code> default project (we’re not going to dive into the details of what this means at the moment – it gets a little into the weeds of Google APIs and development):</p>
 <pre class="r"><code>library(googleAnalyticsR)
 ga_auth()</code></pre>
-<p>Pause here, as the first time it should open a web browser the first time to your Google login.</p>
+<p>Pause here, as, the first time you run the script, at least, it should open a web browser and require you allow access to your Google Analytics account. This is <em>just</em> providing the script that you’re running access to the data – nothing broader than that:</p>
+<div style="text-align: center">
 <div class="figure">
 <img src="images/google_auth_login.png" />
 
+</div>
 </div>
 <p>Sign in to give access for your session.</p>
 <p>This will create a <code>.httr-oauth</code> file in your working directory folder that contains your authentication details. Keep this file safe as people could access your data if they have access to it.</p>
 </div>
 <div id="getting-your-view-id" class="section level2">
-<h2>Getting your View Id</h2>
-<p>To get your data, you need to specify which Google Analytics View you want to pull it from.</p>
+<h2>Getting your View ID</h2>
+<p>To get your data, you need to specify which Google Analytics View you want to pull it from. There are a couple of ways to do this.</p>
+<div id="option-1-getting-view-ids-using-r" class="section level3">
+<h3>Option 1: Getting View IDs using R</h3>
 <p>The easiest way to find this is to use <code>google_analytics_account_list()</code> to list your Views, then read the number in the <code>viewId</code> column:</p>
-<pre class="r"><code>my_accounts &lt;- google_analytics_account_list()</code></pre>
-<pre><code>## Auto-refreshing stale OAuth token.</code></pre>
-<pre class="r"><code>head(my_accounts)</code></pre>
-<pre><code>##   accountId            accountName webPropertyId    webPropertyName
-## 1  27778354     Beggin&#39; YT Channel UA-27778354-1 Beggin&#39; YT Channel
-## 2  26328617             Beneful YT UA-26328617-1         Beneful YT
-## 3  26559210            Cat Chow YT UA-26559210-1           Cat Chow
-## 4  48673516                CBUSWAW UA-48673516-1 http://cbuswaw.com
-## 5  48673516                CBUSWAW UA-48673516-1 http://cbuswaw.com
-## 6  13054329 County Health Rankings UA-13054329-6  Analytics Testing
-##   internalWebPropertyId    level                                websiteUrl
-## 1              53216781 STANDARD        http://www.youtube.com/user/beggin
-## 2              50958444 STANDARD                    http://www.beneful.com
-## 3              51327860 STANDARD http://www.youtube.com/user/purinacatchow
-## 4              80242125 STANDARD                       https://cbuswaw.com
-## 5              80242125 STANDARD                       https://cbuswaw.com
-## 6             112664276 STANDARD             http://stage.chr.forumone.com
-##      viewId               viewName type starred
-## 1  54051087      Beggin YT Channel  WEB    &lt;NA&gt;
-## 2  51615377             Beneful YT  WEB    &lt;NA&gt;
-## 3  52028210               Cat Chow  WEB    &lt;NA&gt;
-## 4  82999029            cbuswaw.com  WEB    &lt;NA&gt;
-## 5 107951642 unfiltered cbuswaw.com  WEB    &lt;NA&gt;
-## 6 117646186      All Web Site Data  WEB    &lt;NA&gt;</code></pre>
-<pre class="r"><code>## The account viewIds (since all columns is a little messy when displayed here)
-head(my_accounts$viewId)</code></pre>
-<pre><code>## [1] &quot;54051087&quot;  &quot;51615377&quot;  &quot;52028210&quot;  &quot;82999029&quot;  &quot;107951642&quot; &quot;117646186&quot;</code></pre>
+<pre class="r"><code># Pull a full list of the views that you have access to
+my_accounts &lt;- google_analytics_account_list()</code></pre>
+<p>Now, go to the <strong>Environment</strong> tab (top right pane in RStudio) and double-click <strong>my_accounts</strong>. Find the view you want to use and note the <strong>viewId</strong> value for it.</p>
+</div>
+<div id="option-2-getting-view-ids-with-query-explorer" class="section level3">
+<h3>Option 2: Getting View IDs with Query Explorer</h3>
+<p>Another way to get the view ID is to go to the <a href="https://ga-dev-tools.appspot.com/query-explorer/">Google Analytics Query Explorer</a>, log in (if you’re not already logged in), and select an account, property, and view. The view ID will be the value displayed in the <strong>ids</strong> field.</p>
+</div>
 </div>
 <div id="querying-your-data" class="section level2">
 <h2>Querying your data</h2>
-<p>You can then download your data via the <a href="https://developers.google.com/analytics/devguides/reporting/core/v4/"><code>v4 reporting API</code></a> with the <code>google_analytics_4()</code> function. See <code>?google_analytics_4</code> and the website for complete details and examples.</p>
-<pre class="r"><code>## change this to your own ViewId
-## this one will only work if you have access to Mark&#39;s blog!
+<p>Once you have a view ID, you use it to download your data via the <a href="https://developers.google.com/analytics/devguides/reporting/core/v4/"><code>v4 reporting API</code></a> with the <code>google_analytics_4()</code> function. See <code>?google_analytics_4</code> and the website for complete details and examples.</p>
+<pre class="r"><code># Change this to your own view ID, as the one below will only work for accessing
+# data from Mark Edmondson&#39;s blog, and it&#39;s highly unlikely you have access to that!
 my_id &lt;- 81416156 
+
+# Now, query for some basic data, assigning the data to a &#39;data frame&#39; object 
+# called &#39;web_data&#39;
 web_data &lt;- google_analytics_4(my_id, 
                                 date_range = c(&quot;2016-01-01&quot;, &quot;2016-08-01&quot;),
                                 metrics = c(&quot;sessions&quot;,&quot;pageviews&quot;,
@@ -549,26 +536,79 @@ web_data &lt;- google_analytics_4(my_id,
                                 dimensions = c(&quot;date&quot;,&quot;deviceCategory&quot;,
                                                &quot;channelGrouping&quot;),
                                 anti_sample = TRUE)</code></pre>
-<pre><code>## anti_sample set to TRUE. Mitigating sampling via multiple API calls.</code></pre>
-<pre><code>## Finding how much sampling in data request...</code></pre>
-<pre><code>## Downloaded [10] rows from a total of [1698].</code></pre>
-<pre><code>## No sampling found, returning call</code></pre>
-<pre><code>## Downloaded [1698] rows from a total of [1698].</code></pre>
-<pre class="r"><code>head(web_data)</code></pre>
-<pre><code>##         date deviceCategory channelGrouping sessions pageviews entrances
-## 1 2016-01-01        desktop          Direct        8         9         8
-## 2 2016-01-01        desktop  Organic Search       13        15        13
-## 3 2016-01-01        desktop        Referral        3         5         3
-## 4 2016-01-01        desktop          Social        2         2         2
-## 5 2016-01-01         mobile  Organic Search        6         7         6
-## 6 2016-01-01         tablet  Organic Search        3         3         3
-##   bounces
-## 1       7
-## 2      11
-## 3       1
-## 4       2
-## 5       5
-## 6       3</code></pre>
+<p>Now, display the first few rows of the resulting data frame (or, you can double-click on <strong>web_data</strong> in the <strong>Environment</strong> pane):</p>
+<pre class="r"><code># Display the first few rows of the data that was returned.
+head(web_data)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">date</th>
+<th align="left">deviceCategory</th>
+<th align="left">channelGrouping</th>
+<th align="right">sessions</th>
+<th align="right">pageviews</th>
+<th align="right">entrances</th>
+<th align="right">bounces</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">desktop</td>
+<td align="left">Direct</td>
+<td align="right">8</td>
+<td align="right">9</td>
+<td align="right">8</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">desktop</td>
+<td align="left">Organic Search</td>
+<td align="right">13</td>
+<td align="right">15</td>
+<td align="right">13</td>
+<td align="right">11</td>
+</tr>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">desktop</td>
+<td align="left">Referral</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">desktop</td>
+<td align="left">Social</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">mobile</td>
+<td align="left">Organic Search</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">6</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">tablet</td>
+<td align="left">Organic Search</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+</tr>
+</tbody>
+</table>
+<p>Simple, right? This is a good opportunity to also check out the structure of a help file for a function. Type <code>?google_analytics_4</code> in the console and then read through the function documentation. You should notice that the example above only uses a handful of the options actually available in the function. But, you could stop here and play around with the actual query for a bit – changing out the dimensions and metrics and date range are a good start.</p>
 </div>
 
 

@@ -1,10 +1,8 @@
 ---
-title: "Exercise: I/O"
+title: "Exercise: I/O - Load Up Some Sample Data"
 output:
   html_document
 ---
-
-## Load Up Some Sample Data
 
 We're going to skip the step of actually pulling data directly using an API (for now), so just download [this file](data/gadata_example_2.csv) to your working directory, and then load that file into your R environment as an object (data frame) named `web_data`:
 
