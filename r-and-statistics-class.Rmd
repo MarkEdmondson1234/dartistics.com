@@ -6,7 +6,7 @@ output:
     toc_float: true
 ---
 
-If you are a digital analyst who is looking to dive into R and statistics -- at all or, simply, more deeply -- then this training is for you. **Register [here](https://www.eventbrite.com/e/r-statistics-for-the-digital-analyst-tickets-32412424434)** (use the promo code "EARLYBIRD" if you register before March 15, 2017).
+If you are a digital analyst who is looking to dive into R and statistics -- at all or, simply, more deeply -- then this training is for you. **Register [here](https://www.eventbrite.com/e/r-statistics-for-the-digital-analyst-tickets-32412424434)**.
 
 ## When and Where
 
@@ -80,7 +80,7 @@ The course pricing:
 * **Early bird** (through March 15, 2017): **$1,695**
 * **Full registration** (after March 15, 2017): **$1,995**
 
-Registration is available [here](https://www.eventbrite.com/e/r-statistics-for-the-digital-analyst-tickets-32412424434). Use the code "EARLYBIRD" to get the early bird price that is available through March 15, 2017.
+Registration is available [here](https://www.eventbrite.com/e/r-statistics-for-the-digital-analyst-tickets-32412424434).
 
 ## FAQ
 
