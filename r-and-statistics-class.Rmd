@@ -10,7 +10,7 @@ If you are a digital analyst who is looking to dive into R and statistics -- at 
 
 ## When and Where
 
-* **When:** June 13-15, 2017
+* **When:** June 13-15, 2017, 8:30AM to 5:00PM
 * **Where:** 95 Liberty Street, Columbus, Ohio
 * **Venue:** [Vue Columbus](http://vuecolumbus.com/meeting-rooms/#rooms) (The Green Room)
 
