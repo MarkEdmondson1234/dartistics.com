@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -395,24 +395,28 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h2>Using a Package</h2>
 <p>This will become absolutely second nature, but it’s one of those things that is not 100% intuitive at first. When you’re using a package (which, really, means you’re using one or more of the functions <em>in</em> a package), there are two things that have to happen:</p>
 <ol style="list-style-type: decimal">
-<li><p><strong>The package has to be installed.</strong> This is what is described above. The first time you use a package, you will need to type <code>install.packages(\[the package name\])</code> in the console and press <Enter>. That will pull the package (and any packages the package depends on – few packages are built entirely from scratch!) from CRAN. And…it will show up in the <strong>Packages</strong> tab in the bottom right of your RStudio environment. This is a one-time step, although there is no harm in installing the same package multiple times, and, occasionally, you will find that a package has been updated and needs to be re-installed.</p></li>
-<li><p><strong>The package has to be loaded.</strong> In your script (or in the console), enter <code>library(\[the package name\])</code>. Typically, you will have a list of these at the beginning of your scripts (although there are other techniques for centralizing a list of packages you commonly use…we’re not going to go there for now). Once a package is loaded, it will show with a checkbox next to it in the <strong>Packages</strong> list in your RStudio environment.</p></li>
+<li><p><strong>The package has to be installed.</strong> This is what is described above. The first time you use a package, you will need to type <code>install.packages(&quot;[the package name]&quot;)</code> (note that the name of the package is inside quotation marks) in the console and press <code>&lt;Enter&gt;</code>. That will pull the package (and any packages the package depends on – few packages are built entirely from scratch!) from CRAN. And…it will show up in the <strong>Packages</strong> tab in the bottom right of your RStudio environment. This is a one-time step, although there is no harm in installing the same package multiple times, and, occasionally, you will find that a package has been updated and needs to be re-installed.</p></li>
+<li><p><strong>The package has to be loaded.</strong> In your script (or in the console), enter <code>library([the package name])</code> (unlike <code>install.packages()</code>, the name of the package is <em>not</em> placed in quotation marks when using <code>library()</code>). Typically, you will have a list of these at the beginning of your scripts (although there are other techniques for centralizing a list of packages you commonly use…we’re not going to go there for now). Once a package is loaded, it will show with a checkbox next to it in the <strong>Packages</strong> list in your RStudio environment.</p></li>
 </ol>
 <p><em>When you get a “function not found” error when running a script, 9 times out of 10 that’s because the function you’re calling is in a package that isn’t loaded.</em></p>
+</div>
+<div id="dynamically-installing-packages" class="section level2">
+<h2>Dynamically Installing Packages</h2>
+<p>Throughout this site, as well as in examples across the interwebs, you will see code examples that look something like this:</p>
+<pre class="r"><code># This installs googleAnalyticsR if you haven&#39;t got it installed already
+if(!require(googleAnalyticsR)) install.packages(&quot;googleAnalyticsR&quot;)
+
+# This then loads the library
+library(googleAnalyticsR)</code></pre>
+<p>The <code>if()</code> statement is simply conditionally checking to see if the package is already installed. If it is, then we don’t want the script to <em>re</em>-install it. While there is (generally) no harm in re-installation, it’s unnecessary and will tack on a few seconds to the running time for your script.</p>
+<p>If, however, the package is <em>not</em> already installed, then you generally want to install it. Otherwise, the script will break when you try to load the library or use any of the functions within it.</p>
 </div>
 <div id="some-useful-packages" class="section level2">
 <h2>Some Useful Packages</h2>
 <p>This list simply cannot be comprehensive, but, to give you a sense of the breadth and scope of R Packages, below are a few representative examples:</p>
 <div id="accessing-web-analytics-search-and-social-media-data" class="section level3">
 <h3>Accessing Web Analytics, Search, and Social Media Data</h3>
-<p>Many of the platforms that digital analysts work with already have one or more packages developed for accessing their data quickly and easily:</p>
-<ul>
-<li><strong><a href="http://code.markedmondson.me/googleAnalyticsR/">googleAnalyticsR</a></strong> – this is a great package for accessing Google Analytics data. It uses the v4 API from Google Analytics which (right now) makes it unique.</li>
-<li><strong><a href="http://randyzwitch.com/rsitecatalyst/">RSiteCatalyst</a></strong> – a package for accessing data from Adobe Analytics! This package works really well…but it’s dependent on constraints in the Adobe Analytics API.</li>
-<li><strong><a href="https://cran.r-project.org/web/packages/twitteR/twitteR.pdf">twitteR</a></strong> – a package for accessing Twitter data.</li>
-<li><strong><a href="http://code.markedmondson.me/searchConsoleR/">searchConsoleR</a></strong> – yup… you guessed it. Google Search Console data (oh…and Mark wrote this one, too; fun fact that Tim discovered when he was creating this content!)</li>
-<li>**<a href="http://code.markedmondson.me/bigQueryR/">bigQueryR</a> – a package for accessing Google BigQuery</li>
-</ul>
+<p>Many of the platforms that digital analysts work with already have one or more packages developed for accessing their data quickly and easily. See the pages under <strong>WORKING WITH APIs</strong> in the <strong>I/O</strong> section of this site for a list of packages that are particularly useful to digital analysts.</p>
 </div>
 <div id="some-other-packages-you-will-get-familiar-with" class="section level3">
 <h3>Some Other Packages You Will Get Familiar With</h3>

@@ -18,11 +18,27 @@ One of the nicer aspects of having CRAN as a centralized resource is that, well,
 
 This will become absolutely second nature, but it's one of those things that is not 100% intuitive at first. When you're using a package (which, really, means you're using one or more of the functions _in_ a package), there are two things that have to happen:
 
-1. **The package has to be installed.** This is what is described above. The first time you use a package, you will need to type `install.packages(\[the package name\])` in the console and press <Enter>. That will pull the package (and any packages the package depends on -- few packages are built entirely from scratch!) from CRAN. And...it will show up in the **Packages** tab in the bottom right of your RStudio environment. This is a one-time step, although there is no harm in installing the same package multiple times, and, occasionally, you will find that a package has been updated and needs to be re-installed.
+1. **The package has to be installed.** This is what is described above. The first time you use a package, you will need to type `install.packages("[the package name]")` (note that the name of the package is inside quotation marks) in the console and press `<Enter>`. That will pull the package (and any packages the package depends on -- few packages are built entirely from scratch!) from CRAN. And...it will show up in the **Packages** tab in the bottom right of your RStudio environment. This is a one-time step, although there is no harm in installing the same package multiple times, and, occasionally, you will find that a package has been updated and needs to be re-installed.
 
-2. **The package has to be loaded.** In your script (or in the console), enter `library(\[the package name\])`. Typically, you will have a list of these at the beginning of your scripts (although there are other techniques for centralizing a list of packages you commonly use...we're not going to go there for now). Once a package is loaded, it will show with a checkbox next to it in the **Packages** list in your RStudio environment.
+2. **The package has to be loaded.** In your script (or in the console), enter `library([the package name])` (unlike `install.packages()`, the name of the package is _not_ placed in quotation marks when using `library()`). Typically, you will have a list of these at the beginning of your scripts (although there are other techniques for centralizing a list of packages you commonly use...we're not going to go there for now). Once a package is loaded, it will show with a checkbox next to it in the **Packages** list in your RStudio environment.
 
 _When you get a "function not found" error when running a script, 9 times out of 10 that's because the function you're calling is in a package that isn't loaded._
+
+## Dynamically Installing Packages
+
+Throughout this site, as well as in examples across the interwebs, you will see code examples that look something like this:
+
+```{r message=FALSE}
+# This installs googleAnalyticsR if you haven't got it installed already
+if(!require(googleAnalyticsR)) install.packages("googleAnalyticsR")
+
+# This then loads the library
+library(googleAnalyticsR)
+```
+
+The `if()` statement is simply conditionally checking to see if the package is already installed. If it is, then we don't want the script to _re_-install it. While there is (generally) no harm in re-installation, it's unnecessary and will tack on a few seconds to the running time for your script. 
+
+If, however, the package is _not_ already installed, then you generally want to install it. Otherwise, the script will break when you try to load the library or use any of the functions within it.
 
 ## Some Useful Packages
 
@@ -30,13 +46,7 @@ This list simply cannot be comprehensive, but, to give you a sense of the breadt
 
 ### Accessing Web Analytics, Search, and Social Media Data
 
-Many of the platforms that digital analysts work with already have one or more packages developed for accessing their data quickly and easily:
-
-* **[googleAnalyticsR](http://code.markedmondson.me/googleAnalyticsR/)** -- this is a great package for accessing Google Analytics data. It uses the v4 API from Google Analytics which (right now) makes it unique.
-* **[RSiteCatalyst](http://randyzwitch.com/rsitecatalyst/)** -- a package for accessing data from Adobe Analytics! This package works really well...but it's dependent on constraints in the Adobe Analytics API.
-* **[twitteR](https://cran.r-project.org/web/packages/twitteR/twitteR.pdf)** -- a package for accessing Twitter data.
-* **[searchConsoleR](http://code.markedmondson.me/searchConsoleR/)** -- yup... you guessed it. Google Search Console data (oh...and Mark wrote this one, too; fun fact that Tim discovered when he was creating this content!)
-* **[bigQueryR](http://code.markedmondson.me/bigQueryR/) -- a package for accessing Google BigQuery
+Many of the platforms that digital analysts work with already have one or more packages developed for accessing their data quickly and easily. See the pages under **WORKING WITH APIs** in the **I/O** section of this site for a list of packages that are particularly useful to digital analysts.
 
 ### Some Other Packages You Will Get Familiar With
 You _will_ learn to know the name "Hadley Wickham," as he is quite possibly the most influential R user (and package and content creator) of the modern era. He also now works for RStudio. All of the packages below are part of what has been dubbed "the Hadleyverse," because Wickham was key in their creation. He's actually been working to rebrand this "the tidyverse" because, well, that's how he rolls.
