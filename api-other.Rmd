@@ -1,7 +1,9 @@
 ---
 title: "Other APIs"
 output:
-  html_document
+  html_document:
+    toc: true
+    toc_float: true
 ---
 
 Some notable other APIs useful for digital marketing are described below:
@@ -23,7 +25,7 @@ seo_data <- search_analytics("your-website.com", dimensions = c("date","query"))
 
 ## BigQuery
 
-Useful if you have Big Query exports from Google Analytics 360.  See [BigQuery section](http://code.markedmondson.me/googleAnalyticsR/big-query.html) of `googleAnalyticsR`.
+This is useful if you have Google Analytics data going into BigQuery from Google Analytics 360, as well as if you're using BigQuery with any other data. See [BigQuery section](http://code.markedmondson.me/googleAnalyticsR/big-query.html) of `googleAnalyticsR`.
 
 ```r
 ## This installs bigQueryR if you haven't got it already
@@ -31,10 +33,10 @@ if(!require(bigQueryR)) install.packages("bigQueryR")
 
 library(googleAnalyticsR)
 
-## authentication similar to googleAnalyticsR
+## Authentication similar to googleAnalyticsR
 bqr_auth()
 
-## this function turns GA dimensions/metrics into BigQuery SQL
+## This function turns GA dimensions/metrics into BigQuery SQL
 
 bq <- google_analytics_bq("project-id", "dataset-id-ga-viewid", 
                            start = "2016-01-01", end = "2016-02-01", 
@@ -51,16 +53,16 @@ head(bq)
 
 ```
 
-For more general BigQuery extracts, it may be better to use the more developed [bigrquery()](https://github.com/rstats-db/bigrquery) instead.
+For more general BigQuery extracts, it may be better to use the more developed [bigrquery()](https://github.com/rstats-db/bigrquery) package instead.
 
-## twitter
+## Twitter
 
-To date to get Twitter data the go to package has been [`twitteR`](https://github.com/geoffjentry/twitteR) but the authors are just now releasing a new package called [`rtweet`](https://github.com/mkearney/rtweet) which along with being much easier to Google help for offers quicker authentication options. 
+Historically, the go-to package for getting Twitter data using R was [`twitteR`](https://github.com/geoffjentry/twitteR). But, the authors of that package have recently released a new package called [`rtweet`](https://github.com/mkearney/rtweet), which, along with being much easier to search Google for help with, offers quicker authentication options. 
 
 ## Facebook
 
 [`Rfacebook`](https://github.com/pablobarbera/Rfacebook) offers Facebook user data, and [`fbRads`](https://github.com/cardcorp/fbRads) gets you connected to the Facebook Marketing API. 
 
-## Make your own 
+## Make Your Own 
 
-If you can't find an R library, then you can make your own.  [`httr`](https://github.com/hadley/httr) is what most of the packages are built upon and comes with a [quickstart guide](https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html).
+If you can't find an R library, then you can make your own.  [`httr`](https://github.com/hadley/httr) is what most of the packages are built on and comes with a [quickstart guide](https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html).
