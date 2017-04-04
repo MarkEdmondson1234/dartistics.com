@@ -8,80 +8,172 @@ output:
 
 ```{r classes-setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-```
 
-We've touched on this subject already through the previous chapters, but a more detailed look at the type of objects R uses e.g. an object's `class` is useful.
+library(knitr) # Just so we can use kable()
 
-# Useful class functions
-
-When working with classes, its good to know these functions:
-
-```r
-## str() gives you the "Structure" of an object, including its class
-str(mtcars)
-
-## class() lets you query an objects class directly
-class(mtcars)
+# Grab the sample data
+web_data <- read.csv("./data/gadata_example_2.csv", stringsAsFactors = FALSE)
+web_data <- web_data[,2:5]
 
 ```
 
-# Atomic classes
+```
 
-There are many different types of `class`, and you can make your own, so this is not a definitive list, but will help in 95% of cases:
+We've touched on this subject already, but a more detailed look at the types -- "classes" -- of objects R uses is worthwhile.
 
-* `numeric` - a number like `1 2 3`
-* `character` - a character string like `hello`
-* `logical` - `TRUE` or `FALSE`
-* `Date` - an object that represents date.  Note this is where it gets tricky, since when you print a `Date` object and a `character` with the same format, they look the same, but are different!
+# Useful Class Functions
+
+There are several functions that you will seldom -- if ever -- use in a script, but that can come in very handy in the console when writing and debugging your code. To illustrate, we're going to use part of the `web_data` data that gets used throughout this site. This data looks like this:
+
+```{r echo=FALSE}
+kable(head(web_data))
+```
+
+## str()
+
+The `str()` function provides the "structure" of an object. In addition to providing the _class_ of the entire object and, as applicable, each component of the object, it includes some of the actual _data_ within the object. As such, it can really be your go-to function, once you're used to reading the output.
 
 ```{r}
+str(web_data)
+```
+
+What this output is saying is that `web_data` is a "data frame," and then it provides the class for each column of data within the data frame, as well as a few sample values.
+
+## class()
+
+The `class()` function provides just the class of the specified object. Let's see what that looks like for `web_data`:
+
+```{r}
+class(web_data)
+```
+
+Notice how this is just a subset of what was returned by `str()` -- it doesn't get into the weeds of the underlying data within the overall object. In this case, it _just_ tells you that, overall, `web_data` is a data frame.
+
+Without worrying too much about the syntax (we'll get to that very shortly), note that we can check the class of something _inside_ the object. Let's check the class for the `sessions` column in the data:
+
+```{r}
+class(web_data$sessions)
+```
+
+Can you find this same information in the `str()` output above?
+
+You may be asking, "Why would I ever use `class()`?" The answer is really that, as you get more complex objects (data), the `str()` function can start to return a _lot_ of information. If you're really interested in determining the class of something deep inside a complex object, `class()` can be more concise and preferable.
+
+This topic is inherently circular, in that we've introduced different classes without actually explaining what they are. That's what we'll do now (but we'll use `class()` function to inspect sample data as we go, which is why we had to cover it first!).
+
+# Atomic Classes
+
+There are many different types of classes, and you can make your own, so this is not a definitive list, but it will cover the major ones:
+
+## Numeric
+
+The numeric class is simply a number like `1 2 3`. Sometimes this will show up as `integer` (no decimals), and sometimes this will show up as `double` (has decimals). R will pick which one is appropriate, but you can force one or the other by using the `as.integer()` and `as.double()` functions (with the authors of this site cannot recall ever using, but, the fact that their assumptions that these functions existed -- and what they were named -- bore out as true was gratifying).
+
+The _metrics_ from your web analytics platform will almost always arrive as numeric class objects.
+
+## Character
+
+The character class is just what it says -- a text-based string like `hello` or `mobile` or `Paid Search`. Of course, you _can_ have numerical digits stored in a character class object...but you generally do not want that. (If you're an Excel junkie, thing of this as being one of those cases where you wind up needing to do a "convert text to numbers" operation).
+
+## Logical
+
+This is the Boolean class: `TRUE` or `FALSE`. This may _seem_ like it's more of a corner case class, but it really isn't -- there are any number of operations in R which, under the hood, are actually generating a bunch of `TRUE`/`FALSE` flags. So, it's good to know that these are a special class unto themselves -- distinct from a character-class object storing the _strings_ `"TRUE"` and `"FALSE"`.
+
+## Date
+
+Date-class objects are objects that store a (wait for it!) _date_.  Things can actually get a little tricky here, since you cannot tell whether a value is a `Date`-class object or a `character`-class object simply by looking at the data. Yet, they are fundamentally different things (and are generally pretty easy to convert from one class to the other -- and back, if that's your thing).
+
+
+
+```{r}
+# Get the current date and assign it to an object called `a_date`
 a_date <- Sys.Date()
+
+# Display the result
 a_date
+
+# Check its class
 class(a_date)
-
-a_character <- "2016-08-24"
-a_character
-class(a_character)
-
 ```
 
-Things like finding date ranges or weekdays will work on a `Date` object, but not on a `character`
-
-* `factor` - A categorical varaible.  
-
-This is another tricky one, as they look the same as `character` when printed but act quite differently.
+So far, so good. But, let's set the date as a _character_ class instead -- simply be creating it as a string:
 
 ```{r}
-a_factor <- factor("hello", levels = c("hello","goodbye"))
-a_factor
-class(a_factor)
+# Create an object called `a_character` and assign a "date" to it
+a_character <- "2017-04-17"
 
+# Display the result
+a_character
+```
+
+Uh-oh! Compare that result to `a_date` above. Do you see any difference? There is none (apparently)! But, yet, there is! Let's check the _class_ of `a_character`:
+
+```{r}
+# Check the class
+class(a_character)
+```
+
+Things like finding date ranges or weekdays will work on a `Date` object, but not on a `character`. And, depending on the package and the function, you may need to pass in "dates" as either `character` class objects or as `Date` class objects.
+
+## Factor
+
+Factors are really nothing more than categorical variables... except factors are both brilliant and can be frustrating. The reason? Well, they look the same as `character` when printed but, they act quite differently.
+
+Let's take a look. Again, we're not going to get into the details of the wherefore and the why just yet, but factors will almost certainly bite you in the tush at some point. Probably multiple times. At that point, it will become old hat for you to remember to include `stringsAsFactors = FALSE` in functions where that matters. But we're getting wayyyyy ahead of ourselves.
+
+Let's define two objects (variables) -- one as a factor, and one as a string (character):
+
+```{r}
+# Create `a_factor` as a factor
+a_factor <- factor("hello", levels = c("hello","goodbye"))
+
+# Take a look at what we just created. Notice the "Levels:" get listed. That's
+# curious, is it not?
+a_factor
+
+# And, let's check the class of the object. No surprises!
+class(a_factor)
+```
+
+Now, let's define our string object:
+
+```{r}
+# Create `a_string`. Since we're assigning a string value to it and not telling R
+# anything special, it's going to go ahead and create it as a character class.
 a_string <- "hello"
+
+# Take a look at what we just created.
 a_string
+
+# And, check its class. See! Character!
 class(a_string)
 ```
 
-As an example, see what happens when we try to add a string and a factor together in the same vector:
+As an example, see what happens when we try to combine a string and a factor using the `c()` function:
+
 ```{r}
-## an unexpected result??
 c(a_factor, a_string)
 ```
 
-Whats going on?  Since `a_factor` is a factor, it is actually represented as a number out of the choice of levels it could possibly be (`c("hello","goodbye")`).  When it is added to the character the factor is **coerced** into a character via `as.numeric`, and then into a character `as.character`.
+Huh? Weird!
 
-Upshot of this all is to be very careful in making sure your variables are the class you expect them to be.
+Whats going on? Well, since `a_factor` is a factor, it is actually represented as a number out of the choice of levels it could possibly be (`c("hello","goodbye")`).  When it is added to the character the factor is **coerced** into a character via `as.numeric`, and then into a character `as.character`.
 
-A classic mistake is to use `data.frame()` or `read.csv()` to make a data.frame from your data, but to not set the `stringsAsFactors = FALSE` argument, which if not used will default to using factors instead.
+The upshot of this all is to be very careful in making sure your variables are the class you expect them to be!
+
+A classic mistake is to use `data.frame()` or `read.csv()` to make a data.frame from your data, but to not set the `stringsAsFactors = FALSE` argument (I told you we'd get to this!), which, if not used will default to using factors instead.
+
+_\<whew\>_ Still with us? Good!
+
+So far, all we've covered are the _atomic_ classes. Things get more fun (and more powerful) when we start digging into multi-classes!
 
 # Multi-classes
 
-There are also objects in R that work with combinations of the classes above.
+These are objects in R that work with combinations of the classes above.
 
 ## Vector
 
-A vector is a combination of the atomic elements above.  You can only combine elements of the same type in a vector.
-
-You create a vector using `c()`
+A _vector_ is a combination of the atomic elements above.  You can _only_ combine elements that are all of the same type in a vector, and you create a vector using the `c()` function.
 
 ```{r}
 a_vector <- c("a","b","c","d")
@@ -90,100 +182,95 @@ class(a_vector)
 str(a_vector)
 ```
 
-> The class of the vector is the same as the element!  
+_**The class of the vector is the same as the element!**_  
 
-This hints at a powerful feature of R, namely **vectorisation**.  The atomic elements above are actually a one-length vector.  This means that anything you can do to one element, will also work on an entire vector of the same `class`.
+This hints at a powerful feature of R: **vectorisation**. The atomic elements above are actually a vector of length `1`, which means that anything you can do to one element can also be done to the entire vector of the same `class` all at once!
 
 An example of this:
 
 ```{r}
-## sum individual elements
+# Sum individual elements
 sum(1,2,3,3,4,5,6)
 
-## sum a vector
+# Sum a vector
 a_vector <- c(1,2,3,3,4,5,6)
 sum(a_vector)
-
 ```
 
 Some useful shortcuts with vectors are below:
 
 ```{r}
-## make a sequence
+# Make a sequence
 1:10
 
-## the lowercase letters
+# The lowercase letters
 letters
 
-## uppercase
+# The uppercase letters
 LETTERS
 
 ```
 
+## Data Frame
 
-## data.frame
-
-The most common and useful R class is the `data.frame`
+The most common and useful R class is the _data frame_. Remember our `web_data` object from earlier? Let's take one more look at that to confirm that it's a data frame:
 
 ```{r}
-class(mtcars)
-str(mtcars)
+class(web_data)
+str(web_data)
 ```
 
-This is most often used to represent tabular data, and very often used in R functions.  
+Data frames are most often used to represent tabular data, and many R functions are designed to operate on data frames.
 
-You make a data.frame using the `data.frame()` function:
+Data frames can be manually created using the `data.frame()` function:
 
 ```{r}
-## names before equals, values after
+# Names before the `=`, values after it.
 my_data_frame <- data.frame(numbers = 1:5, 
                             letters = c("a","b","c","d","e"), 
                             logic = c(TRUE, FALSE, FALSE, TRUE, TRUE))
 class(my_data_frame)
 str(my_data_frame)
-
 ```
 
-> Each column can only be one class, but the class of the columns can be different types.
+_**Each column can only be one class, but the class of the columns can be different types.**_
 
-Also see that by default it will turn characters into `factors`.  Turn this off via the `stringsAsFactors = FALSE` argument:
+And, uh-oh, did you see that we wound up with our characters being turned into `factors`? We can avoid this by including the `stringsAsFactors = FALSE` argument:
 
 ```{r}
-## names before equals, values after
+# Names before the `=`, values after it.
 my_data_frame <- data.frame(numbers = 1:5, 
                             letters = c("a","b","c","d","e"), 
                             logic = c(TRUE, FALSE, FALSE, TRUE, TRUE),
                             stringsAsFactors = FALSE)
 class(my_data_frame)
 str(my_data_frame)
-
 ```
 
-You can access the individual columns of a `data.frame` via the `$` notation:
+You can access the individual columns of a data frame using `$` notation:
 
 ```{r}
-## the column of numbers
+# The column of numbers
 my_data_frame$numbers
 class(my_data_frame$numbers)
 ```
 
-`data.frame`'s are a special case of the next object, `lists()` where all the columns are equal length.
+Data frames are a special case of the next multi-class -- the `list`. Data frames, at there core, are just lists where all of the columns are equal length.
 
-## list
+## List
 
-A list is like a data.frame, but can carry variable lengths of objects.  List elements can be anything, including `data.frames` or other `lists`
+A _list_ is like a data frame, but it can carry variable lengths of objects. And, list _elements_ can be anything, including data frames _or_ even other lists! They can get really, really confusing. But, they also can be very handy.
 
 ```{r}
-
-my_list <- list(letters = letters,
-                numbers = 1:5,
+my_list <- list(letters_data = letters,
+                numbers_data = 1:5,
                 all_data = my_data_frame,
                 nested = list(LETTERS))
 class(my_list)
 str(my_list)
 ```
 
-Like `data.frames` you can reach individual items via the `$` symbol:
+Just like data frames (because, at their core, data frames are actually lists) you can access individual elements in the list using the `$` symbol:
 
 ```{r}
 extract <- my_list$all_data
@@ -193,36 +280,40 @@ str(extract)
 
 # Coercing
 
-If you find an R object the wrong class for the function you need, what can you do?  This is where **corecian** comes into play.
+If you find an R object is the wrong class for the function you need, what can you do? This is where **coercian** comes into play.
 
-All the class have an `as.this` function, which when you pass an R object in will try to change it to what you need.  It will usually error if this is impossible (which is much better than failing silently!)
+All the classes have an `as.this` function, which, when you pass an R object in, will try to change it to what you need. It will usually throw an error if this is impossible (which is much better than failing silently!).
 
 Some coercing functions as shown below:
 
 ```{r}
-## quotes indicate characters
+# Quotes indicate characters
 as.character(-1:3)
 
-## 0 is FALSE, everything else is TRUE
+# 0 is FALSE, everything else is TRUE
 as.logical(-1:3)
 
-## character to date
+# Character to date
 as.Date("2015-01-02")
 
-## If your dates are in a different format to YYYY-MM-DD then you need to supply format argument
+# If your dates are in format other than YYYY-MM-DD, then you need to include
+# the `format` argument
 as.Date("20150102", format = "%Y%m%d")
 as.Date("12-24-2016", format = "%m-%d-%Y")
 
-## to change factors to numeric, be careful to go via as.character first
+# To change factors to numeric, be careful to go via as.character first
 numeric_factor <- factor(1, levels = 5:1)
 numeric_factor
 
-## it gives answer as 5, as thats the first factor
+# This gives the result as 5, as that's the first factor
 wrong_factor <- as.numeric(numeric_factor)
 wrong_factor
 
-## we go via as.character, to get whats expected
+# But, if we use as.character, then we get what's expected/desired.
 right_factor <- as.numeric(as.character(numeric_factor))
 right_factor
-
 ```
+
+# In Summary
+
+As you start to work with R, you will find that you are working with a range of classes, and, when it comes to multi-classes, you will find yourself _wanting_ everything to be a vector or a data frame... until you hit a use case where, all of the sudden, you need more flexibility in the structure (including data nested within other data), at which point you will find yourself in `list` world. Lists can be maddening...until they're not. Do you remember when you were first learning how to use pivot tables in Excel? It's the same thing: kinda' confusing at first, but kinda' genius once you're comfortable with them!

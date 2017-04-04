@@ -8,174 +8,191 @@ output:
 
 ```{r accessing, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(knitr) # Just so we can use kable()
+
+# Grab the sample data
+web_data <- read.csv("./data/gadata_example_2.csv", stringsAsFactors = FALSE)
+web_data <- web_data[1:8,2:5]
 ```
 
-This chapter looks at how to most easily access your data once they are in R objects.  
+Now that we've covered classes, it's time to get into the weeds a bit on how to actually access the data that gets stored in different objects with different classes.  
 
-Note this uses "Base R" but you may prefer using `dplyr()` when working with data.frames, which does similar in an (arguably) easier to understand syntax.  
+For now, we're going to use "Base R" syntax for this. Very soon, we'll cover using `dplyr` when working with data frames, which does similar things in an (arguably) easier to understand syntax.  
 
-But, it's worth knowing how to do this without relying on a package if possible.
+Ultimately, you will wind up using both, so we'll start with the basics.
 
-## Subsetting using [ ]
+# Subsetting Using [ ]
 
-Most R objects can have their individual elements reached via their numeric position.  These can be reached by using square brackets `[ ]`
+Most R objects can have their individual elements accessed via their numeric position (or "index"), which use a square brackets (`[ ]`) notation.
+
+## Vector Subsetting
+
+Let's start by looking at a simple vector of all of the lowercase letters and how different elements in the vector can be accessed with bracket notation:
 
 ```{r}
+
+# Create a vector that contains the letters `a` through `z`. 
 a_vector <- letters
+
+# Retrieve the first letter in the vector.
 a_vector[1]
+
+# Retrieve the fifth letter in the vector.
 a_vector[5]
+
+# Retrieve the first THROUGH fifth letters using a `:` inside the brackets.
 a_vector[1:5]
+
+# Retrieve the first AND fifth letters by putting a vector inside the brackets.
 a_vector[c(1,5)]
 ```
 
-But when in a `data.frame` you also have to worry about the second dimension.
+## Data Frame Subsetting
 
-In this case, the `[ ]` notation is extended to include a comma: `[ , ]`.
+With a vector, there is only one dimension, so we only need one value inside the brackets. In a data frame, though, we have both rows _and_ columns. So, we need to specify both dimensions, which we do by extending the `[ ]` notation to include a comma: `[ , ]`.
 
-* The position before the `,` indicates which row
-* The position after the `,` indicates which column
+* The position before the `,` indicates the row(s)
+* The position after the `,` indicates the column(s)
 
 _Note: This is sort of like R1C1 notation in Excel...except with a comma!_
 
-```{r}
-my_data <- mtcars
+Let's explore this notation a bit with a small little data frame of web data that we've called `web_data` (this is a very small data set, but this page is long enough without us including a more meaningful number of rows): 
 
-## the second row
-my_data[2, ]
-
-## the first column
-my_data[ , 1]
-
-## the second row, first colum
-my_data[2, 1]
-
-## the second and third row, and first and forth colum
-my_data[2:3, c(1,4)]
-
+```{r echo=FALSE}
+kable(web_data)
 ```
 
-## Character subsetting
-
-Subsetting by numbers assumes the rows and columns are in the same order, which can be dangerous.  Safer is to use the name, if you know it:
+We can access various subsets of the data frame using `[ ]` notation:
 
 ```{r}
-## First 5 rows of the "mpg" column
-my_data[1:5, "mpg"]
+# Retrieve the entire second row. Note how we include the comma, but 
+# we just leave the row index blank to do this.
+web_data[2,]
+
+# Retrieve the entire fourth column. Similarly, we include the comma,
+# but leave the column index blank.
+web_data[,4]
 ```
 
-You can aso use multiple columns:
+_Note: While the two examples above were similarly structured, notice how the output differs. When we retrieved an entire row, the result was a data frame (with a single row). When we retrieved an entire column, since, by definition, all of the values were of the same class, R went ahead and simplified the result to be a vector._
 
 ```{r}
-my_data[1:5, c("mpg","gear")]
+# Retrieve the second row, first column
+web_data[2, 1]
+
+# Retrieve the second through fourth rows, and the first and fourth colums
+web_data[2:4, c(1,4)]
 ```
 
-And reorder or repeat columns (but it will rename them to avoid clashes via `make.names()`)
+# Subsetting with Names
+
+Subsetting by numbers assumes the rows and columns are always going to be in the same order, which can be dangerous. It's much safer to work with names, if the names are knowable:
 
 ```{r}
-my_data[1:5, c("gear","mpg", "mpg")]
+# Retrieve the first 5 rows of the "sessions" column
+web_data[1:5, "sessions"]
 ```
 
-Note that if you subset `lists()` or `data.frames()` with `[ ]` it will, by default, return a list or data.frame back.  
+You can aso specify multiple columns by passing in a vector of column names:
 
-If you want to instead return the column vector, then use `[[ ]]` which returns whats in the list/data.frame column.
+```{r}
+web_data[1:5, c("channelGrouping","sessions")]
+```
+
+You can even reorder or repeat columns (but it will rename them to avoid clashes, which occurs behind the scenes using the `make.names()` function).
+
+```{r}
+web_data[1:5, c("channelGrouping","deviceCategory", "sessions", "sessions")]
+```
+
+# [ ] vs. [[ ]]
+
+When you subset lists (including data frames) with `[ ]` it will, generally, return a list or data frame. If, instead, you want to return the column vector, then use `[[ ]]` which returns what's actually _in_ the list (or data frame) column.
 
 _This is confusing topic. It's right up there with `StringsAsFactors = FALSE`. This is where the console comes in handy when you're trying to make sure you have your syntax correct._
 
-```{r}
-my_data[["mpg"]]
-```
+There's a bit more going on with this notation -- `[ ]` refers to the _location_ of the data and `[[ ]]` refers to the values _at_ the location... but let's not get into that just yet. It's much easier to work through this when we have a real example.
 
-### Lookup Tables
+# The `$` Operator
 
-Character subsetting is how the lookup examples work, the only differences being that, this time, it's not a `data.frame` but a `vector` that is named using the `names()` function.
+Now that we're all squared away with `[ ]` notation, let's look at a completely different mechanism that, as it happens, can be partnered up with `[ ]`s (or not): the `$`. The `$` gets used with data frames to specify columns (based on their name) and in lists to specify elements (by their name).
 
 ```{r}
-## example with some user Ids
-lookup <- c("Bill","Ben","Sue","Linda","Gerry")
-names(lookup) <- c("1231","2323","5353","3434","9999")
-lookup
-
-## this is a big vector of Ids you want to lookup
-big_list_of_ids <- c("2323","2323","3434","9999","9999","1231","5353","9999","2323","1231","9999")
-
-## subset lookup with repeating columns by your data of ids
-lookup[big_list_of_ids]
+# Retrieve the `sessions` column
+web_data$sessions
 ```
 
-## $ operator
-
-You can also find columns via the `$` operator on lists and data.frames:
+The `$` is actually just a shortcut to subsetting via a character name:
 
 ```{r}
-my_data$mpg
+web_data[["sessions"]]
 ```
 
-This `$` is a shortcut to subsetting via a character name:
+You can apply `[ ]` subsetting to the result of `$` notation:
 
 ```{r}
-my_data[["mpg"]]
+# The first 5 elements of the `sessions` column
+web_data$sessions[1:5]
 ```
 
-You can then apply subsetting to the result to get a specific number(s):
+# Conditional Logic
+
+There are many ways to pull subsets of data frames based on specific criteria (rather than explicitly identifying rows or columns). This is actually one of the ways that `dplyr` really shines over Base R. But, it's useful to get comfortable with how Base R notation works, including what's actually happening behind the scenes.
+
+To use conditional logic, you actually wind up using our friends `TRUE` and `FALSE` (remember our discussion of the `logical` class earlier?). This can be a good way to select specific rows from a data frame.
+
+For instance, to select all rows that are over 125 in the `sessions` column of `web_data`, we can construct a logical (class) vector:
 
 ```{r}
-## first 5 elements of mpg column
-my_data$mpg[1:5]
+# Create a TRUE or FALSE vector for every `session` element over 125
+over_125 <- web_data$sessions > 125
+
+# Display the result
+over_125
 ```
 
-## Subsetting using logical
-
-You can also subset using `TRUE` and `FALSE`.  This is a good way to select rows.
-
-For instance, to select all rows that are over 24 in the `mpg` column of `mtcars`.
-
-We first construct the logical vector:
+Now, we can pass this _logical vector_ (which has the same number of rows as our original data frame) into the row selector for `web_data`:
 
 ```{r}
-## we first make a TRUE or FALSE vector for every mpg element over 24
-over_24 <- mtcars$mpg > 24
-over_24
+# All rows where `sessions` is over 125... and ALL columns
+web_data[over_125,]
 ```
 
-We can then pass this into the row selector for mycars:
+Got it? If this seems a bit cumbersome...it sort of is. And, it turns out that you can shorten this all into a single line:
 
 ```{r}
-## all rows over 24 and all columns
-mtcars[over_24, ]
+web_data[web_data$sessions > 125,]
 ```
 
-This is often shortend to one line:
+_Notice how `web_data` is the overall data frame _and_ is used as a conditional within the subsetting of that data frame._
+
+If you only wanted certain columns, you can add that criteria "after the comma," as discussed earlier
 
 ```{r}
-mtcars[mtcars$mpg > 24, ]
+web_data[web_data$sessions > 125, c("channelGrouping","sessions")]
 ```
 
-And if you only wanted certain columns, you can add that to the line too:
-
-```{r}
-mtcars[mtcars$mpg > 24, c("mpg","wt")]
-```
-
-These can start to look pretty confusing, but, once you get comfortable with the basic syntax, you will see how things break down. And, it can be useful to build up the final syntax iteratively, much as was done in the example above.
+These can start to look pretty confusing, but, once you get comfortable with the basic syntax, you will see how things break down. And, it _can_ be useful to build up the final syntax iteratively, much as was done in the example above, lest you wind up in nested conditional hell! (If you're a heavy Excel user, this can be like building up beastly nested formulas.)
 
 A couple of additional notes on the conditional selections (the use of `>` above):
 
 * To set "equals to," use a double equals sign: `==`
 * To set "not equals to," it is _not_ "<>" like you might think: it's `!=`.
 
-## Other methods
+# Other Subsetting Methods
 
-There is also the function `which()` that you may see around, but in general I would recommend not using this since it relies on numeric subsetting and can be difficult to debug.
+The `which()` function is one that you may come across here and there, but, in general, we would recommend not using this, since it relies on numeric subsetting and can be difficult to debug.
 
-And, if you are regular expression junkie, you can use `grepl()` in your row or column selections (typically, it's in your row selection). There is a `grep()` function that actually returns the matched values, but, if you're doing a selection, you actually want to return a _logical vector_ (`TRUE`s and `FALSE`s) for your condition as to which rows you want to match...and that is what `grepl()` does.
+If you are regular expression junkie (and what self-respecting web analyst isn't?), you can use `grepl()` in your row or column selections to use regEx to identify which rows/columns to return. This is _just_ another way to build those `TRUE`/`FALSE` vectors we just went through. We won't go into that in detail now, but be aware that regEx and R are besties.
 
-If you have loaded `dplyr()` then it makes sense to use its `select()` for columns and `filter()` for rows instead.
+There is _also_ a `grep()` function that actually returns the matched values, but, if you're doing a selection, you actually want to return a _logical vector_ (`TRUE`s and `FALSE`s) for your condition as to which rows you want to match...and that is what `grepl()` does.
 
-## Munging data
+If you have loaded `dplyr()` then it makes sense to use its `select()` for columns and `filter()` for rows instead...but, again, we'll get there! (`grepl()` plays quite nicely with `dplyr`, too. Thanks for asking!)
 
-So, now you can subset at will, how does this apply to data munging?
+# Subsetting Meets Munging
 
-Well, in many cases your data will come with elements you need to change that you need to filter down to.  You can then reassign those values to what you prefer.
+So, now you can subset at will. But, what if you actually want to perform operations on a data frame -- actually _change_ subsets of the data (for cleanup for flagging or something else)? In many cases your data will come with elements you need to change that you need to filter down to. You can then reassign those values to what you prefer.
 
 A few other functions are useful to know for these cases:
 
@@ -187,14 +204,22 @@ a_vector <- c(1,2,3,NA,4)
 is.na(a_vector)
 ```
 
-## Munging Example
+# Munging Example
 
-Lets take the previous mtcars columns and say we want to set all the mpg values to 24 if they are over 24.
+Lets take the previous `web_data` columns and say we want to set all the `sessions` values to 125 if they are over 125.
 
-In this case we can filter to the elements we need like before, but this time modifying the data in place using the `<-` assignment command:
+In this case we can filter to the elements we need like before, but this time also _modifying_ the data in place using the `<-` assignment command:
 
 ```{r}
-my_new_data <- mtcars
-my_new_data[my_new_data$mpg > 24, "mpg"] <- 24
-max(my_new_data[, "mpg"])
+# Set up a new object that is just a copy of `web_data`. The following
+# operations could have just been done with `web_data` directly, but then
+# the original data would be lost.
+my_new_data <- web_data
+
+# Subset the data just as we did above, but then assign that subset a
+# specific value.
+my_new_data[my_new_data$sessions > 125, "sessions"] <- 125
+
+# Check out what the data looks like
+my_new_data
 ```

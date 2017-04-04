@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -483,173 +483,219 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 
 
-<p>This chapter looks at how to most easily access your data once they are in R objects.</p>
-<p>Note this uses “Base R” but you may prefer using <code>dplyr()</code> when working with data.frames, which does similar in an (arguably) easier to understand syntax.</p>
-<p>But, it’s worth knowing how to do this without relying on a package if possible.</p>
-<div id="subsetting-using" class="section level2">
-<h2>Subsetting using [ ]</h2>
-<p>Most R objects can have their individual elements reached via their numeric position. These can be reached by using square brackets <code>[ ]</code></p>
-<pre class="r"><code>a_vector &lt;- letters
+<p>Now that we’ve covered classes, it’s time to get into the weeds a bit on how to actually access the data that gets stored in different objects with different classes.</p>
+<p>For now, we’re going to use “Base R” syntax for this. Very soon, we’ll cover using <code>dplyr</code> when working with data frames, which does similar things in an (arguably) easier to understand syntax.</p>
+<p>Ultimately, you will wind up using both, so we’ll start with the basics.</p>
+<div id="subsetting-using" class="section level1">
+<h1>Subsetting Using [ ]</h1>
+<p>Most R objects can have their individual elements accessed via their numeric position (or “index”), which use a square brackets (<code>[ ]</code>) notation.</p>
+<div id="vector-subsetting" class="section level2">
+<h2>Vector Subsetting</h2>
+<p>Let’s start by looking at a simple vector of all of the lowercase letters and how different elements in the vector can be accessed with bracket notation:</p>
+<pre class="r"><code># Create a vector that contains the letters `a` through `z`. 
+a_vector &lt;- letters
+
+# Retrieve the first letter in the vector.
 a_vector[1]</code></pre>
 <pre><code>## [1] &quot;a&quot;</code></pre>
-<pre class="r"><code>a_vector[5]</code></pre>
+<pre class="r"><code># Retrieve the fifth letter in the vector.
+a_vector[5]</code></pre>
 <pre><code>## [1] &quot;e&quot;</code></pre>
-<pre class="r"><code>a_vector[1:5]</code></pre>
+<pre class="r"><code># Retrieve the first THROUGH fifth letters using a `:` inside the brackets.
+a_vector[1:5]</code></pre>
 <pre><code>## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot;</code></pre>
-<pre class="r"><code>a_vector[c(1,5)]</code></pre>
+<pre class="r"><code># Retrieve the first AND fifth letters by putting a vector inside the brackets.
+a_vector[c(1,5)]</code></pre>
 <pre><code>## [1] &quot;a&quot; &quot;e&quot;</code></pre>
-<p>But when in a <code>data.frame</code> you also have to worry about the second dimension.</p>
-<p>In this case, the <code>[ ]</code> notation is extended to include a comma: <code>[ , ]</code>.</p>
+</div>
+<div id="data-frame-subsetting" class="section level2">
+<h2>Data Frame Subsetting</h2>
+<p>With a vector, there is only one dimension, so we only need one value inside the brackets. In a data frame, though, we have both rows <em>and</em> columns. So, we need to specify both dimensions, which we do by extending the <code>[ ]</code> notation to include a comma: <code>[ , ]</code>.</p>
 <ul>
-<li>The position before the <code>,</code> indicates which row</li>
-<li>The position after the <code>,</code> indicates which column</li>
+<li>The position before the <code>,</code> indicates the row(s)</li>
+<li>The position after the <code>,</code> indicates the column(s)</li>
 </ul>
 <p><em>Note: This is sort of like R1C1 notation in Excel…except with a comma!</em></p>
-<pre class="r"><code>my_data &lt;- mtcars
-
-## the second row
-my_data[2, ]</code></pre>
-<pre><code>##               mpg cyl disp  hp drat    wt  qsec vs am gear carb
-## Mazda RX4 Wag  21   6  160 110  3.9 2.875 17.02  0  1    4    4</code></pre>
-<pre class="r"><code>## the first column
-my_data[ , 1]</code></pre>
-<pre><code>##  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2
-## [15] 10.4 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4
-## [29] 15.8 19.7 15.0 21.4</code></pre>
-<pre class="r"><code>## the second row, first colum
-my_data[2, 1]</code></pre>
-<pre><code>## [1] 21</code></pre>
-<pre class="r"><code>## the second and third row, and first and forth colum
-my_data[2:3, c(1,4)]</code></pre>
-<pre><code>##                mpg  hp
-## Mazda RX4 Wag 21.0 110
-## Datsun 710    22.8  93</code></pre>
+<p>Let’s explore this notation a bit with a small little data frame of web data that we’ve called <code>web_data</code> (this is a very small data set, but this page is long enough without us including a more meaningful number of rows):</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">date</th>
+<th align="left">channelGrouping</th>
+<th align="left">deviceCategory</th>
+<th align="right">sessions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">(Other)</td>
+<td align="left">desktop</td>
+<td align="right">19</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">(Other)</td>
+<td align="left">mobile</td>
+<td align="right">112</td>
+</tr>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">(Other)</td>
+<td align="left">tablet</td>
+<td align="right">24</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">Direct</td>
+<td align="left">desktop</td>
+<td align="right">133</td>
+</tr>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">Direct</td>
+<td align="left">mobile</td>
+<td align="right">345</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">Direct</td>
+<td align="left">tablet</td>
+<td align="right">126</td>
+</tr>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">Display</td>
+<td align="left">desktop</td>
+<td align="right">307</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">Display</td>
+<td align="left">mobile</td>
+<td align="right">3266</td>
+</tr>
+</tbody>
+</table>
+<p>We can access various subsets of the data frame using <code>[ ]</code> notation:</p>
+<pre class="r"><code># Retrieve the entire second row. Note how we include the comma, but 
+# we just leave the row index blank to do this.
+web_data[2,]</code></pre>
+<pre><code>##         date channelGrouping deviceCategory sessions
+## 2 2016-01-01         (Other)         mobile      112</code></pre>
+<pre class="r"><code># Retrieve the entire fourth column. Similarly, we include the comma,
+# but leave the column index blank.
+web_data[,4]</code></pre>
+<pre><code>## [1]   19  112   24  133  345  126  307 3266</code></pre>
+<p><em>Note: While the two examples above were similarly structured, notice how the output differs. When we retrieved an entire row, the result was a data frame (with a single row). When we retrieved an entire column, since, by definition, all of the values were of the same class, R went ahead and simplified the result to be a vector.</em></p>
+<pre class="r"><code># Retrieve the second row, first column
+web_data[2, 1]</code></pre>
+<pre><code>## [1] &quot;2016-01-01&quot;</code></pre>
+<pre class="r"><code># Retrieve the second through fourth rows, and the first and fourth colums
+web_data[2:4, c(1,4)]</code></pre>
+<pre><code>##         date sessions
+## 2 2016-01-01      112
+## 3 2016-01-01       24
+## 4 2016-01-01      133</code></pre>
 </div>
-<div id="character-subsetting" class="section level2">
-<h2>Character subsetting</h2>
-<p>Subsetting by numbers assumes the rows and columns are in the same order, which can be dangerous. Safer is to use the name, if you know it:</p>
-<pre class="r"><code>## First 5 rows of the &quot;mpg&quot; column
-my_data[1:5, &quot;mpg&quot;]</code></pre>
-<pre><code>## [1] 21.0 21.0 22.8 21.4 18.7</code></pre>
-<p>You can aso use multiple columns:</p>
-<pre class="r"><code>my_data[1:5, c(&quot;mpg&quot;,&quot;gear&quot;)]</code></pre>
-<pre><code>##                    mpg gear
-## Mazda RX4         21.0    4
-## Mazda RX4 Wag     21.0    4
-## Datsun 710        22.8    4
-## Hornet 4 Drive    21.4    3
-## Hornet Sportabout 18.7    3</code></pre>
-<p>And reorder or repeat columns (but it will rename them to avoid clashes via <code>make.names()</code>)</p>
-<pre class="r"><code>my_data[1:5, c(&quot;gear&quot;,&quot;mpg&quot;, &quot;mpg&quot;)]</code></pre>
-<pre><code>##                   gear  mpg mpg.1
-## Mazda RX4            4 21.0  21.0
-## Mazda RX4 Wag        4 21.0  21.0
-## Datsun 710           4 22.8  22.8
-## Hornet 4 Drive       3 21.4  21.4
-## Hornet Sportabout    3 18.7  18.7</code></pre>
-<p>Note that if you subset <code>lists()</code> or <code>data.frames()</code> with <code>[ ]</code> it will, by default, return a list or data.frame back.</p>
-<p>If you want to instead return the column vector, then use <code>[[ ]]</code> which returns whats in the list/data.frame column.</p>
+</div>
+<div id="subsetting-with-names" class="section level1">
+<h1>Subsetting with Names</h1>
+<p>Subsetting by numbers assumes the rows and columns are always going to be in the same order, which can be dangerous. It’s much safer to work with names, if the names are knowable:</p>
+<pre class="r"><code># Retrieve the first 5 rows of the &quot;sessions&quot; column
+web_data[1:5, &quot;sessions&quot;]</code></pre>
+<pre><code>## [1]  19 112  24 133 345</code></pre>
+<p>You can aso specify multiple columns by passing in a vector of column names:</p>
+<pre class="r"><code>web_data[1:5, c(&quot;channelGrouping&quot;,&quot;sessions&quot;)]</code></pre>
+<pre><code>##   channelGrouping sessions
+## 1         (Other)       19
+## 2         (Other)      112
+## 3         (Other)       24
+## 4          Direct      133
+## 5          Direct      345</code></pre>
+<p>You can even reorder or repeat columns (but it will rename them to avoid clashes, which occurs behind the scenes using the <code>make.names()</code> function).</p>
+<pre class="r"><code>web_data[1:5, c(&quot;channelGrouping&quot;,&quot;deviceCategory&quot;, &quot;sessions&quot;, &quot;sessions&quot;)]</code></pre>
+<pre><code>##   channelGrouping deviceCategory sessions sessions.1
+## 1         (Other)        desktop       19         19
+## 2         (Other)         mobile      112        112
+## 3         (Other)         tablet       24         24
+## 4          Direct        desktop      133        133
+## 5          Direct         mobile      345        345</code></pre>
+</div>
+<div id="vs." class="section level1">
+<h1>[ ] vs. [[ ]]</h1>
+<p>When you subset lists (including data frames) with <code>[ ]</code> it will, generally, return a list or data frame. If, instead, you want to return the column vector, then use <code>[[ ]]</code> which returns what’s actually <em>in</em> the list (or data frame) column.</p>
 <p><em>This is confusing topic. It’s right up there with <code>StringsAsFactors = FALSE</code>. This is where the console comes in handy when you’re trying to make sure you have your syntax correct.</em></p>
-<pre class="r"><code>my_data[[&quot;mpg&quot;]]</code></pre>
-<pre><code>##  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2
-## [15] 10.4 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4
-## [29] 15.8 19.7 15.0 21.4</code></pre>
-<div id="lookup-tables" class="section level3">
-<h3>Lookup Tables</h3>
-<p>Character subsetting is how the lookup examples work, the only differences being that, this time, it’s not a <code>data.frame</code> but a <code>vector</code> that is named using the <code>names()</code> function.</p>
-<pre class="r"><code>## example with some user Ids
-lookup &lt;- c(&quot;Bill&quot;,&quot;Ben&quot;,&quot;Sue&quot;,&quot;Linda&quot;,&quot;Gerry&quot;)
-names(lookup) &lt;- c(&quot;1231&quot;,&quot;2323&quot;,&quot;5353&quot;,&quot;3434&quot;,&quot;9999&quot;)
-lookup</code></pre>
-<pre><code>##    1231    2323    5353    3434    9999 
-##  &quot;Bill&quot;   &quot;Ben&quot;   &quot;Sue&quot; &quot;Linda&quot; &quot;Gerry&quot;</code></pre>
-<pre class="r"><code>## this is a big vector of Ids you want to lookup
-big_list_of_ids &lt;- c(&quot;2323&quot;,&quot;2323&quot;,&quot;3434&quot;,&quot;9999&quot;,&quot;9999&quot;,&quot;1231&quot;,&quot;5353&quot;,&quot;9999&quot;,&quot;2323&quot;,&quot;1231&quot;,&quot;9999&quot;)
+<p>There’s a bit more going on with this notation – <code>[ ]</code> refers to the <em>location</em> of the data and <code>[[ ]]</code> refers to the values <em>at</em> the location… but let’s not get into that just yet. It’s much easier to work through this when we have a real example.</p>
+</div>
+<div id="the-operator" class="section level1">
+<h1>The <code>$</code> Operator</h1>
+<p>Now that we’re all squared away with <code>[ ]</code> notation, let’s look at a completely different mechanism that, as it happens, can be partnered up with <code>[ ]</code>s (or not): the <code>$</code>. The <code>$</code> gets used with data frames to specify columns (based on their name) and in lists to specify elements (by their name).</p>
+<pre class="r"><code># Retrieve the `sessions` column
+web_data$sessions</code></pre>
+<pre><code>## [1]   19  112   24  133  345  126  307 3266</code></pre>
+<p>The <code>$</code> is actually just a shortcut to subsetting via a character name:</p>
+<pre class="r"><code>web_data[[&quot;sessions&quot;]]</code></pre>
+<pre><code>## [1]   19  112   24  133  345  126  307 3266</code></pre>
+<p>You can apply <code>[ ]</code> subsetting to the result of <code>$</code> notation:</p>
+<pre class="r"><code># The first 5 elements of the `sessions` column
+web_data$sessions[1:5]</code></pre>
+<pre><code>## [1]  19 112  24 133 345</code></pre>
+</div>
+<div id="conditional-logic" class="section level1">
+<h1>Conditional Logic</h1>
+<p>There are many ways to pull subsets of data frames based on specific criteria (rather than explicitly identifying rows or columns). This is actually one of the ways that <code>dplyr</code> really shines over Base R. But, it’s useful to get comfortable with how Base R notation works, including what’s actually happening behind the scenes.</p>
+<p>To use conditional logic, you actually wind up using our friends <code>TRUE</code> and <code>FALSE</code> (remember our discussion of the <code>logical</code> class earlier?). This can be a good way to select specific rows from a data frame.</p>
+<p>For instance, to select all rows that are over 125 in the <code>sessions</code> column of <code>web_data</code>, we can construct a logical (class) vector:</p>
+<pre class="r"><code># Create a TRUE or FALSE vector for every `session` element over 125
+over_125 &lt;- web_data$sessions &gt; 125
 
-## subset lookup with repeating columns by your data of ids
-lookup[big_list_of_ids]</code></pre>
-<pre><code>##    2323    2323    3434    9999    9999    1231    5353    9999    2323 
-##   &quot;Ben&quot;   &quot;Ben&quot; &quot;Linda&quot; &quot;Gerry&quot; &quot;Gerry&quot;  &quot;Bill&quot;   &quot;Sue&quot; &quot;Gerry&quot;   &quot;Ben&quot; 
-##    1231    9999 
-##  &quot;Bill&quot; &quot;Gerry&quot;</code></pre>
-</div>
-</div>
-<div id="operator" class="section level2">
-<h2>$ operator</h2>
-<p>You can also find columns via the <code>$</code> operator on lists and data.frames:</p>
-<pre class="r"><code>my_data$mpg</code></pre>
-<pre><code>##  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2
-## [15] 10.4 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4
-## [29] 15.8 19.7 15.0 21.4</code></pre>
-<p>This <code>$</code> is a shortcut to subsetting via a character name:</p>
-<pre class="r"><code>my_data[[&quot;mpg&quot;]]</code></pre>
-<pre><code>##  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2
-## [15] 10.4 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4
-## [29] 15.8 19.7 15.0 21.4</code></pre>
-<p>You can then apply subsetting to the result to get a specific number(s):</p>
-<pre class="r"><code>## first 5 elements of mpg column
-my_data$mpg[1:5]</code></pre>
-<pre><code>## [1] 21.0 21.0 22.8 21.4 18.7</code></pre>
-</div>
-<div id="subsetting-using-logical" class="section level2">
-<h2>Subsetting using logical</h2>
-<p>You can also subset using <code>TRUE</code> and <code>FALSE</code>. This is a good way to select rows.</p>
-<p>For instance, to select all rows that are over 24 in the <code>mpg</code> column of <code>mtcars</code>.</p>
-<p>We first construct the logical vector:</p>
-<pre class="r"><code>## we first make a TRUE or FALSE vector for every mpg element over 24
-over_24 &lt;- mtcars$mpg &gt; 24
-over_24</code></pre>
-<pre><code>##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-## [12] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE FALSE
-## [23] FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE</code></pre>
-<p>We can then pass this into the row selector for mycars:</p>
-<pre class="r"><code>## all rows over 24 and all columns
-mtcars[over_24, ]</code></pre>
-<pre><code>##                 mpg cyl  disp  hp drat    wt  qsec vs am gear carb
-## Merc 240D      24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
-## Fiat 128       32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
-## Honda Civic    30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
-## Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
-## Fiat X1-9      27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
-## Porsche 914-2  26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
-## Lotus Europa   30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2</code></pre>
-<p>This is often shortend to one line:</p>
-<pre class="r"><code>mtcars[mtcars$mpg &gt; 24, ]</code></pre>
-<pre><code>##                 mpg cyl  disp  hp drat    wt  qsec vs am gear carb
-## Merc 240D      24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
-## Fiat 128       32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
-## Honda Civic    30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
-## Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
-## Fiat X1-9      27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
-## Porsche 914-2  26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
-## Lotus Europa   30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2</code></pre>
-<p>And if you only wanted certain columns, you can add that to the line too:</p>
-<pre class="r"><code>mtcars[mtcars$mpg &gt; 24, c(&quot;mpg&quot;,&quot;wt&quot;)]</code></pre>
-<pre><code>##                 mpg    wt
-## Merc 240D      24.4 3.190
-## Fiat 128       32.4 2.200
-## Honda Civic    30.4 1.615
-## Toyota Corolla 33.9 1.835
-## Fiat X1-9      27.3 1.935
-## Porsche 914-2  26.0 2.140
-## Lotus Europa   30.4 1.513</code></pre>
-<p>These can start to look pretty confusing, but, once you get comfortable with the basic syntax, you will see how things break down. And, it can be useful to build up the final syntax iteratively, much as was done in the example above.</p>
+# Display the result
+over_125</code></pre>
+<pre><code>## [1] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE</code></pre>
+<p>Now, we can pass this <em>logical vector</em> (which has the same number of rows as our original data frame) into the row selector for <code>web_data</code>:</p>
+<pre class="r"><code># All rows where `sessions` is over 125... and ALL columns
+web_data[over_125,]</code></pre>
+<pre><code>##         date channelGrouping deviceCategory sessions
+## 4 2016-01-01          Direct        desktop      133
+## 5 2016-01-01          Direct         mobile      345
+## 6 2016-01-01          Direct         tablet      126
+## 7 2016-01-01         Display        desktop      307
+## 8 2016-01-01         Display         mobile     3266</code></pre>
+<p>Got it? If this seems a bit cumbersome…it sort of is. And, it turns out that you can shorten this all into a single line:</p>
+<pre class="r"><code>web_data[web_data$sessions &gt; 125,]</code></pre>
+<pre><code>##         date channelGrouping deviceCategory sessions
+## 4 2016-01-01          Direct        desktop      133
+## 5 2016-01-01          Direct         mobile      345
+## 6 2016-01-01          Direct         tablet      126
+## 7 2016-01-01         Display        desktop      307
+## 8 2016-01-01         Display         mobile     3266</code></pre>
+<p><em>Notice how <code>web_data</code> is the overall data frame <em>and</em> is used as a conditional within the subsetting of that data frame.</em></p>
+<p>If you only wanted certain columns, you can add that criteria “after the comma,” as discussed earlier</p>
+<pre class="r"><code>web_data[web_data$sessions &gt; 125, c(&quot;channelGrouping&quot;,&quot;sessions&quot;)]</code></pre>
+<pre><code>##   channelGrouping sessions
+## 4          Direct      133
+## 5          Direct      345
+## 6          Direct      126
+## 7         Display      307
+## 8         Display     3266</code></pre>
+<p>These can start to look pretty confusing, but, once you get comfortable with the basic syntax, you will see how things break down. And, it <em>can</em> be useful to build up the final syntax iteratively, much as was done in the example above, lest you wind up in nested conditional hell! (If you’re a heavy Excel user, this can be like building up beastly nested formulas.)</p>
 <p>A couple of additional notes on the conditional selections (the use of <code>&gt;</code> above):</p>
 <ul>
 <li>To set “equals to,” use a double equals sign: <code>==</code></li>
 <li>To set “not equals to,” it is <em>not</em> “&lt;&gt;” like you might think: it’s <code>!=</code>.</li>
 </ul>
 </div>
-<div id="other-methods" class="section level2">
-<h2>Other methods</h2>
-<p>There is also the function <code>which()</code> that you may see around, but in general I would recommend not using this since it relies on numeric subsetting and can be difficult to debug.</p>
-<p>And, if you are regular expression junkie, you can use <code>grepl()</code> in your row or column selections (typically, it’s in your row selection). There is a <code>grep()</code> function that actually returns the matched values, but, if you’re doing a selection, you actually want to return a <em>logical vector</em> (<code>TRUE</code>s and <code>FALSE</code>s) for your condition as to which rows you want to match…and that is what <code>grepl()</code> does.</p>
-<p>If you have loaded <code>dplyr()</code> then it makes sense to use its <code>select()</code> for columns and <code>filter()</code> for rows instead.</p>
+<div id="other-subsetting-methods" class="section level1">
+<h1>Other Subsetting Methods</h1>
+<p>The <code>which()</code> function is one that you may come across here and there, but, in general, we would recommend not using this, since it relies on numeric subsetting and can be difficult to debug.</p>
+<p>If you are regular expression junkie (and what self-respecting web analyst isn’t?), you can use <code>grepl()</code> in your row or column selections to use regEx to identify which rows/columns to return. This is <em>just</em> another way to build those <code>TRUE</code>/<code>FALSE</code> vectors we just went through. We won’t go into that in detail now, but be aware that regEx and R are besties.</p>
+<p>There is <em>also</em> a <code>grep()</code> function that actually returns the matched values, but, if you’re doing a selection, you actually want to return a <em>logical vector</em> (<code>TRUE</code>s and <code>FALSE</code>s) for your condition as to which rows you want to match…and that is what <code>grepl()</code> does.</p>
+<p>If you have loaded <code>dplyr()</code> then it makes sense to use its <code>select()</code> for columns and <code>filter()</code> for rows instead…but, again, we’ll get there! (<code>grepl()</code> plays quite nicely with <code>dplyr</code>, too. Thanks for asking!)</p>
 </div>
-<div id="munging-data" class="section level2">
-<h2>Munging data</h2>
-<p>So, now you can subset at will, how does this apply to data munging?</p>
-<p>Well, in many cases your data will come with elements you need to change that you need to filter down to. You can then reassign those values to what you prefer.</p>
+<div id="subsetting-meets-munging" class="section level1">
+<h1>Subsetting Meets Munging</h1>
+<p>So, now you can subset at will. But, what if you actually want to perform operations on a data frame – actually <em>change</em> subsets of the data (for cleanup for flagging or something else)? In many cases your data will come with elements you need to change that you need to filter down to. You can then reassign those values to what you prefer.</p>
 <p>A few other functions are useful to know for these cases:</p>
 <pre class="r"><code>## Will return TRUE if a value is NA (e.g. imported incorrectly)
 is.na(NA)</code></pre>
@@ -658,14 +704,30 @@ is.na(NA)</code></pre>
 is.na(a_vector)</code></pre>
 <pre><code>## [1] FALSE FALSE FALSE  TRUE FALSE</code></pre>
 </div>
-<div id="munging-example" class="section level2">
-<h2>Munging Example</h2>
-<p>Lets take the previous mtcars columns and say we want to set all the mpg values to 24 if they are over 24.</p>
-<p>In this case we can filter to the elements we need like before, but this time modifying the data in place using the <code>&lt;-</code> assignment command:</p>
-<pre class="r"><code>my_new_data &lt;- mtcars
-my_new_data[my_new_data$mpg &gt; 24, &quot;mpg&quot;] &lt;- 24
-max(my_new_data[, &quot;mpg&quot;])</code></pre>
-<pre><code>## [1] 24</code></pre>
+<div id="munging-example" class="section level1">
+<h1>Munging Example</h1>
+<p>Lets take the previous <code>web_data</code> columns and say we want to set all the <code>sessions</code> values to 125 if they are over 125.</p>
+<p>In this case we can filter to the elements we need like before, but this time also <em>modifying</em> the data in place using the <code>&lt;-</code> assignment command:</p>
+<pre class="r"><code># Set up a new object that is just a copy of `web_data`. The following
+# operations could have just been done with `web_data` directly, but then
+# the original data would be lost.
+my_new_data &lt;- web_data
+
+# Subset the data just as we did above, but then assign that subset a
+# specific value.
+my_new_data[my_new_data$sessions &gt; 125, &quot;sessions&quot;] &lt;- 125
+
+# Check out what the data looks like
+my_new_data</code></pre>
+<pre><code>##         date channelGrouping deviceCategory sessions
+## 1 2016-01-01         (Other)        desktop       19
+## 2 2016-01-01         (Other)         mobile      112
+## 3 2016-01-01         (Other)         tablet       24
+## 4 2016-01-01          Direct        desktop      125
+## 5 2016-01-01          Direct         mobile      125
+## 6 2016-01-01          Direct         tablet      125
+## 7 2016-01-01         Display        desktop      125
+## 8 2016-01-01         Display         mobile      125</code></pre>
 </div>
 
 

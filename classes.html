@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -483,67 +483,169 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 
 
-<p>We’ve touched on this subject already through the previous chapters, but a more detailed look at the type of objects R uses e.g. an object’s <code>class</code> is useful.</p>
+<p>```</p>
+<p>We’ve touched on this subject already, but a more detailed look at the types – “classes” – of objects R uses is worthwhile.</p>
 <div id="useful-class-functions" class="section level1">
-<h1>Useful class functions</h1>
-<p>When working with classes, its good to know these functions:</p>
-<pre class="r"><code>## str() gives you the &quot;Structure&quot; of an object, including its class
-str(mtcars)
-
-## class() lets you query an objects class directly
-class(mtcars)
-</code></pre>
+<h1>Useful Class Functions</h1>
+<p>There are several functions that you will seldom – if ever – use in a script, but that can come in very handy in the console when writing and debugging your code. To illustrate, we’re going to use part of the <code>web_data</code> data that gets used throughout this site. This data looks like this:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">date</th>
+<th align="left">channelGrouping</th>
+<th align="left">deviceCategory</th>
+<th align="right">sessions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">(Other)</td>
+<td align="left">desktop</td>
+<td align="right">19</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">(Other)</td>
+<td align="left">mobile</td>
+<td align="right">112</td>
+</tr>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">(Other)</td>
+<td align="left">tablet</td>
+<td align="right">24</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">Direct</td>
+<td align="left">desktop</td>
+<td align="right">133</td>
+</tr>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">Direct</td>
+<td align="left">mobile</td>
+<td align="right">345</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">Direct</td>
+<td align="left">tablet</td>
+<td align="right">126</td>
+</tr>
+</tbody>
+</table>
+<div id="str" class="section level2">
+<h2>str()</h2>
+<p>The <code>str()</code> function provides the “structure” of an object. In addition to providing the <em>class</em> of the entire object and, as applicable, each component of the object, it includes some of the actual <em>data</em> within the object. As such, it can really be your go-to function, once you’re used to reading the output.</p>
+<pre class="r"><code>str(web_data)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    5732 obs. of  4 variables:
+##  $ date           : chr  &quot;2016-01-01&quot; &quot;2016-01-01&quot; &quot;2016-01-01&quot; &quot;2016-01-01&quot; ...
+##  $ channelGrouping: chr  &quot;(Other)&quot; &quot;(Other)&quot; &quot;(Other)&quot; &quot;Direct&quot; ...
+##  $ deviceCategory : chr  &quot;desktop&quot; &quot;mobile&quot; &quot;tablet&quot; &quot;desktop&quot; ...
+##  $ sessions       : int  19 112 24 133 345 126 307 3266 1025 17 ...</code></pre>
+<p>What this output is saying is that <code>web_data</code> is a “data frame,” and then it provides the class for each column of data within the data frame, as well as a few sample values.</p>
+</div>
+<div id="class" class="section level2">
+<h2>class()</h2>
+<p>The <code>class()</code> function provides just the class of the specified object. Let’s see what that looks like for <code>web_data</code>:</p>
+<pre class="r"><code>class(web_data)</code></pre>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<p>Notice how this is just a subset of what was returned by <code>str()</code> – it doesn’t get into the weeds of the underlying data within the overall object. In this case, it <em>just</em> tells you that, overall, <code>web_data</code> is a data frame.</p>
+<p>Without worrying too much about the syntax (we’ll get to that very shortly), note that we can check the class of something <em>inside</em> the object. Let’s check the class for the <code>sessions</code> column in the data:</p>
+<pre class="r"><code>class(web_data$sessions)</code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<p>Can you find this same information in the <code>str()</code> output above?</p>
+<p>You may be asking, “Why would I ever use <code>class()</code>?” The answer is really that, as you get more complex objects (data), the <code>str()</code> function can start to return a <em>lot</em> of information. If you’re really interested in determining the class of something deep inside a complex object, <code>class()</code> can be more concise and preferable.</p>
+<p>This topic is inherently circular, in that we’ve introduced different classes without actually explaining what they are. That’s what we’ll do now (but we’ll use <code>class()</code> function to inspect sample data as we go, which is why we had to cover it first!).</p>
+</div>
 </div>
 <div id="atomic-classes" class="section level1">
-<h1>Atomic classes</h1>
-<p>There are many different types of <code>class</code>, and you can make your own, so this is not a definitive list, but will help in 95% of cases:</p>
-<ul>
-<li><code>numeric</code> - a number like <code>1 2 3</code></li>
-<li><code>character</code> - a character string like <code>hello</code></li>
-<li><code>logical</code> - <code>TRUE</code> or <code>FALSE</code></li>
-<li><code>Date</code> - an object that represents date. Note this is where it gets tricky, since when you print a <code>Date</code> object and a <code>character</code> with the same format, they look the same, but are different!</li>
-</ul>
-<pre class="r"><code>a_date &lt;- Sys.Date()
+<h1>Atomic Classes</h1>
+<p>There are many different types of classes, and you can make your own, so this is not a definitive list, but it will cover the major ones:</p>
+<div id="numeric" class="section level2">
+<h2>Numeric</h2>
+<p>The numeric class is simply a number like <code>1 2 3</code>. Sometimes this will show up as <code>integer</code> (no decimals), and sometimes this will show up as <code>double</code> (has decimals). R will pick which one is appropriate, but you can force one or the other by using the <code>as.integer()</code> and <code>as.double()</code> functions (with the authors of this site cannot recall ever using, but, the fact that their assumptions that these functions existed – and what they were named – bore out as true was gratifying).</p>
+<p>The <em>metrics</em> from your web analytics platform will almost always arrive as numeric class objects.</p>
+</div>
+<div id="character" class="section level2">
+<h2>Character</h2>
+<p>The character class is just what it says – a text-based string like <code>hello</code> or <code>mobile</code> or <code>Paid Search</code>. Of course, you <em>can</em> have numerical digits stored in a character class object…but you generally do not want that. (If you’re an Excel junkie, thing of this as being one of those cases where you wind up needing to do a “convert text to numbers” operation).</p>
+</div>
+<div id="logical" class="section level2">
+<h2>Logical</h2>
+<p>This is the Boolean class: <code>TRUE</code> or <code>FALSE</code>. This may <em>seem</em> like it’s more of a corner case class, but it really isn’t – there are any number of operations in R which, under the hood, are actually generating a bunch of <code>TRUE</code>/<code>FALSE</code> flags. So, it’s good to know that these are a special class unto themselves – distinct from a character-class object storing the <em>strings</em> <code>&quot;TRUE&quot;</code> and <code>&quot;FALSE&quot;</code>.</p>
+</div>
+<div id="date" class="section level2">
+<h2>Date</h2>
+<p>Date-class objects are objects that store a (wait for it!) <em>date</em>. Things can actually get a little tricky here, since you cannot tell whether a value is a <code>Date</code>-class object or a <code>character</code>-class object simply by looking at the data. Yet, they are fundamentally different things (and are generally pretty easy to convert from one class to the other – and back, if that’s your thing).</p>
+<pre class="r"><code># Get the current date and assign it to an object called `a_date`
+a_date &lt;- Sys.Date()
+
+# Display the result
 a_date</code></pre>
-<pre><code>## [1] &quot;2017-02-24&quot;</code></pre>
-<pre class="r"><code>class(a_date)</code></pre>
+<pre><code>## [1] &quot;2017-04-03&quot;</code></pre>
+<pre class="r"><code># Check its class
+class(a_date)</code></pre>
 <pre><code>## [1] &quot;Date&quot;</code></pre>
-<pre class="r"><code>a_character &lt;- &quot;2016-08-24&quot;
+<p>So far, so good. But, let’s set the date as a <em>character</em> class instead – simply be creating it as a string:</p>
+<pre class="r"><code># Create an object called `a_character` and assign a &quot;date&quot; to it
+a_character &lt;- &quot;2017-04-17&quot;
+
+# Display the result
 a_character</code></pre>
-<pre><code>## [1] &quot;2016-08-24&quot;</code></pre>
-<pre class="r"><code>class(a_character)</code></pre>
+<pre><code>## [1] &quot;2017-04-17&quot;</code></pre>
+<p>Uh-oh! Compare that result to <code>a_date</code> above. Do you see any difference? There is none (apparently)! But, yet, there is! Let’s check the <em>class</em> of <code>a_character</code>:</p>
+<pre class="r"><code># Check the class
+class(a_character)</code></pre>
 <pre><code>## [1] &quot;character&quot;</code></pre>
-<p>Things like finding date ranges or weekdays will work on a <code>Date</code> object, but not on a <code>character</code></p>
-<ul>
-<li><code>factor</code> - A categorical varaible.</li>
-</ul>
-<p>This is another tricky one, as they look the same as <code>character</code> when printed but act quite differently.</p>
-<pre class="r"><code>a_factor &lt;- factor(&quot;hello&quot;, levels = c(&quot;hello&quot;,&quot;goodbye&quot;))
+<p>Things like finding date ranges or weekdays will work on a <code>Date</code> object, but not on a <code>character</code>. And, depending on the package and the function, you may need to pass in “dates” as either <code>character</code> class objects or as <code>Date</code> class objects.</p>
+</div>
+<div id="factor" class="section level2">
+<h2>Factor</h2>
+<p>Factors are really nothing more than categorical variables… except factors are both brilliant and can be frustrating. The reason? Well, they look the same as <code>character</code> when printed but, they act quite differently.</p>
+<p>Let’s take a look. Again, we’re not going to get into the details of the wherefore and the why just yet, but factors will almost certainly bite you in the tush at some point. Probably multiple times. At that point, it will become old hat for you to remember to include <code>stringsAsFactors = FALSE</code> in functions where that matters. But we’re getting wayyyyy ahead of ourselves.</p>
+<p>Let’s define two objects (variables) – one as a factor, and one as a string (character):</p>
+<pre class="r"><code># Create `a_factor` as a factor
+a_factor &lt;- factor(&quot;hello&quot;, levels = c(&quot;hello&quot;,&quot;goodbye&quot;))
+
+# Take a look at what we just created. Notice the &quot;Levels:&quot; get listed. That&#39;s
+# curious, is it not?
 a_factor</code></pre>
 <pre><code>## [1] hello
 ## Levels: hello goodbye</code></pre>
-<pre class="r"><code>class(a_factor)</code></pre>
+<pre class="r"><code># And, let&#39;s check the class of the object. No surprises!
+class(a_factor)</code></pre>
 <pre><code>## [1] &quot;factor&quot;</code></pre>
-<pre class="r"><code>a_string &lt;- &quot;hello&quot;
+<p>Now, let’s define our string object:</p>
+<pre class="r"><code># Create `a_string`. Since we&#39;re assigning a string value to it and not telling R
+# anything special, it&#39;s going to go ahead and create it as a character class.
+a_string &lt;- &quot;hello&quot;
+
+# Take a look at what we just created.
 a_string</code></pre>
 <pre><code>## [1] &quot;hello&quot;</code></pre>
-<pre class="r"><code>class(a_string)</code></pre>
+<pre class="r"><code># And, check its class. See! Character!
+class(a_string)</code></pre>
 <pre><code>## [1] &quot;character&quot;</code></pre>
-<p>As an example, see what happens when we try to add a string and a factor together in the same vector:</p>
-<pre class="r"><code>## an unexpected result??
-c(a_factor, a_string)</code></pre>
+<p>As an example, see what happens when we try to combine a string and a factor using the <code>c()</code> function:</p>
+<pre class="r"><code>c(a_factor, a_string)</code></pre>
 <pre><code>## [1] &quot;1&quot;     &quot;hello&quot;</code></pre>
-<p>Whats going on? Since <code>a_factor</code> is a factor, it is actually represented as a number out of the choice of levels it could possibly be (<code>c(&quot;hello&quot;,&quot;goodbye&quot;)</code>). When it is added to the character the factor is <strong>coerced</strong> into a character via <code>as.numeric</code>, and then into a character <code>as.character</code>.</p>
-<p>Upshot of this all is to be very careful in making sure your variables are the class you expect them to be.</p>
-<p>A classic mistake is to use <code>data.frame()</code> or <code>read.csv()</code> to make a data.frame from your data, but to not set the <code>stringsAsFactors = FALSE</code> argument, which if not used will default to using factors instead.</p>
+<p>Huh? Weird!</p>
+<p>Whats going on? Well, since <code>a_factor</code> is a factor, it is actually represented as a number out of the choice of levels it could possibly be (<code>c(&quot;hello&quot;,&quot;goodbye&quot;)</code>). When it is added to the character the factor is <strong>coerced</strong> into a character via <code>as.numeric</code>, and then into a character <code>as.character</code>.</p>
+<p>The upshot of this all is to be very careful in making sure your variables are the class you expect them to be!</p>
+<p>A classic mistake is to use <code>data.frame()</code> or <code>read.csv()</code> to make a data.frame from your data, but to not set the <code>stringsAsFactors = FALSE</code> argument (I told you we’d get to this!), which, if not used will default to using factors instead.</p>
+<p><em>&lt;whew&gt;</em> Still with us? Good!</p>
+<p>So far, all we’ve covered are the <em>atomic</em> classes. Things get more fun (and more powerful) when we start digging into multi-classes!</p>
+</div>
 </div>
 <div id="multi-classes" class="section level1">
 <h1>Multi-classes</h1>
-<p>There are also objects in R that work with combinations of the classes above.</p>
+<p>These are objects in R that work with combinations of the classes above.</p>
 <div id="vector" class="section level2">
 <h2>Vector</h2>
-<p>A vector is a combination of the atomic elements above. You can only combine elements of the same type in a vector.</p>
-<p>You create a vector using <code>c()</code></p>
+<p>A <em>vector</em> is a combination of the atomic elements above. You can <em>only</em> combine elements that are all of the same type in a vector, and you create a vector using the <code>c()</code> function.</p>
 <pre class="r"><code>a_vector &lt;- c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;)
 a_vector</code></pre>
 <pre><code>## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot;</code></pre>
@@ -551,52 +653,43 @@ a_vector</code></pre>
 <pre><code>## [1] &quot;character&quot;</code></pre>
 <pre class="r"><code>str(a_vector)</code></pre>
 <pre><code>##  chr [1:4] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot;</code></pre>
-<blockquote>
-<p>The class of the vector is the same as the element!</p>
-</blockquote>
-<p>This hints at a powerful feature of R, namely <strong>vectorisation</strong>. The atomic elements above are actually a one-length vector. This means that anything you can do to one element, will also work on an entire vector of the same <code>class</code>.</p>
+<p><em><strong>The class of the vector is the same as the element!</strong></em></p>
+<p>This hints at a powerful feature of R: <strong>vectorisation</strong>. The atomic elements above are actually a vector of length <code>1</code>, which means that anything you can do to one element can also be done to the entire vector of the same <code>class</code> all at once!</p>
 <p>An example of this:</p>
-<pre class="r"><code>## sum individual elements
+<pre class="r"><code># Sum individual elements
 sum(1,2,3,3,4,5,6)</code></pre>
 <pre><code>## [1] 24</code></pre>
-<pre class="r"><code>## sum a vector
+<pre class="r"><code># Sum a vector
 a_vector &lt;- c(1,2,3,3,4,5,6)
 sum(a_vector)</code></pre>
 <pre><code>## [1] 24</code></pre>
 <p>Some useful shortcuts with vectors are below:</p>
-<pre class="r"><code>## make a sequence
+<pre class="r"><code># Make a sequence
 1:10</code></pre>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
-<pre class="r"><code>## the lowercase letters
+<pre class="r"><code># The lowercase letters
 letters</code></pre>
 <pre><code>##  [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot; &quot;f&quot; &quot;g&quot; &quot;h&quot; &quot;i&quot; &quot;j&quot; &quot;k&quot; &quot;l&quot; &quot;m&quot; &quot;n&quot; &quot;o&quot; &quot;p&quot; &quot;q&quot;
 ## [18] &quot;r&quot; &quot;s&quot; &quot;t&quot; &quot;u&quot; &quot;v&quot; &quot;w&quot; &quot;x&quot; &quot;y&quot; &quot;z&quot;</code></pre>
-<pre class="r"><code>## uppercase
+<pre class="r"><code># The uppercase letters
 LETTERS</code></pre>
 <pre><code>##  [1] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot; &quot;E&quot; &quot;F&quot; &quot;G&quot; &quot;H&quot; &quot;I&quot; &quot;J&quot; &quot;K&quot; &quot;L&quot; &quot;M&quot; &quot;N&quot; &quot;O&quot; &quot;P&quot; &quot;Q&quot;
 ## [18] &quot;R&quot; &quot;S&quot; &quot;T&quot; &quot;U&quot; &quot;V&quot; &quot;W&quot; &quot;X&quot; &quot;Y&quot; &quot;Z&quot;</code></pre>
 </div>
-<div id="data.frame" class="section level2">
-<h2>data.frame</h2>
-<p>The most common and useful R class is the <code>data.frame</code></p>
-<pre class="r"><code>class(mtcars)</code></pre>
+<div id="data-frame" class="section level2">
+<h2>Data Frame</h2>
+<p>The most common and useful R class is the <em>data frame</em>. Remember our <code>web_data</code> object from earlier? Let’s take one more look at that to confirm that it’s a data frame:</p>
+<pre class="r"><code>class(web_data)</code></pre>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<pre class="r"><code>str(mtcars)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    32 obs. of  11 variables:
-##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
-##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
-##  $ disp: num  160 160 108 258 360 ...
-##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
-##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
-##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
-##  $ qsec: num  16.5 17 18.6 19.4 17 ...
-##  $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
-##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
-##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
-##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...</code></pre>
-<p>This is most often used to represent tabular data, and very often used in R functions.</p>
-<p>You make a data.frame using the <code>data.frame()</code> function:</p>
-<pre class="r"><code>## names before equals, values after
+<pre class="r"><code>str(web_data)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    5732 obs. of  4 variables:
+##  $ date           : chr  &quot;2016-01-01&quot; &quot;2016-01-01&quot; &quot;2016-01-01&quot; &quot;2016-01-01&quot; ...
+##  $ channelGrouping: chr  &quot;(Other)&quot; &quot;(Other)&quot; &quot;(Other)&quot; &quot;Direct&quot; ...
+##  $ deviceCategory : chr  &quot;desktop&quot; &quot;mobile&quot; &quot;tablet&quot; &quot;desktop&quot; ...
+##  $ sessions       : int  19 112 24 133 345 126 307 3266 1025 17 ...</code></pre>
+<p>Data frames are most often used to represent tabular data, and many R functions are designed to operate on data frames.</p>
+<p>Data frames can be manually created using the <code>data.frame()</code> function:</p>
+<pre class="r"><code># Names before the `=`, values after it.
 my_data_frame &lt;- data.frame(numbers = 1:5, 
                             letters = c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,&quot;e&quot;), 
                             logic = c(TRUE, FALSE, FALSE, TRUE, TRUE))
@@ -607,11 +700,9 @@ class(my_data_frame)</code></pre>
 ##  $ numbers: int  1 2 3 4 5
 ##  $ letters: Factor w/ 5 levels &quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,..: 1 2 3 4 5
 ##  $ logic  : logi  TRUE FALSE FALSE TRUE TRUE</code></pre>
-<blockquote>
-<p>Each column can only be one class, but the class of the columns can be different types.</p>
-</blockquote>
-<p>Also see that by default it will turn characters into <code>factors</code>. Turn this off via the <code>stringsAsFactors = FALSE</code> argument:</p>
-<pre class="r"><code>## names before equals, values after
+<p><em><strong>Each column can only be one class, but the class of the columns can be different types.</strong></em></p>
+<p>And, uh-oh, did you see that we wound up with our characters being turned into <code>factors</code>? We can avoid this by including the <code>stringsAsFactors = FALSE</code> argument:</p>
+<pre class="r"><code># Names before the `=`, values after it.
 my_data_frame &lt;- data.frame(numbers = 1:5, 
                             letters = c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;,&quot;e&quot;), 
                             logic = c(TRUE, FALSE, FALSE, TRUE, TRUE),
@@ -623,34 +714,34 @@ class(my_data_frame)</code></pre>
 ##  $ numbers: int  1 2 3 4 5
 ##  $ letters: chr  &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; ...
 ##  $ logic  : logi  TRUE FALSE FALSE TRUE TRUE</code></pre>
-<p>You can access the individual columns of a <code>data.frame</code> via the <code>$</code> notation:</p>
-<pre class="r"><code>## the column of numbers
+<p>You can access the individual columns of a data frame using <code>$</code> notation:</p>
+<pre class="r"><code># The column of numbers
 my_data_frame$numbers</code></pre>
 <pre><code>## [1] 1 2 3 4 5</code></pre>
 <pre class="r"><code>class(my_data_frame$numbers)</code></pre>
 <pre><code>## [1] &quot;integer&quot;</code></pre>
-<p><code>data.frame</code>’s are a special case of the next object, <code>lists()</code> where all the columns are equal length.</p>
+<p>Data frames are a special case of the next multi-class – the <code>list</code>. Data frames, at there core, are just lists where all of the columns are equal length.</p>
 </div>
 <div id="list" class="section level2">
-<h2>list</h2>
-<p>A list is like a data.frame, but can carry variable lengths of objects. List elements can be anything, including <code>data.frames</code> or other <code>lists</code></p>
-<pre class="r"><code>my_list &lt;- list(letters = letters,
-                numbers = 1:5,
+<h2>List</h2>
+<p>A <em>list</em> is like a data frame, but it can carry variable lengths of objects. And, list <em>elements</em> can be anything, including data frames <em>or</em> even other lists! They can get really, really confusing. But, they also can be very handy.</p>
+<pre class="r"><code>my_list &lt;- list(letters_data = letters,
+                numbers_data = 1:5,
                 all_data = my_data_frame,
                 nested = list(LETTERS))
 class(my_list)</code></pre>
 <pre><code>## [1] &quot;list&quot;</code></pre>
 <pre class="r"><code>str(my_list)</code></pre>
 <pre><code>## List of 4
-##  $ letters : chr [1:26] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; ...
-##  $ numbers : int [1:5] 1 2 3 4 5
-##  $ all_data:&#39;data.frame&#39;:    5 obs. of  3 variables:
+##  $ letters_data: chr [1:26] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; ...
+##  $ numbers_data: int [1:5] 1 2 3 4 5
+##  $ all_data    :&#39;data.frame&#39;:    5 obs. of  3 variables:
 ##   ..$ numbers: int [1:5] 1 2 3 4 5
 ##   ..$ letters: chr [1:5] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; ...
 ##   ..$ logic  : logi [1:5] TRUE FALSE FALSE TRUE TRUE
-##  $ nested  :List of 1
+##  $ nested      :List of 1
 ##   ..$ : chr [1:26] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot; ...</code></pre>
-<p>Like <code>data.frames</code> you can reach individual items via the <code>$</code> symbol:</p>
+<p>Just like data frames (because, at their core, data frames are actually lists) you can access individual elements in the list using the <code>$</code> symbol:</p>
 <pre class="r"><code>extract &lt;- my_list$all_data
 class(extract)</code></pre>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
@@ -663,36 +754,41 @@ class(extract)</code></pre>
 </div>
 <div id="coercing" class="section level1">
 <h1>Coercing</h1>
-<p>If you find an R object the wrong class for the function you need, what can you do? This is where <strong>corecian</strong> comes into play.</p>
-<p>All the class have an <code>as.this</code> function, which when you pass an R object in will try to change it to what you need. It will usually error if this is impossible (which is much better than failing silently!)</p>
+<p>If you find an R object is the wrong class for the function you need, what can you do? This is where <strong>coercian</strong> comes into play.</p>
+<p>All the classes have an <code>as.this</code> function, which, when you pass an R object in, will try to change it to what you need. It will usually throw an error if this is impossible (which is much better than failing silently!).</p>
 <p>Some coercing functions as shown below:</p>
-<pre class="r"><code>## quotes indicate characters
+<pre class="r"><code># Quotes indicate characters
 as.character(-1:3)</code></pre>
 <pre><code>## [1] &quot;-1&quot; &quot;0&quot;  &quot;1&quot;  &quot;2&quot;  &quot;3&quot;</code></pre>
-<pre class="r"><code>## 0 is FALSE, everything else is TRUE
+<pre class="r"><code># 0 is FALSE, everything else is TRUE
 as.logical(-1:3)</code></pre>
 <pre><code>## [1]  TRUE FALSE  TRUE  TRUE  TRUE</code></pre>
-<pre class="r"><code>## character to date
+<pre class="r"><code># Character to date
 as.Date(&quot;2015-01-02&quot;)</code></pre>
 <pre><code>## [1] &quot;2015-01-02&quot;</code></pre>
-<pre class="r"><code>## If your dates are in a different format to YYYY-MM-DD then you need to supply format argument
+<pre class="r"><code># If your dates are in format other than YYYY-MM-DD, then you need to include
+# the `format` argument
 as.Date(&quot;20150102&quot;, format = &quot;%Y%m%d&quot;)</code></pre>
 <pre><code>## [1] &quot;2015-01-02&quot;</code></pre>
 <pre class="r"><code>as.Date(&quot;12-24-2016&quot;, format = &quot;%m-%d-%Y&quot;)</code></pre>
 <pre><code>## [1] &quot;2016-12-24&quot;</code></pre>
-<pre class="r"><code>## to change factors to numeric, be careful to go via as.character first
+<pre class="r"><code># To change factors to numeric, be careful to go via as.character first
 numeric_factor &lt;- factor(1, levels = 5:1)
 numeric_factor</code></pre>
 <pre><code>## [1] 1
 ## Levels: 5 4 3 2 1</code></pre>
-<pre class="r"><code>## it gives answer as 5, as thats the first factor
+<pre class="r"><code># This gives the result as 5, as that&#39;s the first factor
 wrong_factor &lt;- as.numeric(numeric_factor)
 wrong_factor</code></pre>
 <pre><code>## [1] 5</code></pre>
-<pre class="r"><code>## we go via as.character, to get whats expected
+<pre class="r"><code># But, if we use as.character, then we get what&#39;s expected/desired.
 right_factor &lt;- as.numeric(as.character(numeric_factor))
 right_factor</code></pre>
 <pre><code>## [1] 1</code></pre>
+</div>
+<div id="in-summary" class="section level1">
+<h1>In Summary</h1>
+<p>As you start to work with R, you will find that you are working with a range of classes, and, when it comes to multi-classes, you will find yourself <em>wanting</em> everything to be a vector or a data frame… until you hit a use case where, all of the sudden, you need more flexibility in the structure (including data nested within other data), at which point you will find yourself in <code>list</code> world. Lists can be maddening…until they’re not. Do you remember when you were first learning how to use pivot tables in Excel? It’s the same thing: kinda’ confusing at first, but kinda’ genius once you’re comfortable with them!</p>
 </div>
 
 
