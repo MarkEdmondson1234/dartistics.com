@@ -4,14 +4,14 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
 
 
 
-<title>Tidy data and the Tidyverse</title>
+<title>Tidy Data and the Tidyverse</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,6 +19,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-1.1/highlight.js"></script>
@@ -159,6 +162,101 @@ $(document).ready(function () {
 <!-- code folding -->
 
 
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -380,17 +478,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-<h1 class="title toc-ignore">Tidy data and the Tidyverse</h1>
+<h1 class="title toc-ignore">Tidy Data and the Tidyverse</h1>
 
 </div>
 
 
-<p>This section covers an important strategy when you are cleaning data, that is to aim to create <strong>tidy data</strong>, which is a defined concept of how data should look before you work with it. This is a concept that is embraced by the godfather of R, Hadley Wickham, and so supported by his collection of packages, the so called <strong>tidyverse</strong>.</p>
+<p>This section covers an important strategy when you are cleaning and prepping your data, which is to aim to create <strong>tidy data</strong>. This is a specific approach for establishing how data should be structured before you work with it. It is a concept/approach that is embraced by the godfather of R, Hadley Wickham, and, as such, is supported by his collection of packages (the so-called “tidyverse”).</p>
 <div id="tidy-data" class="section level1">
-<h1>Tidy data</h1>
-<p>There are a great many resources on tidy data that will explain it better than we can here, so we will just give it a brief summary and leave some links for further reading, but the main point is that we embrace its philosophy and as a data analyst it is wise to aim for tidy data after you have imported it.</p>
-<div id="tidy-summary" class="section level2">
-<h2>Tidy summary</h2>
+<h1>Tidy Data</h1>
+<p>There are a great many resources on tidy data that will explain it better than we can here, so we will just give it a brief summary and leave some links for further reading. But, the main point is that we embrace its philosophy, and ,as a data analyst, it is wise to aim for tidy data after you have imported it.</p>
+<div id="what-is-tidy-data" class="section level2">
+<h2>What Is Tidy Data?</h2>
 <blockquote>
 <p>“Tidy datasets are all alike, but every messy dataset is messy in its own way” - Hadley Wickham</p>
 </blockquote>
@@ -400,10 +498,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li>Each observation is placed in its own row</li>
 <li>Each value is placed in its own cell</li>
 </ol>
+<p>If you are a heavy user of Excel (and, specifically, Excel pivot tables), then you can think about tidy data as being data that is extremely “pivot-friendly.” Think about a time when you knew you needed a pivot table, but the raw data had dimensions both in rows and columns (e.g., <strong>Campaign</strong> in rows and <strong>Device Category</strong> in columns, with <strong>Sessions</strong> in the cells). If you found yourself doing some manual or formula-heavy transformation of the raw data just to get it to something you wanted to use to feed a pivot table, then you’ve experienced non-tidy data.</p>
 <p>Tidy data isn’t necessarily data that is easiest to read by a human, but it is well suited for passing into further R functions, especially those within the <code>tidyverse</code>.</p>
+<p>Two bits of good news about tidy data:</p>
+<ul>
+<li>For both Google Analytics and Adobe Analytics, data generally comes out of the API already in a tidy format.</li>
+<li>There are functions within the tidyverse (the <code>tidyr</code> package) specifically for converting data to/from a tidy format.</li>
+</ul>
 </div>
-<div id="some-links" class="section level2">
-<h2>Some links</h2>
+<div id="more-info-on-tidy-data" class="section level2">
+<h2>More Info on Tidy Data</h2>
 <ul>
 <li><a href="http://garrettgman.github.io/tidying/">Garret’s deep delve into tidy data</a></li>
 <li><a href="https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html">The tidyr vignette</a></li>
@@ -411,25 +515,31 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </ul>
 </div>
 </div>
-<div id="tidyverse" class="section level1">
-<h1>Tidyverse</h1>
+<div id="the-tidyverse" class="section level1">
+<h1>The Tidyverse</h1>
 <p><code>Tidyverse</code> is the new name for the <code>Hadleyverse</code>, which is a collection of R packages created or supported by Hadley Wickham.</p>
-<p>These packages aim to cover the whole spectrum of data analysis within R, each supporting the other in concepts and output. The main packages within it are are:</p>
+<p>These packages aim to cover the whole spectrum of data analysis within R, each supporting the other in concepts and output. The Big Three packages within the tidyverse are:</p>
+<ul>
+<li><a href="https://github.com/hadley/dplyr"><code>dplyr</code></a> - data manipulation of data frames</li>
+<li><a href="https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html"><code>tidyr</code></a> - tools to tidy (and untidy) data frames</li>
+<li><a href="http://ggplot2.org/"><code>ggplot2</code></a> - plotting tidy data</li>
+</ul>
+<p><em>Tip: Note that the three packages above have pretty unique names. That makes them handy to include in Google searches when you are looking for details on how to perform a specific operation or troubleshoot a specific issue (e.g., “filter data by column name with dplyr”). Including one of these package names virtually guarantees that the search results will all be R-specific.</em></p>
+<p>In addition, some other packages in the tidyverse that you may come across are:</p>
 <ul>
 <li><a href="https://github.com/hadley/tibble"><code>tibble</code></a> - creating more user-friendly data.frames</li>
-<li><a href="https://github.com/hadley/dplyr"><code>dplyr</code></a> - data manipulation of data.frames</li>
-<li><a href="http://ggplot2.org/"><code>ggplot2</code></a> - plotting tidy data</li>
-<li><a href="https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html"><code>tidyr</code></a> - tools to tidy data.frames</li>
 <li><a href="https://github.com/hadley/purrr"><code>purrr</code></a> - more general data manipulation tools</li>
-<li><a href="https://github.com/smbache/magrittr"><code>magrittr</code></a> - the origin of <code>%&gt;%</code>, extensivly used in the tidyverse</li>
-<li><a href="https://cran.r-project.org/web/packages/broom/vignettes/broom.html"><code>broom</code></a> - turn statistical models into tidy data.frames/tiddles</li>
+<li><a href="https://github.com/smbache/magrittr"><code>magrittr</code></a> - the origin of <code>%&gt;%</code>, extensivly used in the tidyverse (This isn’t actually a package developed by Wickham, but his packages have a dependency on this one; dropping, “Oh, yeah. The pipe in <code>dplyr</code> actually comes from the <code>magrittr</code> package” in casual conversation with R folk will provide a nominal degree of street cred.)</li>
+<li><a href="https://cran.r-project.org/web/packages/broom/vignettes/broom.html"><code>broom</code></a> - turn statistical models into tidy data frames/tiddles</li>
 </ul>
-<p>This list is just a subset of the tidyverse packages, but, the tidyverse has grown so much in popularity that you can now simply install the <a href="https://blog.rstudio.org/2016/09/15/tidyverse-1-0-0/">‘tidyverse’ package</a>, which will install all of these packages (and a few more) all at once.</p>
-<p>Whilst you can achieve what the above packages do in base R or with other packages (<code>data.table()</code> a noteable alternative to <code>dplyr()</code>), if you embrace the <code>tidyverse</code> then you will need to become familiar with some if not all the packages above.</p>
+<p>This list is just a subset of the tidyverse packages, but, the tidyverse has grown so much in popularity that you can now simply install/load the <a href="https://blog.rstudio.org/2016/09/15/tidyverse-1-0-0/">‘tidyverse’ package</a>, which will install all of these packages (and a few more) all at once.</p>
+<p>Whilst you can achieve what the above packages do in base R or with other packages (<code>data.table()</code> is a noteable alternative to <code>dplyr()</code>), if you embrace the <code>tidyverse</code>, then you will need to become familiar with some, if not all, of the packages above.</p>
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 
