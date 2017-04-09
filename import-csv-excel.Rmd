@@ -12,7 +12,7 @@ The most universal data format is `.csv` (comma-separated values). This is a for
 
 See `?read.csv` to get an overview of the arguments for importing `.csv` files. If you read carefully, you'll see that `read.csv` is actually a derived function from the more general `read.table` function, which can read other formats as well, such as tab-separated (`.tsv`).  
 
-`read.csv()` basically hardcodes defaults suitable for `.csv` in the UK/US, while `read.csv2()` has defaults set for European formats where currency uses a comma, `,`, which, to avoid confusion, means a semi-colon `;` is used instead to seperate values.
+`read.csv()` basically hardcodes defaults suitable for `.csv` in the UK/US, while `read.csv2()` has defaults set for European formats where currency uses a comma, `,`, which, to avoid confusion, means a semi-colon `;` is used instead to separate values.
 
 A helpful argument to also include is `stringsAsFactors = FALSE`. **This is a classic R quirk**. We won't get into it here, but know that it will avoid future problems where R treats strings as "factors", which can cause unexpected results or, in other cases, prevent functions from working at all. (Factors are handy at times. It just seems like it's more common to want values to _not_ be factors, and, by default, R tends to have a bias towards viewing string-based data as factors; maybe that's all well and good in social sciences or elsewhere, but it can trip things up in our world.)
 

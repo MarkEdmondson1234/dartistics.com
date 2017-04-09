@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -389,7 +389,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <div id="read.csv" class="section level2">
 <h2>read.csv()</h2>
 <p>See <code>?read.csv</code> to get an overview of the arguments for importing <code>.csv</code> files. If you read carefully, you’ll see that <code>read.csv</code> is actually a derived function from the more general <code>read.table</code> function, which can read other formats as well, such as tab-separated (<code>.tsv</code>).</p>
-<p><code>read.csv()</code> basically hardcodes defaults suitable for <code>.csv</code> in the UK/US, while <code>read.csv2()</code> has defaults set for European formats where currency uses a comma, <code>,</code>, which, to avoid confusion, means a semi-colon <code>;</code> is used instead to seperate values.</p>
+<p><code>read.csv()</code> basically hardcodes defaults suitable for <code>.csv</code> in the UK/US, while <code>read.csv2()</code> has defaults set for European formats where currency uses a comma, <code>,</code>, which, to avoid confusion, means a semi-colon <code>;</code> is used instead to separate values.</p>
 <p>A helpful argument to also include is <code>stringsAsFactors = FALSE</code>. <strong>This is a classic R quirk</strong>. We won’t get into it here, but know that it will avoid future problems where R treats strings as “factors”, which can cause unexpected results or, in other cases, prevent functions from working at all. (Factors are handy at times. It just seems like it’s more common to want values to <em>not</em> be factors, and, by default, R tends to have a bias towards viewing string-based data as factors; maybe that’s all well and good in social sciences or elsewhere, but it can trip things up in our world.)</p>
 </div>
 <div id="example-csv-import" class="section level2">
