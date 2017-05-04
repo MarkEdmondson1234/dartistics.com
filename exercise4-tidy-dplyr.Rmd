@@ -29,19 +29,30 @@ Now, dive into the exercises!
 
 ## 1. Average Pageviews
 To get the averages for each combination of **deviceCategory** and **channelGrouping** we simply use `summarise()` with `group_by`:
+
 ```{r}
+group_by(web_data, deviceCategory, channelGrouping) %>%
+  summarise(mean(pageviews))
+```
+
+This function uses the `group_by` function to take the data set (`web_data`) and specify that it should be grouped together by two fields: **deviceCategory** and **channelGrouping**. That, in and of itself, isn't enough, as this simply identifies the grouped rows. It doesn't actually collapse them in any way (run the code above without the `summarise()` function to see).
+
+So, in addition to grouping, we need to specify how we want to handle the multiple rows that we'll collapse within the groups. For that, we use the  `summarise()` function, tell it that we want to include **pageviews** as a metric, and tell it that we want to collapse the grouped rows by averaging (`mean()`) **pageviews**.
+
+**Note #1:** The above uses the 'pipe' notation. The exact same result could be achieved by nesting the `group_by()` function inside the `summarise()` function (below). In simple cases, either way works, but the pipe notation generally makes for more readable code.
+
+```{r eval=FALSE}
 summarise(group_by(web_data, deviceCategory, channelGrouping),mean(pageviews))
 ```
 
-This function uses the `group_by` function to take the data set (`web_data`) and specify that it should be grouped together by two fields: **deviceCategory** and **channelGrouping**. That, in and of itself, isn't enough. If we're going to group by those, then we need to also specify how we want to handle the multiple rows that get collapsed with that grouping.
-
-For that, we put the `group_by()` function inside a `summarise()` function and tell the `summarise()` function that we want to include **pageviews** as a metric, and we want to collapse the grouped rows by averaging (`mean()`) **pageviews**.
-
-We _could_ include multiple metrics in the `summarise()` function. For instance, if we wanted to t _total_ visits and the _average_ pageviews, we could alter the code slightly:
+**Note #2:** We _could_ include multiple metrics in the `summarise()` function. For instance, if we wanted to get the _total_ visits and the _average_ pageviews, we could alter the code slightly:
 
 ```{r}
-summarise(group_by(web_data, deviceCategory, channelGrouping), mean(pageviews),sum(sessions))
+group_by(web_data, deviceCategory, channelGrouping) %>%
+  summarise(mean(pageviews),sum(sessions))
 ```
+
+**Note #3:** Both `summarise()` and `summarize()` do the same thing. On this site, we skew towards the Queen's English either because one of the key contributors is British or because Hadley Wickham is from New Zealand. Or both. Either will work!
 
 ## 2. Add Two Columns
 In this case, we're actually going to modify the **web_data** object by adding a couple of calculated columns. This is, really, just like working with an Excel Table and adding columns that are based on existing columns in the table. The `mutate()` function takes a data set and then adds new columns as specified in the remaining parameters:
@@ -57,21 +68,27 @@ head(web_data[c("date","channelGrouping","deviceCategory",
 
 ## 3. Bounce Rate
 This is a little bit of a trick question. Since we've already calculated the bounce rate and added that as a new column in our **web_data** data frame, we may be tempted to simply average those values:
+
 ```{r}
-summarise(group_by(web_data,deviceCategory), mean(bounce_rate))
+group_by(web_data,deviceCategory) %>%
+  summarise(mean(bounce_rate))
 ```
+
 This would be incorrect, though, wouldn't it? This would be the _daily average bounce rate_, but we want just the _average bounce rate_. Note that _R is not going to point this out. We still have to use our analytical brains_.
 
 What we need to do is to _first_ summarise the data and sum the metrics we need to use for the bounce rate calculation and _then_ perform the bounce rate calculation. This is where the pipe really starts to come in handy for code readability:
+
 ```{r}
-summarise(group_by(web_data,deviceCategory), 
-          entrances = sum(entrances), 
+group_by(web_data,deviceCategory) %>%
+summarise(entrances = sum(entrances), 
           bounces = sum(bounces)) %>%
   mutate(bounce_rate = bounces / entrances)
 ```
+
 Note how the results from the second calculation differ from those in the first calculation.
 
 Also, a note on why we included "entrances =" in the `summarise()` function. If we hadn't, then the column heading would have been **sum(entrances)** and **sum(bounces)**. That would have been fine, but we then would have needed to change the `mutate()` function:
+
 ```{r eval=FALSE}
 mutate(bounce_Rate = sum(bounces) / sum(entrances))
 ```

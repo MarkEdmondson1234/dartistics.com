@@ -543,7 +543,8 @@ Once you have a <code>web_data</code> data frame to work with, the command <code
 <div id="average-pageviews" class="section level2">
 <h2>1. Average Pageviews</h2>
 <p>To get the averages for each combination of <strong>deviceCategory</strong> and <strong>channelGrouping</strong> we simply use <code>summarise()</code> with <code>group_by</code>:</p>
-<pre class="r"><code>summarise(group_by(web_data, deviceCategory, channelGrouping),mean(pageviews))</code></pre>
+<pre class="r"><code>group_by(web_data, deviceCategory, channelGrouping) %&gt;%
+  summarise(mean(pageviews))</code></pre>
 <pre><code>## Source: local data frame [27 x 3]
 ## Groups: deviceCategory [?]
 ## 
@@ -560,10 +561,13 @@ Once you have a <code>web_data</code> data frame to work with, the command <code
 ## 9         desktop           Video          584.2358
 ## 10         mobile         (Other)          193.7981
 ## # ... with 17 more rows</code></pre>
-<p>This function uses the <code>group_by</code> function to take the data set (<code>web_data</code>) and specify that it should be grouped together by two fields: <strong>deviceCategory</strong> and <strong>channelGrouping</strong>. That, in and of itself, isn’t enough. If we’re going to group by those, then we need to also specify how we want to handle the multiple rows that get collapsed with that grouping.</p>
-<p>For that, we put the <code>group_by()</code> function inside a <code>summarise()</code> function and tell the <code>summarise()</code> function that we want to include <strong>pageviews</strong> as a metric, and we want to collapse the grouped rows by averaging (<code>mean()</code>) <strong>pageviews</strong>.</p>
-<p>We <em>could</em> include multiple metrics in the <code>summarise()</code> function. For instance, if we wanted to t <em>total</em> visits and the <em>average</em> pageviews, we could alter the code slightly:</p>
-<pre class="r"><code>summarise(group_by(web_data, deviceCategory, channelGrouping), mean(pageviews),sum(sessions))</code></pre>
+<p>This function uses the <code>group_by</code> function to take the data set (<code>web_data</code>) and specify that it should be grouped together by two fields: <strong>deviceCategory</strong> and <strong>channelGrouping</strong>. That, in and of itself, isn’t enough, as this simply identifies the grouped rows. It doesn’t actually collapse them in any way (run the code above without the <code>summarise()</code> function to see).</p>
+<p>So, in addition to grouping, we need to specify how we want to handle the multiple rows that we’ll collapse within the groups. For that, we use the <code>summarise()</code> function, tell it that we want to include <strong>pageviews</strong> as a metric, and tell it that we want to collapse the grouped rows by averaging (<code>mean()</code>) <strong>pageviews</strong>.</p>
+<p><strong>Note #1:</strong> The above uses the ‘pipe’ notation. The exact same result could be achieved by nesting the <code>group_by()</code> function inside the <code>summarise()</code> function (below). In simple cases, either way works, but the pipe notation generally makes for more readable code.</p>
+<pre class="r"><code>summarise(group_by(web_data, deviceCategory, channelGrouping),mean(pageviews))</code></pre>
+<p><strong>Note #2:</strong> We <em>could</em> include multiple metrics in the <code>summarise()</code> function. For instance, if we wanted to get the <em>total</em> visits and the <em>average</em> pageviews, we could alter the code slightly:</p>
+<pre class="r"><code>group_by(web_data, deviceCategory, channelGrouping) %&gt;%
+  summarise(mean(pageviews),sum(sessions))</code></pre>
 <pre><code>## Source: local data frame [27 x 4]
 ## Groups: deviceCategory [?]
 ## 
@@ -580,6 +584,7 @@ Once you have a <code>web_data</code> data frame to work with, the command <code
 ## 9         desktop           Video          584.2358           92885
 ## 10         mobile         (Other)          193.7981           29115
 ## # ... with 17 more rows</code></pre>
+<p><strong>Note #3:</strong> Both <code>summarise()</code> and <code>summarize()</code> do the same thing. On this site, we skew towards the Queen’s English either because one of the key contributors is British or because Hadley Wickham is from New Zealand. Or both. Either will work!</p>
 </div>
 <div id="add-two-columns" class="section level2">
 <h2>2. Add Two Columns</h2>
@@ -601,7 +606,8 @@ head(web_data[c(&quot;date&quot;,&quot;channelGrouping&quot;,&quot;deviceCategor
 <div id="bounce-rate" class="section level2">
 <h2>3. Bounce Rate</h2>
 <p>This is a little bit of a trick question. Since we’ve already calculated the bounce rate and added that as a new column in our <strong>web_data</strong> data frame, we may be tempted to simply average those values:</p>
-<pre class="r"><code>summarise(group_by(web_data,deviceCategory), mean(bounce_rate))</code></pre>
+<pre class="r"><code>group_by(web_data,deviceCategory) %&gt;%
+  summarise(mean(bounce_rate))</code></pre>
 <pre><code>## # A tibble: 3 × 2
 ##   deviceCategory `mean(bounce_rate)`
 ##            &lt;chr&gt;               &lt;dbl&gt;
@@ -610,8 +616,8 @@ head(web_data[c(&quot;date&quot;,&quot;channelGrouping&quot;,&quot;deviceCategor
 ## 3         tablet           0.5981690</code></pre>
 <p>This would be incorrect, though, wouldn’t it? This would be the <em>daily average bounce rate</em>, but we want just the <em>average bounce rate</em>. Note that <em>R is not going to point this out. We still have to use our analytical brains</em>.</p>
 <p>What we need to do is to <em>first</em> summarise the data and sum the metrics we need to use for the bounce rate calculation and <em>then</em> perform the bounce rate calculation. This is where the pipe really starts to come in handy for code readability:</p>
-<pre class="r"><code>summarise(group_by(web_data,deviceCategory), 
-          entrances = sum(entrances), 
+<pre class="r"><code>group_by(web_data,deviceCategory) %&gt;%
+summarise(entrances = sum(entrances), 
           bounces = sum(bounces)) %&gt;%
   mutate(bounce_rate = bounces / entrances)</code></pre>
 <pre><code>## # A tibble: 3 × 4
