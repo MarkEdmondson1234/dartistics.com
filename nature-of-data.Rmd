@@ -1,0 +1,189 @@
+---
+title: "The Nature of Data"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+
+---
+
+That’s a pretty broad title, but, really, what we’re talking about here are some fundamentally different ways to treat data as we work with it. This topic can seem academic but it is relevant for web analysts specifically and researchers broadly. Yes, this topic out to be pretty darn important when it comes time to applying statistical operations and performing model building and testing.
+
+So, we have to start with the basics: the nature of data. There are four types of data:
+
+* Nominal
+* Ordinal
+* Interval
+* Ratio
+
+Each offers a unique set of characteristics, which impacts the type of analysis that can be performed.
+
+The distinction between the four types of scales center on three different characteristics:
+
+1. The **order** of responses -- whether it matters or not
+2. The **distance between observations** -- whether it matters or is interpretable
+3. The presence or inclusion of a **true zero**
+
+## Nominal Scales
+
+Nominal scales measure categories and have the following characteristics:
+
+* **Order:** The order of the responses or observations does not matter.
+* **Distance:** Nominal scales do not hold distance. The distance between a 1 and a 2 is not the same as a 2 and 3. 
+* **True Zero:** There is no true or real zero. In a nominal scale, zero is uninterpretable.
+
+Consider traffic source (or last touch channel) as an example in which visitors reach our site through a mutually exclusive channel, or last point of contact. These channels would include:
+
+1. Paid Search
+2. Organic Search
+3. Email
+4. Display
+
+(This list looks artificially short, but the logic and interpretation would remain the same for nine channels or for 99 channels.)
+
+If we want to know that each channel is _simply somehow different_, then we could count the number of visits from each channel. Those counts can be considered _nominal in nature_.
+
+Suppose the counts looked like this:
+
+|Channel           |   Count of Visits  |
+|------------------|:------------------:|
+|Paid Search       |         2,143      |
+|Organic Search    |         3,124      |
+|Email             |         1,254      |
+|Display           |         2,077      |
+
+With nominal data, the order of the four channels would not change or alter the interpretation.  Suppose we, instead, viewed the data like this:
+
+|Channel           |   Count of Visits  |
+|------------------|:------------------:|
+|Display           |         2,077      |
+|Paid Search       |         2,143      |
+|Email             |         1,254      |
+|Organic Search    |         3,124      |
+
+The order of the categories does not matter.
+
+And, the _distance between_ the categories is not relevant. Display is not four times as much as paid search and organic search is not half of organic search. While there is an arithmetic relationship between these counts, that is only relevant if we treat the scales as _ratio scales_ (see the [Ratio Scales](#ratio_scales) section below).
+
+Finally, zero holds no meaning. We could not interpret a zero because it does not occur in a nominal scale.
+
+**Appropriate statistics for nominal scales:** mode, count, frequencies
+
+**Displays:** histograms or bar charts
+
+## Ordinal Scales
+
+At the risk of providing a tautological definition, ordinal scales measure, well, order. So, our characteristics for ordinal scales are:
+
+* **Order:** The order of the responses or observations matters.
+* **Distance:** Ordinal scales do not hold distance. The distance between first and second is unknown as is the distance between first and third along with all observations. 
+* **True Zero:** There is no true or real zero. An item, observation, or category cannot finish zero.
+
+Let’s work through our traffic source example and rank the channels based on the number of visits to our site, with “1” being the highest number of visits:
+
+|Channel           |   Count of Visits  |
+|------------------|:------------------:|
+|Organic Search    |         1          |
+|Paid Search       |         2          |
+|Display           |         3          |
+|Email             |         4          |
+
+Again, for this example, we are limiting ourselves to four channels, but the logic would remain the same for ranking nine channels or 99 channels.
+
+By ranking the channel from most to least number of visitors in terms of last point of contact, we’ve established an _order_.
+
+_However_, the distance between the rankings appears unknown. Organic Search could have one more visit compared to Paid Search or one hundred more visitors. The distance between the two items appears unknown.
+
+Finally, zero holds no meaning. We could not interpret a zero because it does not occur in an ordinal scale. An item such as Organic Search could not maintain a zero ranking.
+
+**Appropriate statistics for ordinal scales:** count, frequencies, mode
+
+**Displays:** histograms or bar charts
+
+## Interval Scales
+
+Interval scales provide insight into the variability of the observations or data. Classic interval scales are Likert scales (e.g., 1 - strongly agree and 9 - strongly disagree) and Semantic Differential scales (e.g., 1 - dark and 9 - light). In an interval scale, users could respond to “I enjoy opening links to the website from a company email” with a response ranging on a scale of values.
+
+The characteristics of interval scales are:
+
+* **Order:* The order of the responses or observations does matter.
+* **Distance:* Interval scales do offer distance. That is, the distance from 1 to 2 appears the same as 4 to 5. Also, six is twice as much as three and two is half of four. Hence, we can perform arithmetic operations on the data.
+* **True Zero:* There is no zero with interval scales. However, data can be rescaled in a manner that contains zero. An interval scales measure from 1 to 9 remains the same as 11 to 19 because we added 10 to all values. Similarly, a 1 to 9 interval scale is the same a -4 to 4 scale because we subtracted 5 from all values. Although the new scale contains zero, zero remains uninterpretable because it only appears in the scale from the transformation.
+
+Unless a web analyst is working with survey data, it is doubtful he or she will encounter data from an interval scales. More likely, a web analyst will deal with ratio scales (next section).
+
+**Appropriate statistics for interval scales:** count, frequencies, mode, median, mean, standard deviation (and variance), skewness, and kurtosis.
+
+**Displays:** histograms or bar charts, line charts, and scatter plots.
+
+<div style= "background-color: #cce6ff; font-style: italic; padding: 10px 10px 10px 10px;">
+**An Illustrative Side Note About Temperature**
+
+An argument exists about temperature. Is it an interval scale or an ordinal scale? Many researchers argue for temperature as an interval scale. It offers order (e.g., 212$^\circ$ F is hotter than 32$^\circ$ F), distance (e.g., 40$^\circ$ F to 44$^\circ$ F is the same as 100$^\circ$ F to 104$^\circ$ F), and lacks a true zero (e.g., 0$^\circ$ F is not the same as 0$^\circ$ C).
+However, other researchers argue for temperature as an ordinal scale because of the issue related to distance. 200$^\circ$ F is not twice as 100 F. The human brain registers both temperatures as equally hot (if standing outside) or mild (if touching a stove). Finally, we would not say that 80 F is twice as warm as 40$^\circ$ F or that 30$^\circ$ F is a third colder as 90$^\circ$ F.</div>
+
+## Ratio Scales
+
+Ratio scales appear as nominal scales with a true zero. They have the following characteristics:
+
+* **Order:** The order of the responses or observations matters.
+* **Distance:** Ratio scales do do have an interpretable distance. 
+* **True Zero:** There is a true zero.
+
+Income is a classic example of a ratio scale:
+
+* Order is established. We would all prefer $100 to $1!
+* Zero dollars means we have no income (or, in accounting terms, our revenue exactly equals our expenses!)
+* Distance is interpretable, in that $20 appears as twice $10 and $50 is half of a $100. 
+
+In web analytics, the number of visits and the number of goal completions serve as examples of ratio scales. A thousand visits is a third of 3,000 visits, while 400 goal completions are twice as many as 200 goal completions. Zero visitors or zero goal completions should be interpreted as just that: no visits or completed goals (uh-oh… did someone remove the page tag?!).
+
+For the web analyst, the statistics for ratio scales are the same as for interval scales.
+
+**Appropriate statistics for ratio scales:** count, frequencies, mode, median, mean, standard deviation (and variance), skewness, and kurtosis.
+
+**Displays:** histograms or bar charts, line charts, and scatter plots.
+
+_**An Important Note:** Don’t let the term “ratio” trip you up. Laypeople (aka, “non-statisticians”) are taught that ratios represent a relationship between two numbers. For instance, conversion rate is the “ratio” of orders to visits. But, as illustrated above, that is an overly narrow definition when it comes to statistics._
+
+## Summary Cheat Sheet
+
+The table below summarizes the characteristics of all four types of scales.
+
+|                            |   Nominal   |   Ordinal   |   Interval   |   Ratio   |
+|----------------------------|:-----------:|:-----------:|:------------:|----------:|
+|Order Matters               |      No     |      Yes    |     Yes      |    Yes    |
+|Distance Is Interpretable   |      No     |       No    |     Yes      |    Yes    |
+|Zero Exists                 |      No     |        No    |      No     |    Yes    |
+
+## Transformation
+
+Did you notice that we used _channel_ for three of our four examples? And, for all three, the underlying metric was “visits.” What that means is that any given variable isn’t inherently a single type of data (type of scale). It depends on how the data is being used.
+
+What that means is that some types of scales _can be transformed to other types of scales_. We can convert or transform our data from **ratio** to **interval** to **ordinal** to **nominal**. However, we _cannot_ convert or transform our data from **nominal** to **ordinal** to **interval** to **ratio**.
+
+Put another way, take a look at the cheat sheet above. If you have data using one scale, you can change a “Yes” to a “No” (and, thus, change the type of scale), but you cannot change a “No” to a “Yes.”
+
+_Pause here to take an aspirin as needed, should your head be starting to hurt._
+
+As an example, let’s say our website receives 10,000 visits in a month. That figure -- 10,000 visits -- is a ratio scale. I could convert it to the number of visits in a week for that month (let’s pick our month as February, 2015, as the first of the month fell on a Sunday and there were exactly 4 weeks in the month!):
+
+* Week 1 had 2,000 visits
+* Week 2 had 3,000 visits
+* Week 3 had 1,000 visits
+* Week 4 had 4,000 visits
+
+We could treat these numbers as interval; specifically, an equal width interval. However, there is little reason -- conceptually or managerially -- to treat these numbers as interval. So, let’s move on.
+
+We could rank the weeks based on the number of visits, which would transform the data to an ordinal scale. From most to least number of weekly visits:
+
+* Week 4
+* Week 2
+* Week 1
+* Week 3
+
+Finally, we could group week 2 and week 4 into “heavy traffic” weeks and group week 1 and week 3 into “light traffic” week and we would have created a _nominal scale_. The order heavy-light or light-heavy would not matter provided we remember the coding effort. 
+
+We started with a ratio scale that we ultimately transformed into a nominal scale. As we did so, we lost a lot of information. But, by transforming this data, we can use different analytical tools to answer different types of questions.
+
+

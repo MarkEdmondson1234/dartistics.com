@@ -105,7 +105,7 @@ axis(1, trend_data$Date, format(trend_data$Date, "%b-%y"), tick = FALSE)
 
 Essentially, you slowly "build up" your plot via "geoms" (different core "geometries" -- a line, a bar, a point, text, etc"), and you control the style through "themes" that are very similar to CSS in web development. The end results can be very professional looking.
 
-```{r message=FALSE, fig.width=10}
+```{r trend_long, message=FALSE, fig.width=10}
 library(ggplot2)
 library(tidyr)
 
@@ -135,10 +135,10 @@ gg
 
 The plot above is a static image. But, if we use JavaScript libraries to render the data, we get something that is more interactive (but only works in HTML). Note how you can mouse over the chart below and see the specific values.
 
-```{r, message=FALSE, warning=FALSE, fig.width=10}
+```{r highcharter, message=FALSE, warning=FALSE, fig.width=10}
 library(highcharter)
 
 # Use the hchart function to generate a line chart with the data.
-hchart(trend_long, type = "line", x = Date, y = Sessions, group = Channel)
+hchart(trend_long, type = "line", hcaes(x = Date, y = Sessions, group = Channel))
 
 ```

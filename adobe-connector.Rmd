@@ -295,7 +295,7 @@ Returns a trended report. This is an ordered list of elements and associated met
 
 QueueTrended requires a start and end date, a reportsuite ID, a character vector of elements and a character vector of metrics.
 
-```{r}
+```{r queuetrended1}
 metrics <- c("visits","uniquevisitors","pageviews","event1")
 elements <- c("page","geoCountry","geoCity")
 
@@ -305,7 +305,7 @@ trended.data <- QueueTrended(reportsuite.id, date.from, date.to, metrics, elemen
 
 You may also wish to set any of the 7 optional named parameters. As with `QueueRanked()` the 1.4 API only supports selected for the first element specified.
 
-```{r}
+```{r queuetrended2}
 metrics <- c("visits","uniquevisitors","pageviews","event1")
 elements <- c("page","geoCountry","geoCity")
 top <- 100
@@ -349,7 +349,7 @@ Returns a pathing report. This is an ordered list of paths matching the specifie
 
 QueuePathing requires a start and end date, a reportsuite ID, a single element, a single metric and a pattern of element values that defined the path.
 
-```{r}
+```{r queuepathing}
 metric <- "pageviews"
 element <- "page"
 pattern <- c("excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/",
@@ -381,7 +381,7 @@ Returns a fallout report. This is a pathed list of elements, with fallout values
 
 QueuePathing requires a start and end date, a reportsuite ID, a single element, a character vector of metrics and a character vector of element values that defined the checkpoints.
 
-```{r}
+```{r queuefallout}
 metrics <- "pageviews"
 element <- "page"
 checkpoints <- c("excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/",
@@ -431,7 +431,7 @@ We require sessions in the Natural Search traffic segment trended over time.
 
 ## Download sample
 
-```{r, message=FALSE, warning=FALSE}
+```{r queueovertime, message=FALSE, warning=FALSE}
 date.from <- "2016-01-01"
 date.to <- "2016-09-30"
 reportsuite.id <- "grecodemystified"

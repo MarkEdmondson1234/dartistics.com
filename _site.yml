@@ -3,6 +3,7 @@ output_dir: "."
 output: 
   html_document:
     theme: flatly
+    css: styles.css
     title-prefix: "Digital Analytics R and Statistics Tutorials"
     includes:
       before_body: includes/analytics.html
@@ -71,6 +72,8 @@ navbar:
       menu:
       - text: "Introduction"
         href: modelling-intro.html
+      - text: "Nature of Data"
+        href: nature-of-data.html
       - text: "Correlation"
         href: correlation.html
       - text: "Regression"

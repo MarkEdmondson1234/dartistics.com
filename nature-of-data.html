@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>The Nature of Data</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">DARTISTICS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="example1.html">Example: Trending</a>
+    </li>
+    <li>
+      <a href="example2.html">Example: Data Explorer</a>
+    </li>
+    <li>
+      <a href="example3.html">Example: Venn Diagram</a>
+    </li>
+    <li>
+      <a href="example4.html">Example: GA Effect</a>
+    </li>
+    <li>
+      <a href="example5.html">Example: Heatmap</a>
+    </li>
+    <li>
+      <a href="example6.html">Example: Forecasting</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    The Basics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="whatisr.html">What Is R?</a>
+    </li>
+    <li>
+      <a href="gettingstarted.html">Getting Started</a>
+    </li>
+    <li>
+      <a href="packages.html">Packages</a>
+    </li>
+    <li>
+      <a href="basics-base_r.html">Basics of Base R</a>
+    </li>
+    <li>
+      <a href="exercise1-thebasics.html">Exercise: The Basic Basics</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    I/O
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">WORKING WITH FILES</li>
+    <li>
+      <a href="import-csv-excel.html">CSV import</a>
+    </li>
+    <li>
+      <a href="excel.html">Microsoft Excel(!)</a>
+    </li>
+    <li>
+      <a href="exercise2-io.html">Exercise: I/O</a>
+    </li>
+    <li class="dropdown-header">WORKING WITH APIs</li>
+    <li>
+      <a href="api-google-analytics.html">Google Analytics</a>
+    </li>
+    <li>
+      <a href="api-adobe-analytics.html">Adobe Analytics</a>
+    </li>
+    <li>
+      <a href="api-other.html">Other APIs</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data Structures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">R CLASSES AND SYNTAX</li>
+    <li>
+      <a href="classes.html">R Classes</a>
+    </li>
+    <li>
+      <a href="accessing.html">Accessing elements</a>
+    </li>
+    <li>
+      <a href="exercise3-accessing-data.html">Exercise: Accessing Data</a>
+    </li>
+    <li class="dropdown-header">BASE R vs. TIDY</li>
+    <li>
+      <a href="tidyverse.html">Tidy data / Tidyverse</a>
+    </li>
+    <li>
+      <a href="dplyr.html">dplyr()</a>
+    </li>
+    <li>
+      <a href="exercise4-tidy-dplyr.html">Exercise: Tidy Data / dplyr</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="modelling-intro.html">Introduction</a>
+    </li>
+    <li>
+      <a href="nature-of-data.html">Nature of Data</a>
+    </li>
+    <li>
+      <a href="correlation.html">Correlation</a>
+    </li>
+    <li>
+      <a href="regression.html">Regression</a>
+    </li>
+    <li>
+      <a href="timeseries.html">Time-series</a>
+    </li>
+    <li>
+      <a href="categorisation.html">Categorisation</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Output
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="viz-options.html">Visualisation Options</a>
+    </li>
+    <li>
+      <a href="base-plots.html">Base Plots</a>
+    </li>
+    <li>
+      <a href="ggplot2.html">ggplot2()</a>
+    </li>
+    <li>
+      <a href="htmlwidgets.html">htmlwidgets()</a>
+    </li>
+    <li>
+      <a href="rmarkdown-shiny.html">RMarkdown + Shiny</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="resources.html">Useful Links</a>
+    </li>
+    <li>
+      <a href="key-topics.html">Key topics</a>
+    </li>
+    <li>
+      <a href="github.html">GitHub</a>
+    </li>
+    <li>
+      <a href="habits.html">Good Habits</a>
+    </li>
+    <li>
+      <a href="going-further.html">Going Further</a>
+    </li>
+    <li>
+      <a href="r-and-statistics-class.html">3-Day Training</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-N4DF7T"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N4DF7T');</script>
+<!-- End Google Tag Manager -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">The Nature of Data</h1>
+
+</div>
+
+
+<p>That’s a pretty broad title, but, really, what we’re talking about here are some fundamentally different ways to treat data as we work with it. This topic can seem academic but it is relevant for web analysts specifically and researchers broadly. Yes, this topic out to be pretty darn important when it comes time to applying statistical operations and performing model building and testing.</p>
+<p>So, we have to start with the basics: the nature of data. There are four types of data:</p>
+<ul>
+<li>Nominal</li>
+<li>Ordinal</li>
+<li>Interval</li>
+<li>Ratio</li>
+</ul>
+<p>Each offers a unique set of characteristics, which impacts the type of analysis that can be performed.</p>
+<p>The distinction between the four types of scales center on three different characteristics:</p>
+<ol style="list-style-type: decimal">
+<li>The <strong>order</strong> of responses – whether it matters or not</li>
+<li>The <strong>distance between observations</strong> – whether it matters or is interpretable</li>
+<li>The presence or inclusion of a <strong>true zero</strong></li>
+</ol>
+<div id="nominal-scales" class="section level2">
+<h2>Nominal Scales</h2>
+<p>Nominal scales measure categories and have the following characteristics:</p>
+<ul>
+<li><strong>Order:</strong> The order of the responses or observations does not matter.</li>
+<li><strong>Distance:</strong> Nominal scales do not hold distance. The distance between a 1 and a 2 is not the same as a 2 and 3.</li>
+<li><strong>True Zero:</strong> There is no true or real zero. In a nominal scale, zero is uninterpretable.</li>
+</ul>
+<p>Consider traffic source (or last touch channel) as an example in which visitors reach our site through a mutually exclusive channel, or last point of contact. These channels would include:</p>
+<ol style="list-style-type: decimal">
+<li>Paid Search</li>
+<li>Organic Search</li>
+<li>Email</li>
+<li>Display</li>
+</ol>
+<p>(This list looks artificially short, but the logic and interpretation would remain the same for nine channels or for 99 channels.)</p>
+<p>If we want to know that each channel is <em>simply somehow different</em>, then we could count the number of visits from each channel. Those counts can be considered <em>nominal in nature</em>.</p>
+<p>Suppose the counts looked like this:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Channel</th>
+<th align="center">Count of Visits</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Paid Search</td>
+<td align="center">2,143</td>
+</tr>
+<tr class="even">
+<td>Organic Search</td>
+<td align="center">3,124</td>
+</tr>
+<tr class="odd">
+<td>Email</td>
+<td align="center">1,254</td>
+</tr>
+<tr class="even">
+<td>Display</td>
+<td align="center">2,077</td>
+</tr>
+</tbody>
+</table>
+<p>With nominal data, the order of the four channels would not change or alter the interpretation. Suppose we, instead, viewed the data like this:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Channel</th>
+<th align="center">Count of Visits</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Display</td>
+<td align="center">2,077</td>
+</tr>
+<tr class="even">
+<td>Paid Search</td>
+<td align="center">2,143</td>
+</tr>
+<tr class="odd">
+<td>Email</td>
+<td align="center">1,254</td>
+</tr>
+<tr class="even">
+<td>Organic Search</td>
+<td align="center">3,124</td>
+</tr>
+</tbody>
+</table>
+<p>The order of the categories does not matter.</p>
+<p>And, the <em>distance between</em> the categories is not relevant. Display is not four times as much as paid search and organic search is not half of organic search. While there is an arithmetic relationship between these counts, that is only relevant if we treat the scales as <em>ratio scales</em> (see the <a href="#ratio_scales">Ratio Scales</a> section below).</p>
+<p>Finally, zero holds no meaning. We could not interpret a zero because it does not occur in a nominal scale.</p>
+<p><strong>Appropriate statistics for nominal scales:</strong> mode, count, frequencies</p>
+<p><strong>Displays:</strong> histograms or bar charts</p>
+</div>
+<div id="ordinal-scales" class="section level2">
+<h2>Ordinal Scales</h2>
+<p>At the risk of providing a tautological definition, ordinal scales measure, well, order. So, our characteristics for ordinal scales are:</p>
+<ul>
+<li><strong>Order:</strong> The order of the responses or observations matters.</li>
+<li><strong>Distance:</strong> Ordinal scales do not hold distance. The distance between first and second is unknown as is the distance between first and third along with all observations.</li>
+<li><strong>True Zero:</strong> There is no true or real zero. An item, observation, or category cannot finish zero.</li>
+</ul>
+<p>Let’s work through our traffic source example and rank the channels based on the number of visits to our site, with “1” being the highest number of visits:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Channel</th>
+<th align="center">Count of Visits</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Organic Search</td>
+<td align="center">1</td>
+</tr>
+<tr class="even">
+<td>Paid Search</td>
+<td align="center">2</td>
+</tr>
+<tr class="odd">
+<td>Display</td>
+<td align="center">3</td>
+</tr>
+<tr class="even">
+<td>Email</td>
+<td align="center">4</td>
+</tr>
+</tbody>
+</table>
+<p>Again, for this example, we are limiting ourselves to four channels, but the logic would remain the same for ranking nine channels or 99 channels.</p>
+<p>By ranking the channel from most to least number of visitors in terms of last point of contact, we’ve established an <em>order</em>.</p>
+<p><em>However</em>, the distance between the rankings appears unknown. Organic Search could have one more visit compared to Paid Search or one hundred more visitors. The distance between the two items appears unknown.</p>
+<p>Finally, zero holds no meaning. We could not interpret a zero because it does not occur in an ordinal scale. An item such as Organic Search could not maintain a zero ranking.</p>
+<p><strong>Appropriate statistics for ordinal scales:</strong> count, frequencies, mode</p>
+<p><strong>Displays:</strong> histograms or bar charts</p>
+</div>
+<div id="interval-scales" class="section level2">
+<h2>Interval Scales</h2>
+<p>Interval scales provide insight into the variability of the observations or data. Classic interval scales are Likert scales (e.g., 1 - strongly agree and 9 - strongly disagree) and Semantic Differential scales (e.g., 1 - dark and 9 - light). In an interval scale, users could respond to “I enjoy opening links to the website from a company email” with a response ranging on a scale of values.</p>
+<p>The characteristics of interval scales are:</p>
+<ul>
+<li>**Order:* The order of the responses or observations does matter.</li>
+<li>**Distance:* Interval scales do offer distance. That is, the distance from 1 to 2 appears the same as 4 to 5. Also, six is twice as much as three and two is half of four. Hence, we can perform arithmetic operations on the data.</li>
+<li>**True Zero:* There is no zero with interval scales. However, data can be rescaled in a manner that contains zero. An interval scales measure from 1 to 9 remains the same as 11 to 19 because we added 10 to all values. Similarly, a 1 to 9 interval scale is the same a -4 to 4 scale because we subtracted 5 from all values. Although the new scale contains zero, zero remains uninterpretable because it only appears in the scale from the transformation.</li>
+</ul>
+<p>Unless a web analyst is working with survey data, it is doubtful he or she will encounter data from an interval scales. More likely, a web analyst will deal with ratio scales (next section).</p>
+<p><strong>Appropriate statistics for interval scales:</strong> count, frequencies, mode, median, mean, standard deviation (and variance), skewness, and kurtosis.</p>
+<p><strong>Displays:</strong> histograms or bar charts, line charts, and scatter plots.</p>
+<div style="background-color: #cce6ff; font-style: italic; padding: 10px 10px 10px 10px;">
+<p><strong>An Illustrative Side Note About Temperature</strong></p>
+An argument exists about temperature. Is it an interval scale or an ordinal scale? Many researchers argue for temperature as an interval scale. It offers order (e.g., 212<span class="math inline">\(^\circ\)</span> F is hotter than 32<span class="math inline">\(^\circ\)</span> F), distance (e.g., 40<span class="math inline">\(^\circ\)</span> F to 44<span class="math inline">\(^\circ\)</span> F is the same as 100<span class="math inline">\(^\circ\)</span> F to 104<span class="math inline">\(^\circ\)</span> F), and lacks a true zero (e.g., 0<span class="math inline">\(^\circ\)</span> F is not the same as 0<span class="math inline">\(^\circ\)</span> C). However, other researchers argue for temperature as an ordinal scale because of the issue related to distance. 200<span class="math inline">\(^\circ\)</span> F is not twice as 100 F. The human brain registers both temperatures as equally hot (if standing outside) or mild (if touching a stove). Finally, we would not say that 80 F is twice as warm as 40<span class="math inline">\(^\circ\)</span> F or that 30<span class="math inline">\(^\circ\)</span> F is a third colder as 90<span class="math inline">\(^\circ\)</span> F.
+</div>
+</div>
+<div id="ratio-scales" class="section level2">
+<h2>Ratio Scales</h2>
+<p>Ratio scales appear as nominal scales with a true zero. They have the following characteristics:</p>
+<ul>
+<li><strong>Order:</strong> The order of the responses or observations matters.</li>
+<li><strong>Distance:</strong> Ratio scales do do have an interpretable distance.</li>
+<li><strong>True Zero:</strong> There is a true zero.</li>
+</ul>
+<p>Income is a classic example of a ratio scale:</p>
+<ul>
+<li>Order is established. We would all prefer $100 to $1!</li>
+<li>Zero dollars means we have no income (or, in accounting terms, our revenue exactly equals our expenses!)</li>
+<li>Distance is interpretable, in that $20 appears as twice $10 and $50 is half of a $100.</li>
+</ul>
+<p>In web analytics, the number of visits and the number of goal completions serve as examples of ratio scales. A thousand visits is a third of 3,000 visits, while 400 goal completions are twice as many as 200 goal completions. Zero visitors or zero goal completions should be interpreted as just that: no visits or completed goals (uh-oh… did someone remove the page tag?!).</p>
+<p>For the web analyst, the statistics for ratio scales are the same as for interval scales.</p>
+<p><strong>Appropriate statistics for ratio scales:</strong> count, frequencies, mode, median, mean, standard deviation (and variance), skewness, and kurtosis.</p>
+<p><strong>Displays:</strong> histograms or bar charts, line charts, and scatter plots.</p>
+<p><em><strong>An Important Note:</strong> Don’t let the term “ratio” trip you up. Laypeople (aka, “non-statisticians”) are taught that ratios represent a relationship between two numbers. For instance, conversion rate is the “ratio” of orders to visits. But, as illustrated above, that is an overly narrow definition when it comes to statistics.</em></p>
+</div>
+<div id="summary-cheat-sheet" class="section level2">
+<h2>Summary Cheat Sheet</h2>
+<p>The table below summarizes the characteristics of all four types of scales.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="center">Nominal</th>
+<th align="center">Ordinal</th>
+<th align="center">Interval</th>
+<th align="right">Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Order Matters</td>
+<td align="center">No</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="right">Yes</td>
+</tr>
+<tr class="even">
+<td>Distance Is Interpretable</td>
+<td align="center">No</td>
+<td align="center">No</td>
+<td align="center">Yes</td>
+<td align="right">Yes</td>
+</tr>
+<tr class="odd">
+<td>Zero Exists</td>
+<td align="center">No</td>
+<td align="center">No</td>
+<td align="center">No</td>
+<td align="right">Yes</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="transformation" class="section level2">
+<h2>Transformation</h2>
+<p>Did you notice that we used <em>channel</em> for three of our four examples? And, for all three, the underlying metric was “visits.” What that means is that any given variable isn’t inherently a single type of data (type of scale). It depends on how the data is being used.</p>
+<p>What that means is that some types of scales <em>can be transformed to other types of scales</em>. We can convert or transform our data from <strong>ratio</strong> to <strong>interval</strong> to <strong>ordinal</strong> to <strong>nominal</strong>. However, we <em>cannot</em> convert or transform our data from <strong>nominal</strong> to <strong>ordinal</strong> to <strong>interval</strong> to <strong>ratio</strong>.</p>
+<p>Put another way, take a look at the cheat sheet above. If you have data using one scale, you can change a “Yes” to a “No” (and, thus, change the type of scale), but you cannot change a “No” to a “Yes.”</p>
+<p><em>Pause here to take an aspirin as needed, should your head be starting to hurt.</em></p>
+<p>As an example, let’s say our website receives 10,000 visits in a month. That figure – 10,000 visits – is a ratio scale. I could convert it to the number of visits in a week for that month (let’s pick our month as February, 2015, as the first of the month fell on a Sunday and there were exactly 4 weeks in the month!):</p>
+<ul>
+<li>Week 1 had 2,000 visits</li>
+<li>Week 2 had 3,000 visits</li>
+<li>Week 3 had 1,000 visits</li>
+<li>Week 4 had 4,000 visits</li>
+</ul>
+<p>We could treat these numbers as interval; specifically, an equal width interval. However, there is little reason – conceptually or managerially – to treat these numbers as interval. So, let’s move on.</p>
+<p>We could rank the weeks based on the number of visits, which would transform the data to an ordinal scale. From most to least number of weekly visits:</p>
+<ul>
+<li>Week 4</li>
+<li>Week 2</li>
+<li>Week 1</li>
+<li>Week 3</li>
+</ul>
+<p>Finally, we could group week 2 and week 4 into “heavy traffic” weeks and group week 1 and week 3 into “light traffic” week and we would have created a <em>nominal scale</em>. The order heavy-light or light-heavy would not matter provided we remember the coding effort.</p>
+<p>We started with a ratio scale that we ultimately transformed into a nominal scale. As we did so, we lost a lot of information. But, by transforming this data, we can use different analytical tools to answer different types of questions.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
