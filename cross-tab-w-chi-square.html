@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Cross Tab with Chi-Square</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">DARTISTICS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="example1.html">Example: Trending</a>
+    </li>
+    <li>
+      <a href="example2.html">Example: Data Explorer</a>
+    </li>
+    <li>
+      <a href="example3.html">Example: Venn Diagram</a>
+    </li>
+    <li>
+      <a href="example4.html">Example: GA Effect</a>
+    </li>
+    <li>
+      <a href="example5.html">Example: Heatmap</a>
+    </li>
+    <li>
+      <a href="example6.html">Example: Forecasting</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    The Basics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="whatisr.html">What Is R?</a>
+    </li>
+    <li>
+      <a href="gettingstarted.html">Getting Started</a>
+    </li>
+    <li>
+      <a href="packages.html">Packages</a>
+    </li>
+    <li>
+      <a href="basics-base_r.html">Basics of Base R</a>
+    </li>
+    <li>
+      <a href="exercise1-thebasics.html">Exercise: The Basic Basics</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    I/O
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">WORKING WITH FILES</li>
+    <li>
+      <a href="import-csv-excel.html">CSV import</a>
+    </li>
+    <li>
+      <a href="excel.html">Microsoft Excel(!)</a>
+    </li>
+    <li>
+      <a href="exercise2-io.html">Exercise: I/O</a>
+    </li>
+    <li class="dropdown-header">WORKING WITH APIs</li>
+    <li>
+      <a href="api-google-analytics.html">Google Analytics</a>
+    </li>
+    <li>
+      <a href="api-adobe-analytics.html">Adobe Analytics</a>
+    </li>
+    <li>
+      <a href="api-other.html">Other APIs</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data Structures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">R CLASSES AND SYNTAX</li>
+    <li>
+      <a href="classes.html">R Classes</a>
+    </li>
+    <li>
+      <a href="accessing.html">Accessing elements</a>
+    </li>
+    <li>
+      <a href="exercise3-accessing-data.html">Exercise: Accessing Data</a>
+    </li>
+    <li class="dropdown-header">BASE R vs. TIDY</li>
+    <li>
+      <a href="tidyverse.html">Tidy data / Tidyverse</a>
+    </li>
+    <li>
+      <a href="dplyr.html">dplyr()</a>
+    </li>
+    <li>
+      <a href="exercise4-tidy-dplyr.html">Exercise: Tidy Data / dplyr</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="modelling-intro.html">Introduction</a>
+    </li>
+    <li>
+      <a href="nature-of-data.html">Nature of Data</a>
+    </li>
+    <li>
+      <a href="cross-tab-w-chi-square.html">Chi Square</a>
+    </li>
+    <li>
+      <a href="correlation.html">Correlation</a>
+    </li>
+    <li>
+      <a href="regression.html">Regression</a>
+    </li>
+    <li>
+      <a href="timeseries.html">Time-series</a>
+    </li>
+    <li>
+      <a href="categorisation.html">Categorisation</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Output
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="viz-options.html">Visualisation Options</a>
+    </li>
+    <li>
+      <a href="base-plots.html">Base Plots</a>
+    </li>
+    <li>
+      <a href="ggplot2.html">ggplot2()</a>
+    </li>
+    <li>
+      <a href="htmlwidgets.html">htmlwidgets()</a>
+    </li>
+    <li>
+      <a href="rmarkdown-shiny.html">RMarkdown + Shiny</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="resources.html">Useful Links</a>
+    </li>
+    <li>
+      <a href="key-topics.html">Key topics</a>
+    </li>
+    <li>
+      <a href="github.html">GitHub</a>
+    </li>
+    <li>
+      <a href="habits.html">Good Habits</a>
+    </li>
+    <li>
+      <a href="going-further.html">Going Further</a>
+    </li>
+    <li>
+      <a href="r-and-statistics-class.html">3-Day Training</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-N4DF7T"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N4DF7T');</script>
+<!-- End Google Tag Manager -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Cross Tab with Chi-Square</h1>
+
+</div>
+
+
+<p>Let’s get a little wordy and a little Greek. The full title of this topic (phonetically) is “Cross Tabulations with a Chi-Square Test of Independence.” To really write it in a way that will make a statistician happy, it’s, “Cross Tabulations with a <span class="math inline">\(\chi\)</span><sup>2</sup> Test of Independence.” What does that <em>mean</em>? Read on!</p>
+<p>First off, the cross tabulation is a pretty stock method of displaying relationships between two variables, although the term itself may be unfamiliar. Basically, it’s just a two-dimensional matrix that represents the relationship between two variables with regard to some specific metric.</p>
+<p>That matrix is pretty easy to understand (and it’s what Excel pivot tables often get used to create), but, in addition to the matrix itself, we can add an extra analytical step that is referred to as to as the “<span class="math inline">\(\chi\)</span><sup>2</sup> test of independence.” This helps us understand how “real” (meaningful, significant, …) the relationship is between the variables.</p>
+<div id="the-setup" class="section level2">
+<h2>The Setup</h2>
+<p>To perform a <span class="math inline">\(\chi\)</span><sup>2</sup> test of independence, the two variables need to be <em><a href="nature-of-data.html">nominal in nature</a></em>.</p>
+<p>As an example, let’s consider the question: “Is there a relationship between last touch channel and device type?” We can create a cross tabulation to see a breakdown of these two variables.</p>
+<div align="center">
+<p><img src="cross-tab-w-chi-square_files/figure-html/cross-tab-1.png" width="768" /></p>
+</div>
+</div>
+<div id="the-chi2-test" class="section level2">
+<h2>The <span class="math inline">\(\chi\)</span><sup>2</sup> Test</h2>
+<p>In <strong>Table 1</strong>, the cells or the counts are obviously different. But, what we do not yet know is if that difference is <em>due to a relationship between device type and channel</em>, or is the difference really just <em>due to randomness</em>? To answer that question, a <span class="math inline">\(\chi\)</span><sup>2</sup> test for independence needs to be conducted. This test is a test of the following hypothesis:</p>
+<div align="center">
+<em><strong>There is no relationship between device type and last point of contact.</strong></em><br> 
+</div>
+<p>Note that we’ve stated our hypothesis in such a way as to be a hypothesis that there is <em>no</em> relationship. This is often called the <em>null hypothesis</em> and is often written <em>H<sub>0</sub></em>.</p>
+<p><strong>Table 1</strong> reflects the actual (or “observed) data from the two variables: device type and channel. To test the relationship, we first have to calculate the <em>expected</em> values for each combination of the variables.</p>
+<p>To determine the expected number of sessions from desktop users who used organic search, we:</p>
+<ul>
+<li>Divide the row total (Desktop) by the overall total</li>
+<li>Divide the column total (Organic Search) by the overall total</li>
+<li>Multiply the two quotients and the overall total</li>
+</ul>
+<p>Mathematically, the formula would look like:</p>
+<p><code align="center"></p>
+<p>(r<sub>1</sub>/T) x (c<sub>1</sub>/T) x T</p>
+<p>= (100/300) x (80/300) x 300</p>
+<p>= .33 x .27 x 300 = 26.67</p>
+<p>= 27 sessions</p>
+<p></code></p>
+<p>We then fill in the remaining expected values to produce <strong>Table 2</strong>.</p>
+<div align="center">
+<p><img src="cross-tab-w-chi-square_files/figure-html/expected-1.png" width="768" /></p>
+</div>
+<p>Next, we need to compare the <em>difference</em> between the observed values in <strong>Table 1</strong> with the expected values shown in <strong>Table 2</strong>. For each cell, we:</p>
+<ul>
+<li>Subtract the expected value from the observed value</li>
+<li>Raise it to the second power (“square” it – thus the <span class="math inline">\(\chi\)</span><sup>2</sup>)</li>
+<li>Divide it by the expected value</li>
+</ul>
+<p>Let’s do that manually with our Desktop / Organic Search result:</p>
+<p><code align="center"></p>
+<p>sessions<sub>o</sub> - sessions~e = 25 - 26.67 = -1.67</p>
+<p>-1.67<sup>2</sup> = 2.78</p>
+<p>2.78 / 27 = 0.10</p>
+<p></code></p>
+<p>We then repeat that calculation for each cell, as shown in <strong>Table 3</strong> below.</p>
+<p><em><strong>Note:</strong> The difference between actual and expected value is referred to as “error.”&quot; With some additional arithmetic operations, we could calculate the standard deviation. If we square the standard deviation, then we will have calculated the variance. Regardless of whether we’re using standard deviation or variance, we are working with error. Remember: all researchers – including web analysts – work with error. And error is just the difference between actual and expected values!</em></p>
+<div align="center">
+<p><img src="cross-tab-w-chi-square_files/figure-html/expected_obs_diff-1.png" width="768" /></p>
+</div>
+<p>Now we sum the values for all cells shown in <strong>Table 3</strong>, which is <strong>30.96</strong>. **This is the “actual <span class="math inline">\(\chi\)</span><sup>2</sup> value.”</p>
+</div>
+<div id="and-then-the-rejection-region" class="section level2">
+<h2>And Then… the Rejection Region!</h2>
+<p>To determine whether we can reject or fail to reject our hypothesis (the null hypothesis: _H<sub>0</sub>) based on the actual <span class="math inline">\(\chi\)</span><sup>2</sup> value equal to <strong>30.96</strong>, we need to determine what’s called the “critical <span class="math inline">\(\chi\)</span><sup>2</sup> value,” and compare that to the the actual <span class="math inline">\(\chi\)</span><sup>2</sup> value. To determine the critical <span class="math inline">\(\chi\)</span><sup>2</sup> value, we need two inputs:</p>
+<ol style="list-style-type: decimal">
+<li><p>The <strong>degrees of freedom</strong> in the data set. This is determined by the formula, <code>(R-1) x (C-1)</code> where <strong>R</strong> equals the number of rows from <strong>Table 3</strong> and <strong>C</strong> equals the number of columns from <strong>Table 3</strong>. In this example, the degrees of freedom is <code>(3-1) x (4-1) = 6</code>.</p></li>
+<li><p>The <strong>alpha level</strong> (<span class="math inline">\(\alpha\)</span>) we wish to use. This is the “significance level” that you choose, which is the probability of making the wrong decision when the null hypothesis (<em>H<sub>0</sub></em>) is actually true. The smaller the <span class="math inline">\(\alpha\)</span> you use, the harder it is to achieve significance, but the less likely you are to draw the wrong conclusion from the data. <code>0.05</code> is a pretty common <span class="math inline">\(\alpha\)</span> level to use, but there is nothing particularly magical about that value. As a matter of fact, let’s get wild and crazy and use an <span class="math inline">\(\alpha\)</span> of <code>0.1</code> for this example!</p></li>
+</ol>
+<p><em><strong>Aside:</strong> You likely will never need to expose the <span class="math inline">\(\chi\)</span><sup>2</sup> critical value, but, you could by using the base R function <code>qchisq()</code>. There’s a quirk that we’re not going to get into here to use it, in that you input <code>1-</code><span class="math inline">\(\alpha\)</span> rather than just <span class="math inline">\(\alpha\)</span>. For this example, we’re using an <span class="math inline">\(\alpha\)</span> of <code>0.1</code> and have 6 degrees of freedom, so we could use <code>qchisq(1-0.1, 6)</code>, which returns <strong>10.64</strong>.</em></p>
+<p>With an <span class="math inline">\(\alpha\)</span> of .1 and 6 degrees of freedom, the chi square critical value is 10.64.</p>
+<p>We take this value and compare it to our actual <span class="math inline">\(\chi\)</span><sup>2</sup> value (30.98). Since it <em>exceeds</em> the critical chi square value (10.64), we <em>reject</em> our hypothesis. Does that seem like it’s going to be hard to keep straight? It is! So, hold on to your pants as we come at this another way.</p>
+<p><strong>What we just did:</strong> We used the <em>degrees of freedom</em> and our <em>selected <span class="math inline">\(\alpha\)</span></em> to calculate a <em>critical <span class="math inline">\(\chi\)</span><sup>2</sup> value</em> that we compared to the <em>actual <span class="math inline">\(\chi\)</span><sup>2</sup> value</em>.</p>
+<p><strong>What we’ll more commonly do:</strong> We can use the <em>degrees of freedom</em> and our <em>actual <span class="math inline">\(\chi\)</span><sup>2</sup> value</em> to calculate the <strong>p-value</strong>, which, mathematically, is analogous to <span class="math inline">\(\alpha\)</span>, but is the value <em>observed</em> rather than a value <em>selected</em>. If our <strong>p-value</strong> is <em>smaller</em> than our selected <span class="math inline">\(\alpha\)</span>, then we can reject our hypothesis.</p>
+<p>Think of it this way:</p>
+<ul>
+<li><strong>Degrees of freedom</strong> – definitionally, this is the same for both the <em>observed</em> data and our <em>expected result</em> if we do not reject our hypothesis that there is no relationship.</li>
+<li><strong><span class="math inline">\(\chi\)</span><sup>2</sup> value</strong> – we calculate the <em>actual</em> value from our <em>observed</em> data, and we calculate (look up) our <em>critical</em> value. We can compare these two results to determine whether or not to reject our hypothesis.</li>
+<li><strong>p-value</strong> and <strong><span class="math inline">\(\alpha\)</span></strong> – the former can be calculated based on the <em>degrees of freedom</em> and the <em>actual <span class="math inline">\(\chi\)</span><sup>2</sup> value</em>. The latter is simply selected (but must be selected in order to calculate a <em>critical <span class="math inline">\(\chi\)</span><sup>2</sup> value</em>).</li>
+</ul>
+<p>Does that make sense? In many cases, it is easier to simply have a statistical package return a <em>p-value</em>, and that value can then be compared to the selected <span class="math inline">\(/alpha\)</span> value.</p>
+</div>
+<div id="the-interpretation" class="section level2">
+<h2>The Interpretation</h2>
+<p>By <em>rejecting</em> our hypothesis – which was that there is <em>no relationship</em> between device type and last touch channel – we can conclude there actually <em>is a relationship</em> between device type and last point of contact.</p>
+<p>Based on these results, we could:</p>
+<ul>
+<li>Provide more display inserts while reducing the number of emails for laptop/desktop sessions</li>
+<li>Focus on paid search for tablet sessions</li>
+<li>Direct more resources toward organic search and display inserts for phone sessions</li>
+</ul>
+<p>These recommendations should carry more weight because they are supported by a statistical test rather than just an eyeball test.</p>
+</div>
+<div id="some-final-thoughts-before-we-code" class="section level2">
+<h2>Some Final Thoughts Before we Code!</h2>
+<p>The cross tabulation with a <span class="math inline">\(\chi\)</span><sup>2</sup> test for independence does provide some insight for the web analyst. But, the test is not considered terribly powerful. Indeed, it is referred to as a “low power test”&quot; because it provides little insight beyond the <em>statistical existence of a relationship between two variables</em>.</p>
+<p>Still, there are a number of reasons in support of using the cross tabulation with a <span class="math inline">\(\chi\)</span><sup>2</sup> test for independence, including:</p>
+<ul>
+<li>It’s easily interpreted and easily understood by a HiPPO, manager, and/or decision maker</li>
+<li>Its clarity of results provides stronger link between research and decision</li>
+<li>A series of chi square test can provide more insight than ANOVA or regression</li>
+<li>It overcomes the issue of having only a few observations in a cell</li>
+<li>It is simple to conduct and appealing to less experienced researchers</li>
+<li>It covers up bad data collection design</li>
+<li>works well with small samples or data collection efforts of observations of less than a 100 or 50.</li>
+</ul>
+</div>
+<div id="and-with-code" class="section level2">
+<h2>And… with Code</h2>
+<p>All of the above is a fairly laborious working through the mechanics of the <span class="math inline">\(\chi\)</span><sup>2</sup> test for independence as part of a cross tabulation. While it may seem laborious and tedious in this fairly simple example, it’s actually so commonly done and mechanical that just a few lines of code in R can knock out the entire thing.</p>
+<p>As a matter of fact, the steps above were actually coded in order to display the results. So, it turns out we have the data set already ready to go in a data frame called <code>chi_square_example</code>. Let’s look at the first few rows of it:</p>
+<pre class="r"><code>chi_square_example</code></pre>
+<pre><code>##   device_category Organic Search Paid Search Email Display
+## 1           Phone             35          15    10      40
+## 2          Tablet             20          30    25      25
+## 3         Desktop             25          20    35      20</code></pre>
+<p>With that data, it takes all of one line of code in R to run a <span class="math inline">\(\chi\)</span>^2 test for independence in R using <code>chisq.test()</code> base R function.</p>
+<pre class="r"><code># The [,-1] just gets rid of the row names -- the 1, 2, 3 column
+# in the above.
+chisq.test(chi_square_example[,-1])</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  chi_square_example[, -1]
+## X-squared = 30.978, df = 6, p-value = 2.559e-05</code></pre>
+<p>So, how do we interpret these results? It’s fairly straightforward:</p>
+<ul>
+<li><strong>X-squared</strong> – this is the “actual <span class="math inline">\(\chi\)</span><sup>2</sup> value” described above. And – <em>voila!</em> – it got a matching result!</li>
+<li><strong>df</strong> – these are the degrees of freedom; as described above, we have 6 in this example</li>
+<li><strong>p-value</strong> – this is why we went down that confusing tangent a bit earlier! But, this is the number that we look at. In this case, we chose (just in our minds – we didn’t need to tell R what we selected) an <span class="math inline">\(/alpha\)</span> of 0.1. The p-value of 2.559447310^{-5} can be read as <code>2.559e-0.5</code> or <code>0.00002559</code>, which is <em>much</em> lower than 0.1.</li>
+</ul>
+<p>Neat, huh?</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -45,21 +45,31 @@ If we want to know that each channel is _simply somehow different_, then we coul
 
 Suppose the counts looked like this:
 
-|Channel           |   Count of Visits  |
-|------------------|:------------------:|
-|Paid Search       |         2,143      |
-|Organic Search    |         3,124      |
-|Email             |         1,254      |
-|Display           |         2,077      |
+```{r nominal, echo=FALSE}
+library(knitr)
+
+df <- data.frame(Channel = c("Paid Search", "Organic Search", "Email", "Display"),
+                 `Count of Visits` = c(2143, 3124, 1254, 2077))
+
+kable(df,
+      col.names = c("Channel", "Count of Visits"),
+      format.args = list(big.mark = ","))
+
+```
 
 With nominal data, the order of the four channels would not change or alter the interpretation.  Suppose we, instead, viewed the data like this:
 
-|Channel           |   Count of Visits  |
-|------------------|:------------------:|
-|Display           |         2,077      |
-|Paid Search       |         2,143      |
-|Email             |         1,254      |
-|Organic Search    |         3,124      |
+```{r nominal2, echo=FALSE, message=FALSE}
+library(knitr)
+
+df <- df[c(4,1,3,2),]
+
+kable(df,
+      row.names = FALSE,
+      col.names = c("Channel", "Count of Visits"),
+      format.args = list(big.mark = ","))
+
+```
 
 The order of the categories does not matter.
 

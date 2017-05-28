@@ -74,6 +74,8 @@ navbar:
         href: modelling-intro.html
       - text: "Nature of Data"
         href: nature-of-data.html
+      - text: "Chi Square"
+        href: cross-tab-w-chi-square.html
       - text: "Correlation"
         href: correlation.html
       - text: "Regression"

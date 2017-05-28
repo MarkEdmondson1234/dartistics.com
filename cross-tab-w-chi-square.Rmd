@@ -1,0 +1,265 @@
+---
+title: "Cross Tab with Chi-Square"
+---
+  
+```{r import-csv-excel-setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Let's get a little wordy and a little Greek. The full title of this topic (phonetically) is "Cross Tabulations with a Chi-Square Test of Independence." To really write it in a way that will make a statistician happy, it's, "Cross Tabulations with a $\chi$^2^ Test of Independence." What does that _mean_? Read on!
+
+First off, the cross tabulation is a pretty stock method of displaying relationships between two variables, although the term itself may be unfamiliar. Basically, it's just a two-dimensional matrix that represents the relationship between two variables with regard to some specific metric.
+
+That matrix is pretty easy to understand (and it's what Excel pivot tables often get used to create), but, in addition to the matrix itself, we can add an extra analytical step that is referred to as to as the "$\chi$^2^ test of independence." This helps us understand how "real" (meaningful, significant, ...) the relationship is between the variables.
+
+## The Setup
+
+To perform a $\chi$^2^ test of independence, the two variables need to be _[nominal in nature](nature-of-data.html)_.
+
+As an example, let's consider the question: "Is there a relationship between last touch channel and device type?" We can create a cross tabulation to see a breakdown of these two variables.
+
+<div align="center">
+```{r cross-tab, echo=FALSE, message=FALSE, warning=FALSE, fig.height=3, fig.width=8}
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(tools)
+
+order_dc <- c("Total", "Phone", "Tablet", "Desktop")
+order_ch <- c("Organic Search", "Paid Search", "Email", "Display", "Total")
+
+df <- data.frame(device_category = c("Desktop", "Tablet", "Phone", "Total"),
+                 organic_search = c(25,20,35,80),
+                 paid_search = c(20,30,15,65),
+                 email = c(35,25,10,80),
+                 display = c(20,25,40,85),
+                 total = c(100,100,100,300))
+
+df <- gather(df, channel, sessions, organic_search:total) %>%
+  mutate(channel = gsub("_"," ",channel)) %>%
+  mutate(channel = toTitleCase(channel))
+
+df$device_category <- factor(df$device_category,
+                             levels = order_dc)
+
+df$channel <- factor(df$channel,
+                             levels = order_ch)
+
+display <- ggplot(df, aes(x=channel, y=device_category)) +
+  ggtitle("Table 1: Observed number of sessions by device type and last point of contact") +
+  geom_tile(fill = "white", color = "gray50") +
+  geom_text(aes(label=sessions)) +
+  theme_bw() +
+  theme(plot.title = element_text(vjust=3, face="bold"),
+    axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_text(colour="gray10", size=11, face="bold"),
+        panel.grid = element_blank(),
+        panel.border = element_blank()
+         ) +
+  scale_x_discrete(position = "top")
+
+display
+
+```
+</div>
+
+## The $\chi$^2^ Test
+
+In **Table 1**, the cells or the counts are obviously different. But, what we do not yet know is if that difference is _due to a relationship between device type and channel_, or is the difference really just _due to randomness_? To answer that question, a $\chi$^2^ test for independence needs to be conducted. This test is a test of the following hypothesis: 
+
+<div align="center">_**There is no relationship between device type and last point of contact.**_<br>&nbsp;</div>
+
+Note that we've stated our hypothesis in such a way as to be a hypothesis that there is _no_ relationship. This is often called the _null hypothesis_ and is often written _H~0~_.
+
+**Table 1** reflects the actual (or "observed) data from the two variables: device type and channel. To test the relationship, we first have to calculate the _expected_ values for each combination of the variables. 
+
+To determine the expected number of sessions from desktop users who used organic search, we:
+
+* Divide the row total (Desktop) by the overall total
+* Divide the column total (Organic Search) by the overall total
+* Multiply the two quotients and the overall total
+
+Mathematically, the formula would look like:
+
+<code align="center">
+
+(r~1~/T) x (c~1~/T) x T
+
+= (100/300) x (80/300) x 300
+
+= .33 x .27 x 300 = 26.67
+
+= 27 sessions
+
+</code>
+
+We then fill in the remaining expected values to produce **Table 2**.
+
+<div align="center">
+```{r expected, echo=FALSE, message=FALSE, warning=FALSE, fig.height=3, fig.width=8}
+
+df2 <- filter(df, channel != "Total", device_category != "Total")
+
+df2_tot <- sum(df2$sessions)
+
+df2_ch_tot <- group_by(df2, channel) %>% summarise(ch_total = sum(sessions)) %>% ungroup()
+df2_dc_tot <- group_by(df2, device_category) %>% summarise(dc_total = sum(sessions)) %>% ungroup()
+
+df2 <- left_join(df2, df2_ch_tot) %>% left_join(df2_dc_tot) %>%
+  mutate(sessions_ev = dc_total/df2_tot * ch_total/df2_tot * df2_tot) %>%
+  mutate(sessions_ev_full = sessions_ev) %>%
+  mutate(sessions_ev = round(sessions_ev, 2)) %>%
+  select(-dc_total, -ch_total)
+
+display <- ggplot(df2, aes(x=channel, y=device_category)) +
+  ggtitle("Table 2: Expected number of sessions by device type and last point of contact") +
+  geom_tile(fill = "white", color = "gray50") +
+  geom_text(aes(label=sessions_ev)) +
+  theme_bw() +
+  theme(plot.title = element_text(vjust=3, face="bold"),
+    axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_text(colour="gray10", size=11, face="bold"),
+        panel.grid = element_blank(),
+        panel.border = element_blank()
+         ) +
+  scale_x_discrete(position = "top")
+
+display
+
+# We're going to use this down below in our code example
+chi_square_example <- select(df2, -sessions_ev, -sessions_ev_full) %>%
+  spread(channel, sessions)
+
+```
+</div>
+
+Next, we need to compare the _difference_ between the observed values in **Table 1** with the expected values shown in **Table 2**. For each cell, we:
+
+* Subtract the expected value from the observed value
+* Raise it to the second power ("square" it -- thus the $\chi$^2^) 
+* Divide it by the expected value
+
+Let's do that manually with our Desktop / Organic Search result:
+
+<code align="center">
+
+sessions~o~ - sessions~e = 25 - 26.67 = -1.67
+
+-1.67^2^ = 2.78
+
+2.78 / 27 = 0.10
+
+</code>
+
+We then repeat that calculation for each cell, as shown in **Table 3** below.
+
+_**Note:** The difference between actual and expected value is referred to as "error."" With some additional arithmetic operations, we could calculate the standard deviation. If we square the standard deviation, then we will have calculated the variance. Regardless of whether we're using standard deviation or variance, we are working with error. Remember: all researchers -- including web analysts -- work with error. And error is just the difference between actual and expected values!_
+
+<div align="center">
+```{r expected_obs_diff, echo=FALSE, message=FALSE, warning=FALSE, fig.height=3, fig.width=8}
+
+df3 <- df2
+
+df3 <- mutate(df3, diff = (sessions - sessions_ev_full)^2 / sessions_ev) %>%
+  mutate(diff = round(diff,2))
+
+display <- ggplot(df3, aes(x=channel, y=device_category)) +
+  ggtitle("Table 3: Difference between expected and observed values") +
+  geom_tile(fill = "white", color = "gray50") +
+  geom_text(aes(label=diff)) +
+  theme_bw() +
+  theme(plot.title = element_text(vjust=3, face="bold"),
+    axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_text(colour="gray10", size=11, face="bold"),
+        panel.grid = element_blank(),
+        panel.border = element_blank()
+         ) +
+  scale_x_discrete(position = "top")
+
+display
+
+```
+</div>
+
+Now we sum the values for all cells shown in **Table 3**, which is **`r sum(df3$diff) %>% round(2)`**. **This is the "actual $\chi$^2^ value."
+
+## And Then... the Rejection Region!
+
+To determine whether we can reject or fail to reject our hypothesis (the null hypothesis: _H~0~) based on the actual $\chi$^2^ value equal to **`r sum(df3$diff) %>% round(2)`**, we need to determine what's called the "critical $\chi$^2^ value," and compare that to the the actual $\chi$^2^ value. To determine the critical $\chi$^2^ value, we need two inputs:
+
+1. The **degrees of freedom** in the data set. This is determined by the formula, `(R-1) x (C-1)` where **R** equals the number of rows from **Table 3** and **C** equals the number of columns from **Table 3**. In this example, the degrees of freedom is `(3-1) x (4-1) = 6`.
+
+2. The **alpha level** ($\alpha$) we wish to use. This is the "significance level" that you choose, which is the probability of making the wrong decision when the null hypothesis (_H~0~_) is actually true. The smaller the $\alpha$ you use, the harder it is to achieve significance, but the less likely you are to draw the wrong conclusion from the data. `0.05` is a pretty common $\alpha$ level to use, but there is nothing particularly magical about that value. As a matter of fact, let's get wild and crazy and use an $\alpha$ of `0.1` for this example!
+
+_**Aside:** You likely will never need to expose the $\chi$^2^ critical value, but, you could by using the base R function `qchisq()`. There's a quirk that we're not going to get into here to use it, in that you input `1-`$\alpha$ rather than just $\alpha$. For this example, we're using an $\alpha$ of `0.1` and have 6 degrees of freedom, so we could use `qchisq(1-0.1, 6)`, which returns **`r qchisq(1-0.1, 6) %>% round(2)`**._
+
+With an $\alpha$ of .1 and 6 degrees of freedom, the chi square critical value is 10.64. 
+
+We take this value and compare it to our actual $\chi$^2^ value (30.98). Since it _exceeds_ the critical chi square value (10.64), we _reject_ our hypothesis. Does that seem like it's going to be hard to keep straight? It is! So, hold on to your pants as we come at this another way.
+
+**What we just did:** We used the _degrees of freedom_ and our _selected $\alpha$_ to calculate a _critical $\chi$^2^ value_ that we compared to the _actual $\chi$^2^ value_.
+
+**What we'll more commonly do:** We can use the _degrees of freedom_ and our _actual $\chi$^2^ value_ to calculate the **p-value**, which, mathematically, is analogous to $\alpha$, but is the value _observed_ rather than a value _selected_. If our **p-value** is _smaller_ than our selected $\alpha$, then we can reject our hypothesis.
+
+Think of it this way:
+ 
+* **Degrees of freedom** -- definitionally, this is the same for both the _observed_ data and our _expected result_ if we do not reject our hypothesis that there is no relationship.
+* **$\chi$^2^ value** -- we calculate the _actual_ value from our _observed_ data, and we calculate (look up) our _critical_ value. We can compare these two results to determine whether or not to reject our hypothesis.
+* **p-value** and **$\alpha$** -- the former can be calculated based on the _degrees of freedom_ and the _actual $\chi$^2^ value_. The latter is simply selected (but must be selected in order to calculate a _critical $\chi$^2^ value_).
+
+Does that make sense? In many cases, it is easier to simply have a statistical package return a _p-value_, and that value can then be compared to the selected $/alpha$ value.
+
+## The Interpretation
+
+By _rejecting_ our hypothesis -- which was that there is _no relationship_ between device type and last touch channel -- we can conclude there actually _is a relationship_ between device type and last point of contact.
+
+Based on these results, we could:
+
+* Provide more display inserts while reducing the number of emails for laptop/desktop sessions
+* Focus on paid search for tablet sessions
+* Direct more resources toward organic search and display inserts for phone sessions
+
+These recommendations should carry more weight because they are supported by a statistical test rather than just an eyeball test.
+
+## Some Final Thoughts Before we Code!
+
+The cross tabulation with a $\chi$^2^ test for independence does provide some insight for the web analyst. But, the test is not considered terribly powerful. Indeed, it is referred to as a "low power test"" because it provides little insight beyond the _statistical existence of a relationship between two variables_. 
+
+Still, there are a number of reasons in support of using the cross tabulation with a $\chi$^2^ test for independence, including:
+
+* It's easily interpreted and easily understood by a HiPPO, manager, and/or decision maker
+* Its clarity of results provides stronger link between research and decision
+* A series of chi square test can provide more insight than ANOVA or regression
+* It overcomes the issue of having only a few observations in a cell
+* It is simple to conduct  and appealing to less experienced researchers
+* It covers up bad data collection design
+* works well with small samples or data collection efforts of observations of less than a 100 or 50.
+
+## And... with Code
+
+All of the above is a fairly laborious working through the mechanics of the $\chi$^2^ test for independence as part of a cross tabulation. While it may seem laborious and tedious in this fairly simple example, it's actually so commonly done and mechanical that just a few lines of code in R can knock out the entire thing.
+
+As a matter of fact, the steps above were actually coded in order to display the results. So, it turns out we have the data set already ready to go in a data frame called `chi_square_example`. Let's look at the first few rows of it:
+
+```{r dataset}
+chi_square_example
+```
+
+With that data, it takes all of one line of code in R to run a $\chi$^2 test for independence in R using `chisq.test()` base R function. 
+
+```{r test}
+# The [,-1] just gets rid of the row names -- the 1, 2, 3 column
+# in the above.
+chisq.test(chi_square_example[,-1])
+```
+
+So, how do we interpret these results? It's fairly straightforward:
+
+* **X-squared** -- this is the "actual $\chi$^2^ value" described above. And -- _voila!_ -- it got a matching result!
+* **df** -- these are the degrees of freedom; as described above, we have 6 in this example
+* **p-value** -- this is why we went down that confusing tangent a bit earlier! But, this is the number that we look at. In this case, we chose (just in our minds -- we didn't need to tell R what we selected) an $/alpha$ of 0.1. The p-value of `r chisq.test(chi_square_example[,-1])$p.value` can be read as `2.559e-0.5` or `0.00002559`, which is _much_ lower than 0.1.
+
+Neat, huh?

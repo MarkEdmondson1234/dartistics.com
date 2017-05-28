@@ -98,5 +98,5 @@ A best practice when creating models is to split your data into training, valida
 
 As is normal in these situations, a warning on not being rigorous in your analysis approach:
 
-_If you skip best practices such as validation or training sets, there is a danger you will make overconfident conclusions._  This is, sadly, quite common in digital marketing, where overstated claims can result in more investment in your channel, but if you truly believe in a data-driven appraoch, then that will make you less credible in the future once the overstated forecasts fail to materialise.
+_If you skip best practices such as validation or training sets, there is a danger you will make overconfident conclusions._  This is, sadly, quite common in digital marketing, where overstated claims can result in more investment in your channel, but if you truly believe in a data-driven approch, then that will make you less credible in the future once the overstated forecasts fail to materialise.
 
