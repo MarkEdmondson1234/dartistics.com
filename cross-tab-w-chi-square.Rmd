@@ -82,17 +82,15 @@ To determine the expected number of sessions from desktop users who used organic
 
 Mathematically, the formula would look like:
 
-<code align="center">
-
-(r~1~/T) x (c~1~/T) x T
-
-= (100/300) x (80/300) x 300
-
-= .33 x .27 x 300 = 26.67
-
-= 27 sessions
-
-</code>
+$$
+\begin{aligned}
+sessions_{expected} &= \frac{r_1}{T} \times \frac{c_1}{T} \times T \\
+&= \frac{100}{300} \times \frac{80}{300} \times 300 \\
+&= .33 \times .27 \times 300 \\
+&= 26.67 \\
+&= 27
+\end{aligned}
+$$
 
 We then fill in the remaining expected values to produce **Table 2**.
 
@@ -143,15 +141,23 @@ Next, we need to compare the _difference_ between the observed values in **Table
 
 Let's do that manually with our Desktop / Organic Search result:
 
-<code align="center">
+Subtract the expected value from the observed value:
 
-sessions~o~ - sessions~e = 25 - 26.67 = -1.67
+$$
+\begin{aligned}
+&= sessions_o - sessions_e \\
+&= 25 - 26.67 \\
+&= -1.67
+\end{aligned}
+$$
 
--1.67^2^ = 2.78
+Raise it to the second power:
 
-2.78 / 27 = 0.10
+$$-1.67^2=2.78$$
 
-</code>
+Divide it by the expected value:
+
+$$\frac{2.78}{27} = 0.10$$
 
 We then repeat that calculation for each cell, as shown in **Table 3** below.
 
@@ -168,7 +174,7 @@ df3 <- mutate(df3, diff = (sessions - sessions_ev_full)^2 / sessions_ev) %>%
 display <- ggplot(df3, aes(x=channel, y=device_category)) +
   ggtitle("Table 3: Difference between expected and observed values") +
   geom_tile(fill = "white", color = "gray50") +
-  geom_text(aes(label=diff)) +
+  geom_text(aes(label=sprintf("%0.2f", round(diff, digits = 2)))) +
   theme_bw() +
   theme(plot.title = element_text(vjust=3, face="bold"),
     axis.title = element_blank(),
@@ -184,7 +190,7 @@ display
 ```
 </div>
 
-Now we sum the values for all cells shown in **Table 3**, which is **`r sum(df3$diff) %>% round(2)`**. **This is the "actual $\chi$^2^ value."
+Now we sum the values for all cells shown in **Table 3**, which is **`r sum(df3$diff) %>% round(2)`**. **This is the "actual $\chi$^2^ value."**
 
 ## And Then... the Rejection Region!
 
@@ -192,17 +198,19 @@ To determine whether we can reject or fail to reject our hypothesis (the null hy
 
 1. The **degrees of freedom** in the data set. This is determined by the formula, `(R-1) x (C-1)` where **R** equals the number of rows from **Table 3** and **C** equals the number of columns from **Table 3**. In this example, the degrees of freedom is `(3-1) x (4-1) = 6`.
 
-2. The **alpha level** ($\alpha$) we wish to use. This is the "significance level" that you choose, which is the probability of making the wrong decision when the null hypothesis (_H~0~_) is actually true. The smaller the $\alpha$ you use, the harder it is to achieve significance, but the less likely you are to draw the wrong conclusion from the data. `0.05` is a pretty common $\alpha$ level to use, but there is nothing particularly magical about that value. As a matter of fact, let's get wild and crazy and use an $\alpha$ of `0.1` for this example!
+2. The **alpha level** ($\alpha$) we wish to use. This is the "significance level" that you choose, which is the allowed probability of making a "Type 1 error." A Type 1 error is... a false positive. So, the smaller the $\alpha$ you use, the harder it is to achieve significance, but the less likely you are to draw the wrong conclusion from the data. `0.05` is a pretty common $\alpha$ level to use, but there is nothing particularly magical about that value. As a matter of fact, let's get wild and crazy and use an $\alpha$ of `0.1` for this example!
 
-_**Aside:** You likely will never need to expose the $\chi$^2^ critical value, but, you could by using the base R function `qchisq()`. There's a quirk that we're not going to get into here to use it, in that you input `1-`$\alpha$ rather than just $\alpha$. For this example, we're using an $\alpha$ of `0.1` and have 6 degrees of freedom, so we could use `qchisq(1-0.1, 6)`, which returns **`r qchisq(1-0.1, 6) %>% round(2)`**._
+With these two inputs, we can look up the $\chi$^2^ critical value in any research textbook, using an [online calculator](http://www.danielsoper.com/statcalc/calculator.aspx?id=12), or referencing a [table on the web](http://sites.stat.psu.edu/~mga/401/tables/Chi-square-table.pdf).
 
-With an $\alpha$ of .1 and 6 degrees of freedom, the chi square critical value is 10.64. 
+With an $\alpha$ of .1 and 6 degrees of freedom, the critical $\chi$^2^ value is 10.64. 
 
-We take this value and compare it to our actual $\chi$^2^ value (30.98). Since it _exceeds_ the critical chi square value (10.64), we _reject_ our hypothesis. Does that seem like it's going to be hard to keep straight? It is! So, hold on to your pants as we come at this another way.
+We take this value and compare it to our actual $\chi$^2^ value (30.98). Since the actual $\chi$^2^ value _exceeds_ the critical $\chi$^2^ value (10.64), we _reject_ our hypothesis (_H~0~_). Does that seem like it's going to be hard to keep straight? It can be! But, hold on to your pants as we come at this another way.
 
-**What we just did:** We used the _degrees of freedom_ and our _selected $\alpha$_ to calculate a _critical $\chi$^2^ value_ that we compared to the _actual $\chi$^2^ value_.
+**What we just did:** We used the _degrees of freedom_ and our _selected $\alpha$_ to determine the _critical $\chi$^2^ value_, which we then compared to our _actual $\chi$^2^ value_.
 
 **What we'll more commonly do:** We can use the _degrees of freedom_ and our _actual $\chi$^2^ value_ to calculate the **p-value**, which, mathematically, is analogous to $\alpha$, but is the value _observed_ rather than a value _selected_. If our **p-value** is _smaller_ than our selected $\alpha$, then we can reject our hypothesis.
+
+**An important aside:** _While ($\alpha$) is defined as the **allowed** probability of making a Type I error, ($\alpha$)'s cousin is the **p-value**, which is defined as the **observed** probability of making of a Type I error. By comparing the ($\alpha$) (i.e., allowed) to the p-value (i.e., observed), we can determine how comfortable we are with making a Type I error given the results of the statistical test. We'll come back to this aside in a bit._
 
 Think of it this way:
  
@@ -210,7 +218,7 @@ Think of it this way:
 * **$\chi$^2^ value** -- we calculate the _actual_ value from our _observed_ data, and we calculate (look up) our _critical_ value. We can compare these two results to determine whether or not to reject our hypothesis.
 * **p-value** and **$\alpha$** -- the former can be calculated based on the _degrees of freedom_ and the _actual $\chi$^2^ value_. The latter is simply selected (but must be selected in order to calculate a _critical $\chi$^2^ value_).
 
-Does that make sense? In many cases, it is easier to simply have a statistical package return a _p-value_, and that value can then be compared to the selected $/alpha$ value.
+Does that make sense? In many cases, it is easier to simply have a statistical package return a _p-value_, and that value can then be compared to the selected $/alpha$ value. Honestly, the world would be a better place if the standard practice, instead, was to compare the actual and critical $\chi$^2^ values instead of relying on p-values, but that's a windmill that we'll have to tilt at on another day.
 
 ## The Interpretation
 
@@ -258,8 +266,10 @@ chisq.test(chi_square_example[,-1])
 
 So, how do we interpret these results? It's fairly straightforward:
 
-* **X-squared** -- this is the "actual $\chi$^2^ value" described above. And -- _voila!_ -- it got a matching result!
+* **X-squared** -- this is the "actual $\chi$^2^ value" described above. And -- _voila!_ -- the code got a matching result!
 * **df** -- these are the degrees of freedom; as described above, we have 6 in this example
-* **p-value** -- this is why we went down that confusing tangent a bit earlier! But, this is the number that we look at. In this case, we chose (just in our minds -- we didn't need to tell R what we selected) an $/alpha$ of 0.1. The p-value of `r chisq.test(chi_square_example[,-1])$p.value` can be read as `2.559e-0.5` or `0.00002559`, which is _much_ lower than 0.1.
+* **p-value** -- this is why we went down that confusing tangent a bit earlier! But, this is the number that we look at. In this case, we chose (just in our minds -- we didn't need to tell R what we selected) an $\alpha$ of 0.1. The p-value of `r chisq.test(chi_square_example[,-1])$p.value` can be read as `2.559e-0.5` or `0.00002559`, which is _much_ lower than 0.1.
+
+**Revisiting our earlier aside:** _The line of code above gives us the actual $\chi$^2^ value and a p-value. We can actually use R (if we don't want to consult a table) to get the critical $\chi$^2^ value using the base R function `qchisq()`. There's a quirk that we're not going to get into here to use it, in that we actually input `1-`$\alpha$ rather than just $\alpha$ with that function. For this example, we used an $\alpha$ of `0.1` and have 6 degrees of freedom, so we could use `qchisq(1-0.1, 6)`, which returns **`r qchisq(1-0.1, 6) %>% round(2)`**. And, we would compare that to our actual $\chi$^2^ value of 30.98 and, thus, reject H~0~. This way, we never actually would use the p-value in the R output. But, as noted earlier, doing this is essentially the same as saying "the p-value is less than 0.1," and we're not going to delve into a case for one approach over the other here._
 
 Neat, huh?

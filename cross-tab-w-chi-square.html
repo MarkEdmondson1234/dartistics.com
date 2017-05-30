@@ -418,12 +418,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li>Multiply the two quotients and the overall total</li>
 </ul>
 <p>Mathematically, the formula would look like:</p>
-<p><code align="center"></p>
-<p>(r<sub>1</sub>/T) x (c<sub>1</sub>/T) x T</p>
-<p>= (100/300) x (80/300) x 300</p>
-<p>= .33 x .27 x 300 = 26.67</p>
-<p>= 27 sessions</p>
-<p></code></p>
+<p><span class="math display">\[
+\begin{aligned}
+sessions_{expected} &amp;= \frac{r_1}{T} \times \frac{c_1}{T} \times T \\
+&amp;= \frac{100}{300} \times \frac{80}{300} \times 300 \\
+&amp;= .33 \times .27 \times 300 \\
+&amp;= 26.67 \\
+&amp;= 27
+\end{aligned}
+\]</span></p>
 <p>We then fill in the remaining expected values to produce <strong>Table 2</strong>.</p>
 <div align="center">
 <p><img src="cross-tab-w-chi-square_files/figure-html/expected-1.png" width="768" /></p>
@@ -435,37 +438,45 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li>Divide it by the expected value</li>
 </ul>
 <p>Let’s do that manually with our Desktop / Organic Search result:</p>
-<p><code align="center"></p>
-<p>sessions<sub>o</sub> - sessions~e = 25 - 26.67 = -1.67</p>
-<p>-1.67<sup>2</sup> = 2.78</p>
-<p>2.78 / 27 = 0.10</p>
-<p></code></p>
+<p>Subtract the expected value from the observed value:</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp;= sessions_o - sessions_e \\
+&amp;= 25 - 26.67 \\
+&amp;= -1.67
+\end{aligned}
+\]</span></p>
+<p>Raise it to the second power:</p>
+<p><span class="math display">\[-1.67^2=2.78\]</span></p>
+<p>Divide it by the expected value:</p>
+<p><span class="math display">\[\frac{2.78}{27} = 0.10\]</span></p>
 <p>We then repeat that calculation for each cell, as shown in <strong>Table 3</strong> below.</p>
 <p><em><strong>Note:</strong> The difference between actual and expected value is referred to as “error.”&quot; With some additional arithmetic operations, we could calculate the standard deviation. If we square the standard deviation, then we will have calculated the variance. Regardless of whether we’re using standard deviation or variance, we are working with error. Remember: all researchers – including web analysts – work with error. And error is just the difference between actual and expected values!</em></p>
 <div align="center">
 <p><img src="cross-tab-w-chi-square_files/figure-html/expected_obs_diff-1.png" width="768" /></p>
 </div>
-<p>Now we sum the values for all cells shown in <strong>Table 3</strong>, which is <strong>30.96</strong>. **This is the “actual <span class="math inline">\(\chi\)</span><sup>2</sup> value.”</p>
+<p>Now we sum the values for all cells shown in <strong>Table 3</strong>, which is <strong>30.96</strong>. <strong>This is the “actual <span class="math inline">\(\chi\)</span><sup>2</sup> value.”</strong></p>
 </div>
 <div id="and-then-the-rejection-region" class="section level2">
 <h2>And Then… the Rejection Region!</h2>
 <p>To determine whether we can reject or fail to reject our hypothesis (the null hypothesis: _H<sub>0</sub>) based on the actual <span class="math inline">\(\chi\)</span><sup>2</sup> value equal to <strong>30.96</strong>, we need to determine what’s called the “critical <span class="math inline">\(\chi\)</span><sup>2</sup> value,” and compare that to the the actual <span class="math inline">\(\chi\)</span><sup>2</sup> value. To determine the critical <span class="math inline">\(\chi\)</span><sup>2</sup> value, we need two inputs:</p>
 <ol style="list-style-type: decimal">
 <li><p>The <strong>degrees of freedom</strong> in the data set. This is determined by the formula, <code>(R-1) x (C-1)</code> where <strong>R</strong> equals the number of rows from <strong>Table 3</strong> and <strong>C</strong> equals the number of columns from <strong>Table 3</strong>. In this example, the degrees of freedom is <code>(3-1) x (4-1) = 6</code>.</p></li>
-<li><p>The <strong>alpha level</strong> (<span class="math inline">\(\alpha\)</span>) we wish to use. This is the “significance level” that you choose, which is the probability of making the wrong decision when the null hypothesis (<em>H<sub>0</sub></em>) is actually true. The smaller the <span class="math inline">\(\alpha\)</span> you use, the harder it is to achieve significance, but the less likely you are to draw the wrong conclusion from the data. <code>0.05</code> is a pretty common <span class="math inline">\(\alpha\)</span> level to use, but there is nothing particularly magical about that value. As a matter of fact, let’s get wild and crazy and use an <span class="math inline">\(\alpha\)</span> of <code>0.1</code> for this example!</p></li>
+<li><p>The <strong>alpha level</strong> (<span class="math inline">\(\alpha\)</span>) we wish to use. This is the “significance level” that you choose, which is the allowed probability of making a “Type 1 error.” A Type 1 error is… a false positive. So, the smaller the <span class="math inline">\(\alpha\)</span> you use, the harder it is to achieve significance, but the less likely you are to draw the wrong conclusion from the data. <code>0.05</code> is a pretty common <span class="math inline">\(\alpha\)</span> level to use, but there is nothing particularly magical about that value. As a matter of fact, let’s get wild and crazy and use an <span class="math inline">\(\alpha\)</span> of <code>0.1</code> for this example!</p></li>
 </ol>
-<p><em><strong>Aside:</strong> You likely will never need to expose the <span class="math inline">\(\chi\)</span><sup>2</sup> critical value, but, you could by using the base R function <code>qchisq()</code>. There’s a quirk that we’re not going to get into here to use it, in that you input <code>1-</code><span class="math inline">\(\alpha\)</span> rather than just <span class="math inline">\(\alpha\)</span>. For this example, we’re using an <span class="math inline">\(\alpha\)</span> of <code>0.1</code> and have 6 degrees of freedom, so we could use <code>qchisq(1-0.1, 6)</code>, which returns <strong>10.64</strong>.</em></p>
-<p>With an <span class="math inline">\(\alpha\)</span> of .1 and 6 degrees of freedom, the chi square critical value is 10.64.</p>
-<p>We take this value and compare it to our actual <span class="math inline">\(\chi\)</span><sup>2</sup> value (30.98). Since it <em>exceeds</em> the critical chi square value (10.64), we <em>reject</em> our hypothesis. Does that seem like it’s going to be hard to keep straight? It is! So, hold on to your pants as we come at this another way.</p>
-<p><strong>What we just did:</strong> We used the <em>degrees of freedom</em> and our <em>selected <span class="math inline">\(\alpha\)</span></em> to calculate a <em>critical <span class="math inline">\(\chi\)</span><sup>2</sup> value</em> that we compared to the <em>actual <span class="math inline">\(\chi\)</span><sup>2</sup> value</em>.</p>
+<p>With these two inputs, we can look up the <span class="math inline">\(\chi\)</span><sup>2</sup> critical value in any research textbook, using an <a href="http://www.danielsoper.com/statcalc/calculator.aspx?id=12">online calculator</a>, or referencing a <a href="http://sites.stat.psu.edu/~mga/401/tables/Chi-square-table.pdf">table on the web</a>.</p>
+<p>With an <span class="math inline">\(\alpha\)</span> of .1 and 6 degrees of freedom, the critical <span class="math inline">\(\chi\)</span><sup>2</sup> value is 10.64.</p>
+<p>We take this value and compare it to our actual <span class="math inline">\(\chi\)</span><sup>2</sup> value (30.98). Since the actual <span class="math inline">\(\chi\)</span><sup>2</sup> value <em>exceeds</em> the critical <span class="math inline">\(\chi\)</span><sup>2</sup> value (10.64), we <em>reject</em> our hypothesis (<em>H<sub>0</sub></em>). Does that seem like it’s going to be hard to keep straight? It can be! But, hold on to your pants as we come at this another way.</p>
+<p><strong>What we just did:</strong> We used the <em>degrees of freedom</em> and our <em>selected <span class="math inline">\(\alpha\)</span></em> to determine the <em>critical <span class="math inline">\(\chi\)</span><sup>2</sup> value</em>, which we then compared to our <em>actual <span class="math inline">\(\chi\)</span><sup>2</sup> value</em>.</p>
 <p><strong>What we’ll more commonly do:</strong> We can use the <em>degrees of freedom</em> and our <em>actual <span class="math inline">\(\chi\)</span><sup>2</sup> value</em> to calculate the <strong>p-value</strong>, which, mathematically, is analogous to <span class="math inline">\(\alpha\)</span>, but is the value <em>observed</em> rather than a value <em>selected</em>. If our <strong>p-value</strong> is <em>smaller</em> than our selected <span class="math inline">\(\alpha\)</span>, then we can reject our hypothesis.</p>
+<p><strong>An important aside:</strong> <em>While (<span class="math inline">\(\alpha\)</span>) is defined as the <strong>allowed</strong> probability of making a Type I error, (<span class="math inline">\(\alpha\)</span>)’s cousin is the <strong>p-value</strong>, which is defined as the <strong>observed</strong> probability of making of a Type I error. By comparing the (<span class="math inline">\(\alpha\)</span>) (i.e., allowed) to the p-value (i.e., observed), we can determine how comfortable we are with making a Type I error given the results of the statistical test. We’ll come back to this aside in a bit.</em></p>
 <p>Think of it this way:</p>
 <ul>
 <li><strong>Degrees of freedom</strong> – definitionally, this is the same for both the <em>observed</em> data and our <em>expected result</em> if we do not reject our hypothesis that there is no relationship.</li>
 <li><strong><span class="math inline">\(\chi\)</span><sup>2</sup> value</strong> – we calculate the <em>actual</em> value from our <em>observed</em> data, and we calculate (look up) our <em>critical</em> value. We can compare these two results to determine whether or not to reject our hypothesis.</li>
 <li><strong>p-value</strong> and <strong><span class="math inline">\(\alpha\)</span></strong> – the former can be calculated based on the <em>degrees of freedom</em> and the <em>actual <span class="math inline">\(\chi\)</span><sup>2</sup> value</em>. The latter is simply selected (but must be selected in order to calculate a <em>critical <span class="math inline">\(\chi\)</span><sup>2</sup> value</em>).</li>
 </ul>
-<p>Does that make sense? In many cases, it is easier to simply have a statistical package return a <em>p-value</em>, and that value can then be compared to the selected <span class="math inline">\(/alpha\)</span> value.</p>
+<p>Does that make sense? In many cases, it is easier to simply have a statistical package return a <em>p-value</em>, and that value can then be compared to the selected <span class="math inline">\(/alpha\)</span> value. Honestly, the world would be a better place if the standard practice, instead, was to compare the actual and critical <span class="math inline">\(\chi\)</span><sup>2</sup> values instead of relying on p-values, but that’s a windmill that we’ll have to tilt at on another day.</p>
 </div>
 <div id="the-interpretation" class="section level2">
 <h2>The Interpretation</h2>
@@ -512,10 +523,11 @@ chisq.test(chi_square_example[,-1])</code></pre>
 ## X-squared = 30.978, df = 6, p-value = 2.559e-05</code></pre>
 <p>So, how do we interpret these results? It’s fairly straightforward:</p>
 <ul>
-<li><strong>X-squared</strong> – this is the “actual <span class="math inline">\(\chi\)</span><sup>2</sup> value” described above. And – <em>voila!</em> – it got a matching result!</li>
+<li><strong>X-squared</strong> – this is the “actual <span class="math inline">\(\chi\)</span><sup>2</sup> value” described above. And – <em>voila!</em> – the code got a matching result!</li>
 <li><strong>df</strong> – these are the degrees of freedom; as described above, we have 6 in this example</li>
-<li><strong>p-value</strong> – this is why we went down that confusing tangent a bit earlier! But, this is the number that we look at. In this case, we chose (just in our minds – we didn’t need to tell R what we selected) an <span class="math inline">\(/alpha\)</span> of 0.1. The p-value of 2.559447310^{-5} can be read as <code>2.559e-0.5</code> or <code>0.00002559</code>, which is <em>much</em> lower than 0.1.</li>
+<li><strong>p-value</strong> – this is why we went down that confusing tangent a bit earlier! But, this is the number that we look at. In this case, we chose (just in our minds – we didn’t need to tell R what we selected) an <span class="math inline">\(\alpha\)</span> of 0.1. The p-value of 2.559447310^{-5} can be read as <code>2.559e-0.5</code> or <code>0.00002559</code>, which is <em>much</em> lower than 0.1.</li>
 </ul>
+<p><strong>Revisiting our earlier aside:</strong> <em>The line of code above gives us the actual <span class="math inline">\(\chi\)</span><sup>2</sup> value and a p-value. We can actually use R (if we don’t want to consult a table) to get the critical <span class="math inline">\(\chi\)</span><sup>2</sup> value using the base R function <code>qchisq()</code>. There’s a quirk that we’re not going to get into here to use it, in that we actually input <code>1-</code><span class="math inline">\(\alpha\)</span> rather than just <span class="math inline">\(\alpha\)</span> with that function. For this example, we used an <span class="math inline">\(\alpha\)</span> of <code>0.1</code> and have 6 degrees of freedom, so we could use <code>qchisq(1-0.1, 6)</code>, which returns <strong>10.64</strong>. And, we would compare that to our actual <span class="math inline">\(\chi\)</span><sup>2</sup> value of 30.98 and, thus, reject H<sub>0</sub>. This way, we never actually would use the p-value in the R output. But, as noted earlier, doing this is essentially the same as saying “the p-value is less than 0.1,” and we’re not going to delve into a case for one approach over the other here.</em></p>
 <p>Neat, huh?</p>
 </div>
 
