@@ -68,7 +68,7 @@ navbar:
         href: dplyr.html
       - text: "Exercise: Tidy Data / dplyr"
         href: exercise4-tidy-dplyr.html
-    - text: "Modelling"
+    - text: "Statistics"
       menu:
       - text: "Introduction"
         href: modelling-intro.html
@@ -76,6 +76,8 @@ navbar:
         href: nature-of-data.html
       - text: "Chi Square"
         href: cross-tab-w-chi-square.html
+#      - text: "ANOVA"
+#        href: anova.html
       - text: "Correlation"
         href: correlation.html
       - text: "Regression"

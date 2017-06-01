@@ -1,0 +1,227 @@
+---
+title: "ANalysis Of VAriance (ANOVA)"
+---
+  
+```{r import-csv-excel-setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## A Brief Review
+
+Earlier, we covered the [nature of data](nature-of-data.html) and [cross tabulations with a $\chi$^2^ test for independence](cross-tab-w-chi-square.html). Nominal and ordinal data are referred to as nonmetric data.
+
+Nonmetric data means that we cannot perform arithmetic operations such as addition, subtraction, multiplication, and division. Hence, we cannot calculate mean, standard deviation, skewness, and kurtosis.
+
+To analyze nonmetric data, we need to use nonparametric analytical tools such as cross tabulations with a chi square test for independence for nominal data and Spearman’s Rank Rho for ordinal data.
+
+Nonparametric is a fancy word that means we are not imposing a distribution on the data. Hence, nonparametric is sometimes referred to as distribution free.
+
+Metric data means that we can perform arithmetic operations such as addition, subtraction, multiplication, and division. Hence, we can calculate mean, standard deviation, skewness, and kurtosis.
+
+To analyze metric data, we should use parametric analytical tools such as ANOVA, correlation, and/or regression.
+
+Parametric is a fancy word that means we are imposing a distribution on the data. Normal distributions, standard normal (i.e., bell curve), skewed distributions (e.g, skewed right, skewed left, tail heavy) are examples of imposed distributions.
+
+Also, recall that with a cross tabulations with a chi square test for independence, we are  testing an association of two variables and are relying on the frequency between those cells. 
+
+If we want to measure the differences in those levels, then we need to use ANOVA.
+ 
+To apply ANOVA, we need two items. We need:
+
+At least one independent variable that is nominal in nature and has at least two levels, and
+Only one dependent variable that must be internal or ratio in nature.
+
+## 1-Way ANOVA
+
+If we have one independent variable, then we apply a 1-way ANOVA. If we have two independent variables, then we can apply an n-way ANOVA. If we have collected observations of the dependent variable several times, then we apply the repeated measures ANOVA.
+Forms of 1-way ANOVA questions
+
+Does the number of visits depend on device type? The device type serves as the independent variable and the number of visits serves as the dependent variable. Device type is nominal in nature because (a) order does not matter, (b) there is no distance between observations, and (c) it lacks a true zero.
+
+The levels, in this example, include “laptop/desktop,” “mobile,” and “tablet.” Hence, the independent variable, device type, includes three levels.
+
+-----------
+**A quick aside:** _Up to this point, in our R journey, we’ve treated “factors” as something of a nuisance that, if not converted to character vectors, can cause odd and frustrating results. Read up more on that [here](classes.html#factor). But, hopefully as you get into the content here and beyond, you will start to see how factors -- and how many levels a factor has -- start to become important. Now -- back to our 1-way ANOVA…_
+-----------
+
+The dependent variable -- number of visits in this example -- is ratio in nature because (a) order does matter, (b) there is distance between observations, and (c) it includes a true zero.
+
+The hypothesis, in this example, would be that means (or averages) between levels equals zero. That is, there is no difference between levels.
+
+In the cross tabulations with a chi square test for independence, the hypothesis was, “there is no relationship between the two variables.”
+
+The ANOVA hypothesis is similar to the chi square test for independence hypothesis because both are about no relationships. The ANOVA hypothesis is dissimilar to the chi square test for independence hypothesis because the ANOVA includes an arithmetic value (i.e, the means are equal to zero).
+1-Way ANOVA
+
+A one way ANOVA with one independent variable and only two levels will generate the same results as an independent t test. Instead of looking at the t-test though, we will look at the F ratio.
+ 
+Recall that I started with an expected value. I take an observation. The distance between the expected value and the observed value is called the error. The relevant and necessary question becomes, “Is this error attributable to laptop/desktop, mobile, and tablet (i.e., within the group) or to device type (i.e., between the group)?”
+ 
+That is, “Is this error within the variables or between the variable?”
+ 
+MSw or MSe is the mean square error within the variables. In this example, MSw or MSe refers to error within laptop/desktop, mobile, and tablet
+ 
+MSb is the mean square error between the variables. In this example, MSb refers to error in the device type.
+ 
+The F ratio is simply MSb / MSe.
+ 
+MSb + MSe = total error
+ 
+MSe or MSw = SSe or SSw / N-K where N-K is the degrees of freedom (or “d.f.”) for the within effect. SSe or SSw is the Sum of Squares error within. N is the number of groups and K is the number of levels.
+ 
+Also, MSb = SSb / K-1 where K-1 is the d.f. for the between effect and SSb is the Sum of Square error between.
+ 
+The relationship between SS and MS is the d.f.
+ 
+N-K allows us to control for how many groups were are using.
+ 
+Once we have our F ratio, then we can look up in a table.
+ 
+You will need the d.f. for both MSb and MSe.
+ 
+A 1-way ANOVA is appropriate if we want to segment on one variable such as device type or last point of contact.
+
+Rejection Region (or why we need to think about alpha)
+
+Let’s talk a bit more about Ho and alpha level. I like 5% or .05 for a two tail test. That means the rejection area will be .05/2 on the left and right of the mean.
+ 
+I like a two tail test because I do not have to think about negative values. The probability of drawing a -2.5 is just as likely as drawing a 2.5.
+ 
+If we reject the Ho because the observed value exceeds the critical or cutoff value, then we say the difference is the hypothesis. The means of the two distributions are not equal.
+ 
+For a p value of less than .05, we reject if the t value exceeds 1.96.
+ 
+The t value is referred to as the critical or cutoff value.
+
+Example of 1-way ANOVA
+
+Let’s consider three forms of channels, including: (1) desktop/laptop, (2) mobile, and (3) tablet. Also, let’s consider number of goal completions during a five-day period. Table 1 provides a display of the relationship.
+
+Table 1: Number of goal completions by channel
+Desktop/Laptop
+Mobile
+Table
+5
+4
+4
+3
+5
+2
+4
+4
+3
+5
+3
+1
+4
+3
+2
+
+First, we calculate the mean for each channel. The averages for each channel is:
+Desktop/Laptop (mean 1) = 4.2
+Mobile (mean 2) = 3.8
+Table (mean 3) = 2.4
+
+Second, we calculate the mean for all three channels combined, or the grand mean. The sum for the three channels is 52 and the mean is 3.47.
+
+Third, we determine the sum of squares error (SSe) by squaring the difference between the observed value and the expected (mean) value (see Table 2).
+
+Table 2: Squared error values
+Desktop/Laptop
+Mobile
+Table
+(5-4.2)^2=.64
+(4-3.8)^2=.04
+(4-2.4)^2=2.56
+(3-4.2)^2=1.44
+(5-3.8)^2=1.44
+(2-2.4)^2=.16
+(4-4.2)^2=.04
+(4-3.8)^2=.04
+(3-2.4)^2=.36
+(5-4.2)^2=.64
+(3-3.8)^2=.64
+(1-2.4)^2=1.96
+(4-4.2)^2=.04
+(3-3.8)^2=.64
+(2-2.4)^2=.16
+
+The sum of each group errors is:
+Desktop/Laptop (group 1) = 2.8
+Mobile (group 2) = 2.8
+Table (group 3) = 5.2
+The sum of square errors (SSe) is 10.8, or 2.8+2.8+5.2
+
+Fourth, we determine the sum of squares between groups (SSb) by subtracting the group mean from the grand mean and squaring the difference before multiplying by the number of observations in each group. Finally, we sum the products.
+
+Table 3: Squared group error values
+
+
+A
+B
+C
+D
+E
+
+
+Number of observations in each group
+Grand Mean
+Group Mean
+(B-C)^2
+A*D
+Group 1
+5
+3.47
+4.2
+.53
+2.65
+Group 2
+5
+3.47
+3.8
+.11
+.55
+Group 3
+5
+3.47
+2.4
+1.14
+5.70
+
+By summing the three values from column E in Table 3, the sum of square errors between groups (SSb) is 8.90.
+
+Fifth, we calculate the mean square errors (MSe) by dividing the SSe by the degrees of freedom. Recall, the degrees of freedom is the number of observations (N) less the number of groups or levels (K). In this example, the degrees of freedom is 12 (15-3). The MSe is .9 (SSe / df = 10.8 / 12).
+
+Sixth, we determine the mean square between groups (MSb) by divide the sum square between groups (SSb) by the degrees of freedom. Here, degrees of freedom is determined by subtracting 1 from the number of groups or levels (K). In this example, the degrees of freedom is 2 (3-1). The MSb is 4.45 (SSE / df = 8.9 / 2).
+
+Seventh, we determine the actual F value by dividing MSb by MSe. In this exmaple, the actual F value is 4.94 (MSb / MSe = 4.45/.9).
+
+Eighth, we look up the critical F value. The numerator includes 2 degrees of freedom while the denominator includes 12 degrees of freedom. With a rejection region (alpha) of .05, we can look up in a F value table that the critical F value is 3.88.
+
+Finally, we compare the actual F value (4.94) to the critical F value (3.88), to determine that we reject the null hypothesis that the means of the groups are equal. We conclude that the levels or groups are different. In this example, we could state the number of goal completions differs by channel.
+
+Examples of N-way ANOVA questions
+
+If we want to segment or otherwise consider two independent variables, then we need the N-way ANOVA. For example, we want to consider device type and last point of contact on the number of visitors.
+
+## N-way ANOVA
+ 
+The N-way ANOVA allows the web analysts to consider two issues.
+ 
+One, the web analyst can consider the interaction of two variables. That is, device type and last point of contact work together. If the interaction is statistically significant, then the web  analyst should not interpret device type and last point of contact separately when using ANOVA.
+ 
+To interpret the interaction effect, we argue for that as device type AND last point of contact change, the number of visits changes.
+ 
+If the interaction effect is not statistically significant (i.e., fail to reject), then the web analyst should interpret separately the two independent variables (e.g., device type and last point of contact), which is pretty much two one-way ANOVA.
+ 
+Two, even with the interaction effect, the web analyst should calculate eta square.
+ 
+The eta square is found by dividing  SSx or SSb divided by SSy.
+ 
+0 means SSb or SSx has no effect on SSy.
+ 
+1 means SSb or SSx explains all variance of SSy.
+ 
+Usually, the eta square value falls between 0 and 1. It provides a method to determine the effect of SSb or SSx on SSy.
+
+

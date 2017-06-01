@@ -1,0 +1,54 @@
+---
+title: "Facebook Insights"
+---
+  
+```{r fb_setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+app_id <- Sys.getenv("FB_APP_ID")
+app_secret <- Sys.getenv("FB_APP_SECRET")
+
+library(Rfacebook)
+# fb_token <- fbOAuth(app_id=app_id,app_secret=app_secret)
+```
+
+There is a pretty excellent tutorial on accessing the Facebook Insights API using the [RFacebook](https://github.com/pablobarbera/Rfacebook) package [here](https://bigdataenthusiast.wordpress.com/2016/03/19/mining-facebook-data-using-r-facebook-api/). So, this page is going to skip through the steps pretty quickly. If you want
+
+## Step 1 - Create an App ID
+
+This is similar to what you had to do for Google Analytics access, but it's with Facebook. Go to the [Facebook for Developers](http://developers.facebook.com) site, log in with your Facebook credentials, and click to add an app (a dropdown by your name at the top right as of the authoring of this page, but Facebook likes to just move things around UI-wise rather than actually improving their product, so that may not be exactly where it is now!). You'll have to give it a name and a contact email address.
+
+On the app's dashboard, you should be able to see your "App ID" and "App Secret." Grab these. You'll need them!
+
+Now, you'll also need to go to **Settings**, click **Add Platform**, choose **Website**, and then put `http://localhost:1410/` into the **Site URL** box that appears. Be sure to then click **Save Changes**. 
+
+## Step 2 - Load Rfacebook
+
+We know how to do this now, right? Two steps:
+
+* **One-time**: Install the `Rfacebook` package: `install.packages("Rfacebook")`
+* **In your script**: Load the package with the `library()` command: `library(Rfacebook)`
+
+And, you'll want to get an authentication "token." When you run the script below, a browser window should pop open asking you to authenticate with Facebook and provide permissions to access your data.
+
+```
+library(Rfacebook)
+fb_token <- fbOAuth(app_id="[YOUR APP ID]", app_secret="[YOUR APP SECRET]")
+```
+
+This will give you a token that can be used to access any "public" data. Things get a bit deeper if you need to dig into data that is more restricted, like Facebook Insights data. It should be doable, but it's beyond the scope of this content.
+
+## Step 3 - Start Getting Data
+
+Let's look at just a few examples of the sorts of data we can now pull.
+
+```{r getpage}
+# Recent posts from the Digital Analytics Power Hour Facebook page
+# recent_posts <- getPage("analyticshour", fb_token)
+
+# head(recent_posts)
+```
+
+
+
+
