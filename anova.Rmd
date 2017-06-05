@@ -1,5 +1,9 @@
 ---
 title: "ANalysis Of VAriance (ANOVA)"
+output:
+  html_document:
+    toc: true
+    toc_float: true
 ---
   
 ```{r import-csv-excel-setup, include=FALSE}
@@ -95,136 +99,130 @@ Once we have our observed F ratio, we can look up the critical value for the F r
  
 A 1-way ANOVA is appropriate if we want to segment on one variable such as device type or last point of contact.
 
-# Rejection Region (or why we need to think about alpha)
+## Rejection Region (or why we need to think about alpha)
 
 Let’s talk a bit more about _H~0~ and $\alpha$ level. I like 5% or .05 for a two tail test, which means the rejection area will be .05/2 on the left and right of the mean.
  
 I like a two tail test because I do not have to think about negative values. The probability of drawing a -2.5 is just as likely as drawing a 2.5.
  
-If we reject the _H~0~_ because the observed value exceeds the critical or cutoff value, then we say the difference is the hypothesis. The means of the two distributions are not equal.
+If we reject the _H~0~_ because the observed value exceeds the critical or cutoff value, then we say the difference is the hypothesis. The means the two distributions are not equal.
  
-For a p-value of less than .05, we reject if the t value exceeds 1.96.
+For a p-value of less than .05, we reject if the _t_-value exceeds 1.96.
  
-The t-value is referred to as the critical or cutoff value.
+The _t_-value is referred to as the critical or cutoff value.
 
-# Example of 1-way ANOVA
+## Example of 1-way ANOVA
 
 Let’s consider three forms of channels, including:
 
 1. Desktop/Laptop
-2. Mobile, and
-3. Tablet. 
+2. Mobile
+3. Tablet 
 
 Also, let’s consider the number of goal completions during a five-day period. Table 1 provides a display of the relationship.
 
-Table 1: Number of goal completions by channel
-Desktop/Laptop
-Mobile
-Table
-5
-4
-4
-3
-5
-2
-4
-4
-3
-5
-3
-1
-4
-3
-2
+<div style="text-align: center;">**Table 1: Number of Goal Completions by Channel**</div>
 
-First, we calculate the mean for each channel. The averages for each channel is:
-Desktop/Laptop (mean 1) = 4.2
-Mobile (mean 2) = 3.8
-Table (mean 3) = 2.4
+|  Desktop/Laptop  |      Mobile       |       Tablet       |
+|:----------------:|:-----------------:|:------------------:|
+|        5         |         4         |          4         |
+|        3         |         5         |          2         |
+|        4         |         4         |          3         |
+|        5         |         3         |          1         |
+|        4         |         3         |          2         |
 
-Second, we calculate the mean for all three channels combined, or the grand mean. The sum for the three channels is 52 and the mean is 3.47.
+### 1. Calculate the Mean for Each Channel
 
-Third, we determine the sum of squares error (SSe) by squaring the difference between the observed value and the expected (mean) value (see Table 2).
+The averages for each channel are:
 
-Table 2: Squared error values
-Desktop/Laptop
-Mobile
-Table
-(5-4.2)^2=.64
-(4-3.8)^2=.04
-(4-2.4)^2=2.56
-(3-4.2)^2=1.44
-(5-3.8)^2=1.44
-(2-2.4)^2=.16
-(4-4.2)^2=.04
-(4-3.8)^2=.04
-(3-2.4)^2=.36
-(5-4.2)^2=.64
-(3-3.8)^2=.64
-(1-2.4)^2=1.96
-(4-4.2)^2=.04
-(3-3.8)^2=.64
-(2-2.4)^2=.16
+* Desktop/Laptop (mean 1) = 4.2
+* Mobile (mean 2) = 3.8
+* Table (mean 3) = 2.4
+
+### 2. Calculate the Mean for All Three Channels Combined
+
+This is called the "grand mean."" The sum for the three channels is 52 and the mean is 3.47.
+
+### 3. Determine the Sum of Squares Error (_SS~e~_)
+
+We calculate _SS~e~_ by squaring the difference between the observed value and the expected (mean) value:
+
+<div style="text-align: center;">**Table 2: Squared Error Values**</div>
+
+
+|   Desktop/Laptop   |       Mobile        |       Tablet        |
+|:------------------:|:-------------------:|:-------------------:|
+|  (5-4.2)^2^=0.64   |   (4-3.8)^2^=0.04   |   (4-2.4)^2^=2.56   |
+|  (3-4.2)^2^=1.44   |   (5-3.8)^2^=1.44   |   (2-2.4)^2^=0.16   |
+|  (4-4.2)^2^=0.04   |   (4-3.8)^2^=0.04   |   (3-2.4)^2^=0.36   |
+|  (5-4.2)^2^=0.64   |   (3-3.8)^2^=0.64   |   (1-2.4)^2^=1.96   |
+|  (4-4.2)^2^=0.04   |   (3-3.8)^2^=0.64   |   (2-2.4)^2^=0.16   |
 
 The sum of each group errors is:
-Desktop/Laptop (group 1) = 2.8
-Mobile (group 2) = 2.8
-Table (group 3) = 5.2
-The sum of square errors (SSe) is 10.8, or 2.8+2.8+5.2
 
-Fourth, we determine the sum of squares between groups (SSb) by subtracting the group mean from the grand mean and squaring the difference before multiplying by the number of observations in each group. Finally, we sum the products.
+* Desktop/Laptop (group 1) = 2.8
+* Mobile (group 2) = 2.8
+* Tablet (group 3) = 5.2
 
-Table 3: Squared group error values
+That gets us to the _sum_ of squares errors (_SS~e~_):
 
+$$SS_e = 2.8+2.8+5.2 = 10.8$$
+### 4. Determine the Sum of Squares _Between_ Groups (_SS~b~_)
 
-A
-B
-C
-D
-E
+We determine _SS~b~_ by subtracting the group mean from the grand mean and squaring the difference before multiplying by the number of observations in each group. Finally, we sum the products.
+
+<div style="text-align: center;">**Table 3: Squared group error values**</div>
 
 
-Number of observations in each group
-Grand Mean
-Group Mean
-(B-C)^2
-A*D
-Group 1
-5
-3.47
-4.2
-.53
-2.65
-Group 2
-5
-3.47
-3.8
-.11
-.55
-Group 3
-5
-3.47
-2.4
-1.14
-5.70
+|              | **A**<br>------------------<br># of Observations | **B**<br>-------------<br>Grand Mean  | **C**<br>-------------<br>Group Mean | **D**<br>---------<br>(B-C)^2^  | **E**<br>-------<br>A*D   |
+|:----------------------------|:-----------------:|:----------:|:----------:|:----------:|:--------:|
+|  Group 1 (Desktop/Laptop)   |         5         |     3.47   |     4.2    |    0.53    |   2.65   |
+|  Group 2 (Mobile)           |         5         |     3.47   |     3.8    |    0.11    |   0.55   |
+|  Group 1 (Tablet)           |         5         |     3.47   |     2.4    |    1.14    |   5.70   |
 
-By summing the three values from column E in Table 3, the sum of square errors between groups (SSb) is 8.90.
 
-Fifth, we calculate the mean square errors (MSe) by dividing the SSe by the degrees of freedom. Recall, the degrees of freedom is the number of observations (N) less the number of groups or levels (K). In this example, the degrees of freedom is 12 (15-3). The MSe is .9 (SSe / df = 10.8 / 12).
+By summing the three values from column E in Table 3, we get the sum of square errors between groups (_SS~b~_):
 
-Sixth, we determine the mean square between groups (MSb) by divide the sum square between groups (SSb) by the degrees of freedom. Here, degrees of freedom is determined by subtracting 1 from the number of groups or levels (K). In this example, the degrees of freedom is 2 (3-1). The MSb is 4.45 (SSE / df = 8.9 / 2).
+$$SS_b = 2.65 + 0.55 + 5.70 = 8.90$$
 
-Seventh, we determine the actual F value by dividing MSb by MSe. In this exmaple, the actual F value is 4.94 (MSb / MSe = 4.45/.9).
+### 5. Calculate the Mean Square Errors (_MS~e~_) 
 
-Eighth, we look up the critical F value. The numerator includes 2 degrees of freedom while the denominator includes 12 degrees of freedom. With a rejection region (alpha) of .05, we can look up in a F value table that the critical F value is 3.88.
+We calculate _ME~e~_ by dividing the _SS~e~_ by the degrees of freedom. Recall, the degrees of freedom is the number of observations (_N_) less the number of groups or levels (_K_). In this example, the degrees of freedom is
 
-Finally, we compare the actual F value (4.94) to the critical F value (3.88), to determine that we reject the null hypothesis that the means of the groups are equal. We conclude that the levels or groups are different. In this example, we could state the number of goal completions differs by channel.
+$$df = N - K = 15 -3 = 12$$
+So:
+
+$$MS_e = \frac{SS_e}{df} = \frac{10.8}{12} = 0.9$$
+
+### 6. Determine the Mean Square Between Groups (_MS~b~_)
+
+We determine _MS~b~_ by dividing the sum of square between groups (_SS~b~_) by the degrees of freedom. Here, degrees of freedom is determined by subtracting 1 from the number of groups or levels (_K_):
+
+$$df = 3 - 1 = 2$$
+
+So:
+
+$$MS_b = \frac{SS_e}{df} = \frac{8.9}{2} = 4.45$$
+
+### 7. Determine the Actual F-value
+
+(We're close!) We determine the actual F value by dividing _MS~b~_ by _MS~e~_:
+
+$$F = \frac{MS_b}{MS_e} = \frac{4.45}{0.9} = 4.94$$
+
+### 8. Look Up the Critical F-value
+
+We look up (or ask R to look up, using the base R `qf()` function) the critical F value. The numerator includes 2 degrees of freedom while the denominator includes 12 degrees of freedom. With a rejection region ($\alpha$) of .05, we can look up that the critical F value is 3.88.
+
+### 9. Compare the Actual and Critical F-values
+
+Finally, we compare the actual F value (4.94) to the critical F value (3.88), to determine that we reject the null hypothesis (_H~0~_) that the means of the groups are equal. Therefore, we conclude that the levels or groups are _different_. In this example, we could, therefore, state that the number of goal completions _does_ differ by channel.
 
 Examples of N-way ANOVA questions
 
 If we want to segment or otherwise consider two independent variables, then we need the N-way ANOVA. For example, we want to consider device type and last point of contact on the number of visitors.
 
-## N-way ANOVA
+N-way ANOVA
  
 The N-way ANOVA allows the web analysts to consider two issues.
  
@@ -234,7 +232,7 @@ To interpret the interaction effect, we argue for that as device type AND last p
  
 If the interaction effect is not statistically significant (i.e., fail to reject), then the web analyst should interpret separately the two independent variables (e.g., device type and last point of contact), which is pretty much two one-way ANOVA.
  
-Two, even with the interaction effect, the web analyst should calculate eta square.
+Two, regardless of whether the interaction effect appears statistically significant, the digital analyst should calculate eta square.
  
 The eta square is found by dividing  SSx or SSb divided by SSy.
  
@@ -244,4 +242,162 @@ The eta square is found by dividing  SSx or SSb divided by SSy.
  
 Usually, the eta square value falls between 0 and 1. It provides a method to determine the effect of SSb or SSx on SSy.
 
+Let’s consider the following table with last point of contact on the column and device type on the row. The cells contain the number of goals completed (Table 2).
 
+Table 2: Mean Number of Goals Completed by Device Type and Last Point of Contact
+
+
+Organic Search
+Paid Search
+Email
+Display
+Overall Averages by Device Type
+Laptop/Desktop
+325
+215
+225
+325
+272.50
+Tablet
+275
+165
+175
+160
+228.75
+Phone
+245
+135
+145
+110
+166.25
+Overall Averages by Last Point of Contact
+276.67
+203.33
+200.00
+210.00
+
+
+
+For this example, let’s assume the interaction effect of device type and last point of contact appears statistically significant.
+
+Main Effect Interpretation
+Device type and, separately, last point of contact appear to have a main effect on number of goals completed. We note that laptop/desktop users are more likely to complete more goals compared to phone users. Similarly, customers who rely on organic search to reach our website are more likely to complete more goals compared to other points of last contact. 
+
+Interaction Effect Interpretation
+The difference for laptop/desktop users compared to tablet and phone users remains constant across the last point of contact until display is considered. The difference changes between device type at display. Hence, we can state that the relationship between device type and number of goals completed interacts with the last point of contact.
+
+The interaction in this example is referred to as Ordinal Interaction because the order of the levels matters. Table 3 provides an example of no interaction.
+
+Table 3: Mean Number of Goals Completed by Device Type and Last Point of Contact
+
+
+Organic Search
+Paid Search
+Email
+Display
+Overall Averages by Device Type
+Laptop/Desktop
+325
+215
+225
+235
+250
+Tablet
+275
+165
+175
+185
+200
+Phone
+245
+135
+145
+155
+170
+Overall Averages by Last Point of Contact
+281.67
+171.67
+181.67
+191.67
+
+
+
+Table 3 shows no interaction. As we move down device type and across last point of contact, we see a monotonic transformation. That is, the pattern remains constant.
+
+Table 4 highlights an example of disordinal interaction with non cross over.
+
+Table 4: Mean Number of Goals Completed by Device Type and Last Point of Contact
+
+
+Organic Search
+Paid Search
+Email
+Display
+Overall Averages by Device Type
+Laptop/Desktop
+325
+215
+225
+235
+250
+Tablet
+275
+185
+170
+210
+210
+Phone
+250
+170
+120
+160
+175
+Overall Averages by Last Point of Contact
+283.33
+190.00
+171.67
+201.67
+
+
+
+As we move down device type and across last point of contact, we see the differences change. However, the cells never cross. That is, the number of goals completed for laptop/desktop never falls below tablet or phone regardless of last point of contact.
+
+Finally, Table 5 provides an example of disordinal interaction with crossover.
+
+Table 4: Mean Number of Goals Completed by Device Type and Last Point of Contact
+
+
+Organic Search
+Paid Search
+Email
+Display
+Overall Averages by Device Type
+Laptop/Desktop
+325
+215
+200
+235
+243.75
+Tablet
+275
+185
+230
+175
+216.25
+Phone
+250
+170
+120
+190
+182.50
+Overall Averages by Last Point of Contact
+283.33
+190.00
+183.33
+200.00
+
+
+
+As we move down device type and across last point of contact, we see the differences change and the cells cross. That is, the number of goals completed for laptop/desktop falls below tablet at email and phone appears greater than tablet at display.
+
+The type of interaction as discussed in Tables 2, 3, 4, and 5 give a completeness to the analysis. The interaction effect serves as the singular reason to perform this analysis.

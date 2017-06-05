@@ -19,6 +19,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-1.1/highlight.js"></script>
@@ -160,6 +163,101 @@ $(document).ready(function () {
 <!-- code folding -->
 
 
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -429,59 +527,264 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>A one way ANOVA with one independent variable and only two levels will generate the same results as an independent t-test (which, mysteriously, we’re not going to define here; perhaps, some day, we will come back to that). Instead of looking at the t-test though, we will look at the F ratio.</p>
 <p>Recall that we started with an <em>expected value</em>. We then took an observation. The distance between the <em>expected value</em> and the <em>observed value</em> is called the error. The relevant and necessary question becomes: “Is this error attributable to laptop/desktop, mobile, and tablet (i.e., within the group) or to device type (i.e., between the group)?”</p>
 <p>That is, “Is this error <em>within</em> the variables or <em>between</em> the variable?”</p>
-<p><span class="math display">\[MS_w\]</span> or <span class="math display">\[MS_e\]</span> is the mean square error within the variables. In this example, MSw or MSe refers to error within laptop/desktop, mobile, and tablet</p>
-<p>MSb is the mean square error between the variables. In this example, MSb refers to error in the device type.</p>
-<p>The F ratio is simply MSb / MSe.</p>
-<p>MSb + MSe = total error</p>
-<p>MSe or MSw = SSe or SSw / N-K where N-K is the degrees of freedom (or “d.f.”) for the within effect. SSe or SSw is the Sum of Squares error within. N is the number of groups and K is the number of levels.</p>
-<p>Also, MSb = SSb / K-1 where K-1 is the d.f. for the between effect and SSb is the Sum of Square error between.</p>
-<p>The relationship between SS and MS is the d.f.</p>
-<p>N-K allows us to control for how many groups were are using.</p>
-<p>Once we have our F ratio, then we can look up in a table.</p>
-<p>You will need the d.f. for both MSb and MSe.</p>
+<p><em>MS<sub>w</sub></em> or <em>MS<sub>e</sub></em> is the mean square error within the variables. In this example, <em>MS<sub>w</sub></em> or <em>MS<sub>e</sub></em> refers to error <em>within</em> laptop/desktop, mobile, and tablet.</p>
+<p><em>MS<sub>b</sub></em> is the mean square error <em>between</em> the variables. In this example, <em>MS<sub>b</sub></em> refers to error in the device type.</p>
+<p>So, hold onto your socks for a minute while we drop some formulas.</p>
+<p>Ultimately, we want to get an “F ratio,” which, similarly to how we compared the actual <span class="math inline">\(\chi\)</span><sup>2</sup> to the critical <span class="math inline">\(\chi\)</span><sup>2</sup>, we will compare to a table of F distribution values with a select <span class="math inline">\(\alpha\)</span> level.</p>
+<p>“Simply” put, the F ratio is: <span class="math display">\[F = \frac{MS_b}{MS_e}\]</span></p>
+<p>Of course, we have to actually figure out what <em>MS<sub>b</sub></em> and <em>MS<sub>w</sub></em> are, which requires breaking things down a bit:</p>
+<p><span class="math display">\[MS_b + MS_e = Total~Error\]</span></p>
+<p><span class="math display">\[MS_e~(or~MS_w~) = \frac{SS_e~(or~SS_w)}{N-K}\]</span></p>
+<p>Where:</p>
+<ul>
+<li><em>SS<sub>e</sub></em> (or <em>SS<sub>w</sub></em>) is the Sum of Squares error within</li>
+<li><em>N</em> is the number of groups</li>
+<li><em>K</em> is the number of levels.</li>
+</ul>
+<p><em>N - K</em> is the degrees of freedom (or “d.f.”) for the within effect.</p>
+<p>And:</p>
+<p><span class="math display">\[MS_b = \frac{SS_b}{K-1}\]</span> where <em>K-1</em> is the d.f. for the “between effect” and <em>SS<sub>b</sub></em> is the Sum of Square error between.</p>
+<p>The relationship between <em>SS</em> and <em>MS</em> is the d.f.</p>
+<p><em>N - K</em> allows us to control for how many groups we are using.</p>
+<p><em><whew></em> Still following?</p>
+<p>Once we have our observed F ratio, we can look up the critical value for the F ratio <a href="http://www.socr.ucla.edu/Applets.dir/F_Table.html">in a table</a>. Note that you will need the d.f. for both <em>MS~b</em> and for <em>MS~e</em> (and, once again, you will have to choose your <span class="math inline">\(\alpha\)</span> level). (You can also use the “quantile function” – <code>qf()</code> in base R to get the critical value).</p>
 <p>A 1-way ANOVA is appropriate if we want to segment on one variable such as device type or last point of contact.</p>
-<p>Rejection Region (or why we need to think about alpha)</p>
-<p>Let’s talk a bit more about Ho and alpha level. I like 5% or .05 for a two tail test. That means the rejection area will be .05/2 on the left and right of the mean.</p>
+</div>
+<div id="rejection-region-or-why-we-need-to-think-about-alpha" class="section level2">
+<h2>Rejection Region (or why we need to think about alpha)</h2>
+<p>Let’s talk a bit more about _H<sub>0</sub> and <span class="math inline">\(\alpha\)</span> level. I like 5% or .05 for a two tail test, which means the rejection area will be .05/2 on the left and right of the mean.</p>
 <p>I like a two tail test because I do not have to think about negative values. The probability of drawing a -2.5 is just as likely as drawing a 2.5.</p>
-<p>If we reject the Ho because the observed value exceeds the critical or cutoff value, then we say the difference is the hypothesis. The means of the two distributions are not equal.</p>
-<p>For a p value of less than .05, we reject if the t value exceeds 1.96.</p>
-<p>The t value is referred to as the critical or cutoff value.</p>
-<p>Example of 1-way ANOVA</p>
-<p>Let’s consider three forms of channels, including: (1) desktop/laptop, (2) mobile, and (3) tablet. Also, let’s consider number of goal completions during a five-day period. Table 1 provides a display of the relationship.</p>
-<p>Table 1: Number of goal completions by channel Desktop/Laptop Mobile Table 5 4 4 3 5 2 4 4 3 5 3 1 4 3 2</p>
-<p>First, we calculate the mean for each channel. The averages for each channel is: Desktop/Laptop (mean 1) = 4.2 Mobile (mean 2) = 3.8 Table (mean 3) = 2.4</p>
-<p>Second, we calculate the mean for all three channels combined, or the grand mean. The sum for the three channels is 52 and the mean is 3.47.</p>
-<p>Third, we determine the sum of squares error (SSe) by squaring the difference between the observed value and the expected (mean) value (see Table 2).</p>
-<p>Table 2: Squared error values Desktop/Laptop Mobile Table (5-4.2)<sup>2=.64 (4-3.8)</sup>2=.04 (4-2.4)<sup>2=2.56 (3-4.2)</sup>2=1.44 (5-3.8)<sup>2=1.44 (2-2.4)</sup>2=.16 (4-4.2)<sup>2=.04 (4-3.8)</sup>2=.04 (3-2.4)<sup>2=.36 (5-4.2)</sup>2=.64 (3-3.8)<sup>2=.64 (1-2.4)</sup>2=1.96 (4-4.2)<sup>2=.04 (3-3.8)</sup>2=.64 (2-2.4)^2=.16</p>
-<p>The sum of each group errors is: Desktop/Laptop (group 1) = 2.8 Mobile (group 2) = 2.8 Table (group 3) = 5.2 The sum of square errors (SSe) is 10.8, or 2.8+2.8+5.2</p>
-<p>Fourth, we determine the sum of squares between groups (SSb) by subtracting the group mean from the grand mean and squaring the difference before multiplying by the number of observations in each group. Finally, we sum the products.</p>
-<p>Table 3: Squared group error values</p>
-<p>A B C D E</p>
-<p>Number of observations in each group Grand Mean Group Mean (B-C)^2 A*D Group 1 5 3.47 4.2 .53 2.65 Group 2 5 3.47 3.8 .11 .55 Group 3 5 3.47 2.4 1.14 5.70</p>
-<p>By summing the three values from column E in Table 3, the sum of square errors between groups (SSb) is 8.90.</p>
-<p>Fifth, we calculate the mean square errors (MSe) by dividing the SSe by the degrees of freedom. Recall, the degrees of freedom is the number of observations (N) less the number of groups or levels (K). In this example, the degrees of freedom is 12 (15-3). The MSe is .9 (SSe / df = 10.8 / 12).</p>
-<p>Sixth, we determine the mean square between groups (MSb) by divide the sum square between groups (SSb) by the degrees of freedom. Here, degrees of freedom is determined by subtracting 1 from the number of groups or levels (K). In this example, the degrees of freedom is 2 (3-1). The MSb is 4.45 (SSE / df = 8.9 / 2).</p>
-<p>Seventh, we determine the actual F value by dividing MSb by MSe. In this exmaple, the actual F value is 4.94 (MSb / MSe = 4.45/.9).</p>
-<p>Eighth, we look up the critical F value. The numerator includes 2 degrees of freedom while the denominator includes 12 degrees of freedom. With a rejection region (alpha) of .05, we can look up in a F value table that the critical F value is 3.88.</p>
-<p>Finally, we compare the actual F value (4.94) to the critical F value (3.88), to determine that we reject the null hypothesis that the means of the groups are equal. We conclude that the levels or groups are different. In this example, we could state the number of goal completions differs by channel.</p>
+<p>If we reject the <em>H<sub>0</sub></em> because the observed value exceeds the critical or cutoff value, then we say the difference is the hypothesis. The means the two distributions are not equal.</p>
+<p>For a p-value of less than .05, we reject if the <em>t</em>-value exceeds 1.96.</p>
+<p>The <em>t</em>-value is referred to as the critical or cutoff value.</p>
+</div>
+<div id="example-of-1-way-anova" class="section level2">
+<h2>Example of 1-way ANOVA</h2>
+<p>Let’s consider three forms of channels, including:</p>
+<ol style="list-style-type: decimal">
+<li>Desktop/Laptop</li>
+<li>Mobile</li>
+<li>Tablet</li>
+</ol>
+<p>Also, let’s consider the number of goal completions during a five-day period. Table 1 provides a display of the relationship.</p>
+<div style="text-align: center;">
+<strong>Table 1: Number of Goal Completions by Channel</strong>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Desktop/Laptop</th>
+<th align="center">Mobile</th>
+<th align="center">Tablet</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">4</td>
+<td align="center">4</td>
+</tr>
+<tr class="even">
+<td align="center">3</td>
+<td align="center">5</td>
+<td align="center">2</td>
+</tr>
+<tr class="odd">
+<td align="center">4</td>
+<td align="center">4</td>
+<td align="center">3</td>
+</tr>
+<tr class="even">
+<td align="center">5</td>
+<td align="center">3</td>
+<td align="center">1</td>
+</tr>
+<tr class="odd">
+<td align="center">4</td>
+<td align="center">3</td>
+<td align="center">2</td>
+</tr>
+</tbody>
+</table>
+<div id="calculate-the-mean-for-each-channel" class="section level3">
+<h3>1. Calculate the Mean for Each Channel</h3>
+<p>The averages for each channel are:</p>
+<ul>
+<li>Desktop/Laptop (mean 1) = 4.2</li>
+<li>Mobile (mean 2) = 3.8</li>
+<li>Table (mean 3) = 2.4</li>
+</ul>
+</div>
+<div id="calculate-the-mean-for-all-three-channels-combined" class="section level3">
+<h3>2. Calculate the Mean for All Three Channels Combined</h3>
+<p>This is called the “grand mean.”&quot; The sum for the three channels is 52 and the mean is 3.47.</p>
+</div>
+<div id="determine-the-sum-of-squares-error-sse" class="section level3">
+<h3>3. Determine the Sum of Squares Error (<em>SS<sub>e</sub></em>)</h3>
+<p>We calculate <em>SS<sub>e</sub></em> by squaring the difference between the observed value and the expected (mean) value:</p>
+<div style="text-align: center;">
+<strong>Table 2: Squared Error Values</strong>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Desktop/Laptop</th>
+<th align="center">Mobile</th>
+<th align="center">Tablet</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">(5-4.2)<sup>2</sup>=0.64</td>
+<td align="center">(4-3.8)<sup>2</sup>=0.04</td>
+<td align="center">(4-2.4)<sup>2</sup>=2.56</td>
+</tr>
+<tr class="even">
+<td align="center">(3-4.2)<sup>2</sup>=1.44</td>
+<td align="center">(5-3.8)<sup>2</sup>=1.44</td>
+<td align="center">(2-2.4)<sup>2</sup>=0.16</td>
+</tr>
+<tr class="odd">
+<td align="center">(4-4.2)<sup>2</sup>=0.04</td>
+<td align="center">(4-3.8)<sup>2</sup>=0.04</td>
+<td align="center">(3-2.4)<sup>2</sup>=0.36</td>
+</tr>
+<tr class="even">
+<td align="center">(5-4.2)<sup>2</sup>=0.64</td>
+<td align="center">(3-3.8)<sup>2</sup>=0.64</td>
+<td align="center">(1-2.4)<sup>2</sup>=1.96</td>
+</tr>
+<tr class="odd">
+<td align="center">(4-4.2)<sup>2</sup>=0.04</td>
+<td align="center">(3-3.8)<sup>2</sup>=0.64</td>
+<td align="center">(2-2.4)<sup>2</sup>=0.16</td>
+</tr>
+</tbody>
+</table>
+<p>The sum of each group errors is:</p>
+<ul>
+<li>Desktop/Laptop (group 1) = 2.8</li>
+<li>Mobile (group 2) = 2.8</li>
+<li>Tablet (group 3) = 5.2</li>
+</ul>
+<p>That gets us to the <em>sum</em> of squares errors (<em>SS<sub>e</sub></em>):</p>
+<p><span class="math display">\[SS_e = 2.8+2.8+5.2 = 10.8\]</span> ### 4. Determine the Sum of Squares <em>Between</em> Groups (<em>SS<sub>b</sub></em>)</p>
+<p>We determine <em>SS<sub>b</sub></em> by subtracting the group mean from the grand mean and squaring the difference before multiplying by the number of observations in each group. Finally, we sum the products.</p>
+<div style="text-align: center;">
+<strong>Table 3: Squared group error values</strong>
+</div>
+<table>
+<colgroup>
+<col width="30%" />
+<col width="20%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center"><strong>A</strong><br>——————<br># of Observations</th>
+<th align="center"><strong>B</strong><br>————-<br>Grand Mean</th>
+<th align="center"><strong>C</strong><br>————-<br>Group Mean</th>
+<th align="center"><strong>D</strong><br>———<br>(B-C)<sup>2</sup></th>
+<th align="center"><strong>E</strong><br>——-<br>A*D</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Group 1 (Desktop/Laptop)</td>
+<td align="center">5</td>
+<td align="center">3.47</td>
+<td align="center">4.2</td>
+<td align="center">0.53</td>
+<td align="center">2.65</td>
+</tr>
+<tr class="even">
+<td align="left">Group 2 (Mobile)</td>
+<td align="center">5</td>
+<td align="center">3.47</td>
+<td align="center">3.8</td>
+<td align="center">0.11</td>
+<td align="center">0.55</td>
+</tr>
+<tr class="odd">
+<td align="left">Group 1 (Tablet)</td>
+<td align="center">5</td>
+<td align="center">3.47</td>
+<td align="center">2.4</td>
+<td align="center">1.14</td>
+<td align="center">5.70</td>
+</tr>
+</tbody>
+</table>
+<p>By summing the three values from column E in Table 3, we get the sum of square errors between groups (<em>SS<sub>b</sub></em>):</p>
+<p><span class="math display">\[SS_b = 2.65 + 0.55 + 5.70 = 8.90\]</span></p>
+</div>
+<div id="calculate-the-mean-square-errors-mse" class="section level3">
+<h3>5. Calculate the Mean Square Errors (<em>MS<sub>e</sub></em>)</h3>
+<p>We calculate <em>ME<sub>e</sub></em> by dividing the <em>SS<sub>e</sub></em> by the degrees of freedom. Recall, the degrees of freedom is the number of observations (<em>N</em>) less the number of groups or levels (<em>K</em>). In this example, the degrees of freedom is</p>
+<p><span class="math display">\[df = N - K = 15 -3 = 12\]</span> So:</p>
+<p><span class="math display">\[MS_e = \frac{SS_e}{df} = \frac{10.8}{12} = 0.9\]</span></p>
+</div>
+<div id="determine-the-mean-square-between-groups-msb" class="section level3">
+<h3>6. Determine the Mean Square Between Groups (<em>MS<sub>b</sub></em>)</h3>
+<p>We determine <em>MS<sub>b</sub></em> by dividing the sum of square between groups (<em>SS<sub>b</sub></em>) by the degrees of freedom. Here, degrees of freedom is determined by subtracting 1 from the number of groups or levels (<em>K</em>):</p>
+<p><span class="math display">\[df = 3 - 1 = 2\]</span></p>
+<p>So:</p>
+<p><span class="math display">\[MS_b = \frac{SS_e}{df} = \frac{8.9}{2} = 4.45\]</span></p>
+</div>
+<div id="determine-the-actual-f-value" class="section level3">
+<h3>7. Determine the Actual F-value</h3>
+<p>(We’re close!) We determine the actual F value by dividing <em>MS<sub>b</sub></em> by <em>MS<sub>e</sub></em>:</p>
+<p><span class="math display">\[F = \frac{MS_b}{MS_e} = \frac{4.45}{0.9} = 4.94\]</span></p>
+</div>
+<div id="look-up-the-critical-f-value" class="section level3">
+<h3>8. Look Up the Critical F-value</h3>
+<p>We look up (or ask R to look up, using the base R <code>qf()</code> function) the critical F value. The numerator includes 2 degrees of freedom while the denominator includes 12 degrees of freedom. With a rejection region (<span class="math inline">\(\alpha\)</span>) of .05, we can look up that the critical F value is 3.88.</p>
+</div>
+<div id="compare-the-actual-and-critical-f-values" class="section level3">
+<h3>9. Compare the Actual and Critical F-values</h3>
+<p>Finally, we compare the actual F value (4.94) to the critical F value (3.88), to determine that we reject the null hypothesis (<em>H<sub>0</sub></em>) that the means of the groups are equal. Therefore, we conclude that the levels or groups are <em>different</em>. In this example, we could, therefore, state that the number of goal completions <em>does</em> differ by channel.</p>
 <p>Examples of N-way ANOVA questions</p>
 <p>If we want to segment or otherwise consider two independent variables, then we need the N-way ANOVA. For example, we want to consider device type and last point of contact on the number of visitors.</p>
-</div>
-<div id="n-way-anova" class="section level2">
-<h2>N-way ANOVA</h2>
+<p>N-way ANOVA</p>
 <p>The N-way ANOVA allows the web analysts to consider two issues.</p>
 <p>One, the web analyst can consider the interaction of two variables. That is, device type and last point of contact work together. If the interaction is statistically significant, then the web analyst should not interpret device type and last point of contact separately when using ANOVA.</p>
 <p>To interpret the interaction effect, we argue for that as device type AND last point of contact change, the number of visits changes.</p>
 <p>If the interaction effect is not statistically significant (i.e., fail to reject), then the web analyst should interpret separately the two independent variables (e.g., device type and last point of contact), which is pretty much two one-way ANOVA.</p>
-<p>Two, even with the interaction effect, the web analyst should calculate eta square.</p>
+<p>Two, regardless of whether the interaction effect appears statistically significant, the digital analyst should calculate eta square.</p>
 <p>The eta square is found by dividing SSx or SSb divided by SSy.</p>
 <p>0 means SSb or SSx has no effect on SSy.</p>
 <p>1 means SSb or SSx explains all variance of SSy.</p>
 <p>Usually, the eta square value falls between 0 and 1. It provides a method to determine the effect of SSb or SSx on SSy.</p>
+<p>Let’s consider the following table with last point of contact on the column and device type on the row. The cells contain the number of goals completed (Table 2).</p>
+<p>Table 2: Mean Number of Goals Completed by Device Type and Last Point of Contact</p>
+<p>Organic Search Paid Search Email Display Overall Averages by Device Type Laptop/Desktop 325 215 225 325 272.50 Tablet 275 165 175 160 228.75 Phone 245 135 145 110 166.25 Overall Averages by Last Point of Contact 276.67 203.33 200.00 210.00</p>
+<p>For this example, let’s assume the interaction effect of device type and last point of contact appears statistically significant.</p>
+<p>Main Effect Interpretation Device type and, separately, last point of contact appear to have a main effect on number of goals completed. We note that laptop/desktop users are more likely to complete more goals compared to phone users. Similarly, customers who rely on organic search to reach our website are more likely to complete more goals compared to other points of last contact.</p>
+<p>Interaction Effect Interpretation The difference for laptop/desktop users compared to tablet and phone users remains constant across the last point of contact until display is considered. The difference changes between device type at display. Hence, we can state that the relationship between device type and number of goals completed interacts with the last point of contact.</p>
+<p>The interaction in this example is referred to as Ordinal Interaction because the order of the levels matters. Table 3 provides an example of no interaction.</p>
+<p>Table 3: Mean Number of Goals Completed by Device Type and Last Point of Contact</p>
+<p>Organic Search Paid Search Email Display Overall Averages by Device Type Laptop/Desktop 325 215 225 235 250 Tablet 275 165 175 185 200 Phone 245 135 145 155 170 Overall Averages by Last Point of Contact 281.67 171.67 181.67 191.67</p>
+<p>Table 3 shows no interaction. As we move down device type and across last point of contact, we see a monotonic transformation. That is, the pattern remains constant.</p>
+<p>Table 4 highlights an example of disordinal interaction with non cross over.</p>
+<p>Table 4: Mean Number of Goals Completed by Device Type and Last Point of Contact</p>
+<p>Organic Search Paid Search Email Display Overall Averages by Device Type Laptop/Desktop 325 215 225 235 250 Tablet 275 185 170 210 210 Phone 250 170 120 160 175 Overall Averages by Last Point of Contact 283.33 190.00 171.67 201.67</p>
+<p>As we move down device type and across last point of contact, we see the differences change. However, the cells never cross. That is, the number of goals completed for laptop/desktop never falls below tablet or phone regardless of last point of contact.</p>
+<p>Finally, Table 5 provides an example of disordinal interaction with crossover.</p>
+<p>Table 4: Mean Number of Goals Completed by Device Type and Last Point of Contact</p>
+<p>Organic Search Paid Search Email Display Overall Averages by Device Type Laptop/Desktop 325 215 200 235 243.75 Tablet 275 185 230 175 216.25 Phone 250 170 120 190 182.50 Overall Averages by Last Point of Contact 283.33 190.00 183.33 200.00</p>
+<p>As we move down device type and across last point of contact, we see the differences change and the cells cross. That is, the number of goals completed for laptop/desktop falls below tablet at email and phone appears greater than tablet at display.</p>
+<p>The type of interaction as discussed in Tables 2, 3, 4, and 5 give a completeness to the analysis. The interaction effect serves as the singular reason to perform this analysis.</p>
+</div>
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 
