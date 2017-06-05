@@ -36,7 +36,7 @@ A "clean" `.xlsx` file is one where the data is in a fairly raw form -- it's not
 ![](images/fromexcel.png)
 </div>
 
-* The `xlsx` package has `read.xlsx()` and `read.xlsx2()` functions for specifying the workbook and the sheet from which you wisth to bring data in.
+* The `xlsx` package has `read.xlsx()` and `read.xlsx2()` functions for specifying the workbook and the sheet from which you wish to bring data in.
 * The `gdata` package has a `read.xls()` function that works very similarly to the `xlsx` package.
 * The `XLConnect` package works a little bit differently, in that you first "load" the workbook (with `loadworkbook()`) and then "read" a workssheet from the workbook with a separate function (`readworksheet()`).
 
@@ -57,7 +57,7 @@ If you need to export the data to a simple, flat, structure, then you can push i
 * `write.csv2()` -- just like `read.csv2()`, `write.csv2()` is designed for use in countries where a comma is used for a decimal point and a semicolon is used as the delimiter.
 
 ### .xlsx
-If you have multiple data frames that you want to place on separate tabs in a single workbook, the `WriteXLS` package (`install.packages("WriteXLS")`) and then `library(WriteXLS`) is one option for doing so. This can get a bit more involved, but it can also be quite useful. Let's use an example where we have multiple data frame objects named `df1`, `df2`, and `df3`, and we want to output each data frame to its own worksheet in a workbook called `my_dataframes.xlsx`. We also want to rename the worksheet tabs to be `Data Frame 1`, `Data Frame 2`, and `Data Frame 3`. We would do that with the code below, and even do some light formatting on the output (having the columns automatically adjust their width, making the header row on each worksheet bold, and turning on autofiltering).
+If you have multiple data frames that you want to place on separate tabs in a single workbook, the `WriteXLS` package (`install.packages("WriteXLS")`) and then `library(WriteXLS)`) is one option for doing so. This can get a bit more involved, but it can also be quite useful. Let's use an example where we have multiple data frame objects named `df1`, `df2`, and `df3`, and we want to output each data frame to its own worksheet in a workbook called `my_dataframes.xlsx`. We also want to rename the worksheet tabs to be `Data Frame 1`, `Data Frame 2`, and `Data Frame 3`. We would do that with the code below, and even do some light formatting on the output (having the columns automatically adjust their width, making the header row on each worksheet bold, and turning on autofiltering).
 
 ```{r excel, eval=FALSE}
 

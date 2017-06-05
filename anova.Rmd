@@ -8,94 +8,114 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## A Brief Review
 
-Earlier, we covered the [nature of data](nature-of-data.html) and [cross tabulations with a $\chi$^2^ test for independence](cross-tab-w-chi-square.html). Nominal and ordinal data are referred to as nonmetric data.
+Earlier, we covered the [nature of data](nature-of-data.html) and [cross tabulations with a $\chi$^2^ test for independence](cross-tab-w-chi-square.html). Nominal and ordinal data are referred to as _nonmetric data_. When data is "nonmetric," it means we cannot perform arithmetic operations such as addition, subtraction, multiplication, and division with it. And, if we can't do arithmetic operations, we cannot calculate mean, standard deviation, skewness, and kurtosis. But, as we saw, we can still apply statistics to nonmetric data. We just need to use nonparametric analytical tools such as [cross tabulations with a $\chi$^2^ test for independence](cross-tab-w-chi-square.html) for nominal data and Spearman’s Rank Rho for ordinal data. (Alas! We do not yet have content for the latter, but you still have the internet, so, with luck, that is not a complete showstopper for you.)
 
-Nonmetric data means that we cannot perform arithmetic operations such as addition, subtraction, multiplication, and division. Hence, we cannot calculate mean, standard deviation, skewness, and kurtosis.
+_Metric data_, on the other hand, is data on which we _can_ perform arithmetic operations such as addition, subtraction, multiplication, and division. And, hence, we can calculate mean, standard deviation, skewness, and kurtosis. To analyze metric data, we use "parametric analytical tools" such as ANOVA, correlation, and regression.
 
-To analyze nonmetric data, we need to use nonparametric analytical tools such as cross tabulations with a chi square test for independence for nominal data and Spearman’s Rank Rho for ordinal data.
+## Enter ANOVA
 
-Nonparametric is a fancy word that means we are not imposing a distribution on the data. Hence, nonparametric is sometimes referred to as distribution free.
+Recall that, with a [cross tabulations with a $\chi$^2^ test for independence](cross-tab-w-chi-square.html), we are testing an association of two variables, and we rely on the _frequency between the cells_ to do that. 
 
-Metric data means that we can perform arithmetic operations such as addition, subtraction, multiplication, and division. Hence, we can calculate mean, standard deviation, skewness, and kurtosis.
+If we want to measure the _differences_ in those levels, then we need to use ANOVA. To apply ANOVA, we need two items:
 
-To analyze metric data, we should use parametric analytical tools such as ANOVA, correlation, and/or regression.
+* At least one **independent variable* that is _nominal in nature_ and has _at least two levels_, and
+* _Only one_  **dependent variable** that must be _interval_ or _ratio_ in nature.
 
-Parametric is a fancy word that means we are imposing a distribution on the data. Normal distributions, standard normal (i.e., bell curve), skewed distributions (e.g, skewed right, skewed left, tail heavy) are examples of imposed distributions.
+If we have one independent variable, then we apply a **1-way ANOVA**. If we have two (or more) independent variables, then we can apply an **_n_-way ANOVA.** If we have collected observations of the dependent variable several times, then we apply the **repeated measures ANOVA**.
 
-Also, recall that with a cross tabulations with a chi square test for independence, we are  testing an association of two variables and are relying on the frequency between those cells. 
+Consider the question: "Does the number of visits depend on device type?" This turns out to call for a 1-way ANOVA.
 
-If we want to measure the differences in those levels, then we need to use ANOVA.
- 
-To apply ANOVA, we need two items. We need:
+Note that we are no longer merely asking if there is a _relationship_ between these two variables. But, rather, we are looking for _dependence_. Let's check that we have what we need to apply ANOVA:
 
-At least one independent variable that is nominal in nature and has at least two levels, and
-Only one dependent variable that must be internal or ratio in nature.
+* **At least one independent variable** -- The device type serves as the independent variable, it's nominal in nature because:
+  + Order does not matter (Laptop/Desktop, Tablet, Phone vs. Phone, Tablet, Laptop/Desktop)
+  + There is no "distance" between observations
+  + There is no "true zero"
+* **Only one dependent variable** -- the number of visits serves as the dependent variable, and it is ratio in nature:
+  + Order _does_ matter
+  + There _is_ distance between observations
+  + It includes a "true zero"
+
+The levels for our independent variable, in this example, include “laptop/desktop,” “mobile,” and “tablet.” Hence, the independent variable, device type, includes three levels.
+
+**A Quick Aside:** _Up to this point, in our R journey, we’ve treated “factors” as something of a nuisance that, if not converted to character vectors, can cause odd and frustrating results. Read up more on that [here](classes.html#factor). But, hopefully as you get into the content here and beyond, you will start to see how factors -- and how many levels a factor has -- start to become important. Now, back to our 1-way ANOVA…_
+
+The hypothesis ("null hypothesis" or _H~0~_), in this example, would be that means (or averages) between levels equals zero. That is: there is no difference between levels.
+
+In the cross tabulations with a $\chi$^2^ test for independence, the hypothesis was, “there is no relationship between the two variables.”
+
+The ANOVA hypothesis is similar to the $\chi$^2^ test for independence hypothesis because both are about "no relationships."" The ANOVA hypothesis is _dissimilar_ to the $\chi$^2^ test for independence hypothesis, though, because the ANOVA includes an arithmetic value (i.e., the means are equal to zero).
 
 ## 1-Way ANOVA
 
-If we have one independent variable, then we apply a 1-way ANOVA. If we have two independent variables, then we can apply an n-way ANOVA. If we have collected observations of the dependent variable several times, then we apply the repeated measures ANOVA.
-Forms of 1-way ANOVA questions
+A one way ANOVA with one independent variable and only two levels will generate the same results as an independent t-test (which, mysteriously, we're not going to define here; perhaps, some day, we will come back to that). Instead of looking at the t-test though, we will look at the F ratio.
+ 
+Recall that we started with an _expected value_. We then took an observation. The distance between the _expected value_ and the _observed value_ is called the error. The relevant and necessary question becomes: “Is this error attributable to laptop/desktop, mobile, and tablet (i.e., within the group) or to device type (i.e., between the group)?”
+ 
+That is, “Is this error _within_ the variables or _between_ the variable?”
+ 
+_MS~w~_ or _MS~e~_ is the mean square error within the variables. In this example, _MS~w~_ or _MS~e~_ refers to error _within_ laptop/desktop, mobile, and tablet.
+ 
+_MS~b~_ is the mean square error _between_ the variables. In this example, _MS~b~_ refers to error in the device type.
 
-Does the number of visits depend on device type? The device type serves as the independent variable and the number of visits serves as the dependent variable. Device type is nominal in nature because (a) order does not matter, (b) there is no distance between observations, and (c) it lacks a true zero.
+So, hold onto your socks for a minute while we drop some formulas.
+ 
+Ultimately, we want to get an "F ratio," which, similarly to how we compared the actual $\chi$^2^ to the critical $\chi$^2^, we will compare to a table of F distribution values with a select $\alpha$ level.
 
-The levels, in this example, include “laptop/desktop,” “mobile,” and “tablet.” Hence, the independent variable, device type, includes three levels.
+"Simply" put, the F ratio is:
+$$F = \frac{MS_b}{MS_e}$$
 
------------
-**A quick aside:** _Up to this point, in our R journey, we’ve treated “factors” as something of a nuisance that, if not converted to character vectors, can cause odd and frustrating results. Read up more on that [here](classes.html#factor). But, hopefully as you get into the content here and beyond, you will start to see how factors -- and how many levels a factor has -- start to become important. Now -- back to our 1-way ANOVA…_
------------
+Of course, we have to actually figure out what _MS~b~_ and _MS~w~_ are, which requires breaking things down a bit:
+ 
+$$MS_b + MS_e = Total~Error$$
 
-The dependent variable -- number of visits in this example -- is ratio in nature because (a) order does matter, (b) there is distance between observations, and (c) it includes a true zero.
+ 
+$$MS_e~(or~MS_w~) = \frac{SS_e~(or~SS_w)}{N-K}$$
 
-The hypothesis, in this example, would be that means (or averages) between levels equals zero. That is, there is no difference between levels.
+Where:
 
-In the cross tabulations with a chi square test for independence, the hypothesis was, “there is no relationship between the two variables.”
+* _SS~e~_ (or _SS~w~_) is the Sum of Squares error within
+* _N_ is the number of groups
+* _K_ is the number of levels.
 
-The ANOVA hypothesis is similar to the chi square test for independence hypothesis because both are about no relationships. The ANOVA hypothesis is dissimilar to the chi square test for independence hypothesis because the ANOVA includes an arithmetic value (i.e, the means are equal to zero).
-1-Way ANOVA
+_N - K_ is the degrees of freedom (or “d.f.”) for the within effect. 
 
-A one way ANOVA with one independent variable and only two levels will generate the same results as an independent t test. Instead of looking at the t-test though, we will look at the F ratio.
+And:
+
+$$MS_b = \frac{SS_b}{K-1}$$
+where _K-1_ is the d.f. for the "between effect" and _SS~b~_ is the Sum of Square error between.
  
-Recall that I started with an expected value. I take an observation. The distance between the expected value and the observed value is called the error. The relevant and necessary question becomes, “Is this error attributable to laptop/desktop, mobile, and tablet (i.e., within the group) or to device type (i.e., between the group)?”
+The relationship between _SS_ and _MS_ is the d.f.
  
-That is, “Is this error within the variables or between the variable?”
- 
-MSw or MSe is the mean square error within the variables. In this example, MSw or MSe refers to error within laptop/desktop, mobile, and tablet
- 
-MSb is the mean square error between the variables. In this example, MSb refers to error in the device type.
- 
-The F ratio is simply MSb / MSe.
- 
-MSb + MSe = total error
- 
-MSe or MSw = SSe or SSw / N-K where N-K is the degrees of freedom (or “d.f.”) for the within effect. SSe or SSw is the Sum of Squares error within. N is the number of groups and K is the number of levels.
- 
-Also, MSb = SSb / K-1 where K-1 is the d.f. for the between effect and SSb is the Sum of Square error between.
- 
-The relationship between SS and MS is the d.f.
- 
-N-K allows us to control for how many groups were are using.
- 
-Once we have our F ratio, then we can look up in a table.
- 
-You will need the d.f. for both MSb and MSe.
+_N - K_ allows us to control for how many groups we are using.
+
+_<whew>_ Still following?
+
+Once we have our observed F ratio, we can look up the critical value for the F ratio [in a table](http://www.socr.ucla.edu/Applets.dir/F_Table.html). Note that you will need the d.f. for both _MS~b_ and for _MS~e_ (and, once again, you will have to choose your $\alpha$ level). (You can also use the "quantile function" -- `qf()` in base R to get the critical value).
  
 A 1-way ANOVA is appropriate if we want to segment on one variable such as device type or last point of contact.
 
-Rejection Region (or why we need to think about alpha)
+# Rejection Region (or why we need to think about alpha)
 
-Let’s talk a bit more about Ho and alpha level. I like 5% or .05 for a two tail test. That means the rejection area will be .05/2 on the left and right of the mean.
+Let’s talk a bit more about _H~0~ and $\alpha$ level. I like 5% or .05 for a two tail test, which means the rejection area will be .05/2 on the left and right of the mean.
  
 I like a two tail test because I do not have to think about negative values. The probability of drawing a -2.5 is just as likely as drawing a 2.5.
  
-If we reject the Ho because the observed value exceeds the critical or cutoff value, then we say the difference is the hypothesis. The means of the two distributions are not equal.
+If we reject the _H~0~_ because the observed value exceeds the critical or cutoff value, then we say the difference is the hypothesis. The means of the two distributions are not equal.
  
-For a p value of less than .05, we reject if the t value exceeds 1.96.
+For a p-value of less than .05, we reject if the t value exceeds 1.96.
  
-The t value is referred to as the critical or cutoff value.
+The t-value is referred to as the critical or cutoff value.
 
-Example of 1-way ANOVA
+# Example of 1-way ANOVA
 
-Let’s consider three forms of channels, including: (1) desktop/laptop, (2) mobile, and (3) tablet. Also, let’s consider number of goal completions during a five-day period. Table 1 provides a display of the relationship.
+Let’s consider three forms of channels, including:
+
+1. Desktop/Laptop
+2. Mobile, and
+3. Tablet. 
+
+Also, let’s consider the number of goal completions during a five-day period. Table 1 provides a display of the relationship.
 
 Table 1: Number of goal completions by channel
 Desktop/Laptop

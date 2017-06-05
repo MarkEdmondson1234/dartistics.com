@@ -15,8 +15,3 @@ To run a Shiny app you need to have a Shiny server running.  RStudio comes with 
 Shiny apps use a functionality called *reactivity* that means that apps can be quick and responsive to changes to inputs - this is one of the best features of Excel, where changing one cell can have consequences throughout the Workbook.
 
 Shiny apps can be tricky to get your head around due to its different work flow from normal R programs, its recommended to go through the [tutorials online](http://shiny.rstudio.com/tutorial/).
-
-
-
-
-
