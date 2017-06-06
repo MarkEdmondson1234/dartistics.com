@@ -2,7 +2,15 @@
 title: "Correlation"
 ---
 
-Correlation is a number that describes how strong of a relationship there is between two variables.
+In the [Nature of Data](nature-of-data.html), we explore nonmetric data (e.g., nominal, interval) and metric data (e.g., interval, ratio).
+
+In [Cross Tabulations with a $\chi2$ Test for Independence](cross-tab-w-chi-square.html), we test the relationship between two nominal variables with at least two levels.
+
+In [1-way ANOVA](anova.html), we test the relationship between at least one independent variable that is nominal in nature with at least two levels and one dependent variable that is interval or ratio in nature. In n-way ANOVA, we add two independent variables, which remain nominal in nature.
+
+In this document, we will add another test for a relationship between variables as well as a test for prediction.
+
+_Correlation_ is a number that describes how strong of a relationship there is between two variables.
 
 In digital analytics terms, you can use it to explore relationships between web metrics to see if an influence can be inferred, but _be careful to not hastily jump to conclusions that do not account for other factors_.  
 
@@ -19,6 +27,73 @@ It is, unfortunately, pretty common to see something like the first bullet used 
 * Correlation is not _necessarily_ a sign of causation. 
 
 But, still, correlation can be very useful: identifying that a relationship exists can be a great place to start looking for the underlying drivers of that relationship which, ultimately, can lead to an insight than can drive an action!
+
+## The Basics of Correlation
+
+Correlation refers to a value, $r$, that provides insight into the relationship between two variables. This mathematical formula goes by many names including Pearson product moment correlation, bivariate correlation, Pearson’s r, and others.
+
+Mathematically, the correlation coefficient is determined by
+
+a. Summing the product of standardized score for $X_1$ variable and standardized score for a corresponding $X_2$ variable, and then
+b. Dividing by the number of paired $X_1X_2$. Most statistical packages, including Excel, Minitab, R, SAS, and SPSS quickly, easily, and painlessly perform this calculation.
+
+At this point, we will stop discussing the mathematical formula and instead focus on the output and the ensuing interpretation. However, we will come back to the correlation coefficient, $r$, when we discuss regression.
+
+In this example, we will consider five metric variables, including: 
+
+1. Average amount spent per transactions
+2. Number of transactions
+3. Number of pages viewed
+4. Number of unique visitors by week
+5. Size of discount (e.g., 50% off, $10 off)
+
+All of these numbers are fake and are used for only illustrative purposes. Proceed with that caveat.
+
+<div style="text-align: center">**Table 1: Correlation Coefficient for Five Variables**</div>
+
+|                                         | Average Amount<br>Spent per Transaction | Number of<br>Transactions | Number of<br>Pages Viewed | Number of Users<br>by Week | Size of<br>Discount |
+|-----------------------------------------|:---------------------------------------:|:-------------------------:|:-------------------------:|:--------------------------:|:-------------------:|
+| Average Amount Spent<br>Per Transaction |                   1.00                  |                           |                           |                            |                     |
+| Number of Transaction                   |                   0.89                  |           1.00            |                           |                            |                     |
+| Number of Pages Viewed                  |                   0.43                  |           0.29            |           1.00            |                            |                     |
+| Number of Users by Week                 |                   0.67                  |           0.92            |           0.75            |           1.00             |                     |
+| Size of Discount                        |                   0.32                  |           0.71            |           0.19            |           0.93             |        1.00         |
+
+All the correlation coefficient values shown in Table 1 appear positive. As $X_1$ moves in a positive direction (out from the origin on the X axis), another variable (e.g., number of unique pages visited or $X_3$) moves in a positive (up from the origin on the Y axis) direction. Conversely, negative correlation coefficient values would be interpreted as $X_1$ moves in a positive direction (out from the origin on the X axis), $X_3$ moves in a negative direction (down toward the origin on the Y axis).
+
+Correlation coefficient values range from -1.00 to 1.00 with 0.00 interpreted perfectly unrelated, -1.00 perfectly negatively related, and 1.00 perfectly positively related. Most analysts will not observe a 0, -1, and/or 1 (_<sigh>_ the world is messy!).
+
+<div style="text-align: center">**Table 2 - Interpretation for the Remaining Values**</div>
+
+```{r interpretation, echo=FALSE}
+library(knitr)
+
+df <- data.frame(`High~Value` = c("1.00", "0.79", "0.59", "0.39", "~0.20", "-0.39", "-0.59", "-0.79", "-1.00"),
+                 `Low~Value` = c("0.80", "0.60", "0.40", "0.20","~-0.20", "-0.20", "-0.40", "-0.60", "-0.80"),
+                 Interpretation = c("Danger! Collinearity!", "Strong relationship", "Moderate relationship", "Weak relationship",
+                                    "Crud relationship", "Weak relationship", "Moderate relationship", "Strong relationship",
+                                    "Danger! Collinearity!"))
+kable(df)
+
+```
+
+"Crud factor" comes from philosopher  Paul Mehl, who noted that everything is correlated with everything at least 0.2. In our example, the number of pages viewed and size of discount appears as a crud relationship.
+
+Collinearity refers to measuring the same variable twice. It presents problems in regression analysis. In our example, the number of users and size of discount seems collinear. The analyst should investigate this issue later in the regression analysis.
+
+## The Null Hypothesis ($H_0$)
+
+The null hypothesis, or testable statement, is there there is _no relationship_ between these two variables. This null hypothesis appears similar to the null hypothesis from cross tabulation with a $\chi^2$ test for independence. However, unlike a cross tabulation with a $\chi^2$ test for independence, the correlation test is rho ($\rho$) equals 0. Rho refers to the coefficient of the population.
+
+## Other Types of Correlation
+
+There are a number of different types of correlation:
+
+* Point Biserial correlation refers to including a dichotomous or binary variable (e.g., yes/no, on/off) (i.e., nonmetric data) with an interval or ratio variable (i.e., metric data). The interpretation changes to: as we move from no (or off) to yes (or on) then the other variable moves in a positive (or negative) direction.
+
+* Spearman Rho correlation is used to find a relationship between two ordinal variables. For examples, a web analyst wants to compare page ranks from Google to Bing. Spearman Rho correlation could explain how related the two ranks are.
+
+* Phi correlation is applied to understand the relationship between two dichotomous or binary variables. Instead of a Phi correlation, the digital analyst is better off setting up a cross tabulation with a chi square test for independence.
 
 ## Performing correlation analysis in R
 
@@ -38,9 +113,9 @@ web_data_metrics <- web_data[,c("sessions","pageviews","entrances","bounces")]
 kable(cor(web_data_metrics))
 ```
 
-The table is mirrored in the diagonal and provides the _correlation coefficient_ (aka, "_r_") between each pair of values that intersect in the cell. 1 means a perfect correlation, 0 means no correlation and -1 means a perfect negative correlation.
+The table is mirrored in the diagonal and provides the _correlation coefficient_ (aka, "$r$") between each pair of values that intersect in the cell. 1 means a perfect correlation, 0 means no correlation and -1 means a perfect negative correlation.
 
-_Does the R that we're working on learning today have anything to do with the correlation coefficient _r_? Well...no. Or, at least, only to the extent that you can use R-the-platform to calculate r-the-correlation-coefficient. Good question, though!_
+_Does the R that we're working on learning today have anything to do with the correlation coefficient $r$? Well...no. Or, at least, only to the extent that you can use R-the-platform to calculate r-the-correlation-coefficient. Good question, though!_
 
 When working with correlations, its always a good idea to view an exploratory plot.  A handy function for this is `pairs()` which creates a scatter plot of all the metrics passed in combination:
 

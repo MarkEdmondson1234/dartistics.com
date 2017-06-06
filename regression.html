@@ -302,6 +302,9 @@ $(document).ready(function () {
       <a href="cross-tab-w-chi-square.html">Chi Square</a>
     </li>
     <li>
+      <a href="anova.html">ANOVA</a>
+    </li>
+    <li>
       <a href="correlation.html">Correlation</a>
     </li>
     <li>
@@ -394,26 +397,166 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <p>Regression is a way to represent cause and effect between two (or more variables). It attempts to make a best guess or model on how variables influence each other, and gives you an equation which you can use to predict future values.</p>
 <p>If you want to just measure how closely two variables are and in which direction, correlation is more appropriate. However, if you want to try and make predictions from another metric then regression may be the tool for you.</p>
-<div id="types-of-regression" class="section level1">
-<h1>Types of regression</h1>
-<p>There are many types of regression for different data scenarios, but we will cover just a few in this introduction that you may need for your own data.</p>
-<div id="simple-linear-regression" class="section level2">
-<h2>Simple linear regression</h2>
-<p>Simple linear regression is performed between two variables, of the form:</p>
-<pre><code>y = Ax + e</code></pre>
-<p>Where <code>y</code> is the metric you want to predict (<em>dependent variable</em>), <code>x</code> a vector of metrics you want to use to predict <code>y</code> (<em>regressors/predictors</em>), <code>A</code> is the matrix of <em>regression coefficients</em> of for the variables in <code>x</code> and <code>e</code> being the bit not predicted, sometimes called <em>noise</em>.</p>
-<p>In two dimensions this is the same as</p>
-<pre><code>y = mx + c + e</code></pre>
-<p>Which you may recognise as the equation for a straight line on a x-y plot, where m is the slope, c is the intercept, and e the random noise.</p>
-<p>In three or more dimensions this expands to</p>
-<pre><code>y = a_0 + a_1 * x_1 + a_2 * x_2 + ... + a_n * x_n</code></pre>
-<p>Where <code>a_0</code> is the intercept, <code>a_1</code>, <code>a_2</code>, etc. are the regression coefficients and <code>x_1</code>, <code>x_2</code> etc. are the regressions/predictors.</p>
-<p>That is pretty much what ordinary linear regression is, where the technique of least-squares is used to fit a line/plane to some points.</p>
-<blockquote>
-<p>An example applied to digital marketing would be predicting transactions from sessions. The regression coefficient in this case would represent a derived conversion rate.</p>
-</blockquote>
-<div id="example-with-search-console-impressions" class="section level3">
-<h3>Example with Search Console Impressions</h3>
+<p>Regression allows us to determine what independent variable, or variables, predict a dependent variable. In it is simplest form, one independent variable that is metric in nature predicts one dependent variable that is metric in nature. This form of regression is referred to as bivariate regression.</p>
+<p>If we add one or more independent variable that are metric in nature, then we are working with multiple regression.</p>
+<p><strong>Note:</strong> In regression, the independent variable is noted by an <span class="math inline">\(x\)</span>. The dependent variable is noted by a <span class="math inline">\(y\)</span>.</p>
+<p>Correspondingly, bivariate regression and 1-way ANOVA appear similar in that both included one independent variable while N-way ANOVA and multiple variable regression have two or more <span class="math inline">\(X\)</span>s. However, in ANOVA, the independent variable is nominal. In regression, the independent variable is interval or ratio.</p>
+<p><strong>Regression Question</strong></p>
+<p>A digital analyst could ask, “Does unique visitors predict number of goals completed?”</p>
+<p>Unique visitors would be the independent variable that would predict the number of goals completed, which is the dependent variable.</p>
+<p><strong>Regression Answer</strong></p>
+<p>To answer this question, start with a scatter plot of each X on the horizontal axis and Y on the vertical axis. The scatter plot will provide some insight into the relationship between each X and the Y variables. Regardless of the shape and direction of the scatter plot, a line can be fitted through it to establish a relationship.</p>
+<p>This line is determined by regression.</p>
+<p>Mathematically, we write the simple linear regression model:</p>
+<p><span class="math display">\[Y = B_0 + B_1X + \epsilon\]</span></p>
+<p>This equation appears similar to the equation of a line learned in high school geometry class:</p>
+<p><span class="math display">\[y = mx + b\]</span></p>
+<p>Here, <span class="math inline">\(B_0\)</span> (or <span class="math inline">\(b\)</span>) represents the y-intercept. <span class="math inline">\(B_1\)</span> (or <span class="math inline">\(m\)</span>) represents the slope. In bivariate regression, the interpretation of <span class="math inline">\(B_0\)</span> and <span class="math inline">\(B_1\)</span> will differ from <span class="math inline">\(b\)</span> and <span class="math inline">\(m\)</span>, respectively.</p>
+<p>As the <span class="math inline">\(y\)</span>-intercept, <span class="math inline">\(B_0\)</span> is interpreted as, if we do not increase or decrease the independent variable, then we would expect some number, <span class="math inline">\(Y\)</span>.</p>
+<p>As the slope, <span class="math inline">\(B_1\)</span> is interpreted as, if we increase <span class="math inline">\(X\)</span> by 1 unit, then we should expect a <span class="math inline">\(B_1\)</span> increase in <span class="math inline">\(Y\)</span>.</p>
+<p>Epsilon (<span class="math inline">\(\epsilon\)</span>) represents the residual, or the left over, values that were not included in our equation. As the residual decreases, then our regression model (or line) includes fundamental or key independent variables. Conversely, as the residual <em>increases</em>, then our regression model (or line) excludes fundamental or key independent variables.</p>
+<p>For example, a digital analyst performs a regression analysis (after taking this workshop) and finds this equation:</p>
+<p><span class="math inline">\(Y = 100 + 50_x\)</span> where <span class="math inline">\(Y\)</span> represents the number of goals completed and <span class="math inline">\(X\)</span> is the number of unique visitors. If a website receives no changes in the number of unique visitors, then we would expect 100 completed goals. If we add one more unique visitor, then we expect 50 more completed goals.</p>
+<p>By adding more variables, the equation of the line can be extended to:</p>
+<p><span class="math display">\[Y = B_0 + B_1X_1 + B_2X_2 + … + B_nX_n\]</span></p>
+<p>Later, in this document, we will discuss how to include nominal variables in both the dependent variable and independent variable.</p>
+<div id="put-on-the-hat" class="section level2">
+<h2>Put on the Hat</h2>
+<p>A detour here: <span class="math inline">\(Y = B_0 + B_1X_1\)</span> represents the estimated line. When we run a regression analysis, then we are generating a <em>predicted</em> line. The notation changes slightly. Instead of using <span class="math inline">\(Y\)</span>, we use <span class="math inline">\(\hat{Y}\)</span> (pronounced “Y-hat”). So, the line changes notation to <span class="math inline">\(\hat{Y} = b_0 + b_1x_1\)</span>.</p>
+<p>Depending on the book and/or the instructor, <span class="math inline">\(b_0\)</span> is also expressed as a lowercase <span class="math inline">\(a\)</span>. Regardless of notation, <span class="math inline">\(b_0\)</span> or <span class="math inline">\(a\)</span>, refers to the <span class="math inline">\(y\)</span>-intercept.</p>
+<p>The error that we are interested appears in the dependent variable, or <span class="math inline">\(Y\)</span>. Specifically, we are interested in the error, or distance, from the observed <span class="math inline">\(Y\)</span> and the predicted <span class="math inline">\(Y\)</span>, <span class="math inline">\(\hat{Y}\)</span>.</p>
+</div>
+<div id="some-basic-math-to-link-to-anova" class="section level2">
+<h2>Some Basic Math to Link to ANOVA</h2>
+<p>If I square that error (<span class="math inline">\(\hat{Y} - Y\)</span>), then I have squared the error.</p>
+<p>If I sum all the square errors, then I have determined the sum of square error. Yes, the same sum of square error (<span class="math inline">\(SS_E\)</span>) from ANOVA!</p>
+<p>Recall from ANOVA: I wanted to decompose or divide the sum of square error (<span class="math inline">\(SS_y\)</span>) in the levels of the dependent variable. That is, I want to know how much of the variance in <span class="math inline">\(Y\)</span> can be explained in <span class="math inline">\(X\)</span> (e.g., within and between).</p>
+<p>In regression, I want to know how much of the variance in <span class="math inline">\(Y\)</span> or the <span class="math inline">\(SS_y\)</span> can be predicted by the presence of each <span class="math inline">\(X\)</span>.</p>
+<p>So, we have a relationship between ANOVA and regression: that darn, pesky Sum of Square Errors!</p>
+</div>
+<div id="some-basic-math-to-link-to-correlation" class="section level2">
+<h2>Some Basic Math to Link to Correlation</h2>
+<p>Our “unstandardized beta,” as denoted by a lowercase <span class="math inline">\(b\)</span>, contains the <span class="math inline">\(r\)</span> or the correlation of two variables, <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>.</p>
+<p><span class="math inline">\(b\)</span> is determined by <span class="math inline">\(r\)</span> multiplied by <span class="math inline">\(S_y/S_x\)</span>, or the ratio between the standard deviation of <span class="math inline">\(Y\)</span> and standard deviation of <span class="math inline">\(X_n\)</span>.</p>
+<p>If <span class="math inline">\(r\)</span>, the correlation coefficient, is small, then we can guess that <span class="math inline">\(b\)</span> will be really small, too.</p>
+</div>
+<div id="notes-about-output" class="section level2">
+<h2>Notes about Output</h2>
+<p>All statistical packages including Excel, Minitab, R, SAS, and SPSS will include these figures.</p>
+<p>The Adjusted R^2 changes the R^2 value based on the number of variables included in the regression analysis. As more independent variables are added to the regression analysis, the R^2 becomes larger. To account for regression analysis that include many independent variables, the Adjusted R^2 should be used.</p>
+<p>R^2 refers to the amount of variance explained in the dependent variables, <span class="math inline">\(Y\)</span>, by the inclusion of the specific independent variable(s), <span class="math inline">\(X\)</span>s. The R^2 ranges from 0 (e.g., no amount of variance explained) to 1 (e.g. all variance explained).</p>
+<p>To determine if the regression analysis is statistically significant, then, the actual <span class="math inline">\(F\)</span>-value can be compared to the critical <span class="math inline">\(F\)</span>-value. Alternatively, the <span class="math inline">\(p\)</span>-value can be compared to the specified <span class="math inline">\(\alpha\)</span> value.</p>
+<p>The regression coefficients contain three items that the digital analyst should consider:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Unstandardized coefficients</strong> - noted by the capital Greek letter <span class="math inline">\(\beta\)</span> (beta). A one unit change in the specific independent variables leads to a unit change in the dependent variable.</li>
+<li><strong>Standardized coefficients</strong> - noted by a lowercase <span class="math inline">\(b\)</span> or written as <span class="math inline">\(\lower{beta}\)</span>. Standardized coefficients explain the relative effect of all independent variables on the dependent variable. The higher the number, the more influence. The digital analyst can compare independent variables to understand the independent variables that are worth considering, and the independent variables that wield little significance. Depending on the statistics package, the intercept will report a <span class="math inline">\(\lower{beta}\)</span> of 0 or a value will not be shown.</li>
+<li><strong>The confidence interval for each independent variable</strong> - used to determine statistical significance of each independent variable. If 0 is included within the lower bound and the upper bound, then reject the null hypothesis (<span class="math inline">\(H_0\)</span>). Recall, <span class="math inline">\(H_0\)</span> for each independent variable is the mean of the independent variable equals 0.</li>
+</ol>
+<p><strong>Note:</strong> it is okay to rely on the t-value or the p value instead of the confidence interval. The confidence interval approach is preferred because it removes the issue of Type I and the problems associated with p, which are beyond the scope of this document.</p>
+</div>
+<div id="classification-and-dummy-regression" class="section level2">
+<h2>Classification and Dummy Regression</h2>
+<p>Up to this point in this document, the independent variables have been treated as metric in nature. We can <em>add</em> nominal data, which is nonmetric in nature. This data can be treated as a classification (or class or categorical) variable, or as a dummy variable.</p>
+<p>For our preceding model, let’s add device type (i.e., desktop/laptop, mobile, tablet) to the model. If we use classification regression, then we model the device channel as:</p>
+<ul>
+<li>Desktop/laptop = 1</li>
+<li>Mobile = 2</li>
+<li>Tablet = 3</li>
+</ul>
+<p>We will need a holdout or benchmark variable. That is, the formula needs to make a comparison between 1 and 2, 1 and 3, and 2 and 3 to determine the <span class="math inline">\(\lower{beta}\)</span>. The holdout variable does not usually appear in the software output. SAS includes, it while SPSS does not.</p>
+<p>The actual variable held out from the model does not matter. If the digital analyst is more interested in mobile and tablet, in this example, then the holdout variable should be desktop/laptop. SPSS allows the analyst to declare the first or last variable as the holdout variable.</p>
+<p>If we use dummy regression, then we are converting the classification list to a series of 1s (i.e., yes, on) and 0s (i.e., no, off). Table 1 contains an example of two approaches.</p>
+<div style="text-align: center">
+<strong>Table 1: Device Channel as Classification Variable and Dummy Variable</strong>
+</div>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="17%" />
+<col width="19%" />
+<col width="21%" />
+<col width="14%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Observation</th>
+<th align="left">Device Channel</th>
+<th align="center">Classification</th>
+<th align="center">Desktop/Laptop Dummy</th>
+<th align="center">Mobile Dummy</th>
+<th align="left">Tablet Dummy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="left">Desktop/Laptop</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="left">0</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="left">Desktop/Laptop</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="left">0</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="left">Mobile</td>
+<td align="center">2</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="left">0</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="left">Mobile</td>
+<td align="center">2</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="left">0</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="left">Mobile</td>
+<td align="center">2</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="left">0</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="left">Tablet</td>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="left">1</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="left">Tablet</td>
+<td align="center">3</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="left">1</td>
+</tr>
+</tbody>
+</table>
+<p>By using a dummy variable, the digital analyst can include all three device channels in the regression analysis.</p>
+<p>The decision of whether to use a classification variable or dummy variables depends on what the analyst wants to know. If the analyst wants to know, “By changing users’ or customers’ device channel, how many more goal conversations will there be,” then the analyst should select classification variable.</p>
+<p>For example, a regression analysis predicts the following equation: <span class="math display">\[\hat{Y} = 100 + 50 \times unique~visitors + 5 \times mobile + 15 \times tablet\]</span></p>
+<p>From this equation, the analyst could expect a 5% change in the goals completed by moving one user or customer from desktop/laptop to mobile and a 15% change in the goals completed by moving one user or customer from desktop/laptop to tablet.</p>
+<p>If the analyst wants to know, “How much does each device predict changes in goals completed?” then the analyst should select dummy variable.</p>
+<p>For example, a regression analysis predicts the following equation:</p>
+<p><span class="math display">\[\hat{Y} = 100 + 50 \times unique~visitors + 10 \times desktop/laptop + 3 \times mobile + 2 \times tablet\]</span></p>
+</div>
+<div id="lets-try-this-with-r" class="section level2">
+<h2>Let’s Try This with R!</h2>
 <p>If you already have a conversion rate, there isn’t much to gain from creating another via linear regression, but in many cases you don’t have that linked up view which is where regression can come into play. An example below looks for a relationship to a website’s SEO impressions in Google to the amount of transactions that day. This example is in two dimensions which makes it much easier to plot charts showing what is going on.</p>
 <p>For this example we shall use the dataset <code>search_console_plus_ga.csv</code>, which is two datasets joined on date - SEO impressions and other metrics from Search Console via the <code>searchConsoleR</code> package, and Google Analytics total sessions and transactions from <code>googleAnalyticsR</code></p>
 <pre class="r"><code>library(knitr) # nice tables
@@ -513,7 +656,6 @@ plot(sc_ga_data$impressions, sc_ga_data$transactions)
 abline(reg = coef(model))</code></pre>
 <p><img src="regression_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 </div>
-</div>
 <div id="multi-linear-regression" class="section level2">
 <h2>Multi-linear regression</h2>
 <p>Multi-linear regression is the same as simple linear regression, but you have more predictors - the below shows three (<code>x, y, ø</code>) with corresponding <em>regression coefficients</em> (<code>A, B and C</code>)</p>
@@ -534,20 +676,31 @@ tidy(model2)</code></pre>
 ## 2 impressions -0.0001550714 2.905029e-04 -0.5338034 0.59485465
 ## 3    sessions  0.0394295484 1.331140e-02  2.9620894 0.00395002
 ## 4    position -1.3288129470 1.161496e+00 -1.1440533 0.25577588</code></pre>
-<p>The <code>r-squared</code> value has improved a little so we can explain 16% of transactions from our model.</p>
+<p>The <span class="math inline">\(R^2\)</span> value has improved a little so we can explain 16% of transactions from our model.</p>
 <blockquote>
 <p>How do you think the coefficients of multiple linear regression applied to all Google Analytics sessions compare to the actual conversion rate registered in the E-commerce reports? What about the multi-touch reports?</p>
 </blockquote>
 </div>
-<div id="logistic-regression" class="section level2">
-<h2>Logistic regression</h2>
-<p>The above regressions are all for continuous data - metrics that can take any value. They don’t work when the thing you want to predict is more categorical e.g. TRUE or FALSE. An example of this could be predicting if a customer is going to transact in a web session or not.</p>
+<div id="logit-logistic-regression" class="section level2">
+<h2>Logit (Logistic) regression</h2>
+<p>Instead of a metric dependent variable, a binary (e.g., yes/no, on/off) dependent variable can be use. For example, the digital analyst would ask, “Did you open the email?” or “Did you visit the webpage?” The responses are binary. Using logit regression, the model can predict the probability that a person would be in the yes group or the no group.</p>
 <p>In R, you create logistic regression by using the <code>glm()</code> function and passing in a family argument. In this case we choose <code>binomial</code> (another name for logistic), but the argument takes many other names too for different types of regression - see <code>?family</code> for details.</p>
 <pre class="r"><code>model &lt;- glm(sale ~ saw.promotion + existing.customer + hour.of.day, 
              data = webdata, 
              family = binomial)
 </code></pre>
 </div>
+<div id="probit-regression" class="section level2">
+<h2>Probit Regression</h2>
+<p>This form of regression is an extension of logit regression.</p>
+<p>Lemdep (limited dependent) regression</p>
+<p>If the dependent variable has a ceiling (i.e., top code) or a floor (i.e., bottom code), then technically lemdep (or limited dependent) regression should be used. Ceilings and/or floors in the dependent variable relate to capacity constraints. For example, a live feed streaming from a website could only allow 1,000 active streams. If we want to predict the likelihood that a person will stream our content, then we need to use lemdep because the dependent variable (in this examples, number of active streams) appears top coded.</p>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<p>Regression is the only analytical tool that allows for prediction. To perform a regression analysis, the digital analyst needs to include at least one metric independent variable and one metric dependent variable.</p>
+<p>The adjusted R Square expalins the amount of variance in the dependent variable explained by the inclusion of the independent variable. The unstandardized B generate the desired prediction line. The standardize B allow for a comparison of the independent variables to determine those variables that provide insight and those variables that are superfluous.</p>
+<p>This section is intended to introduce regression. There is enough here to get even a beginning digital analyst started.</p>
 </div>
 
 

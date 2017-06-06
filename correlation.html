@@ -302,6 +302,9 @@ $(document).ready(function () {
       <a href="cross-tab-w-chi-square.html">Chi Square</a>
     </li>
     <li>
+      <a href="anova.html">ANOVA</a>
+    </li>
+    <li>
       <a href="correlation.html">Correlation</a>
     </li>
     <li>
@@ -392,7 +395,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 
 
-<p>Correlation is a number that describes how strong of a relationship there is between two variables.</p>
+<p>In the <a href="nature-of-data.html">Nature of Data</a>, we explore nonmetric data (e.g., nominal, interval) and metric data (e.g., interval, ratio).</p>
+<p>In <a href="cross-tab-w-chi-square.html">Cross Tabulations with a <span class="math inline">\(\chi2\)</span> Test for Independence</a>, we test the relationship between two nominal variables with at least two levels.</p>
+<p>In <a href="anova.html">1-way ANOVA</a>, we test the relationship between at least one independent variable that is nominal in nature with at least two levels and one dependent variable that is interval or ratio in nature. In n-way ANOVA, we add two independent variables, which remain nominal in nature.</p>
+<p>In this document, we will add another test for a relationship between variables as well as a test for prediction.</p>
+<p><em>Correlation</em> is a number that describes how strong of a relationship there is between two variables.</p>
 <p>In digital analytics terms, you can use it to explore relationships between web metrics to see if an influence can be inferred, but <em>be careful to not hastily jump to conclusions that do not account for other factors</em>.</p>
 <p>For instance, a high correlation between social shares and SEO position could mean:</p>
 <ul>
@@ -407,6 +414,166 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li>Correlation is not <em>necessarily</em> a sign of causation.</li>
 </ul>
 <p>But, still, correlation can be very useful: identifying that a relationship exists can be a great place to start looking for the underlying drivers of that relationship which, ultimately, can lead to an insight than can drive an action!</p>
+<div id="the-basics-of-correlation" class="section level2">
+<h2>The Basics of Correlation</h2>
+<p>Correlation refers to a value, <span class="math inline">\(r\)</span>, that provides insight into the relationship between two variables. This mathematical formula goes by many names including Pearson product moment correlation, bivariate correlation, Pearson’s r, and others.</p>
+<p>Mathematically, the correlation coefficient is determined by</p>
+<ol style="list-style-type: lower-alpha">
+<li>Summing the product of standardized score for <span class="math inline">\(X_1\)</span> variable and standardized score for a corresponding <span class="math inline">\(X_2\)</span> variable, and then</li>
+<li>Dividing by the number of paired <span class="math inline">\(X_1X_2\)</span>. Most statistical packages, including Excel, Minitab, R, SAS, and SPSS quickly, easily, and painlessly perform this calculation.</li>
+</ol>
+<p>At this point, we will stop discussing the mathematical formula and instead focus on the output and the ensuing interpretation. However, we will come back to the correlation coefficient, <span class="math inline">\(r\)</span>, when we discuss regression.</p>
+<p>In this example, we will consider five metric variables, including:</p>
+<ol style="list-style-type: decimal">
+<li>Average amount spent per transactions</li>
+<li>Number of transactions</li>
+<li>Number of pages viewed</li>
+<li>Number of unique visitors by week</li>
+<li>Size of discount (e.g., 50% off, $10 off)</li>
+</ol>
+<p>All of these numbers are fake and are used for only illustrative purposes. Proceed with that caveat.</p>
+<div style="text-align: center">
+<strong>Table 1: Correlation Coefficient for Five Variables</strong>
+</div>
+<table>
+<colgroup>
+<col width="21%" />
+<col width="21%" />
+<col width="14%" />
+<col width="14%" />
+<col width="15%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th align="center">Average Amount<br>Spent per Transaction</th>
+<th align="center">Number of<br>Transactions</th>
+<th align="center">Number of<br>Pages Viewed</th>
+<th align="center">Number of Users<br>by Week</th>
+<th align="center">Size of<br>Discount</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Average Amount Spent<br>Per Transaction</td>
+<td align="center">1.00</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td>Number of Transaction</td>
+<td align="center">0.89</td>
+<td align="center">1.00</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td>Number of Pages Viewed</td>
+<td align="center">0.43</td>
+<td align="center">0.29</td>
+<td align="center">1.00</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td>Number of Users by Week</td>
+<td align="center">0.67</td>
+<td align="center">0.92</td>
+<td align="center">0.75</td>
+<td align="center">1.00</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td>Size of Discount</td>
+<td align="center">0.32</td>
+<td align="center">0.71</td>
+<td align="center">0.19</td>
+<td align="center">0.93</td>
+<td align="center">1.00</td>
+</tr>
+</tbody>
+</table>
+<p>All the correlation coefficient values shown in Table 1 appear positive. As <span class="math inline">\(X_1\)</span> moves in a positive direction (out from the origin on the X axis), another variable (e.g., number of unique pages visited or <span class="math inline">\(X_3\)</span>) moves in a positive (up from the origin on the Y axis) direction. Conversely, negative correlation coefficient values would be interpreted as <span class="math inline">\(X_1\)</span> moves in a positive direction (out from the origin on the X axis), <span class="math inline">\(X_3\)</span> moves in a negative direction (down toward the origin on the Y axis).</p>
+<p>Correlation coefficient values range from -1.00 to 1.00 with 0.00 interpreted perfectly unrelated, -1.00 perfectly negatively related, and 1.00 perfectly positively related. Most analysts will not observe a 0, -1, and/or 1 (<em><sigh></em> the world is messy!).</p>
+<div style="text-align: center">
+<strong>Table 2 - Interpretation for the Remaining Values</strong>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">High.Value</th>
+<th align="left">Low.Value</th>
+<th align="left">Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1.00</td>
+<td align="left">0.80</td>
+<td align="left">Danger! Collinearity!</td>
+</tr>
+<tr class="even">
+<td align="left">0.79</td>
+<td align="left">0.60</td>
+<td align="left">Strong relationship</td>
+</tr>
+<tr class="odd">
+<td align="left">0.59</td>
+<td align="left">0.40</td>
+<td align="left">Moderate relationship</td>
+</tr>
+<tr class="even">
+<td align="left">0.39</td>
+<td align="left">0.20</td>
+<td align="left">Weak relationship</td>
+</tr>
+<tr class="odd">
+<td align="left">~0.20</td>
+<td align="left">~-0.20</td>
+<td align="left">Crud relationship</td>
+</tr>
+<tr class="even">
+<td align="left">-0.39</td>
+<td align="left">-0.20</td>
+<td align="left">Weak relationship</td>
+</tr>
+<tr class="odd">
+<td align="left">-0.59</td>
+<td align="left">-0.40</td>
+<td align="left">Moderate relationship</td>
+</tr>
+<tr class="even">
+<td align="left">-0.79</td>
+<td align="left">-0.60</td>
+<td align="left">Strong relationship</td>
+</tr>
+<tr class="odd">
+<td align="left">-1.00</td>
+<td align="left">-0.80</td>
+<td align="left">Danger! Collinearity!</td>
+</tr>
+</tbody>
+</table>
+<p>“Crud factor” comes from philosopher Paul Mehl, who noted that everything is correlated with everything at least 0.2. In our example, the number of pages viewed and size of discount appears as a crud relationship.</p>
+<p>Collinearity refers to measuring the same variable twice. It presents problems in regression analysis. In our example, the number of users and size of discount seems collinear. The analyst should investigate this issue later in the regression analysis.</p>
+</div>
+<div id="the-null-hypothesis-h_0" class="section level2">
+<h2>The Null Hypothesis (<span class="math inline">\(H_0\)</span>)</h2>
+<p>The null hypothesis, or testable statement, is there there is <em>no relationship</em> between these two variables. This null hypothesis appears similar to the null hypothesis from cross tabulation with a <span class="math inline">\(\chi^2\)</span> test for independence. However, unlike a cross tabulation with a <span class="math inline">\(\chi^2\)</span> test for independence, the correlation test is rho (<span class="math inline">\(\rho\)</span>) equals 0. Rho refers to the coefficient of the population.</p>
+</div>
+<div id="other-types-of-correlation" class="section level2">
+<h2>Other Types of Correlation</h2>
+<p>There are a number of different types of correlation:</p>
+<ul>
+<li><p>Point Biserial correlation refers to including a dichotomous or binary variable (e.g., yes/no, on/off) (i.e., nonmetric data) with an interval or ratio variable (i.e., metric data). The interpretation changes to: as we move from no (or off) to yes (or on) then the other variable moves in a positive (or negative) direction.</p></li>
+<li><p>Spearman Rho correlation is used to find a relationship between two ordinal variables. For examples, a web analyst wants to compare page ranks from Google to Bing. Spearman Rho correlation could explain how related the two ranks are.</p></li>
+<li><p>Phi correlation is applied to understand the relationship between two dichotomous or binary variables. Instead of a Phi correlation, the digital analyst is better off setting up a cross tabulation with a chi square test for independence.</p></li>
+</ul>
+</div>
 <div id="performing-correlation-analysis-in-r" class="section level2">
 <h2>Performing correlation analysis in R</h2>
 <p>The base function <code>cor()</code> will perform correlations on a <code>data.frame</code>. Let’s give this a go with some data.</p>
@@ -504,8 +671,8 @@ kable(cor(web_data_metrics))</code></pre>
 </tr>
 </tbody>
 </table>
-<p>The table is mirrored in the diagonal and provides the <em>correlation coefficient</em> (aka, “<em>r</em>”) between each pair of values that intersect in the cell. 1 means a perfect correlation, 0 means no correlation and -1 means a perfect negative correlation.</p>
-<p><em>Does the R that we’re working on learning today have anything to do with the correlation coefficient <em>r</em>? Well…no. Or, at least, only to the extent that you can use R-the-platform to calculate r-the-correlation-coefficient. Good question, though!</em></p>
+<p>The table is mirrored in the diagonal and provides the <em>correlation coefficient</em> (aka, “<span class="math inline">\(r\)</span>”) between each pair of values that intersect in the cell. 1 means a perfect correlation, 0 means no correlation and -1 means a perfect negative correlation.</p>
+<p><em>Does the R that we’re working on learning today have anything to do with the correlation coefficient <span class="math inline">\(r\)</span>? Well…no. Or, at least, only to the extent that you can use R-the-platform to calculate r-the-correlation-coefficient. Good question, though!</em></p>
 <p>When working with correlations, its always a good idea to view an exploratory plot. A handy function for this is <code>pairs()</code> which creates a scatter plot of all the metrics passed in combination:</p>
 <pre class="r"><code>pairs(web_data_metrics)</code></pre>
 <p><img src="correlation_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>

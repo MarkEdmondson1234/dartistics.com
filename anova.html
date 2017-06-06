@@ -400,6 +400,9 @@ div.tocify {
       <a href="cross-tab-w-chi-square.html">Chi Square</a>
     </li>
     <li>
+      <a href="anova.html">ANOVA</a>
+    </li>
+    <li>
       <a href="correlation.html">Correlation</a>
     </li>
     <li>
@@ -548,11 +551,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p><em>N - K</em> allows us to control for how many groups we are using.</p>
 <p><em><whew></em> Still following?</p>
 <p>Once we have our observed F ratio, we can look up the critical value for the F ratio <a href="http://www.socr.ucla.edu/Applets.dir/F_Table.html">in a table</a>. Note that you will need the d.f. for both <em>MS~b</em> and for <em>MS~e</em> (and, once again, you will have to choose your <span class="math inline">\(\alpha\)</span> level). (You can also use the “quantile function” – <code>qf()</code> in base R to get the critical value).</p>
-<p>A 1-way ANOVA is appropriate if we want to segment on one variable such as device type or last point of contact.</p>
+<p>A 1-way ANOVA is appropriate if we want to segment on one variable such as device type or last touch channel.</p>
 </div>
-<div id="rejection-region-or-why-we-need-to-think-about-alpha" class="section level2">
-<h2>Rejection Region (or why we need to think about alpha)</h2>
-<p>Let’s talk a bit more about _H<sub>0</sub> and <span class="math inline">\(\alpha\)</span> level. I like 5% or .05 for a two tail test, which means the rejection area will be .05/2 on the left and right of the mean.</p>
+<div id="the-rejection-region" class="section level2">
+<h2>The Rejection Region</h2>
+<p>The rejection region is important. Nobody likes rejection…! Except, in statistics, we actually do. A key point, that we’ll want to keep reiterating:</p>
+<ul>
+<li>The <em>null hypothesis</em> (<em>H<sub>0</sub></em>) is, essentially: “there’s nothing to see here.”</li>
+<li>When we <em>reject</em> <em>H<sub>0</sub></em>, that means there actually <em>is</em> some sort of relationship.</li>
+</ul>
+<p>As such, <span class="math inline">\(\alpha\)</span> is how we lay out how confident we want to be in this double-negative world (rejecting the hypothesis that there is nothing going on). I like 5% or .05 for a two tail test, which means the rejection area will be .05/2 on the left and right of the mean.</p>
 <p>I like a two tail test because I do not have to think about negative values. The probability of drawing a -2.5 is just as likely as drawing a 2.5.</p>
 <p>If we reject the <em>H<sub>0</sub></em> because the observed value exceeds the critical or cutoff value, then we say the difference is the hypothesis. The means the two distributions are not equal.</p>
 <p>For a p-value of less than .05, we reject if the <em>t</em>-value exceeds 1.96.</p>
@@ -747,36 +755,232 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <div id="compare-the-actual-and-critical-f-values" class="section level3">
 <h3>9. Compare the Actual and Critical F-values</h3>
 <p>Finally, we compare the actual F value (4.94) to the critical F value (3.88), to determine that we reject the null hypothesis (<em>H<sub>0</sub></em>) that the means of the groups are equal. Therefore, we conclude that the levels or groups are <em>different</em>. In this example, we could, therefore, state that the number of goal completions <em>does</em> differ by channel.</p>
-<p>Examples of N-way ANOVA questions</p>
-<p>If we want to segment or otherwise consider two independent variables, then we need the N-way ANOVA. For example, we want to consider device type and last point of contact on the number of visitors.</p>
-<p>N-way ANOVA</p>
-<p>The N-way ANOVA allows the web analysts to consider two issues.</p>
-<p>One, the web analyst can consider the interaction of two variables. That is, device type and last point of contact work together. If the interaction is statistically significant, then the web analyst should not interpret device type and last point of contact separately when using ANOVA.</p>
-<p>To interpret the interaction effect, we argue for that as device type AND last point of contact change, the number of visits changes.</p>
-<p>If the interaction effect is not statistically significant (i.e., fail to reject), then the web analyst should interpret separately the two independent variables (e.g., device type and last point of contact), which is pretty much two one-way ANOVA.</p>
-<p>Two, regardless of whether the interaction effect appears statistically significant, the digital analyst should calculate eta square.</p>
-<p>The eta square is found by dividing SSx or SSb divided by SSy.</p>
-<p>0 means SSb or SSx has no effect on SSy.</p>
-<p>1 means SSb or SSx explains all variance of SSy.</p>
-<p>Usually, the eta square value falls between 0 and 1. It provides a method to determine the effect of SSb or SSx on SSy.</p>
-<p>Let’s consider the following table with last point of contact on the column and device type on the row. The cells contain the number of goals completed (Table 2).</p>
-<p>Table 2: Mean Number of Goals Completed by Device Type and Last Point of Contact</p>
-<p>Organic Search Paid Search Email Display Overall Averages by Device Type Laptop/Desktop 325 215 225 325 272.50 Tablet 275 165 175 160 228.75 Phone 245 135 145 110 166.25 Overall Averages by Last Point of Contact 276.67 203.33 200.00 210.00</p>
-<p>For this example, let’s assume the interaction effect of device type and last point of contact appears statistically significant.</p>
-<p>Main Effect Interpretation Device type and, separately, last point of contact appear to have a main effect on number of goals completed. We note that laptop/desktop users are more likely to complete more goals compared to phone users. Similarly, customers who rely on organic search to reach our website are more likely to complete more goals compared to other points of last contact.</p>
-<p>Interaction Effect Interpretation The difference for laptop/desktop users compared to tablet and phone users remains constant across the last point of contact until display is considered. The difference changes between device type at display. Hence, we can state that the relationship between device type and number of goals completed interacts with the last point of contact.</p>
+</div>
+</div>
+<div id="n-way-anova" class="section level2">
+<h2>N-way ANOVA</h2>
+<p>If we only have <em>one</em> independent variable – as in the example above, then we can use a 1-way ANOVA (um…duh…right?). But, if we want to segment or otherwise consider <em>two</em> (or more) independent variables, then we need the N-way ANOVA. For example, if we want to consider device type <em>and</em> last touch channel on the number of goals completed.</p>
+<p>The N-way ANOVA allows the web analysts to consider two issues:</p>
+<ol style="list-style-type: decimal">
+<li><p>The interaction of two variables. That is, if/how device type and last touch channel work together – referred to as the “interaction effect.”&quot; If the interaction is statistically significant, then the web analyst should not interpret device type and last touch channel separately when using ANOVA. To interpret the interaction effect, we argue for that as device type <em>and</em> last touch channel change, the number of visits changes. If the interaction effect is <em>not</em> statistically significant (i.e., fail to reject <em>H<sub>0</sub></em>), then the web analyst should interpret separately the two independent variables (e.g., device type and last touch channel), which is pretty much two one-way ANOVA.</p></li>
+<li>Regardless of whether the interaction effect appears statistically significant, the digital analyst should calculate eta square (<span class="math inline">\(\eta^2\)</span>). <span class="math inline">\(\eta^2\)</span> is calculated by dividing <em>SS<sub>x</sub></em> or <em>SS<sub>b</sub></em> by <em>SS<sub>y</sub></em>.</li>
+</ol>
+<ul>
+<li>0 means <em>SS<sub>b</sub></em> or <em>SS<sub>x</sub></em> has no effect on <em>SS<sub>y</sub></em>.</li>
+<li>1 means <em>SS<sub>b</sub></em> or <em>SS<sub>x</sub></em> explains all variance of <em>SS<sub>y</sub></em>.</li>
+</ul>
+<p>Usually, the <span class="math inline">\(\eta^2\)</span> value falls between 0 and 1. It provides a method to determine the effect of <em>SS<sub>b</sub></em> or <em>SS<sub>x</sub></em> on <em>SS<sub>y</sub></em>.</p>
+<p>Let’s consider the following table with last touch channel on the column and device type on the row. The cells contain the number of goals completed (Table 2).</p>
+<div style="text-align: center;">
+<strong>Table 2: Mean Number of Goals Completed by Device Type and Last Touch Channel</strong>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center">Organic Search</th>
+<th align="center">Paid Search</th>
+<th align="center">Email</th>
+<th align="center">Display</th>
+<th align="center">Overall Averages by<br>Device Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Laptop/Desktop</td>
+<td align="center">325</td>
+<td align="center">215</td>
+<td align="center">225</td>
+<td align="center">325</td>
+<td align="center"><strong>272.50</strong></td>
+</tr>
+<tr class="even">
+<td align="left">Tablet</td>
+<td align="center">275</td>
+<td align="center">165</td>
+<td align="center">175</td>
+<td align="center">160</td>
+<td align="center"><strong>228.75</strong></td>
+</tr>
+<tr class="odd">
+<td align="left">Phone</td>
+<td align="center">245</td>
+<td align="center">135</td>
+<td align="center">145</td>
+<td align="center">110</td>
+<td align="center"><strong>166.25</strong></td>
+</tr>
+<tr class="even">
+<td align="left">Overall Averages by Last Touch Channel</td>
+<td align="center"><strong>276.67</strong></td>
+<td align="center"><strong>203.33</strong></td>
+<td align="center"><strong>200.00</strong></td>
+<td align="center"><strong>210.00</strong></td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+<p>For this example, let’s assume the interaction effect of device type and last touch channel appears statistically significant.</p>
+<div id="main-effect-interpretation" class="section level3">
+<h3>Main Effect Interpretation</h3>
+<p>Device type and, separately, last touch channel appear to have a main effect on number of goals completed. We note that laptop/desktop users are more likely to complete more goals compared to phone users. Similarly, customers who rely on organic search to reach our website are more likely to complete more goals compared to other points of last contact.</p>
+</div>
+<div id="interaction-effect-interpretation" class="section level3">
+<h3>Interaction Effect Interpretation</h3>
+<p>The difference for laptop/desktop users compared to tablet and phone users remains constant across the last touch channel until display is considered. The difference changes between device type at display. Hence, we can state that the relationship between device type and number of goals completed interacts with the last touch channel.</p>
 <p>The interaction in this example is referred to as Ordinal Interaction because the order of the levels matters. Table 3 provides an example of no interaction.</p>
-<p>Table 3: Mean Number of Goals Completed by Device Type and Last Point of Contact</p>
-<p>Organic Search Paid Search Email Display Overall Averages by Device Type Laptop/Desktop 325 215 225 235 250 Tablet 275 165 175 185 200 Phone 245 135 145 155 170 Overall Averages by Last Point of Contact 281.67 171.67 181.67 191.67</p>
-<p>Table 3 shows no interaction. As we move down device type and across last point of contact, we see a monotonic transformation. That is, the pattern remains constant.</p>
-<p>Table 4 highlights an example of disordinal interaction with non cross over.</p>
-<p>Table 4: Mean Number of Goals Completed by Device Type and Last Point of Contact</p>
-<p>Organic Search Paid Search Email Display Overall Averages by Device Type Laptop/Desktop 325 215 225 235 250 Tablet 275 185 170 210 210 Phone 250 170 120 160 175 Overall Averages by Last Point of Contact 283.33 190.00 171.67 201.67</p>
-<p>As we move down device type and across last point of contact, we see the differences change. However, the cells never cross. That is, the number of goals completed for laptop/desktop never falls below tablet or phone regardless of last point of contact.</p>
+<div style="text-align: center">
+<strong>Table 3: Mean Number of Goals Completed by Device Type and Last Touch Channel</strong>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center">Organic Search</th>
+<th align="center">Paid Search</th>
+<th align="center">Email</th>
+<th align="center">Display</th>
+<th align="center">Overall Averages by<br>Device Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Laptop/Desktop</td>
+<td align="center">325</td>
+<td align="center">215</td>
+<td align="center">225</td>
+<td align="center">235</td>
+<td align="center"><strong>250</strong></td>
+</tr>
+<tr class="even">
+<td align="left">Tablet</td>
+<td align="center">275</td>
+<td align="center">165</td>
+<td align="center">175</td>
+<td align="center">185</td>
+<td align="center"><strong>200</strong></td>
+</tr>
+<tr class="odd">
+<td align="left">Phone</td>
+<td align="center">245</td>
+<td align="center">135</td>
+<td align="center">145</td>
+<td align="center">155</td>
+<td align="center"><strong>170</strong></td>
+</tr>
+<tr class="even">
+<td align="left">Overall Averages by Last Touch Channel</td>
+<td align="center"><strong>281.67</strong></td>
+<td align="center"><strong>171.67</strong></td>
+<td align="center"><strong>181.67</strong></td>
+<td align="center"><strong>191.67</strong></td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+<p>Table 3 shows no interaction. As we move down device type and across last touch channel, we see a monotonic transformation. That is, the pattern remains constant.</p>
+<p>Table 4 highlights an example of disordinal interaction with non-crossover.</p>
+<div style="text-align: center">
+<strong>Table 4: Mean Number of Goals Completed by Device Type and Last Touch Channel</strong>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center">Organic Search</th>
+<th align="center">Paid Search</th>
+<th align="center">Email</th>
+<th align="center">Display</th>
+<th align="center">Overall Averages by<br>Device Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Laptop/Desktop</td>
+<td align="center">325</td>
+<td align="center">215</td>
+<td align="center">225</td>
+<td align="center">235</td>
+<td align="center"><strong>250</strong></td>
+</tr>
+<tr class="even">
+<td align="left">Tablet</td>
+<td align="center">275</td>
+<td align="center">185</td>
+<td align="center">170</td>
+<td align="center">210</td>
+<td align="center"><strong>210</strong></td>
+</tr>
+<tr class="odd">
+<td align="left">Phone</td>
+<td align="center">250</td>
+<td align="center">170</td>
+<td align="center">120</td>
+<td align="center">160</td>
+<td align="center"><strong>175</strong></td>
+</tr>
+<tr class="even">
+<td align="left">Overall Averages by Last Touch Channel</td>
+<td align="center"><strong>283.33</strong></td>
+<td align="center"><strong>190.00</strong></td>
+<td align="center"><strong>171.67</strong></td>
+<td align="center"><strong>201.67</strong></td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+<p>As we move down device type and across last touch channel, we see the differences change. However, the cells never cross. That is, the number of goals completed for laptop/desktop never falls below tablet or phone regardless of last touch channel.</p>
 <p>Finally, Table 5 provides an example of disordinal interaction with crossover.</p>
-<p>Table 4: Mean Number of Goals Completed by Device Type and Last Point of Contact</p>
-<p>Organic Search Paid Search Email Display Overall Averages by Device Type Laptop/Desktop 325 215 200 235 243.75 Tablet 275 185 230 175 216.25 Phone 250 170 120 190 182.50 Overall Averages by Last Point of Contact 283.33 190.00 183.33 200.00</p>
-<p>As we move down device type and across last point of contact, we see the differences change and the cells cross. That is, the number of goals completed for laptop/desktop falls below tablet at email and phone appears greater than tablet at display.</p>
+<div style="text-align: center">
+<strong>Table 5: Mean Number of Goals Completed by Device Type and Last Touch Channel</strong>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center">Organic Search</th>
+<th align="center">Paid Search</th>
+<th align="center">Email</th>
+<th align="center">Display</th>
+<th align="center">Overall Averages by<br>Device Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Laptop/Desktop</td>
+<td align="center">325</td>
+<td align="center">215</td>
+<td align="center">200</td>
+<td align="center">235</td>
+<td align="center"><strong>243.75</strong></td>
+</tr>
+<tr class="even">
+<td align="left">Tablet</td>
+<td align="center">275</td>
+<td align="center">185</td>
+<td align="center">230</td>
+<td align="center">175</td>
+<td align="center"><strong>216.25</strong></td>
+</tr>
+<tr class="odd">
+<td align="left">Phone</td>
+<td align="center">250</td>
+<td align="center">170</td>
+<td align="center">120</td>
+<td align="center">190</td>
+<td align="center"><strong>182.50</strong></td>
+</tr>
+<tr class="even">
+<td align="left">Overall Averages by Last Touch Channel</td>
+<td align="center"><strong>283.33</strong></td>
+<td align="center"><strong>190.00</strong></td>
+<td align="center"><strong>183.33</strong></td>
+<td align="center"><strong>200.00</strong></td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+<p>As we move down device type and across last touch channel, we see the differences change and the cells cross. That is, the number of goals completed for laptop/desktop falls below tablet at email and phone appears greater than tablet at display.</p>
 <p>The type of interaction as discussed in Tables 2, 3, 4, and 5 give a completeness to the analysis. The interaction effect serves as the singular reason to perform this analysis.</p>
 </div>
 </div>
