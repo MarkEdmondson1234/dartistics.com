@@ -503,7 +503,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>Recall that, with a <a href="cross-tab-w-chi-square.html">cross tabulations with a <span class="math inline">\(\chi\)</span><sup>2</sup> test for independence</a>, we are testing an association of two variables, and we rely on the <em>frequency between the cells</em> to do that.</p>
 <p>If we want to measure the <em>differences</em> in those levels, then we need to use ANOVA. To apply ANOVA, we need two items:</p>
 <ul>
-<li>At least one **independent variable* that is <em>nominal in nature</em> and has <em>at least two levels</em>, and</li>
+<li>At least one <strong>independent variable</strong> that is <em>nominal in nature</em> and has <em>at least two levels</em>, and</li>
 <li><em>Only one</em> <strong>dependent variable</strong> that must be <em>interval</em> or <em>ratio</em> in nature.</li>
 </ul>
 <p>If we have one independent variable, then we apply a <strong>1-way ANOVA</strong>. If we have two (or more) independent variables, then we can apply an <strong><em>n</em>-way ANOVA.</strong> If we have collected observations of the dependent variable several times, then we apply the <strong>repeated measures ANOVA</strong>.</p>
@@ -521,7 +521,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </ul>
 <p>The levels for our independent variable, in this example, include “laptop/desktop,” “mobile,” and “tablet.” Hence, the independent variable, device type, includes three levels.</p>
 <p><strong>A Quick Aside:</strong> <em>Up to this point, in our R journey, we’ve treated “factors” as something of a nuisance that, if not converted to character vectors, can cause odd and frustrating results. Read up more on that <a href="classes.html#factor">here</a>. But, hopefully as you get into the content here and beyond, you will start to see how factors – and how many levels a factor has – start to become important. Now, back to our 1-way ANOVA…</em></p>
-<p>The hypothesis (“null hypothesis” or <em>H<sub>0</sub></em>), in this example, would be that means (or averages) between levels equals zero. That is: there is no difference between levels.</p>
+<p>The hypothesis (“null hypothesis” or <span class="math inline">\(H_0\)</span>), in this example, would be that means (or averages) between levels equals zero. That is: there is no difference between levels.</p>
 <p>In the cross tabulations with a <span class="math inline">\(\chi\)</span><sup>2</sup> test for independence, the hypothesis was, “there is no relationship between the two variables.”</p>
 <p>The ANOVA hypothesis is similar to the <span class="math inline">\(\chi\)</span><sup>2</sup> test for independence hypothesis because both are about “no relationships.”&quot; The ANOVA hypothesis is <em>dissimilar</em> to the <span class="math inline">\(\chi\)</span><sup>2</sup> test for independence hypothesis, though, because the ANOVA includes an arithmetic value (i.e., the means are equal to zero).</p>
 </div>
@@ -530,25 +530,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>A one way ANOVA with one independent variable and only two levels will generate the same results as an independent t-test (which, mysteriously, we’re not going to define here; perhaps, some day, we will come back to that). Instead of looking at the t-test though, we will look at the F ratio.</p>
 <p>Recall that we started with an <em>expected value</em>. We then took an observation. The distance between the <em>expected value</em> and the <em>observed value</em> is called the error. The relevant and necessary question becomes: “Is this error attributable to laptop/desktop, mobile, and tablet (i.e., within the group) or to device type (i.e., between the group)?”</p>
 <p>That is, “Is this error <em>within</em> the variables or <em>between</em> the variable?”</p>
-<p><em>MS<sub>w</sub></em> or <em>MS<sub>e</sub></em> is the mean square error within the variables. In this example, <em>MS<sub>w</sub></em> or <em>MS<sub>e</sub></em> refers to error <em>within</em> laptop/desktop, mobile, and tablet.</p>
-<p><em>MS<sub>b</sub></em> is the mean square error <em>between</em> the variables. In this example, <em>MS<sub>b</sub></em> refers to error in the device type.</p>
+<p><span class="math inline">\(MS_w\)</span> or <span class="math inline">\(MS_e\)</span> is the mean square error within the variables. In this example, <span class="math inline">\(MS_w\)</span> or <span class="math inline">\(MS_e\)</span> refers to error <em>within</em> laptop/desktop, mobile, and tablet.</p>
+<p><span class="math inline">\(MS_b\)</span> is the mean square error <em>between</em> the variables. In this example, <span class="math inline">\(MS_b\)</span> refers to error in the device type.</p>
 <p>So, hold onto your socks for a minute while we drop some formulas.</p>
 <p>Ultimately, we want to get an “F ratio,” which, similarly to how we compared the actual <span class="math inline">\(\chi\)</span><sup>2</sup> to the critical <span class="math inline">\(\chi\)</span><sup>2</sup>, we will compare to a table of F distribution values with a select <span class="math inline">\(\alpha\)</span> level.</p>
 <p>“Simply” put, the F ratio is: <span class="math display">\[F = \frac{MS_b}{MS_e}\]</span></p>
-<p>Of course, we have to actually figure out what <em>MS<sub>b</sub></em> and <em>MS<sub>w</sub></em> are, which requires breaking things down a bit:</p>
+<p>Of course, we have to actually figure out what <span class="math inline">\(MS_b\)</span>_ and <span class="math inline">\(MS_w\)</span> are, which requires breaking things down a bit:</p>
 <p><span class="math display">\[MS_b + MS_e = Total~Error\]</span></p>
 <p><span class="math display">\[MS_e~(or~MS_w~) = \frac{SS_e~(or~SS_w)}{N-K}\]</span></p>
 <p>Where:</p>
 <ul>
-<li><em>SS<sub>e</sub></em> (or <em>SS<sub>w</sub></em>) is the Sum of Squares error within</li>
-<li><em>N</em> is the number of groups</li>
-<li><em>K</em> is the number of levels.</li>
+<li><span class="math inline">\(SS_e\)</span> (or <span class="math inline">\(SS_w\)</span>) is the Sum of Squares error within</li>
+<li><span class="math inline">\(N\)</span> is the number of groups</li>
+<li><span class="math inline">\(K\)</span> is the number of levels.</li>
 </ul>
-<p><em>N - K</em> is the degrees of freedom (or “d.f.”) for the within effect.</p>
+<p><span class="math inline">\(N - K\)</span> is the degrees of freedom (or “d.f.”) for the within effect.</p>
 <p>And:</p>
-<p><span class="math display">\[MS_b = \frac{SS_b}{K-1}\]</span> where <em>K-1</em> is the d.f. for the “between effect” and <em>SS<sub>b</sub></em> is the Sum of Square error between.</p>
-<p>The relationship between <em>SS</em> and <em>MS</em> is the d.f.</p>
-<p><em>N - K</em> allows us to control for how many groups we are using.</p>
+<p><span class="math display">\[MS_b = \frac{SS_b}{K-1}\]</span> where <span class="math inline">\(K-1\)</span> is the d.f. for the “between effect” and <span class="math inline">\(SS_b\)</span> is the Sum of Square error between.</p>
+<p>The relationship between <span class="math inline">\(SS\)</span> and <span class="math inline">\(MS\)</span> is the d.f.</p>
+<p><span class="math inline">\(N - K\)</span> allows us to control for how many groups we are using.</p>
 <p><em><whew></em> Still following?</p>
 <p>Once we have our observed F ratio, we can look up the critical value for the F ratio <a href="http://www.socr.ucla.edu/Applets.dir/F_Table.html">in a table</a>. Note that you will need the d.f. for both <em>MS~b</em> and for <em>MS~e</em> (and, once again, you will have to choose your <span class="math inline">\(\alpha\)</span> level). (You can also use the “quantile function” – <code>qf()</code> in base R to get the critical value).</p>
 <p>A 1-way ANOVA is appropriate if we want to segment on one variable such as device type or last touch channel.</p>
@@ -557,12 +557,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h2>The Rejection Region</h2>
 <p>The rejection region is important. Nobody likes rejection…! Except, in statistics, we actually do. A key point, that we’ll want to keep reiterating:</p>
 <ul>
-<li>The <em>null hypothesis</em> (<em>H<sub>0</sub></em>) is, essentially: “there’s nothing to see here.”</li>
-<li>When we <em>reject</em> <em>H<sub>0</sub></em>, that means there actually <em>is</em> some sort of relationship.</li>
+<li>The <em>null hypothesis</em> (<span class="math inline">\(H_0\)</span>) is, essentially: “there’s nothing to see here.”</li>
+<li>When we <em>reject</em> <span class="math inline">\(H_0\)</span>, that means there actually <em>is</em> some sort of relationship.</li>
 </ul>
 <p>As such, <span class="math inline">\(\alpha\)</span> is how we lay out how confident we want to be in this double-negative world (rejecting the hypothesis that there is nothing going on). I like 5% or .05 for a two tail test, which means the rejection area will be .05/2 on the left and right of the mean.</p>
 <p>I like a two tail test because I do not have to think about negative values. The probability of drawing a -2.5 is just as likely as drawing a 2.5.</p>
-<p>If we reject the <em>H<sub>0</sub></em> because the observed value exceeds the critical or cutoff value, then we say the difference is the hypothesis. The means the two distributions are not equal.</p>
+<p>If we reject the <span class="math inline">\(H_0\)</span> because the observed value exceeds the critical or cutoff value, then we say the difference is the hypothesis. The means the two distributions are not equal.</p>
 <p>For a p-value of less than .05, we reject if the <em>t</em>-value exceeds 1.96.</p>
 <p>The <em>t</em>-value is referred to as the critical or cutoff value.</p>
 </div>
@@ -627,9 +627,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h3>2. Calculate the Mean for All Three Channels Combined</h3>
 <p>This is called the “grand mean.”&quot; The sum for the three channels is 52 and the mean is 3.47.</p>
 </div>
-<div id="determine-the-sum-of-squares-error-sse" class="section level3">
-<h3>3. Determine the Sum of Squares Error (<em>SS<sub>e</sub></em>)</h3>
-<p>We calculate <em>SS<sub>e</sub></em> by squaring the difference between the observed value and the expected (mean) value:</p>
+<div id="determine-the-sum-of-squares-error-ss_e" class="section level3">
+<h3>3. Determine the Sum of Squares Error (<span class="math inline">\(SS_e\)</span>)</h3>
+<p>We calculate <span class="math inline">\(SS_e\)</span> by squaring the difference between the observed value and the expected (mean) value:</p>
 <div style="text-align: center;">
 <strong>Table 2: Squared Error Values</strong>
 </div>
@@ -643,29 +643,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">(5-4.2)<sup>2</sup>=0.64</td>
-<td align="center">(4-3.8)<sup>2</sup>=0.04</td>
-<td align="center">(4-2.4)<sup>2</sup>=2.56</td>
+<td align="center"><span class="math inline">\((5-4.2)^2=0.64\)</span></td>
+<td align="center"><span class="math inline">\((4-3.8)^2=0.04\)</span></td>
+<td align="center"><span class="math inline">\((4-2.4)^2=2.56\)</span></td>
 </tr>
 <tr class="even">
-<td align="center">(3-4.2)<sup>2</sup>=1.44</td>
-<td align="center">(5-3.8)<sup>2</sup>=1.44</td>
-<td align="center">(2-2.4)<sup>2</sup>=0.16</td>
+<td align="center"><span class="math inline">\((3-4.2)^2=1.44\)</span></td>
+<td align="center"><span class="math inline">\((5-3.8)^2=1.44\)</span></td>
+<td align="center"><span class="math inline">\((2-2.4)^2=0.16\)</span></td>
 </tr>
 <tr class="odd">
-<td align="center">(4-4.2)<sup>2</sup>=0.04</td>
-<td align="center">(4-3.8)<sup>2</sup>=0.04</td>
-<td align="center">(3-2.4)<sup>2</sup>=0.36</td>
+<td align="center"><span class="math inline">\((4-4.2)^2=0.04\)</span></td>
+<td align="center"><span class="math inline">\((4-3.8)^2=0.04\)</span></td>
+<td align="center"><span class="math inline">\((3-2.4)^2=0.36\)</span></td>
 </tr>
 <tr class="even">
-<td align="center">(5-4.2)<sup>2</sup>=0.64</td>
-<td align="center">(3-3.8)<sup>2</sup>=0.64</td>
-<td align="center">(1-2.4)<sup>2</sup>=1.96</td>
+<td align="center"><span class="math inline">\((5-4.2)^2=0.64\)</span></td>
+<td align="center"><span class="math inline">\((3-3.8)^2=0.64\)</span></td>
+<td align="center"><span class="math inline">\((1-2.4)^2=1.96\)</span></td>
 </tr>
 <tr class="odd">
-<td align="center">(4-4.2)<sup>2</sup>=0.04</td>
-<td align="center">(3-3.8)<sup>2</sup>=0.64</td>
-<td align="center">(2-2.4)<sup>2</sup>=0.16</td>
+<td align="center"><span class="math inline">\((4-4.2)^2=0.04\)</span></td>
+<td align="center"><span class="math inline">\((3-3.8)^2=0.64\)</span></td>
+<td align="center"><span class="math inline">\((2-2.4)^2=0.16\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -675,9 +675,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li>Mobile (group 2) = 2.8</li>
 <li>Tablet (group 3) = 5.2</li>
 </ul>
-<p>That gets us to the <em>sum</em> of squares errors (<em>SS<sub>e</sub></em>):</p>
-<p><span class="math display">\[SS_e = 2.8+2.8+5.2 = 10.8\]</span> ### 4. Determine the Sum of Squares <em>Between</em> Groups (<em>SS<sub>b</sub></em>)</p>
-<p>We determine <em>SS<sub>b</sub></em> by subtracting the group mean from the grand mean and squaring the difference before multiplying by the number of observations in each group. Finally, we sum the products.</p>
+<p>That gets us to the <em>sum</em> of squares errors (<span class="math inline">\(SS_e\)</span>):</p>
+<p><span class="math display">\[SS_e = 2.8+2.8+5.2 = 10.8\]</span> ### 4. Determine the Sum of Squares <em>Between</em> Groups (<span class="math inline">\(SS_b\)</span>)</p>
+<p>We determine <span class="math inline">\(SS_b\)</span> by subtracting the group mean from the grand mean and squaring the difference before multiplying by the number of observations in each group. Finally, we sum the products.</p>
 <div style="text-align: center;">
 <strong>Table 3: Squared group error values</strong>
 </div>
@@ -727,25 +727,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </tr>
 </tbody>
 </table>
-<p>By summing the three values from column E in Table 3, we get the sum of square errors between groups (<em>SS<sub>b</sub></em>):</p>
+<p>By summing the three values from column E in Table 3, we get the sum of square errors between groups (<span class="math inline">\(SS_b\)</span>):</p>
 <p><span class="math display">\[SS_b = 2.65 + 0.55 + 5.70 = 8.90\]</span></p>
 </div>
-<div id="calculate-the-mean-square-errors-mse" class="section level3">
-<h3>5. Calculate the Mean Square Errors (<em>MS<sub>e</sub></em>)</h3>
-<p>We calculate <em>ME<sub>e</sub></em> by dividing the <em>SS<sub>e</sub></em> by the degrees of freedom. Recall, the degrees of freedom is the number of observations (<em>N</em>) less the number of groups or levels (<em>K</em>). In this example, the degrees of freedom is</p>
+<div id="calculate-the-mean-square-errors-ms_e" class="section level3">
+<h3>5. Calculate the Mean Square Errors (<span class="math inline">\(MS_e\)</span>)</h3>
+<p>We calculate <span class="math inline">\(ME_e\)</span> by dividing the <span class="math inline">\(SS_e\)</span> by the degrees of freedom. Recall, the degrees of freedom is the number of observations (<span class="math inline">\(N\)</span>) less the number of groups or levels (<span class="math inline">\(K\)</span>). In this example, the degrees of freedom is</p>
 <p><span class="math display">\[df = N - K = 15 -3 = 12\]</span> So:</p>
 <p><span class="math display">\[MS_e = \frac{SS_e}{df} = \frac{10.8}{12} = 0.9\]</span></p>
 </div>
-<div id="determine-the-mean-square-between-groups-msb" class="section level3">
-<h3>6. Determine the Mean Square Between Groups (<em>MS<sub>b</sub></em>)</h3>
-<p>We determine <em>MS<sub>b</sub></em> by dividing the sum of square between groups (<em>SS<sub>b</sub></em>) by the degrees of freedom. Here, degrees of freedom is determined by subtracting 1 from the number of groups or levels (<em>K</em>):</p>
+<div id="determine-the-mean-square-between-groups-ms_b" class="section level3">
+<h3>6. Determine the Mean Square Between Groups (<span class="math inline">\(MS_b\)</span>)</h3>
+<p>We determine <span class="math inline">\(MS_b\)</span> by dividing the sum of square between groups (<span class="math inline">\(SS_b\)</span>) by the degrees of freedom. Here, degrees of freedom is determined by subtracting 1 from the number of groups or levels (<em>K</em>):</p>
 <p><span class="math display">\[df = 3 - 1 = 2\]</span></p>
 <p>So:</p>
 <p><span class="math display">\[MS_b = \frac{SS_e}{df} = \frac{8.9}{2} = 4.45\]</span></p>
 </div>
 <div id="determine-the-actual-f-value" class="section level3">
 <h3>7. Determine the Actual F-value</h3>
-<p>(We’re close!) We determine the actual F value by dividing <em>MS<sub>b</sub></em> by <em>MS<sub>e</sub></em>:</p>
+<p>(We’re close!) We determine the actual F value by dividing <span class="math inline">\(MS_b\)</span> by <span class="math inline">\(MS_e\)</span>:</p>
 <p><span class="math display">\[F = \frac{MS_b}{MS_e} = \frac{4.45}{0.9} = 4.94\]</span></p>
 </div>
 <div id="look-up-the-critical-f-value" class="section level3">
@@ -754,7 +754,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 <div id="compare-the-actual-and-critical-f-values" class="section level3">
 <h3>9. Compare the Actual and Critical F-values</h3>
-<p>Finally, we compare the actual F value (4.94) to the critical F value (3.88), to determine that we reject the null hypothesis (<em>H<sub>0</sub></em>) that the means of the groups are equal. Therefore, we conclude that the levels or groups are <em>different</em>. In this example, we could, therefore, state that the number of goal completions <em>does</em> differ by channel.</p>
+<p>Finally, we compare the actual F value (4.94) to the critical F value (3.88), to determine that we reject the null hypothesis (<span class="math inline">\(H_0\)</span>) that the means of the groups are equal. Therefore, we conclude that the levels or groups are <em>different</em>. In this example, we could, therefore, state that the number of goal completions <em>does</em> differ by channel.</p>
 </div>
 </div>
 <div id="n-way-anova" class="section level2">
@@ -762,14 +762,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>If we only have <em>one</em> independent variable – as in the example above, then we can use a 1-way ANOVA (um…duh…right?). But, if we want to segment or otherwise consider <em>two</em> (or more) independent variables, then we need the N-way ANOVA. For example, if we want to consider device type <em>and</em> last touch channel on the number of goals completed.</p>
 <p>The N-way ANOVA allows the web analysts to consider two issues:</p>
 <ol style="list-style-type: decimal">
-<li><p>The interaction of two variables. That is, if/how device type and last touch channel work together – referred to as the “interaction effect.”&quot; If the interaction is statistically significant, then the web analyst should not interpret device type and last touch channel separately when using ANOVA. To interpret the interaction effect, we argue for that as device type <em>and</em> last touch channel change, the number of visits changes. If the interaction effect is <em>not</em> statistically significant (i.e., fail to reject <em>H<sub>0</sub></em>), then the web analyst should interpret separately the two independent variables (e.g., device type and last touch channel), which is pretty much two one-way ANOVA.</p></li>
-<li>Regardless of whether the interaction effect appears statistically significant, the digital analyst should calculate eta square (<span class="math inline">\(\eta^2\)</span>). <span class="math inline">\(\eta^2\)</span> is calculated by dividing <em>SS<sub>x</sub></em> or <em>SS<sub>b</sub></em> by <em>SS<sub>y</sub></em>.</li>
+<li><p>The interaction of two variables. That is, if/how device type and last touch channel work together – referred to as the “interaction effect.”&quot; If the interaction is statistically significant, then the web analyst should not interpret device type and last touch channel separately when using ANOVA. To interpret the interaction effect, we argue for that as device type <em>and</em> last touch channel change, the number of visits changes. If the interaction effect is <em>not</em> statistically significant (i.e., fail to reject <span class="math inline">\(H_0\)</span>), then the web analyst should interpret separately the two independent variables (e.g., device type and last touch channel), which is pretty much two one-way ANOVA.</p></li>
+<li>Regardless of whether the interaction effect appears statistically significant, the digital analyst should calculate eta square (<span class="math inline">\(\eta^2\)</span>). <span class="math inline">\(\eta^2\)</span> is calculated by dividing <span class="math inline">\(SS_x\)</span> or <span class="math inline">\(SS_b\)</span> by <span class="math inline">\(SS_y\)</span>.</li>
 </ol>
 <ul>
-<li>0 means <em>SS<sub>b</sub></em> or <em>SS<sub>x</sub></em> has no effect on <em>SS<sub>y</sub></em>.</li>
-<li>1 means <em>SS<sub>b</sub></em> or <em>SS<sub>x</sub></em> explains all variance of <em>SS<sub>y</sub></em>.</li>
+<li>0 means <span class="math inline">\(SS_b\)</span> or <span class="math inline">\(SS_x\)</span> has no effect on <span class="math inline">\(SS_y\)</span>.</li>
+<li>1 means <span class="math inline">\(SS_b\)</span> or <span class="math inline">\(SS_x\)</span> explains all variance of <span class="math inline">\(SS_y\)</span>.</li>
 </ul>
-<p>Usually, the <span class="math inline">\(\eta^2\)</span> value falls between 0 and 1. It provides a method to determine the effect of <em>SS<sub>b</sub></em> or <em>SS<sub>x</sub></em> on <em>SS<sub>y</sub></em>.</p>
+<p>Usually, the <span class="math inline">\(\eta^2\)</span> value falls between 0 and 1. It provides a method to determine the effect of <span class="math inline">\(SS_b\)</span> or <span class="math inline">\(SS_x\)</span> on <span class="math inline">\(SS_y\)</span>.</p>
 <p>Let’s consider the following table with last touch channel on the column and device type on the row. The cells contain the number of goals completed (Table 2).</p>
 <div style="text-align: center;">
 <strong>Table 2: Mean Number of Goals Completed by Device Type and Last Touch Channel</strong>

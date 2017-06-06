@@ -22,7 +22,7 @@ Recall that, with a [cross tabulations with a $\chi$^2^ test for independence](c
 
 If we want to measure the _differences_ in those levels, then we need to use ANOVA. To apply ANOVA, we need two items:
 
-* At least one **independent variable* that is _nominal in nature_ and has _at least two levels_, and
+* At least one **independent variable** that is _nominal in nature_ and has _at least two levels_, and
 * _Only one_  **dependent variable** that must be _interval_ or _ratio_ in nature.
 
 If we have one independent variable, then we apply a **1-way ANOVA**. If we have two (or more) independent variables, then we can apply an **_n_-way ANOVA.** If we have collected observations of the dependent variable several times, then we apply the **repeated measures ANOVA**.
@@ -44,7 +44,7 @@ The levels for our independent variable, in this example, include “laptop/desk
 
 **A Quick Aside:** _Up to this point, in our R journey, we’ve treated “factors” as something of a nuisance that, if not converted to character vectors, can cause odd and frustrating results. Read up more on that [here](classes.html#factor). But, hopefully as you get into the content here and beyond, you will start to see how factors -- and how many levels a factor has -- start to become important. Now, back to our 1-way ANOVA…_
 
-The hypothesis ("null hypothesis" or _H~0~_), in this example, would be that means (or averages) between levels equals zero. That is: there is no difference between levels.
+The hypothesis ("null hypothesis" or $H_0$), in this example, would be that means (or averages) between levels equals zero. That is: there is no difference between levels.
 
 In the cross tabulations with a $\chi$^2^ test for independence, the hypothesis was, “there is no relationship between the two variables.”
 
@@ -58,9 +58,9 @@ Recall that we started with an _expected value_. We then took an observation. Th
  
 That is, “Is this error _within_ the variables or _between_ the variable?”
  
-_MS~w~_ or _MS~e~_ is the mean square error within the variables. In this example, _MS~w~_ or _MS~e~_ refers to error _within_ laptop/desktop, mobile, and tablet.
+$MS_w$ or $MS_e$ is the mean square error within the variables. In this example, $MS_w$ or $MS_e$ refers to error _within_ laptop/desktop, mobile, and tablet.
  
-_MS~b~_ is the mean square error _between_ the variables. In this example, _MS~b~_ refers to error in the device type.
+$MS_b$ is the mean square error _between_ the variables. In this example, $MS_b$ refers to error in the device type.
 
 So, hold onto your socks for a minute while we drop some formulas.
  
@@ -69,7 +69,7 @@ Ultimately, we want to get an "F ratio," which, similarly to how we compared the
 "Simply" put, the F ratio is:
 $$F = \frac{MS_b}{MS_e}$$
 
-Of course, we have to actually figure out what _MS~b~_ and _MS~w~_ are, which requires breaking things down a bit:
+Of course, we have to actually figure out what $MS_b$_ and $MS_w$ are, which requires breaking things down a bit:
  
 $$MS_b + MS_e = Total~Error$$
 
@@ -78,20 +78,20 @@ $$MS_e~(or~MS_w~) = \frac{SS_e~(or~SS_w)}{N-K}$$
 
 Where:
 
-* _SS~e~_ (or _SS~w~_) is the Sum of Squares error within
-* _N_ is the number of groups
-* _K_ is the number of levels.
+* $SS_e$ (or $SS_w$) is the Sum of Squares error within
+* $N$ is the number of groups
+* $K$ is the number of levels.
 
-_N - K_ is the degrees of freedom (or “d.f.”) for the within effect. 
+$N - K$ is the degrees of freedom (or “d.f.”) for the within effect. 
 
 And:
 
 $$MS_b = \frac{SS_b}{K-1}$$
-where _K-1_ is the d.f. for the "between effect" and _SS~b~_ is the Sum of Square error between.
+where $K-1$ is the d.f. for the "between effect" and $SS_b$ is the Sum of Square error between.
  
-The relationship between _SS_ and _MS_ is the d.f.
+The relationship between $SS$ and $MS$ is the d.f.
  
-_N - K_ allows us to control for how many groups we are using.
+$N - K$ allows us to control for how many groups we are using.
 
 _<whew>_ Still following?
 
@@ -103,14 +103,14 @@ A 1-way ANOVA is appropriate if we want to segment on one variable such as devic
 
 The rejection region is important. Nobody likes rejection...! Except, in statistics, we actually do. A key point, that we'll want to keep reiterating:
 
-* The _null hypothesis_ (_H~0~_) is, essentially: "there's nothing to see here." 
-* When we _reject_ _H~0~_, that means there actually _is_ some sort of relationship.
+* The _null hypothesis_ ($H_0$) is, essentially: "there's nothing to see here." 
+* When we _reject_ $H_0$, that means there actually _is_ some sort of relationship.
 
 As such, $\alpha$ is how we lay out how confident we want to be in this double-negative world (rejecting the hypothesis that there is nothing going on). I like 5% or .05 for a two tail test, which means the rejection area will be .05/2 on the left and right of the mean.
  
 I like a two tail test because I do not have to think about negative values. The probability of drawing a -2.5 is just as likely as drawing a 2.5.
  
-If we reject the _H~0~_ because the observed value exceeds the critical or cutoff value, then we say the difference is the hypothesis. The means the two distributions are not equal.
+If we reject the $H_0$ because the observed value exceeds the critical or cutoff value, then we say the difference is the hypothesis. The means the two distributions are not equal.
  
 For a p-value of less than .05, we reject if the _t_-value exceeds 1.96.
  
@@ -148,20 +148,20 @@ The averages for each channel are:
 
 This is called the "grand mean."" The sum for the three channels is 52 and the mean is 3.47.
 
-### 3. Determine the Sum of Squares Error (_SS~e~_)
+### 3. Determine the Sum of Squares Error ($SS_e$)
 
-We calculate _SS~e~_ by squaring the difference between the observed value and the expected (mean) value:
+We calculate $SS_e$ by squaring the difference between the observed value and the expected (mean) value:
 
 <div style="text-align: center;">**Table 2: Squared Error Values**</div>
 
 
 |   Desktop/Laptop   |       Mobile        |       Tablet        |
 |:------------------:|:-------------------:|:-------------------:|
-|  (5-4.2)^2^=0.64   |   (4-3.8)^2^=0.04   |   (4-2.4)^2^=2.56   |
-|  (3-4.2)^2^=1.44   |   (5-3.8)^2^=1.44   |   (2-2.4)^2^=0.16   |
-|  (4-4.2)^2^=0.04   |   (4-3.8)^2^=0.04   |   (3-2.4)^2^=0.36   |
-|  (5-4.2)^2^=0.64   |   (3-3.8)^2^=0.64   |   (1-2.4)^2^=1.96   |
-|  (4-4.2)^2^=0.04   |   (3-3.8)^2^=0.64   |   (2-2.4)^2^=0.16   |
+|  $(5-4.2)^2=0.64$   |   $(4-3.8)^2=0.04$   |   $(4-2.4)^2=2.56$   |
+|  $(3-4.2)^2=1.44$   |   $(5-3.8)^2=1.44$   |   $(2-2.4)^2=0.16$   |
+|  $(4-4.2)^2=0.04$   |   $(4-3.8)^2=0.04$   |   $(3-2.4)^2=0.36$   |
+|  $(5-4.2)^2=0.64$   |   $(3-3.8)^2=0.64$   |   $(1-2.4)^2=1.96$   |
+|  $(4-4.2)^2=0.04$   |   $(3-3.8)^2=0.64$   |   $(2-2.4)^2=0.16$   |
 
 The sum of each group errors is:
 
@@ -169,12 +169,12 @@ The sum of each group errors is:
 * Mobile (group 2) = 2.8
 * Tablet (group 3) = 5.2
 
-That gets us to the _sum_ of squares errors (_SS~e~_):
+That gets us to the _sum_ of squares errors ($SS_e$):
 
 $$SS_e = 2.8+2.8+5.2 = 10.8$$
-### 4. Determine the Sum of Squares _Between_ Groups (_SS~b~_)
+### 4. Determine the Sum of Squares _Between_ Groups ($SS_b$)
 
-We determine _SS~b~_ by subtracting the group mean from the grand mean and squaring the difference before multiplying by the number of observations in each group. Finally, we sum the products.
+We determine $SS_b$ by subtracting the group mean from the grand mean and squaring the difference before multiplying by the number of observations in each group. Finally, we sum the products.
 
 <div style="text-align: center;">**Table 3: Squared group error values**</div>
 
@@ -186,22 +186,22 @@ We determine _SS~b~_ by subtracting the group mean from the grand mean and squar
 |  Group 1 (Tablet)           |         5         |     3.47   |     2.4    |    1.14    |   5.70   |
 
 
-By summing the three values from column E in Table 3, we get the sum of square errors between groups (_SS~b~_):
+By summing the three values from column E in Table 3, we get the sum of square errors between groups ($SS_b$):
 
 $$SS_b = 2.65 + 0.55 + 5.70 = 8.90$$
 
-### 5. Calculate the Mean Square Errors (_MS~e~_) 
+### 5. Calculate the Mean Square Errors ($MS_e$) 
 
-We calculate _ME~e~_ by dividing the _SS~e~_ by the degrees of freedom. Recall, the degrees of freedom is the number of observations (_N_) less the number of groups or levels (_K_). In this example, the degrees of freedom is
+We calculate $ME_e$ by dividing the $SS_e$ by the degrees of freedom. Recall, the degrees of freedom is the number of observations ($N$) less the number of groups or levels ($K$). In this example, the degrees of freedom is
 
 $$df = N - K = 15 -3 = 12$$
 So:
 
 $$MS_e = \frac{SS_e}{df} = \frac{10.8}{12} = 0.9$$
 
-### 6. Determine the Mean Square Between Groups (_MS~b~_)
+### 6. Determine the Mean Square Between Groups ($MS_b$)
 
-We determine _MS~b~_ by dividing the sum of square between groups (_SS~b~_) by the degrees of freedom. Here, degrees of freedom is determined by subtracting 1 from the number of groups or levels (_K_):
+We determine $MS_b$ by dividing the sum of square between groups ($SS_b$) by the degrees of freedom. Here, degrees of freedom is determined by subtracting 1 from the number of groups or levels (_K_):
 
 $$df = 3 - 1 = 2$$
 
@@ -211,7 +211,7 @@ $$MS_b = \frac{SS_e}{df} = \frac{8.9}{2} = 4.45$$
 
 ### 7. Determine the Actual F-value
 
-(We're close!) We determine the actual F value by dividing _MS~b~_ by _MS~e~_:
+(We're close!) We determine the actual F value by dividing $MS_b$ by $MS_e$:
 
 $$F = \frac{MS_b}{MS_e} = \frac{4.45}{0.9} = 4.94$$
 
@@ -221,7 +221,7 @@ We look up (or ask R to look up, using the base R `qf()` function) the critical 
 
 ### 9. Compare the Actual and Critical F-values
 
-Finally, we compare the actual F value (4.94) to the critical F value (3.88), to determine that we reject the null hypothesis (_H~0~_) that the means of the groups are equal. Therefore, we conclude that the levels or groups are _different_. In this example, we could, therefore, state that the number of goal completions _does_ differ by channel.
+Finally, we compare the actual F value (4.94) to the critical F value (3.88), to determine that we reject the null hypothesis ($H_0$) that the means of the groups are equal. Therefore, we conclude that the levels or groups are _different_. In this example, we could, therefore, state that the number of goal completions _does_ differ by channel.
 
 ## N-way ANOVA
 
@@ -229,13 +229,13 @@ If we only have _one_ independent variable -- as in the example above, then we c
 
 The N-way ANOVA allows the web analysts to consider two issues:
 
-1. The interaction of two variables. That is, if/how device type and last touch channel work together -- referred to as the "interaction effect."" If the interaction is statistically significant, then the web analyst should not interpret device type and last touch channel separately when using ANOVA. To interpret the interaction effect, we argue for that as device type _and_ last touch channel change, the number of visits changes. If the interaction effect is _not_ statistically significant (i.e., fail to reject _H~0~_), then the web analyst should interpret separately the two independent variables (e.g., device type and last touch channel), which is pretty much two one-way ANOVA.
+1. The interaction of two variables. That is, if/how device type and last touch channel work together -- referred to as the "interaction effect."" If the interaction is statistically significant, then the web analyst should not interpret device type and last touch channel separately when using ANOVA. To interpret the interaction effect, we argue for that as device type _and_ last touch channel change, the number of visits changes. If the interaction effect is _not_ statistically significant (i.e., fail to reject $H_0$), then the web analyst should interpret separately the two independent variables (e.g., device type and last touch channel), which is pretty much two one-way ANOVA.
  
-2. Regardless of whether the interaction effect appears statistically significant, the digital analyst should calculate eta square ($\eta^2$). $\eta^2$ is calculated by dividing _SS~x~_ or _SS~b~_ by _SS~y~_.
-  + 0 means _SS~b~_ or _SS~x~_ has no effect on _SS~y~_.
-  + 1 means _SS~b~_ or _SS~x~_ explains all variance of _SS~y~_.
+2. Regardless of whether the interaction effect appears statistically significant, the digital analyst should calculate eta square ($\eta^2$). $\eta^2$ is calculated by dividing $SS_x$ or $SS_b$ by $SS_y$.
+  + 0 means $SS_b$ or $SS_x$ has no effect on $SS_y$.
+  + 1 means $SS_b$ or $SS_x$ explains all variance of $SS_y$.
  
-Usually, the $\eta^2$ value falls between 0 and 1. It provides a method to determine the effect of _SS~b~_ or _SS~x~_ on _SS~y~_.
+Usually, the $\eta^2$ value falls between 0 and 1. It provides a method to determine the effect of $SS_b$ or $SS_x$ on $SS_y$.
 
 Let’s consider the following table with last touch channel on the column and device type on the row. The cells contain the number of goals completed (Table 2).
 
