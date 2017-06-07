@@ -17,10 +17,6 @@ This site is developed and maintained by [Mark Edmondson](https://dk.linkedin.co
 
 Our hope is that, for the analyst who is new to R, by going through the resources on this site, the code and output below will start to make some real sense!
 
-### 3-Day Training: Columbus, Ohio, US - June 13-15, 2017
-
-<div style= "background-color: #cce6ff; text-align: center; padding: 10px 10px 10px 10px;"><b>See the <a href="r-and-statistics-class.html">class details</a> for more information.</b></div><br>
-
 ## Some Examples for Inspiration
 
 Below are a couple of examples of some uses of R with web analytics data. Check out the examples under the **Examples** dropdown for these examples and more, including the code used to generate them.

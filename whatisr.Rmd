@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Why use R (instead of Excel)?
 
-* **Reproducability**: write a function for one project/client and then reuse it for others
+* **Reproducibility**: write a function for one project/client and then reuse it for others
 * **Flexibility**: many *many* open source packages to enable powerful operations
 * **Scalability**: copes easily beyond Excel limits; can scale up in cloud using same code
 * **Interoperability**: can run (almost) same code on Linux, Mac, and Windows
