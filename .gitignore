@@ -1,3 +1,6 @@
+# Environment file
+.Renviron
+
 # History files
 .Rhistory
 .Rapp.history
@@ -32,5 +35,8 @@ vignettes/*.pdf
 *.utf8.md
 *.knit.md
 .Rproj.user
+
+# RDS
+*.rds
 
 analytics-apis.html

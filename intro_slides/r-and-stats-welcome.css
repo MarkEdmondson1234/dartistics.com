@@ -1,0 +1,116 @@
+@import url(https://fonts.googleapis.com/css?family=Oswald|Roboto);
+
+/* Set the body font to Roboto */
+body { font-family: 'Roboto';}
+
+/* Set the heading style to Oswald */
+h1, h2, h3 { font-family: 'Oswald';}
+
+/* Set standard slide title font size */
+.remark-slide-content h2 {font-size: 36px;}
+
+.remark-slide-number {
+  font-size: 10pt;
+  margin-bottom: -11.6px;
+  margin-right: 10px;
+  color: #BBBBBB; 
+  opacity: 1; /* default: 0.5 */
+  padding: 0 1em 1em 0;
+}
+
+.remark-slide-content {padding: 0 2em 4em 2em;}
+
+.remark-code-line {font-size: 12pt;}
+
+/* === COLUMN CLASSES === */
+
+  .bottom {
+    bottom: 20px;
+    position: absolute;
+    left: 80px;
+  }
+
+  .top {
+    top: 20px;
+    position: absolute;
+    left: 80px;
+  }
+
+/* === COLUMN CLASSES === */
+  [class*="left-col-"] {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .left-col-1 {
+    width: 8.33%;
+    float: left;
+  }
+
+  .left-col-2 {
+    width: 16.67%;
+    float: left;
+  }
+
+  .left-col-3 {
+    width: 25%;
+    float: left;
+  }
+
+  .left-col-4 {
+    width: 33.33%;
+    float: left;
+  }
+
+  .left-col-5 {
+    width: 41.67%;
+    float: left;
+  }
+
+  .left-col-6 {
+    width: 50%;
+    float: left;
+  }
+
+  .left-col-7 {
+    width: 58.33%;
+    float: left;
+  }
+
+  .left-col-8 {
+    width: 66.67%;
+    float: left;
+  }
+
+  .left-col-9 {
+    width: 75%;
+    float: left;
+  }
+
+  .left-col-10 {
+    width: 83.33%;
+    float: left;
+  }
+
+  .left-col-11 {
+    width: 91.67%;
+    float: left;
+  }
+
+  .left-col-12 {
+    width: 100%;
+    float: left;
+  }
+
+  .container {
+    width: 100%;
+    overflow: auto;
+  }
+
+  .first{
+    margin-left: 0;
+  }
+
+  .last{
+    margin-right: 0;
+  }

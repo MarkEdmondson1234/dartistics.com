@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>R and Statistics for the Digital Analyst</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Tim Wilson, Dr. Michael Levin, and Mark Edmondson" />
+    <link href="libs/remark-css/example.css" rel="stylesheet" />
+    <link rel="stylesheet" href="r-and-stats-welcome.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# R and Statistics for the Digital Analyst
+## Welcome and Overview
+### Tim Wilson, Dr. Michael Levin, and Mark Edmondson
+
+---
+
+class: inverse
+
+# Your Instructors
+.container[
+.left-col-3[.first[![](images/wilsonHead_2.jpg)&lt;br&gt;
+**Tim Wilson**&lt;br&gt;
+Analytics Demystified&lt;br&gt;
+_R You Ready for R?_]]
+.left-col-3[.first[![](images/levinHead.jpg)&lt;br&gt;
+**Dr. Michael Levin**&lt;br&gt;
+Otterbein University&lt;br&gt;
+_Stats Man!_]]
+.left-col-3[.first[![](images/edmondsonHead_2.jpg)&lt;br&gt;
+**Mark Edmondson**&lt;br&gt;
+IIH Nordic&lt;br&gt;
+_The Google GuRu_]]
+]
+
+---
+# Now...you!
+
+.container[
+.left-col-6[.first[![](images/unclesam.jpg)]]
+.left-col-6[.first[* Name
+* Company
+* One thing you hope to get out of this training]]
+]
+
+
+
+
+
+---
+# The Next Three Days
+
+The class will run from 9:00 AM to ~5:00 PM each day.
+
+* **Tuesday, June 13th**
+  + Class: Introduction and Basic Operation of R
+  + Evening: Columbus Clippers vs. Durham Bulls
+* **Wednesday, June 14th**
+  + Class: Statistics with Digital Analytics Data
+  + Evening: Web Analytics Wednesday
+* **Thursday, June 15th**
+  + Class: Statistics using R, Advanced R
+  + Evening: Head home (or relax!)
+
+---
+# How did I hound you?
+
+```
+library(googlesheets)  # Read from Google Sheets
+library(tidyverse)     # Just 'cuz... we'll need it
+
+# Register the Google Sheet w/ survey responses
+survey_responses &lt;- gs_key("[GOOGLE SHEETS KEY FOR FORM RESPONSES]")
+registration_list &lt;- gs_key("[GOOGLE SHEETS KEY FOR REGISTRATIONS]")
+
+# Load the data from the Google Sheets
+survey_responses_data &lt;- gs_read(survey_responses, ws = "Form Responses 1") %&gt;%
+  as.data.frame()
+
+# Combine first and last name from the registration list (our join key)
+registration_list_data &lt;- gs_read(registration_list, ws = "Sheet1") %&gt;%
+  as.data.frame() %&gt;% mutate(Name = paste(`FIRST NAME`, `LAST NAME`))
+
+# Combine the data sets
+combined_data &lt;- full_join(registration_list_data, survey_responses_data,
+                           by = c("Name" = "Your Name"))
+
+# Filter down to the non-responses
+missing_responses &lt;- filter(combined_data, is.na(Timestamp)) %&gt;%
+  select(EMAIL)
+```
+
+---
+## How many of you are Columbus-based?
+
+![](r-and-stats-welcome_files/figure-html/local-1.png)&lt;!-- --&gt;
+
+---
+## What operating systems are you using?
+
+![](r-and-stats-welcome_files/figure-html/os-1.png)&lt;!-- --&gt;
+
+---
+## Interest in evening activities?
+
+![](r-and-stats-welcome_files/figure-html/evening-1.png)&lt;!-- --&gt;
+
+---
+## Arrivals and departures?
+
+![](r-and-stats-welcome_files/figure-html/arrival-1.png)&lt;!-- --&gt;
+
+
+---
+## What data sources are you interested in?
+
+![](r-and-stats-welcome_files/figure-html/data_sources-1.png)&lt;!-- --&gt;
+
+---
+## Statistics Familiarity
+
+![](r-and-stats-welcome_files/figure-html/stats-1.png)&lt;!-- --&gt;
+
+---
+## Resources
+
+dartistics.com
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {window.dispatchEvent(new Event('resize'));});</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
