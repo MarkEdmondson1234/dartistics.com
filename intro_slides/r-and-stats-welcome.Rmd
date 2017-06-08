@@ -11,34 +11,9 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
+      
 ---
 class: inverse
-
-# Your Instructors
-.container[
-.left-col-3[.first[![](images/wilsonHead_2.jpg)<br>
-**Tim Wilson**<br>
-Analytics Demystified<br>
-_R You Ready for R?_]]
-.left-col-3[.first[![](images/levinHead.jpg)<br>
-**Dr. Michael Levin**<br>
-Otterbein University<br>
-_Stats Man!_]]
-.left-col-3[.first[![](images/edmondsonHead_2.jpg)<br>
-**Mark Edmondson**<br>
-IIH Nordic<br>
-_The Google GuRu_]]
-]
-
----
-# Now...you!
-
-.container[
-.left-col-6[.first[![](images/unclesam.jpg)]]
-.left-col-6[.first[* Name
-* Company
-* One thing you hope to get out of this training]]
-]
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
@@ -77,6 +52,10 @@ plot_bar_horiz <- function(data){
   p
 }
 
+# This data doesn't change much, so, if it's changed, uncomment the below and run just
+# the commented lines below to refresh the underlying data. Otherwise, it will just read
+# it from a static RDS (which isn't available on Github -- it has to be created locally).
+
 # # Register the Google Sheet w/ survey responses
 # survey_id <- Sys.getenv("GS_SURVEY_ID")
 # survey_responses <- gs_key(survey_id)
@@ -95,20 +74,39 @@ survey_responses_data <- read_rds("survey_responses_data.rds")
 # Pulls in theme definitions from the ggplot_themes.R file
 ```
 
+# Your Instructors
+.container[
+.left-col-4[.first[![](images/wilsonHead_2.jpg)<br>
+**Tim Wilson**<br>
+Analytics Demystified<br>
+_R You Ready for R?_]]
+.left-col-4[.first[![](images/levinHead_2.jpg)<br>
+**Dr. Michael Levin**<br>
+Otterbein University<br>
+_Stats Man!_]]
+.left-col-4[.first[![](images/edmondsonHead_2.jpg)<br>
+**Mark Edmondson**<br>
+IIH Nordic<br>
+_The Google GuRu_]]
+]
+
 ---
-# The Next Three Days
+.container[
+.left-col-5[.first[# Now...you!
+<div style="color: #150E91">
+## Your Name
+## Your Company
+## One thing you hope to get out of this training</div>]]
+.left-col-7[.last[![](images/unclesam.jpg)]]
+]
+
+
+---
+## The Next Three Days
 
 The class will run from 9:00 AM to ~5:00 PM each day.
 
-* **Tuesday, June 13th**
-  + Class: Introduction and Basic Operation of R
-  + Evening: Columbus Clippers vs. Durham Bulls
-* **Wednesday, June 14th**
-  + Class: Statistics with Digital Analytics Data
-  + Evening: Web Analytics Wednesday
-* **Thursday, June 15th**
-  + Class: Statistics using R, Advanced R
-  + Evening: Head home (or relax!)
+![](images/agenda.jpg)
 
 ---
 # How did I hound you?
