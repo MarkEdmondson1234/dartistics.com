@@ -303,7 +303,7 @@ div.tocify {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    R programming
+    R Programming
      
     <span class="caret"></span>
   </a>
@@ -524,10 +524,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>The major providers for cloud computing are Amazon, Microsoft (Azure) and Google Cloud. We cover some Google Cloud packages here as its the one the author is most familiar with, but check out the <a href="https://cloudyr.github.io/"><code>cloudyr</code></a> website for other resources covering the other providers. The same principles should apply.</p>
 <div id="launching-vms" class="section level3">
 <h3>Launching VMs</h3>
-<p>RStudio offers a server version that carries the same features as the desktop. Using packages such as <code>cronR</code> this means you can launch powerful VMs or just constantly on cloud computers to help you automate your scripts.</p>
+<p>RStudio offers a server version that carries the same features as the desktop. Using packages such as <code>cronR</code> this means you can launch powerful <em>virtual machines</em> (VMs) or just constantly on cloud computers to help you automate your scripts.</p>
 <p>A demo for launching a VM is <a href="https://cloudyr.github.io/googleComputeEngineR/articles/single-scheduler.html">available here</a></p>
 <pre class="r"><code>library(googleComputeEngineR)
-## set up and authenticate etc...
+
+## set up and authenticate etc
+googleAuthR::gar_gce_auth()
 
 ## get tag name of public pre-made image
 tag &lt;- gce_tag_container(&quot;google-auth-r-cron-tidy&quot;, project = &quot;gcer-public&quot;)
@@ -539,6 +541,53 @@ vm &lt;- gce_vm(&quot;rstudio-cron-googleauthr&quot;,
               dynamic_image = tag, 
               username = &quot;mark&quot;, 
               password = &quot;mark1234&quot;)</code></pre>
+<p>Having an always on VM means you can use it for scheduling scripts, emails data fetches etc, this template in particular uses <a href="https://cran.r-project.org/package=cronR">cronR</a> and its RStudio plugin to make it as easy as possible.</p>
+<div id="computer-clustering" class="section level4">
+<h4>Computer Clustering</h4>
+<p>As mentioned in the <a href="fast-r-code.html#6_use_parallel_processing">faster R chapter</a> you can use VMs to run lots of R code at the same time.</p>
+<p>If you have massive data, this can make a lot of difference, although bear in mind the “Get a faster computer” advice will be simpler to enact, by just booting up a VM with more RAM and CPU.</p>
+<p>If you can though, <a href="https://cloudyr.github.io/googleComputeEngineR/articles/docker-ssh-futures.html">multi-clustering</a> can be performed with the following:</p>
+<pre class="r"><code>library(future)
+library(googleComputeEngineR)
+
+vm1 &lt;- gce_vm(&quot;cluster1&quot;, template = &quot;r-base&quot;)
+vm2 &lt;- gce_vm(&quot;cluster2&quot;, template = &quot;r-base&quot;)
+vm3 &lt;- gce_vm(&quot;cluster2&quot;, template = &quot;r-base&quot;)
+
+plan(cluster, workers = list(vm1, vm2, vm3))
+
+## use future&#39;s %&lt;-% to send a function to the cluster
+si %&lt;-% Sys.info()
+print(si)
+
+## tidy up
+lapply(vms, FUN = gce_vm_stop)
+</code></pre>
+<p>You need never worry about computing limitations ever again.</p>
+</div>
+</div>
+</div>
+<div id="data-analysis-cloud-tools" class="section level2">
+<h2>Data Analysis cloud tools</h2>
+<p>As well as servers, the cloud gives you access to tools that would be simply too expensive to run locally. Some examples are given below</p>
+<div id="bigquery" class="section level3">
+<h3>BigQuery</h3>
+<p><a href="https://cloud.google.com/bigquery/">BigQuery</a> is relevant if you use GA360 since it supports an automatic export to BigQuery, which means you can also access it via R’s BigQuery/SQL connectors.</p>
+<p>BigQuery (and the equivalents <a href="https://aws.amazon.com/athena/">Amazon Athena</a> and <a href="https://www.microsoft.com/en-us/sql-server/sql-server-2016">SQL Server</a>) are databse’s created for analytics, and give you fast access to lots of data via SQL statements.</p>
+<p>BigQuery is well supported in R as it slots into the <code>dplyr()</code> package - you can write code that works locally, and then connect to BigQuery to have that code mapped to SQL internally by <code>dplyr()</code></p>
+<p>There is also <a href="http://code.markedmondson.me/bigQueryR/"><code>bigQueryR</code></a> which covers some other features such as working with Shiny apps and upload options.</p>
+</div>
+<div id="machine-learning-apis" class="section level3">
+<h3>Machine Learning APIs</h3>
+<p>We are entering a golden age of machine learning APIs, with the cloud companies competing to offer us wide and varied capabilties.</p>
+<p>Essentially as simple as fetching an API, you can send data and return a machine learnt result for further analysis.</p>
+<p>Some examples include:</p>
+<ul>
+<li><a href="https://cran.r-project.org/web/packages/algorithmia/vignettes/introduction-to-algorithmia.html">Algorithmia R client</a></li>
+<li>Google Machine learning APIs e.g. <a href="http://github.com/MarkEdmondson1234/googleLanguageR">googleLanguageR</a></li>
+<li>Microsoft text services <a href="https://cran.r-project.org/web/packages/mscsweblm4r/index.html">mscsweblm4r</a> and <a href="https://cran.r-project.org/web/packages/mscstexta4r/index.html">mscstexta4r</a></li>
+<li><a href="https://tensorflow.rstudio.com/">tensorflow</a> is one of most popular python clients for building ML models, this is an R port for it by RStudio.</li>
+</ul>
 </div>
 </div>
 

@@ -303,7 +303,7 @@ div.tocify {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    R programming
+    R Programming
      
     <span class="caret"></span>
   </a>
@@ -569,7 +569,7 @@ system.time(
     }
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   7.574   0.639   8.233</code></pre>
+##   9.525   0.584  10.118</code></pre>
 <pre class="r"><code>dim(x)</code></pre>
 <pre><code>## [1] 20000   100</code></pre>
 <p>Each loop is copying the data.frame, then adding the new row to it which is inefficient.</p>
@@ -583,7 +583,7 @@ system.time(
 
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   2.457   0.220   2.695</code></pre>
+##   2.309   0.258   2.573</code></pre>
 <pre class="r"><code>dim(x)</code></pre>
 <pre><code>## [1] 10000   100</code></pre>
 <p>But the biggest improvement is when we avoid copying the data.frame. Instead we create several new data.frames in a list, and only once finished do we rbind by passing it through the <code>Reduce</code> function:</p>
@@ -600,7 +600,7 @@ system.time(
   y &lt;- avoid_copy(x)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.553   0.217   0.774</code></pre>
+##   0.559   0.258   0.819</code></pre>
 <pre class="r"><code>dim(y)</code></pre>
 <pre><code>## [1] 20000   100</code></pre>
 <p>But back to the readability point - is it easier to know whats going on with the above or the previous example? Perhaps you needed to look up what <code>?Reduce</code> does first - and where are the comments?</p>
@@ -652,12 +652,12 @@ system.time(
   c &lt;- cbind(a, b)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.793   0.524   0.952</code></pre>
+##   0.800   0.605   0.986</code></pre>
 <pre class="r"><code>system.time(
   y &lt;- avoid_copy(x)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.762   0.256   1.020</code></pre>
+##   0.611   0.277   0.888</code></pre>
 <p>Henrik the package creator goees into some more common parallel work flow examples in this <a href="http://www.jottr.org/2017/06/the-many-faced-future.html">blog post showing how to generate fractals in R</a>.</p>
 </div>
 </div>
