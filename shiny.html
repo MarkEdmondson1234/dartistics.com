@@ -205,11 +205,12 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    The Basics
+    R programming
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">THE BASICS</li>
     <li>
       <a href="whatisr.html">What Is R?</a>
     </li>
@@ -224,6 +225,19 @@ $(document).ready(function () {
     </li>
     <li>
       <a href="exercise1-thebasics.html">Exercise: The Basic Basics</a>
+    </li>
+    <li class="dropdown-header">ADVANCED TOPICS</li>
+    <li>
+      <a href="fast-r-code.html">Fast R code</a>
+    </li>
+    <li>
+      <a href="functions.html">Using R functions</a>
+    </li>
+    <li>
+      <a href="creating-packages.html">Creating R packages</a>
+    </li>
+    <li>
+      <a href="cloud-computing.html">Cloud computing &amp; R</a>
     </li>
   </ul>
 </li>
@@ -254,6 +268,9 @@ $(document).ready(function () {
     <li>
       <a href="api-other.html">Other APIs</a>
     </li>
+    <li>
+      <a href="creating-apis.html">Create API libraries</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -269,6 +286,9 @@ $(document).ready(function () {
     </li>
     <li>
       <a href="accessing.html">Accessing elements</a>
+    </li>
+    <li>
+      <a href="learn-to-love-lists.html">Learn to love lists</a>
     </li>
     <li>
       <a href="exercise3-accessing-data.html">Exercise: Accessing Data</a>
@@ -340,6 +360,9 @@ $(document).ready(function () {
     <li>
       <a href="rmarkdown-shiny.html">RMarkdown + Shiny</a>
     </li>
+    <li>
+      <a href="advanced-rmarkdown.html">Advanced RMarkdown</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -397,6 +420,128 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>To run a Shiny app you need to have a Shiny server running. RStudio comes with one pre-installed for running your apps locally, but for publishing you will need to install Shiny server or host via <code>shinyapps.io</code>.</p>
 <p>Shiny apps use a functionality called <em>reactivity</em> that means that apps can be quick and responsive to changes to inputs - this is one of the best features of Excel, where changing one cell can have consequences throughout the Workbook.</p>
 <p>Shiny apps can be tricky to get your head around due to its different work flow from normal R programs, its recommended to go through the <a href="http://shiny.rstudio.com/tutorial/">tutorials online</a>.</p>
+<div id="before-you-begin" class="section level2">
+<h2>Before you begin</h2>
+<p>The <a href="http://shiny.rstudio.com/tutorial/">Shiny website</a> is the source of all that will be said here today, for deeper knowledge refer to that.</p>
+<p>We will go through today some practical experience that will hopefully smooth off the learning curve, with a digital marketing focus.</p>
+</div>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>Shiny uses reactive programming. What does that mean?</p>
+<div id="ui.r" class="section level3">
+<h3>ui.R</h3>
+<p>The <code>ui.R</code> is the equivalent of a website frontend. It contains all the HTML, CSS and JavaScript of a normal webpage. As such its usually easier to get to grips with.</p>
+<p>All the most HTML tags are available using <code>shiny::tags()</code>, with shortcuts to the most common e.g. <code>div()</code></p>
+<div id="working-with-outputs" class="section level4">
+<h4>Working with outputs</h4>
+<p>Most elements that will work with the <code>server.R</code> are called <code>blahOutput()</code>.</p>
+<p>Behind the scenes this sets up a div tag with the ID of the element that will be changed dynamically via <code>server.R</code>:</p>
+<pre class="r"><code>## in ui.R
+plotOutput(&quot;example&quot;)
+## &lt;div id=&quot;example&quot; class=&quot;shiny-plot-output&quot; style=&quot;width: 100% ; height: 400px&quot;&gt;&lt;/div&gt;</code></pre>
+<p><code>server.R</code> interacts with this div ID via a named lists called <code>output</code> - <em>it outputs change to this ID</em>.</p>
+<p>The ID must match the list name, and the type must be the same via the <code>renderBlah()</code> server functions e.g. <code>plotOutput</code> in <code>ui.R</code>, <code>renderPlot</code> in <code>server.R</code></p>
+<pre class="r"><code>## in server.R
+output$example &lt;- renderPlot({
+  ## a function that creates a plot
+  plot(mtcars)
+})</code></pre>
+</div>
+<div id="working-with-inputs" class="section level4">
+<h4>Working with inputs</h4>
+<p>Likewise, all the input IDs are available to <code>server.R</code> via a named list called <code>input</code>.</p>
+<p>The input elements in <code>ui.R</code> are all called something like <code>blahInput</code> e.g. <code>sliderInput()</code></p>
+<p>Again, you specify an ID for that input, but also criteria on what a user can input:</p>
+<pre class="r"><code>library(shiny)
+
+## create a slide input
+sliderInput(&quot;input1&quot;, label = &quot;A slider&quot;, min = 1, max = 10, value = 2)
+
+# &lt;div class=&quot;form-group shiny-input-container&quot;&gt;
+#  &lt;label class=&quot;control-label&quot; for=&quot;input1&quot;&gt;A slider&lt;/label&gt;
+#  &lt;input class=&quot;js-range-slider&quot; id=&quot;input1&quot; data-min=&quot;1&quot; data-max=&quot;10&quot; data-from=&quot;2&quot; data-step=&quot;1&quot; 
+# data-grid=&quot;true&quot; data-grid-num=&quot;9&quot; data-grid-snap=&quot;false&quot; data-prettify-separator=&quot;,&quot; data-keyboard=&quot;true&quot; 
+# data-keyboard-step=&quot;11.1111111111111&quot; data-drag-interval=&quot;true&quot; data-data-type=&quot;number&quot;/&gt;
+# &lt;/div&gt;</code></pre>
+<p>The output is more complicated than the <code>blahOutput</code> functions, but again it is only HTML.</p>
+<p>To refer to the input elements, <code>server.R</code> then refers to a named list called <code>input</code>:</p>
+<pre class="r"><code>input$input1</code></pre>
+<p>Inputs effect outputs, and hence we get interactivity.</p>
+<p>A very basic example below:</p>
+<pre class="r"><code>## in ui.R
+textInput(&quot;text_input&quot;, label = &quot;input text&quot;)
+textOutput(&quot;text_output&quot;)
+
+## in server.R
+output$text_output &lt;- renderText({
+  input$text_input
+})
+</code></pre>
+<p>All that said, its best to start with <code>ui.R</code> first to design your UI, then work on the <code>server.R</code> to output what you need.</p>
+</div>
+</div>
+<div id="server.r" class="section level3">
+<h3>server.R</h3>
+<p><code>server.R</code> contains the code that will change certain elements defined in the <code>ui.R</code>.</p>
+<p><code>server.R</code> is in fact a constantly looping function. As a user interacts with the <code>ui.R</code> it sends messages back to the <code>server.R</code> which then reacts (see, <code>reactivity</code>), outputs data to change and sends this back to the <code>ui.R</code> that renders it on the correct ID.</p>
+<p>The looping function is around the objects we spoke about earlier - <code>input</code> and <code>output</code>. Optionally, you can also include an object called <code>session</code> which contains information about the general user session (such as what URL is being shown), which starts to explain how a minimal <code>server.R</code> file looks:</p>
+<pre class="r"><code>library(shiny)
+
+function(input, output, session){
+
+  output$plot1 &lt;- renderPlot({
+  
+    plot(mtcars[[1]], mtcars[[input$value1]])
+  
+  })
+
+}</code></pre>
+</div>
+</div>
+<div id="exercise" class="section level2">
+<h2>Exercise</h2>
+<blockquote>
+<p>What will this Shiny app render? Assume input$value1 is a numeric value between 2 and 11.</p>
+</blockquote>
+<blockquote>
+<p>What could the ui.R look like? You will need to use the functions numericInput() and plotOutput().</p>
+</blockquote>
+<div id="reactive-objects" class="section level3">
+<h3>Reactive objects</h3>
+<p>Because its a looping function, standard R rules about scoping don’t apply. You need to deal with functions like <code>reactive()</code>, <code>observe()</code>,<code>isolate()</code>, <code>eventReactive()</code> and <code>observeEvent()</code> which control behaviour in this looping function.</p>
+<p>Key to this are a new class of object called <code>reactive</code> objects. These are objects that will change according to user input, and as such can’t be treated as normal R variables.</p>
+<p>Reactive object can react to another reactive object, which sets up a chain of dependencies. A change in a dependency will effect all other reactive objects. A key factor in making efficient Shiny apps is to know when to trigger a change and when not to.</p>
+</div>
+<div id="debugging" class="section level3">
+<h3>Debugging</h3>
+<p>The toughest part of Shiny programming over normal programming is that due to its reactive nature, its harder to debug your functions.</p>
+</div>
+<div id="tips-and-tricks" class="section level3">
+<h3>Tips and tricks</h3>
+<ul>
+<li>Use req()</li>
+<li>Reactive data sources</li>
+<li>Shiny modules</li>
+<li>Specify if its a reactive or isolated object</li>
+</ul>
+</div>
+</div>
+<div id="digital-marketing-apis" class="section level2">
+<h2>Digital Marketing APIs</h2>
+<p>In particular, we will look at how to make Shiny apps that interact with digital marketing APIs.</p>
+<p>Digital marketing apps typically have 3 models:</p>
+<ol style="list-style-type: decimal">
+<li>Working on data preloaded</li>
+<li>Working interactivily with your own data</li>
+<li>Letting users work interactivly with their data</li>
+</ol>
+<div id="deploying" class="section level3">
+<h3>Deploying</h3>
+</div>
+</div>
+<div id="excercises" class="section level2">
+<h2>Excercises</h2>
+</div>
 
 
 

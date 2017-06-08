@@ -1,0 +1,175 @@
+---
+title: "Creating Packages"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Creating packages
+
+Once you are comfortable with functions, then its a small step to creating your own packages.
+
+Why make your own package?
+
+* Take functions out of your namespace
+* Standardise functions for a team
+* Allow unit tests of your data workflow
+* Easier to manage scripts
+* Enforce standards in documentation
+
+Again, Hadley is [the source of good information here](http://r-pkgs.had.co.nz/), and its his package that helps with package development we will look at today: [devtools](https://github.com/hadley/devtools). 
+
+## What you need to make a package
+
+An R package is basically a template of folder structure and metadata files.  If your code and files are all in the correct places, you have a package that can be loaded via the `library()` function. 
+
+### Workflow
+
+A brief overview of the work needed is below:
+
+1) Create a new project in RStudio, in a new directory with the "Package" template.
+2) Call your package something memorable
+3) Create R functions and save them to `.r` files in the `R/` folder
+4) Update the `DESCRIPTION` file with relevant metadata
+5) Generate documentation by using the `#'` syntax before each function you want users to create
+6) Add any other various miscellanous supporting files
+7) First run, click the `Build` tab that has appeared due to being a project package, and make sure that it is set for `More > Configure Build Tools > Generate documentation with Roxygen > Configure > Build and Reload`.  This ensures the documentation will be created when you build the library. Click OK.
+8) Click `Build & Reload` to set R to check the package and reload it.  
+9) Correct any errors until you can load the package successfully
+10) Your package is now available for your computer e.g. you can open another RStudio session and load the library.
+11) Run `Check` to run the package through CRAN checks.  Correct any errors. 
+12) Upload to Github on successful builds. 
+13) Once happy, submit to CRAN
+
+You can download other packages as well via GitHub.  You can also load your version from GitHub via the `devtools::install_github()` command.
+
+We will go into some detail for each of the above, but more reading will be required to fully get to grips with it. 
+
+## Creating R functions and documentation
+
+The R functions you use in the package will look much like the ones you have made locally, but with a few key differences:
+
+1) You shouldn't rely on packages being installed unless you have imported them explicitly, and should never have a `library()` or `require()` command.  This usually involves going through your code and seeing which functions you are using from other packages, and importing them via the `package::function` syntax.
+
+e.g. you have this function you want in your private package, that makes fetching data easier for end users
+
+```{r}
+
+get_ga_data <- function(dates, dimensions){
+  require(googleAnalyticsR)
+  ga_auth()
+  google_analytics_4(1234567, date_range = dates, metrics = "sessions", dimensions = dimensions, max = -1)
+}
+
+```
+
+For a package, you shouldn't have `require` or `library` and assume those functions are available - instead you can call the function directly from the package via `googleAnalyticsR::`
+
+e.g.
+
+```{r}
+
+get_ga_data <- function(dates, dimensions){
+  googleAnalyticsR::ga_auth()
+  googleAnalyticsR::google_analytics_4(1234567, date_range = dates, metrics = "sessions", dimensions = dimensions, max = -1)
+}
+
+```
+
+When installing the package, the `DESCRIPTION` should take care of which libraries needs to be on the user's computer for it to run correctly, so it is here where `googleAnalyticsR` will be loaded.  We look at that next.
+
+## DESCRIPTION
+
+The `DESCRIPTION` file is arguably the most important file in a package, as it tells R what the package is, which libraries it needs to runs and other info.  Here is an example for `googleAnalyticsR`:
+
+```
+Package: googleAnalyticsR
+Type: Package
+Version: 0.4.0
+Title: Google Analytics API into R
+Description: R library for interacting with the Google Analytics 
+  Reporting API v3 and v4.
+Authors@R: c(person("Mark", "Edmondson",email = "m@sunholo.com",
+                  role = c("aut", "cre")),
+             person(given = "Artem", family = "Klevtsov",
+                    email = "a.a.klevtsov@gmail.com", role = "ctb"),
+           person("Johann", "deBoer", email="johanndeboer@gmail.com", role = "ctb"),
+           person("David", "Watkins", email = "wm.david.watkins@gmail.com", role="ctb"),
+           person("Olivia", "Brode-Roger", email="nibr@mit.edu", role="ctb"))
+URL: http://code.markedmondson.me/googleAnalyticsR/
+BugReports: https://github.com/MarkEdmondson1234/googleAnalyticsR/issues
+Depends:
+    R (>= 3.2.0)
+Imports:
+    assertthat (>= 0.2.0),
+    dplyr (>= 0.5.0),
+    googleAuthR (>= 0.5.1),
+    httr (>= 1.2.1),
+    jsonlite (>= 1.0),
+    magrittr (>= 1.5),
+    shiny (>= 0.13.2),
+    tidyjson (>= 0.2.1),
+    utils
+License: MIT + file LICENSE
+LazyData: TRUE
+VignetteBuilder: knitr
+RoxygenNote: 6.0.1
+```
+
+You should see that some of the data matches what is within your package list in RStudio and online.
+
+The `Imports` fields are where you list which libraries are needed to run functions.  It is here where you list any dependencies, which R will install when a user attempts to load the library.
+
+## Documentation
+
+This is at least 50% of the work for a good package.
+
+It is a lot easier to make documentation these days via the advent of `Roxygen` which is a library that parses special comments placed above functions within your `R/` folder.  It will scan the `R/` folder and look for all functions that have special comment lines directly above them `#'` and turn those lines into valid function documentation.
+
+An example taken from the [main resource](http://r-pkgs.had.co.nz/man.html) is shown below:
+
+```
+#' Add together two numbers.
+#' 
+#' @param x A number.
+#' @param y A number.
+#' @return The sum of \code{x} and \code{y}.
+#' @examples
+#' add(1, 1)
+#' add(10, 1)
+add <- function(x, y) {
+  x + y
+}
+```
+
+When the file is saved and the `Document` or `Build` button is pressed, files are created in the `man/` folder.  You should never need to edit files in the folder directly. 
+
+
+## Use Github for package distribution
+
+With your own package, you can then distribute it privately using private repos in Github (needs a paid plan).  You first generate a PAT token and can then call via `devtools::install_github("your_name/private_package")`.
+
+In work production this can then be used to make sure everyone has the right scripts and data (packages can contain data) if they have access to GitHub.
+
+## Testing and travis
+
+Best practice when working with code is to have unit testing in place to make sure all your key functions work as expected.  It allows you to worry less that when you are updating your package you are breaking something along the way.  Every commit to Github can be tested.
+
+The most common method of unit testing for the R community is via the travis service, which is free to open source.
+
+## Exercise
+
+1) Download an R package from Github to your computer and build it. You can use [googleID](https://github.com/MarkEdmondson1234/googleID) if you like. 
+
+> If you don't have Git installed, click on the Download Zip button, download to your desktop and unzip it
+
+2) Open the package code by click on the `.RProj` file and take a look around.
+
+3) Make a change to some documentation, and rebuild the package. 
+
+4) Make a change to a function (or add a new one), rebuild, and run the new function.

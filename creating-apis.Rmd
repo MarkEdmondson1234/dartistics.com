@@ -1,0 +1,111 @@
+---
+title: "Creating APIs with R"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## APIs with R
+
+We've already used a lot of packages using an API such as `googleAnalyticsR` and `RSiteCatalyst`.  There are hundreds of other packages that offer connections to various APIs, a curated overview available in the [CRAN WebTechnologies Task View](https://CRAN.R-project.org/view=WebTechnologies)
+
+If you want data that you know is available via an API, its worth checking there or Googling around to find if a package has already been written for it.
+
+However, in some cases you may need to write the API library yourself!
+
+In those cases, here are some tips:
+
+* Use [`httr`](https://cran.r-project.org/package=httr) - it has a lot of helper functions that will help you.  In particular check out the [API Packages Vignette](https://github.com/hadley/httr/blob/master/vignettes/api-packages.Rmd)
+* Authentication is the hardest bit, and often the first thing you need to figure out. Don't be put off.
+* If using Google APIs, `googleAuthR` is designed to make working with those easier, including premade [package templates](https://github.com/MarkEdmondson1234/autoGoogleAPI)
+
+A general workflow for creating API libraries is:
+
+1. Pick a subset of the most useful API functions first
+2. Create an authentication function, test on a simple API request
+3. Make sure to make it hard to share your authentication tokens.  The recommend method is to use `.Renviron` files to keep secrets outside of your project folder.
+4. Create a generic `getAPI()` call that handles all the presets and authentication calls for every call.  This will usually wrap `httr::GET` or `httr::RETRY` etc.
+5. A successful API call will return a `Response` class object.  Use `httr::content(req)` to parse out the data.
+5. Build up functions that wrap `getAPI()` with helpful defaults for useful calls.
+6. The content will often come out in a non-useful format (such as highly nested JSON). Use `jsonlite()` to parse them into R objects such as `data.frames`, then parse that into a useful format for your users. 
+7. Build functions that can deal with inevitable failures of the API, using `tryCatch` and `httr::RETRY()` to catch status not `200`
+8. Good APIs have error messages available in incorrect API requests, make sure to surface those using `stop()` etc.
+
+The better the API, the better the documentation and status requests to help you with the above.
+
+### Exercise
+
+Create an R function that calls the [Web of Trust API](https://www.mywot.com/wiki/API)
+
+> You will need an auth token that I will provide to you, or [register and get your own](https://www.mywot.com/wiki/API#Registration). 
+
+Some code has been provided to get you started.
+
+* Consult the [API documentation](https://www.mywot.com/wiki/API) to help with the below
+* Modify the function `call_api` so that you can pass a website URL, and get back data
+* Can you make the function be able to return multiple URL details at the same time?
+* Extra marks for translating the response into a human readable format.  Only use component identifier 0 and 4 (see API documentation)
+
+
+```r
+library(httr)
+library(jsonlite)
+
+my_auth_token <- "XXXXXX"
+
+call_api <- function(hosts){
+  
+  base_uri <- "fillthisin"
+  
+  call_url <- paste0(base_uri, "?hosts=", hosts,"&key=",my_auth_token)
+  
+  message("Calling ", call_url)
+  req <- GET(call_url)
+  
+  if(req$status_code != 200){
+    stop("Problem with calling the API - response: ", content(req))
+  }
+  
+  # this content is tricky to parse into text, so this bit is done for you
+  response_content <- rawToChar(content(req, "raw"))
+  json_response <- fromJSON(response_content)
+  
+  ## add something here to parse json_response into something readable
+  json_response
+}
+
+## call myWOT API
+call_api("google.com/")
+
+## without parsing this should return:
+$google.com
+$google.com$target
+[1] "google.com"
+
+$google.com$`0`
+[1] 94 70
+
+$google.com$`1`
+[1] 94 70
+
+$google.com$`2`
+[1] 94 70
+
+$google.com$`4`
+[1] 93 66
+
+$google.com$categories
+$google.com$categories$`501`
+[1] 99
+
+$google.com$categories$`301`
+[1] 48
+
+$google.com$categories$`304`
+[1] 5
+```

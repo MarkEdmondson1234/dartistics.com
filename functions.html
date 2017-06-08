@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Functions</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">DARTISTICS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="example1.html">Example: Trending</a>
+    </li>
+    <li>
+      <a href="example2.html">Example: Data Explorer</a>
+    </li>
+    <li>
+      <a href="example3.html">Example: Venn Diagram</a>
+    </li>
+    <li>
+      <a href="example4.html">Example: GA Effect</a>
+    </li>
+    <li>
+      <a href="example5.html">Example: Heatmap</a>
+    </li>
+    <li>
+      <a href="example6.html">Example: Forecasting</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    R programming
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">THE BASICS</li>
+    <li>
+      <a href="whatisr.html">What Is R?</a>
+    </li>
+    <li>
+      <a href="gettingstarted.html">Getting Started</a>
+    </li>
+    <li>
+      <a href="packages.html">Packages</a>
+    </li>
+    <li>
+      <a href="basics-base_r.html">Basics of Base R</a>
+    </li>
+    <li>
+      <a href="exercise1-thebasics.html">Exercise: The Basic Basics</a>
+    </li>
+    <li class="dropdown-header">ADVANCED TOPICS</li>
+    <li>
+      <a href="fast-r-code.html">Fast R code</a>
+    </li>
+    <li>
+      <a href="functions.html">Using R functions</a>
+    </li>
+    <li>
+      <a href="creating-packages.html">Creating R packages</a>
+    </li>
+    <li>
+      <a href="cloud-computing.html">Cloud computing &amp; R</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    I/O
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">WORKING WITH FILES</li>
+    <li>
+      <a href="import-csv-excel.html">CSV import</a>
+    </li>
+    <li>
+      <a href="excel.html">Microsoft Excel(!)</a>
+    </li>
+    <li>
+      <a href="exercise2-io.html">Exercise: I/O</a>
+    </li>
+    <li class="dropdown-header">WORKING WITH APIs</li>
+    <li>
+      <a href="api-google-analytics.html">Google Analytics</a>
+    </li>
+    <li>
+      <a href="api-adobe-analytics.html">Adobe Analytics</a>
+    </li>
+    <li>
+      <a href="api-other.html">Other APIs</a>
+    </li>
+    <li>
+      <a href="creating-apis.html">Create API libraries</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data Structures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">R CLASSES AND SYNTAX</li>
+    <li>
+      <a href="classes.html">R Classes</a>
+    </li>
+    <li>
+      <a href="accessing.html">Accessing elements</a>
+    </li>
+    <li>
+      <a href="learn-to-love-lists.html">Learn to love lists</a>
+    </li>
+    <li>
+      <a href="exercise3-accessing-data.html">Exercise: Accessing Data</a>
+    </li>
+    <li class="dropdown-header">BASE R vs. TIDY</li>
+    <li>
+      <a href="tidyverse.html">Tidy data / Tidyverse</a>
+    </li>
+    <li>
+      <a href="dplyr.html">dplyr()</a>
+    </li>
+    <li>
+      <a href="exercise4-tidy-dplyr.html">Exercise: Tidy Data / dplyr</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Statistics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="modelling-intro.html">Introduction</a>
+    </li>
+    <li>
+      <a href="nature-of-data.html">Nature of Data</a>
+    </li>
+    <li>
+      <a href="cross-tab-w-chi-square.html">Chi Square</a>
+    </li>
+    <li>
+      <a href="anova.html">ANOVA</a>
+    </li>
+    <li>
+      <a href="correlation.html">Correlation</a>
+    </li>
+    <li>
+      <a href="regression.html">Regression</a>
+    </li>
+    <li>
+      <a href="timeseries.html">Time-series</a>
+    </li>
+    <li>
+      <a href="categorisation.html">Categorisation</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Output
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="viz-options.html">Visualisation Options</a>
+    </li>
+    <li>
+      <a href="base-plots.html">Base Plots</a>
+    </li>
+    <li>
+      <a href="ggplot2.html">ggplot2()</a>
+    </li>
+    <li>
+      <a href="htmlwidgets.html">htmlwidgets()</a>
+    </li>
+    <li>
+      <a href="rmarkdown-shiny.html">RMarkdown + Shiny</a>
+    </li>
+    <li>
+      <a href="advanced-rmarkdown.html">Advanced RMarkdown</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="resources.html">Useful Links</a>
+    </li>
+    <li>
+      <a href="key-topics.html">Key topics</a>
+    </li>
+    <li>
+      <a href="github.html">GitHub</a>
+    </li>
+    <li>
+      <a href="habits.html">Good Habits</a>
+    </li>
+    <li>
+      <a href="going-further.html">Going Further</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-N4DF7T"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N4DF7T');</script>
+<!-- End Google Tag Manager -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Functions</h1>
+
+</div>
+
+
+<div id="creating-functions" class="section level2">
+<h2>Creating functions</h2>
+<p>Once you are past the basics, you should be looking at creating functions for your common tasks. Why create functions?</p>
+<ul>
+<li>Ensure scoping of variables in controlled</li>
+<li>More efficient memory management</li>
+<li>Good names</li>
+<li>Clear, concise code</li>
+<li>Reproducability</li>
+<li>First step to putting them in a package for documentation</li>
+</ul>
+<p>A good rule of thumb is if you are performing the same task more than twice, look to create a function to do it.</p>
+<div id="a-good-name" class="section level3">
+<h3>A good name</h3>
+<p>The “good names” point is more powerful than it sounds - you will start to create building blocks for yourself that can in themselves be built upon.</p>
+<p>For example, here is an example of using some functions you may create to download Google Analytics data and upload it to your own private database:</p>
+<pre class="r"><code>## returns dataframe of GA data if successful
+my_data &lt;- get_google_analytics_data(my_view_id = 12345)
+
+## returns upload details if successful
+upload_result &lt;- upload_to_database(my_data)
+
+## returns TRUE if successful
+email_result &lt;- email_result(upload_result, email = &quot;me@mycompany.com&quot;)
+</code></pre>
+<p>With good naming, commenting code becomes (almost) unnecessary.</p>
+<p>You may later then decide to generalise the above for any viewId:</p>
+<pre class="r"><code>upload_and_email &lt;- function(view_id, email){
+
+  my_data &lt;- get_google_analytics_data(my_view_id = view_id)
+
+  upload_result &lt;- upload_to_database(my_data)
+
+  email_result &lt;- email_result(upload_result, email = email)
+}</code></pre>
+<p>Now using <code>lapply()</code> you can download and email several Google Analytics downloads with a couple of lines of R:</p>
+<pre class="r"><code>viewIds &lt;- c(12345, 345453, 789002)
+
+lapply(viewIds, upload_and_email, email = &quot;me@mycompany.com&quot;)</code></pre>
+<p>As you abstract away inner functions, higher level thinking is encouraged, building on your past successes.</p>
+</div>
+</div>
+<div id="starting-with-functions" class="section level2">
+<h2>Starting with functions</h2>
+<p>As ever, Hadley Wickham’s Advanced R book is my prime reference for R concepts, in particular its <a href="http://adv-r.had.co.nz/Functions.html">chapter on functions</a>.</p>
+<p>When writing a function, you are actually asigning a new object type to a variable, just as you would for say for other data. However, once assigned a function, you can then get that function to operate on other objects by using <code>()</code> afterwards:</p>
+<pre class="r"><code>name_of_your_function &lt;- function(one, two, etc. ){
+  
+  ## your code goes here, and can refer to the arguments
+  result &lt;- one + two
+  
+  ## the function will return the last object declaed in the function
+  result
+
+}
+
+## call your function
+name_of_your_function(one = &quot;blah&quot;, two = &quot;foo&quot;)</code></pre>
+<p>R has some shortcuts that lets you not need to specify the name of the argument if its the first one positionally, so the above call can also be written:</p>
+<pre class="r"><code>name_of_your_function(&quot;blah&quot;, two = &quot;foo&quot;)</code></pre>
+<p>You can also define functions with no arguments:</p>
+<pre class="r"><code>my_function &lt;- function(){
+
+  ## I just do stuff without needing arguments
+  print(mtcars)
+}
+
+## call the function
+my_function()</code></pre>
+<div id="scoping" class="section level3">
+<h3>Scoping</h3>
+<p>R has some unusual scoping behaviour compared to other languages. Variables you declare outside of functions can effect interior functions if left to defaults. This can cause confusing errors so its worth highlighting:</p>
+<pre class="r"><code>x &lt;- 1
+
+scope_example &lt;- function(){
+  ## this shouldn&#39;t work
+  x
+}
+
+scope_example()</code></pre>
+<pre><code>## [1] 1</code></pre>
+<p>This is linked to the environments concept with R, and <a href="http://adv-r.had.co.nz/Functions.html#lexical-scoping">lexical scoping</a>. This is an advanced topic, but briefly its important to know that R will evaluate in the context of the function, but if it doesn’t find a particular object it will look in the parent frame all the way up to a global. As such you should keep an eye on what is in your global environment vs within a function, as you may forget to define a variable in a function that R then looks for elsewhere, which can be very confusing when debugging.</p>
+</div>
+<div id="ellipses" class="section level3">
+<h3>Ellipses …</h3>
+<p>Often functions are calling other functions within them. If you have a inner function that relies on arguments from the function above, you could laboriously copy all the argumets down to the function that needs them:</p>
+<pre class="r"><code>func1 &lt;- function(a, b, c){
+  
+  my_thing &lt;- func2(a = a, b = b, c = c)
+
+}</code></pre>
+<p>…or, you can use the construct <code>...</code> which will copy the arguments for you:</p>
+<pre class="r"><code>func1 &lt;- function(...){
+  
+  my_thing &lt;- func2(...)
+
+}</code></pre>
+</div>
+<div id="exercise---creating-a-simple-function" class="section level3">
+<h3>Exercise - creating a simple function</h3>
+<p>Create a function that takes a numeric vector and prints out the max, min, mean and median. You can use <code>cat</code> to print out to the console. Here is a starting template:</p>
+<pre class="r"><code>
+my_summary &lt;- function(x){
+
+  ## your code here
+  
+  cat(&quot;Your result&quot;)
+}
+</code></pre>
+</div>
+</div>
+<div id="getting-some-inspiration" class="section level2">
+<h2>Getting some inspiration</h2>
+<p>Once you have the basics, the best way to learn is to examine what others are doing.</p>
+<p>Every function you use in R has its code available if you issue the function name with no brackets e.g.</p>
+<pre class="r"><code>library(googleAnalyticsR)
+ga_account_list</code></pre>
+<pre><code>## function(){
+##   
+##   url &lt;- &quot;https://www.googleapis.com/analytics/v3/management/accountSummaries&quot;
+##   acc_sum &lt;- gar_api_generator(url,
+##                                &quot;GET&quot;,
+##                                data_parse_function = parse_ga_account_summary)
+##   
+##   acc_sum()
+##   
+## }
+## &lt;environment: namespace:googleAnalyticsR&gt;</code></pre>
+<p>However, some are easier than others. Some functions, including many that are fundamental to R in its base package, are written in C and are called <code>Primitive</code> and the R function simply calls that underlying code. These functions won’t return much of use:</p>
+<pre class="r"><code>sum</code></pre>
+<pre><code>## function (..., na.rm = FALSE)  .Primitive(&quot;sum&quot;)</code></pre>
+<p>But a lot of R functions are available on GitHub which is rapidly becoming an R standard practice. All of Hadley Wickham’s packages have their functions available for example - find them on GitHub and look within the <code>R</code> folder (we look more into navigating R package structure later)</p>
+<div id="r-methods" class="section level3">
+<h3>R Methods</h3>
+<p>Now you are looking at R code, once thing worth mentioning are R <code>methods</code>. If you have some programming expereince you may be familiar with the concept of object orientated programming. R has several implementations of this, but the most popular is the <code>S3</code> method that we touch on briefly today.</p>
+<p>In brief you may see some references to <code>UseMethod</code> in some code. This acts as a signpost that decides what actual code to run against the passed in object judged on its <code>class</code> (remember those?). For instance, the same function could act different if you pass it an object of class <code>character</code> or of class <code>number</code>.</p>
+<p>The <code>UseMethod</code> is the signpost, but where is the destination? <code>R</code> looks for functions that have the same name as the original function, but with a <code>.classname</code> suffix.</p>
+<p>e.g.</p>
+<pre class="r"><code>my_function &lt;- function(obj){
+  UseMethod(&quot;my_function&quot;)
+}
+
+my_function.data.frame &lt;- function(obj){
+  ## this function will act if obj is of class data.frame
+}
+
+my_function.character &lt;- function(obj){
+  ## this function will act if obj is of class character
+}
+
+## An end user will only need to remember one function
+my_dataframe &lt;- data.frame(blah = c(1,2,3), foo = c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;))
+my_character_vector &lt;- c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;)
+
+my_function(my_dataframe)</code></pre>
+<pre><code>## NULL</code></pre>
+<pre class="r"><code>my_function(my_character_vector)</code></pre>
+<pre><code>## NULL</code></pre>
+<p>This offers several advantages for clean code, especially if you are used to this style of programming in other languages, but won’t be covered today. <a href="http://adv-r.had.co.nz/S3.html">See here for more details if you are keen</a>.</p>
+</div>
+</div>
+<div id="defensive-programming" class="section level2">
+<h2>Defensive programming</h2>
+<p>There are some good habits I have developed over time that mitigate against too many bugs in your code.</p>
+<p>The basic premise is you want to know as soon as possible what is wrong, and print an informative error message so you know whats up. A somewhat valid criticisim of R is that the R error messages are obscure. By creating your own, you can do something to help yourself and users of your functions know whats wrong.</p>
+<div id="try-to-avoid-names-that-r-already-uses" class="section level3">
+<h3>Try to avoid names that R already uses</h3>
+<p>One big gotcha with R is you can assign names to anything, including names already used by base functions. This means you can do evil things like this:</p>
+<pre class="r"><code>## very evil
+`+` &lt;- `-`
+3 + 1</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>## go back again
+rm(`+`)
+3 + 1</code></pre>
+<pre><code>## [1] 4</code></pre>
+<p>Whilst an extreme example, more common are variable such as <code>c</code> or <code>data</code> which will happily accept your assignment, then throw an obscure error when you forget to assign them later on. Best is to avoid using these names altogetehr unless you really mean to.</p>
+</div>
+<div id="stop---errors-are-good-if-you-control-them" class="section level3">
+<h3>stop() - errors are good! (if you control them)</h3>
+<p>A key element for this is the user of the function <code>stop()</code>. This as it says stops the function and will print out an error message of your choosing:</p>
+<pre class="r"><code>sum_safe &lt;- function(x, y){
+
+  ## if x and y isn&#39;t numeric
+  if(!all(is.numeric(x), is.numeric(y))){
+    ## raise an error
+    stop(&quot;Need numerics for the sum!&quot;)
+  }
+  
+  sum(x,y)
+}
+
+sum_safe(1,2)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>sum_safe(&quot;1&quot;,2)</code></pre>
+<pre><code>## Error in sum_safe(&quot;1&quot;, 2): Need numerics for the sum!</code></pre>
+<p>A short cut for this common task (<code>If this is not true, raise an error</code>) is the <code>stopifnot()</code> function, although you can’t set a custom error message:</p>
+<pre class="r"><code>sum_safe &lt;- function(x, y){
+  
+  stopifnot(is.numeric(x), is.numeric(y))
+  
+  sum(x,y)
+}
+
+sum_safe(1,2)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>sum_safe(&quot;1&quot;,2)</code></pre>
+<pre><code>## Error: is.numeric(x) is not TRUE</code></pre>
+<p>As always, Hadley has an alternative that gives better error messages than <code>stopifnot()</code> - <a href="https://cran.r-project.org/package=assertthat"><code>assertthat</code></a></p>
+<pre class="r"><code>library(assertthat)
+sum_safe &lt;- function(x, y){
+  
+  assert_that(is.numeric(x), is.numeric(y))
+  
+  sum(x,y)
+}
+
+sum_safe(1,2)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>sum_safe(&quot;1&quot;,2)</code></pre>
+<pre><code>## Error: x is not a numeric or integer vector</code></pre>
+<p>You can also write your own checks with error messages, like these <a href="https://www.r-project.org/nosvn/pandoc/assertthat.html">examples</a>:</p>
+<pre class="r"><code>is_odd &lt;- function(x) {
+  assert_that(is.numeric(x), length(x) == 1)
+  x %% 2 == 1
+}
+assert_that(is_odd(2))
+# Error: is_odd(x = 2) is not TRUE
+
+on_failure(is_odd) &lt;- function(call, env) {
+  paste0(deparse(call$x), &quot; is even&quot;)
+}
+assert_that(is_odd(2))
+# Error: 2 is even</code></pre>
+</div>
+<div id="try-and-trycatch" class="section level3">
+<h3>try() and tryCatch()</h3>
+<p>Sometimes you don’t want to stop the program, but rather do something else if an error is detected.</p>
+<p>A good use case for this is when fetching from an API, as you can’t always guarantee the API will return what you expect. Wrapping your call in a <code>try()</code> command means that instead of an error you will get an object of class <code>try-error</code>. You can then test for this and react accordingly.</p>
+<p><code>assertthat</code> also adds some missing checks that can be useful, such as <code>is.error</code> that you can use with a <code>try()</code>, otherwise you can use the more verbose in base R <code>inherits(x &quot;try-error&quot;)</code></p>
+<pre class="r"><code>library(assertthat)
+
+get_data_safe &lt;- function(file_name){
+  
+  ##
+  assert_that(is.character(file_name))
+  
+  read_file &lt;- try(read.csv(file_name))
+  
+  if(is.error(read_file)){
+    message(&quot;Something went wrong, lets try something else&quot;)
+    read_file &lt;- mtcars
+  }
+  
+  ## return the file, or mtcars if it didn&#39;t find it
+  read_file
+  
+}
+
+my_data &lt;- get_data_safe(&quot;nofile.csv&quot;)</code></pre>
+<pre><code>## Warning in file(file, &quot;rt&quot;): cannot open file &#39;nofile.csv&#39;: No such file or
+## directory</code></pre>
+<pre><code>## Something went wrong, lets try something else</code></pre>
+</div>
+<div id="checking-arguments" class="section level3">
+<h3>Checking arguments</h3>
+<p>Armed with the above, good habits will be to always check that the inputs (and outputs if you like) are exactly what you expect. Since the majority of R errors are caused by unexpected types, this should help you mitigate against weird bugs.</p>
+<p>As standard now, I always look to check the inputs at the beginning of a created function, and give an error or warning if its not expected.</p>
+<pre class="r"><code>library(assertthat)
+extract_xy &lt;- function(data_frame, column_name, row_number){
+  
+  assert_that(
+    is.data.frame(data_frame),
+    is.character(column_name),
+    is.numeric(row_number)
+  )
+  
+  data_frame[row_number, column_name]
+}
+
+extract_xy(mtcars, column_name = &quot;mpg&quot;, row_number = 3)</code></pre>
+<pre><code>## [1] 22.8</code></pre>
+<p>Another tool for this is the function <code>match.arg()</code> which lets you limit the choices an argument can have to a vector of choices you provide. An example on how it is used it below:</p>
+<pre class="r"><code>library(assertthat)
+extract_xy &lt;- function(data_frame, 
+                       column_name = c(&quot;mpg&quot;, &quot;cyl&quot;, &quot;disp&quot;), 
+                       row_number){
+  ## the syntax to make sure column_name is only from accepted values
+  column_name &lt;- match.arg(column_name)
+  
+  assert_that(
+    is.data.frame(data_frame),
+    is.character(column_name), ## no real need for this now since we hardcoded
+    is.numeric(row_number)
+  )
+  
+  data_frame[row_number, column_name]
+}
+
+extract_xy(mtcars, column_name = &quot;mpg&quot;, row_number = 3)</code></pre>
+<pre><code>## [1] 22.8</code></pre>
+<pre class="r"><code>## error as column_name not in match.arg vector
+extract_xy(mtcars, column_name = &quot;foo&quot;, row_number = 3)</code></pre>
+<pre><code>## Error in match.arg(column_name): &#39;arg&#39; should be one of &quot;mpg&quot;, &quot;cyl&quot;, &quot;disp&quot;</code></pre>
+</div>
+<div id="debugging-tips" class="section level3">
+<h3>Debugging tips</h3>
+<p>With good defensive programming techniques, you an be more sure that the functions are getting the data you expect, but you will still probably need to debug as you go. Getting a quick, iterative process to this is key as unfortunetly the time split is usually 90% of the code programmed in 20% of the time (this is the fun bit) with the remaining 80% of the time debugging 10% of your code.</p>
+<p>For speed of delivery of useful programs, getting this debugging time down is key.</p>
+<p>Below are some tips to help with this:</p>
+<ul>
+<li>Use version control such as Github (so you can check what changed) - when you have a working version, commit.</li>
+<li>Use <code>browser()</code> to examine the state of a function where its going wrong - use RStudio’s breakpoints or insert the line <code>browser()</code> where you want the program to stop. You can then check variables in the environment of the function using RStudio’s Environment pane, try executing lines to replicate errors, etc.</li>
+<li>Insert <code>message()</code> or <code>cat()</code> commands to print out what arguments are, to see if they are as you expect. Comment them out again afterwards as needed, although sometimes its nice to leave them in for user feedback.</li>
+</ul>
+</div>
+<div id="excercise-in-writing-good-errors" class="section level3">
+<h3>Excercise in writing good errors</h3>
+<p>Rewrite the <code>extract_xy</code> function below so it also gives custom errors:</p>
+<ul>
+<li>if the <code>column_name</code> is not in the <code>data_frame</code>: <code>{column_name} is not in {data_frame}</code></li>
+<li>if the <code>row_number</code> is not in the <code>data_frame</code>: <code>{row_number} is not in {data_frame}</code></li>
+</ul>
+<pre class="r"><code>library(assertthat)
+extract_xy &lt;- function(data_frame, 
+                       column_name = c(&quot;mpg&quot;, &quot;cyl&quot;, &quot;disp&quot;), 
+                       row_number){
+  
+  assert_that(
+  
+  ## insert checks heres
+
+  )
+  
+  data_frame[row_number, column_name]
+}
+
+## this should give the custom errors
+extract_xy(mtcars, column_name = &quot;blah&quot;)
+extract_xy(mtcars, row_number = 55)
+extract_xy(mtcars, column_name = &quot;blah&quot;, row_number = 55)</code></pre>
+<p>Compare with base R, where you instead get three different classes of results (an error, <code>NA</code>s, and <code>NULL</code>)</p>
+<pre class="r"><code>mtcars[, &quot;blah&quot;]</code></pre>
+<pre><code>## Error in `[.data.frame`(mtcars, , &quot;blah&quot;): undefined columns selected</code></pre>
+<pre class="r"><code>mtcars[55, ]</code></pre>
+<pre><code>##    mpg cyl disp hp drat wt qsec vs am gear carb
+## NA  NA  NA   NA NA   NA NA   NA NA NA   NA   NA</code></pre>
+<pre class="r"><code>mtcars[55, &quot;blah&quot;]</code></pre>
+<pre><code>## NULL</code></pre>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

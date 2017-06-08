@@ -1,0 +1,49 @@
+---
+title: "Creating APIs with R"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Cloud computing
+
+Cloud computing refers to using cloud resources to run your R scripts.  It offers advantages such as:
+
+* Being able to use resources beyond your own computer such as RAM, CPU etc.
+* An always on computer for scheduling scripts
+* Take advantage of specialised platforms such as machine learning APIs
+
+The major providers for cloud computing are Amazon, Microsoft (Azure) and Google Cloud.  We cover some Google Cloud packages here as its the one the author is most familiar with, but check out the [`cloudyr`](https://cloudyr.github.io/) website for other resources covering the other providers.  The same principles should apply.
+
+
+### Launching VMs
+
+RStudio offers a server version that carries the same features as the desktop.  Using packages such as `cronR` this means you can launch powerful VMs or just constantly on cloud computers to help you automate your scripts. 
+
+A demo for launching a VM is [available here](https://cloudyr.github.io/googleComputeEngineR/articles/single-scheduler.html) 
+
+```r
+library(googleComputeEngineR)
+## set up and authenticate etc...
+
+## get tag name of public pre-made image
+tag <- gce_tag_container("google-auth-r-cron-tidy", project = "gcer-public")
+
+## rstudio template, but with custom rstudio build with cron, googleAuthR etc. 
+vm <- gce_vm("rstudio-cron-googleauthr", 
+              predefined_type = "n1-standard-1",
+              template = "rstudio", 
+              dynamic_image = tag, 
+              username = "mark", 
+              password = "mark1234")
+```
+
+
+
+
+

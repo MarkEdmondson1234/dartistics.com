@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Learn to love lists</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<script src="site_libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<link href="site_libs/jsoneditor-5.5.5/jsoneditor.min.css" rel="stylesheet" />
+<script src="site_libs/jsoneditor-5.5.5/jsoneditor.min.js"></script>
+<script src="site_libs/jsonedit-binding-1.4.0/jsonedit.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">DARTISTICS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="example1.html">Example: Trending</a>
+    </li>
+    <li>
+      <a href="example2.html">Example: Data Explorer</a>
+    </li>
+    <li>
+      <a href="example3.html">Example: Venn Diagram</a>
+    </li>
+    <li>
+      <a href="example4.html">Example: GA Effect</a>
+    </li>
+    <li>
+      <a href="example5.html">Example: Heatmap</a>
+    </li>
+    <li>
+      <a href="example6.html">Example: Forecasting</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    R programming
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">THE BASICS</li>
+    <li>
+      <a href="whatisr.html">What Is R?</a>
+    </li>
+    <li>
+      <a href="gettingstarted.html">Getting Started</a>
+    </li>
+    <li>
+      <a href="packages.html">Packages</a>
+    </li>
+    <li>
+      <a href="basics-base_r.html">Basics of Base R</a>
+    </li>
+    <li>
+      <a href="exercise1-thebasics.html">Exercise: The Basic Basics</a>
+    </li>
+    <li class="dropdown-header">ADVANCED TOPICS</li>
+    <li>
+      <a href="fast-r-code.html">Fast R code</a>
+    </li>
+    <li>
+      <a href="functions.html">Using R functions</a>
+    </li>
+    <li>
+      <a href="creating-packages.html">Creating R packages</a>
+    </li>
+    <li>
+      <a href="cloud-computing.html">Cloud computing &amp; R</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    I/O
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">WORKING WITH FILES</li>
+    <li>
+      <a href="import-csv-excel.html">CSV import</a>
+    </li>
+    <li>
+      <a href="excel.html">Microsoft Excel(!)</a>
+    </li>
+    <li>
+      <a href="exercise2-io.html">Exercise: I/O</a>
+    </li>
+    <li class="dropdown-header">WORKING WITH APIs</li>
+    <li>
+      <a href="api-google-analytics.html">Google Analytics</a>
+    </li>
+    <li>
+      <a href="api-adobe-analytics.html">Adobe Analytics</a>
+    </li>
+    <li>
+      <a href="api-other.html">Other APIs</a>
+    </li>
+    <li>
+      <a href="creating-apis.html">Create API libraries</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data Structures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">R CLASSES AND SYNTAX</li>
+    <li>
+      <a href="classes.html">R Classes</a>
+    </li>
+    <li>
+      <a href="accessing.html">Accessing elements</a>
+    </li>
+    <li>
+      <a href="learn-to-love-lists.html">Learn to love lists</a>
+    </li>
+    <li>
+      <a href="exercise3-accessing-data.html">Exercise: Accessing Data</a>
+    </li>
+    <li class="dropdown-header">BASE R vs. TIDY</li>
+    <li>
+      <a href="tidyverse.html">Tidy data / Tidyverse</a>
+    </li>
+    <li>
+      <a href="dplyr.html">dplyr()</a>
+    </li>
+    <li>
+      <a href="exercise4-tidy-dplyr.html">Exercise: Tidy Data / dplyr</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Statistics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="modelling-intro.html">Introduction</a>
+    </li>
+    <li>
+      <a href="nature-of-data.html">Nature of Data</a>
+    </li>
+    <li>
+      <a href="cross-tab-w-chi-square.html">Chi Square</a>
+    </li>
+    <li>
+      <a href="anova.html">ANOVA</a>
+    </li>
+    <li>
+      <a href="correlation.html">Correlation</a>
+    </li>
+    <li>
+      <a href="regression.html">Regression</a>
+    </li>
+    <li>
+      <a href="timeseries.html">Time-series</a>
+    </li>
+    <li>
+      <a href="categorisation.html">Categorisation</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Output
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="viz-options.html">Visualisation Options</a>
+    </li>
+    <li>
+      <a href="base-plots.html">Base Plots</a>
+    </li>
+    <li>
+      <a href="ggplot2.html">ggplot2()</a>
+    </li>
+    <li>
+      <a href="htmlwidgets.html">htmlwidgets()</a>
+    </li>
+    <li>
+      <a href="rmarkdown-shiny.html">RMarkdown + Shiny</a>
+    </li>
+    <li>
+      <a href="advanced-rmarkdown.html">Advanced RMarkdown</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="resources.html">Useful Links</a>
+    </li>
+    <li>
+      <a href="key-topics.html">Key topics</a>
+    </li>
+    <li>
+      <a href="github.html">GitHub</a>
+    </li>
+    <li>
+      <a href="habits.html">Good Habits</a>
+    </li>
+    <li>
+      <a href="going-further.html">Going Further</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-N4DF7T"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N4DF7T');</script>
+<!-- End Google Tag Manager -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Learn to love lists</h1>
+
+</div>
+
+
+<div id="lists" class="section level2">
+<h2>Lists</h2>
+<p>Lists are a key data type in R but can be avoided by beginners due to being a bit harder to work with. The do however hold the key to many of R’s more advanced features.</p>
+</div>
+<div id="navigating-lists" class="section level2">
+<h2>Navigating lists</h2>
+<div id="vs" class="section level3">
+<h3>[ ] vs [[ ]]</h3>
+<p>A key learning is to know the difference between <code>[ ]</code> and <code>[[ ]]</code> when subsetting lists.</p>
+<p>When using <code>[ ]</code> you will always get out another list. When using <code>[[ ]]</code> you will get out the content of that list.</p>
+<pre class="r"><code>a_list &lt;- list(head(mtcars), letters, list(a=1, b=2))
+str(a_list)</code></pre>
+<pre><code>## List of 3
+##  $ :&#39;data.frame&#39;:    6 obs. of  11 variables:
+##   ..$ mpg : num [1:6] 21 21 22.8 21.4 18.7 18.1
+##   ..$ cyl : num [1:6] 6 6 4 6 8 6
+##   ..$ disp: num [1:6] 160 160 108 258 360 225
+##   ..$ hp  : num [1:6] 110 110 93 110 175 105
+##   ..$ drat: num [1:6] 3.9 3.9 3.85 3.08 3.15 2.76
+##   ..$ wt  : num [1:6] 2.62 2.88 2.32 3.21 3.44 ...
+##   ..$ qsec: num [1:6] 16.5 17 18.6 19.4 17 ...
+##   ..$ vs  : num [1:6] 0 0 1 1 0 1
+##   ..$ am  : num [1:6] 1 1 1 0 0 0
+##   ..$ gear: num [1:6] 4 4 4 3 3 3
+##   ..$ carb: num [1:6] 4 4 1 1 2 1
+##  $ : chr [1:26] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; ...
+##  $ :List of 2
+##   ..$ a: num 1
+##   ..$ b: num 2</code></pre>
+<pre class="r"><code>a_list[1]</code></pre>
+<pre><code>## [[1]]
+##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
+<pre class="r"><code>class(a_list[1])</code></pre>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<pre class="r"><code>a_list[[1]]</code></pre>
+<pre><code>##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
+<pre class="r"><code>class(a_list[[1]])</code></pre>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<p>This helps you make sure you are working on what you expect when dealing with list elements.</p>
+</div>
+<div id="named-lists" class="section level3">
+<h3>Named lists</h3>
+<p>Lists can also have names, and it can be useful do to so you can call specific elements by name, using the <code>list$name</code> convention, which is equivalent to <code>list[[&quot;name&quot;]]</code></p>
+<pre class="r"><code>a_list &lt;- list(df = head(mtcars), abc = letters, b_list = list(a=1, b=2))
+str(a_list)</code></pre>
+<pre><code>## List of 3
+##  $ df    :&#39;data.frame&#39;:  6 obs. of  11 variables:
+##   ..$ mpg : num [1:6] 21 21 22.8 21.4 18.7 18.1
+##   ..$ cyl : num [1:6] 6 6 4 6 8 6
+##   ..$ disp: num [1:6] 160 160 108 258 360 225
+##   ..$ hp  : num [1:6] 110 110 93 110 175 105
+##   ..$ drat: num [1:6] 3.9 3.9 3.85 3.08 3.15 2.76
+##   ..$ wt  : num [1:6] 2.62 2.88 2.32 3.21 3.44 ...
+##   ..$ qsec: num [1:6] 16.5 17 18.6 19.4 17 ...
+##   ..$ vs  : num [1:6] 0 0 1 1 0 1
+##   ..$ am  : num [1:6] 1 1 1 0 0 0
+##   ..$ gear: num [1:6] 4 4 4 3 3 3
+##   ..$ carb: num [1:6] 4 4 1 1 2 1
+##  $ abc   : chr [1:26] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; ...
+##  $ b_list:List of 2
+##   ..$ a: num 1
+##   ..$ b: num 2</code></pre>
+<pre class="r"><code>a_list[&quot;df&quot;]</code></pre>
+<pre><code>## $df
+##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
+<pre class="r"><code>class(a_list[&quot;df&quot;])</code></pre>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<pre class="r"><code>a_list[[&quot;df&quot;]]</code></pre>
+<pre><code>##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
+<pre class="r"><code>class(a_list[[&quot;df&quot;]])</code></pre>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<div id="exercise" class="section level4">
+<h4>Exercise</h4>
+<p>What is the code to extract the other elements of <code>a_list</code> ?</p>
+<pre class="r"><code>a_list &lt;- list(df = head(mtcars), abc = letters, b_list = list(a=1, b=2))
+
+
+a_list_letters &lt;- ## your code here
+
+a_list_b &lt;- ## your code here
+
+## These shoud be TRUE
+class(a_list_letters) == &quot;character&quot;
+class(b_list) == &quot;list&quot;</code></pre>
+</div>
+</div>
+<div id="viewing-lists" class="section level3">
+<h3>Viewing lists</h3>
+<div id="strx-max.level-list.len" class="section level4">
+<h4>str(x, max.level = , list.len = )</h4>
+<p><code>str()</code> is your friend as usual, but when printing out lists can turn into console spam. You can limit this by adding these parameters to <code>str()</code> to let you have more control on what is printed out.</p>
+</div>
+<div id="librarylistviewer" class="section level4">
+<h4>library(listviewer)</h4>
+<p>Another handy library to help with lists is <code>listviewer::jsonedit(your_list)</code> which gives you a nested structure to look through the list.</p>
+<pre class="r"><code>library(listviewer)
+jsonedit(mtcars)</code></pre>
+<div id="htmlwidget-9f896232cbbbf144b128" style="width:672px;height:480px;" class="jsonedit html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9f896232cbbbf144b128">{"x":{"data":{"mpg":[21,21,22.8,21.4,18.7,18.1,14.3,24.4,22.8,19.2,17.8,16.4,17.3,15.2,10.4,10.4,14.7,32.4,30.4,33.9,21.5,15.5,15.2,13.3,19.2,27.3,26,30.4,15.8,19.7,15,21.4],"cyl":[6,6,4,6,8,6,8,4,4,6,6,8,8,8,8,8,8,4,4,4,4,8,8,8,8,4,4,4,8,6,8,4],"disp":[160,160,108,258,360,225,360,146.7,140.8,167.6,167.6,275.8,275.8,275.8,472,460,440,78.7,75.7,71.1,120.1,318,304,350,400,79,120.3,95.1,351,145,301,121],"hp":[110,110,93,110,175,105,245,62,95,123,123,180,180,180,205,215,230,66,52,65,97,150,150,245,175,66,91,113,264,175,335,109],"drat":[3.9,3.9,3.85,3.08,3.15,2.76,3.21,3.69,3.92,3.92,3.92,3.07,3.07,3.07,2.93,3,3.23,4.08,4.93,4.22,3.7,2.76,3.15,3.73,3.08,4.08,4.43,3.77,4.22,3.62,3.54,4.11],"wt":[2.62,2.875,2.32,3.215,3.44,3.46,3.57,3.19,3.15,3.44,3.44,4.07,3.73,3.78,5.25,5.424,5.345,2.2,1.615,1.835,2.465,3.52,3.435,3.84,3.845,1.935,2.14,1.513,3.17,2.77,3.57,2.78],"qsec":[16.46,17.02,18.61,19.44,17.02,20.22,15.84,20,22.9,18.3,18.9,17.4,17.6,18,17.98,17.82,17.42,19.47,18.52,19.9,20.01,16.87,17.3,15.41,17.05,18.9,16.7,16.9,14.5,15.5,14.6,18.6],"vs":[0,0,1,1,0,1,0,1,1,1,1,0,0,0,0,0,0,1,1,1,1,0,0,0,0,1,0,1,0,0,0,1],"am":[1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,1,1,1,1,1,1,1],"gear":[4,4,4,3,3,3,3,4,4,4,4,3,3,3,3,3,3,4,4,4,3,3,3,3,3,4,5,5,5,5,5,4],"carb":[4,4,1,1,2,1,4,2,2,4,4,3,3,3,4,4,4,1,2,1,1,2,2,4,2,1,2,2,4,6,8,2]},"options":{"mode":"tree","modes":["code","form","text","tree","view"]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+<div id="the-apply-family-functions" class="section level2">
+<h2>The “apply” family functions</h2>
+<p>We move now to apply functions. We will look at the three most popular: <code>lapply()</code>, <code>vapply()</code> and <code>apply()</code></p>
+<div id="lapply" class="section level3">
+<h3>lapply()</h3>
+<p>List apply will take each element of your list, call a function upon it, then return a list of the results. <code>lapply()</code> can be really useful to write compact, understandable code.</p>
+<p>It is often used to replace what would be <code>for</code> loops in other languages, and offers benefits like better memory management and vectorisation. Its one reason some cite use of <code>for()</code> loops in R code as bad R-style, although there is still some scope for them.</p>
+<div id="guide-to-using-lapply" class="section level4">
+<h4>Guide to using lapply()</h4>
+<p>Lets build up an lapply function, that will work on a list of <code>data.frame</code>’s.</p>
+<ol style="list-style-type: decimal">
+<li><p>Choose what you want the <code>lapply()</code> function to iterate across. In this example we have a list of data.frames, <code>a_list_of_df</code></p></li>
+<li><p>Choose our function. This will operate on each element,</p></li>
+<li><p>Test the function on one element i.e. the contents of <code>a_list_of_df[[x]]</code> <em>NOT</em> <code>a_list_of_df[x]</code>. Once happy we know it should work on the entire list.</p></li>
+<li><p>Any constant arguments get added to the end of the <code>lapply</code> - e.g. is you are using <code>sum()</code> you may want all the <code>sum</code> functions to ignore <code>NA</code> e.g. <code>sum(x, na.rm = TRUE)</code></p></li>
+<li><p>Construct the full function <code>result &lt;- lapply(a_list, myfunction, constant_arguments = TRUE)</code></p></li>
+</ol>
+</div>
+<div id="example" class="section level4">
+<h4>Example</h4>
+<p>Here we would like to just check the number of rows for each data.frame, so the function chosen is <code>nrow()</code>.</p>
+<p>Testing the function chosen against our example, we see it works as expected:</p>
+<pre class="r"><code>nrow(a_list_of_df[[1]])
+# 345</code></pre>
+<p>We can now apply this to all the data.frames in the list:</p>
+<pre class="r"><code>lapply(a_list_of_df, nrow)</code></pre>
+<p>Note we don’t add arguments to the function call (<code>nrow</code>, not <code>nrow()</code>).</p>
+<p>If we want to add arguments to the function, we can supply those as named arguments to <code>lapply()</code></p>
+<p>Here we take advantage that a data.frame is a list of equal length vectors:</p>
+<pre class="r"><code>lapply(mtcars, mean, trim = 0.5)</code></pre>
+</div>
+<div id="using-your-own-function" class="section level4">
+<h4>Using your own function</h4>
+<p>What if you want to supply your own function? You can predefine it before the lapply() and supply it:</p>
+<pre class="r"><code>my_func &lt;- function(x){
+  sum(x)
+}
+
+lapply(my_vector, my_func)
+</code></pre>
+<p>…or you can add it straight into the lapply function itself - this is normally done when the function is small:</p>
+<p>A function defined this way is called an <code>anonymous function</code>, as it has no name.</p>
+<pre class="r"><code>lapply(my_vector, function(x){
+  sum(x)
+})
+</code></pre>
+</div>
+</div>
+<div id="vapply" class="section level3">
+<h3>vapply()</h3>
+<p><code>vapply()</code> is an extension on top of <code>lapply()</code>. It works in the same way, but you also supply a <code>FUN.VALUE</code> which is a template of what you expect the result to be. If the result is not of that class, then it will raise an error.</p>
+<p>This is good to stop any nasty surprises messing up your code later, and is recommended over <code>lapply()</code> when creating functions.</p>
+<p>It also has the <code>USE.NAMES</code> argument which is useful to have the list output have the same names as the input list.</p>
+</div>
+<div id="apply" class="section level3">
+<h3>apply()</h3>
+<p><code>apply()</code> is similar but lets you work with data.frame rows as inputs, instead of list elements. Here each element is a data.frame row, which you can then operate on from your supplied function:</p>
+<pre class="r"><code>apply(mtcars, MARGIN = 2, sum)</code></pre>
+<pre><code>##      mpg      cyl     disp       hp     drat       wt     qsec       vs 
+##  642.900  198.000 7383.100 4694.000  115.090  102.952  571.160   14.000 
+##       am     gear     carb 
+##   13.000  118.000   90.000</code></pre>
+</div>
+<div id="exercise-1" class="section level3">
+<h3>Exercise</h3>
+<p>Write a function that iterates over this list of <code>data.frames</code> supplied below, to output the <code>max</code> of each column. The output should be a list of numeric vectors, each vector element being the maxium number.</p>
+<pre class="r"><code>## don&#39;t touch this, it just creates your data
+a_list_of_df &lt;- lapply(1:10, function(x){
+    data.frame(matrix(runif(1000), ncol = 10))
+})
+
+## perhaps you want to pass more arguments in, replace as you see fit
+your_function &lt;- function(a_data_frame){
+  
+}
+
+your_result &lt;- lapply(a_list_of_df, your_function)
+</code></pre>
+<blockquote>
+<p>Hint - use <code>colSums</code></p>
+</blockquote>
+<p>How would you change this to use <code>vapply</code> ?</p>
+</div>
+</div>
+<div id="working-with-the-result-of-lists" class="section level2">
+<h2>Working with the result of lists</h2>
+<p>There are some handy functions to work with lists: I use mostly <code>Reduce()</code>. This takes a list in its second argument and applies the function given in its first argument in turn, adding the result of the previous call to the next.</p>
+<p>As an example, you can use <code>rbind()</code> which binds a data.frame to another and apply it to a list of data.frames. Reduce will <code>rbind()</code> the first two data.frames, then take that result and <code>rbind()</code> it to the third, then take that result and <code>rbind()</code> it to the forth, etc. until you have added up all the data.frames into one:</p>
+<pre class="r"><code>Reduce(rbind, list_of_df)</code></pre>
+<div id="purrr" class="section level3">
+<h3>purrr()</h3>
+<p>For more advanced useage, <a href="https://github.com/tidyverse/purrr"><code>purrr</code></a> is a tidyverse package which is very useful for both working with lists and manipulating data.</p>
+<p>Consult the cheatsheet of <code>list-columns</code> for some ideas, and this <a href="https://jennybc.github.io/purrr-tutorial/talks.html"><code>Jennifer Bryan presentation</code></a></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

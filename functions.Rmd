@@ -1,0 +1,434 @@
+---
+title: "Functions"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
+```
+
+## Creating functions
+
+Once you are past the basics, you should be looking at creating functions for your common tasks.  Why create functions?
+ 
+* Ensure scoping of variables in controlled
+* More efficient memory management
+* Good names
+* Clear, concise code
+* Reproducability
+* First step to putting them in a package for documentation
+ 
+A good rule of thumb is if you are performing the same task more than twice, look to create a function to do it.
+
+### A good name
+
+The "good names" point is more powerful than it sounds - you will start to create building blocks for yourself that can in themselves be built upon.
+
+For example, here is an example of using some functions you may create to download Google Analytics data and upload it to your own private database:
+
+```r
+## returns dataframe of GA data if successful
+my_data <- get_google_analytics_data(my_view_id = 12345)
+
+## returns upload details if successful
+upload_result <- upload_to_database(my_data)
+
+## returns TRUE if successful
+email_result <- email_result(upload_result, email = "me@mycompany.com")
+
+```
+
+With good naming, commenting code becomes (almost) unnecessary.
+
+You may later then decide to generalise the above for any viewId:
+
+```r
+upload_and_email <- function(view_id, email){
+
+  my_data <- get_google_analytics_data(my_view_id = view_id)
+
+  upload_result <- upload_to_database(my_data)
+
+  email_result <- email_result(upload_result, email = email)
+}
+```
+
+Now using `lapply()` you can download and email several Google Analytics downloads with a couple of lines of R:
+
+```r
+viewIds <- c(12345, 345453, 789002)
+
+lapply(viewIds, upload_and_email, email = "me@mycompany.com")
+```
+
+As you abstract away inner functions, higher level thinking is encouraged, building on your past successes. 
+
+## Starting with functions
+
+As ever, Hadley Wickham's Advanced R book is my prime reference for R concepts, in particular its [chapter on functions](http://adv-r.had.co.nz/Functions.html).
+
+When writing a function, you are actually asigning a new object type to a variable, just as you would for say for other data.  However, once assigned a function, you can then get that function to operate on other objects by using `()` afterwards:
+
+```r
+name_of_your_function <- function(one, two, etc. ){
+  
+  ## your code goes here, and can refer to the arguments
+  result <- one + two
+  
+  ## the function will return the last object declaed in the function
+  result
+
+}
+
+## call your function
+name_of_your_function(one = "blah", two = "foo")
+```
+
+R has some shortcuts that lets you not need to specify the name of the argument if its the first one positionally, so the above call can also be written:
+
+```r
+name_of_your_function("blah", two = "foo")
+```
+
+You can also define functions with no arguments:
+
+```r
+my_function <- function(){
+
+  ## I just do stuff without needing arguments
+  print(mtcars)
+}
+
+## call the function
+my_function()
+```
+
+### Scoping
+
+R has some unusual scoping behaviour compared to other languages.  Variables you declare outside of functions can effect interior functions if left to defaults.  This can cause confusing errors so its worth highlighting:
+
+```{r}
+x <- 1
+
+scope_example <- function(){
+  ## this shouldn't work
+  x
+}
+
+scope_example()
+```
+
+This is linked to the environments concept with R, and [lexical scoping](http://adv-r.had.co.nz/Functions.html#lexical-scoping). This is an advanced topic, but briefly its important to know that R will evaluate in the context of the function, but if it doesn't find a particular object it will look in the parent frame all the way up to a global. As such you should keep an eye on what is in your global environment vs within a function, as you may forget to define a variable in a function that R then looks for elsewhere, which can be very confusing when debugging.
+
+### Ellipses ...
+
+Often functions are calling other functions within them.  If you have a inner function that relies on arguments from the function above, you could laboriously copy all the argumets down to the function that needs them:
+
+```r
+func1 <- function(a, b, c){
+  
+  my_thing <- func2(a = a, b = b, c = c)
+
+}
+```
+
+...or, you can use the construct `...` which will copy the arguments for you:
+
+```r
+func1 <- function(...){
+  
+  my_thing <- func2(...)
+
+}
+```
+
+### Exercise - creating a simple function
+
+Create a function that takes a numeric vector and prints out the max, min, mean and median.  You can use `cat` to print out to the console. Here is a starting template:
+
+```r
+
+my_summary <- function(x){
+
+  ## your code here
+  
+  cat("Your result")
+}
+
+```
+
+## Getting some inspiration
+
+Once you have the basics, the best way to learn is to examine what others are doing. 
+
+Every function you use in R has its code available if you issue the function name with no brackets e.g.
+
+```{R}
+library(googleAnalyticsR)
+ga_account_list
+```
+
+However, some are easier than others.  Some functions, including many that are fundamental to R in its base package, are written in C and are called `Primitive` and the R function simply calls that underlying code.  These functions won't return much of use:
+
+```{R}
+sum
+```
+
+But a lot of R functions are available on GitHub which is rapidly becoming an R standard practice.  All of Hadley Wickham's packages have their functions available for example - find them on GitHub and look within the `R` folder (we look more into navigating R package structure later)
+
+### R Methods
+
+Now you are looking at R code, once thing worth mentioning are R `methods`.  If you have some programming expereince you may be familiar with the concept of object orientated programming.  R has several implementations of this, but the most popular is the `S3` method that we touch on briefly today.  
+
+In brief you may see some references to `UseMethod` in some code.  This acts as a signpost that decides what actual code to run against the passed in object judged on its `class` (remember those?).  For instance, the same function could act different if you pass it an object of class `character` or of class `number`. 
+
+The `UseMethod` is the signpost, but where is the destination?  `R` looks for functions that have the same name as the original function, but with a `.classname` suffix.
+
+e.g.
+
+```{r}
+my_function <- function(obj){
+  UseMethod("my_function")
+}
+
+my_function.data.frame <- function(obj){
+  ## this function will act if obj is of class data.frame
+}
+
+my_function.character <- function(obj){
+  ## this function will act if obj is of class character
+}
+
+## An end user will only need to remember one function
+my_dataframe <- data.frame(blah = c(1,2,3), foo = c("a","b","c"))
+my_character_vector <- c("a","b","c")
+
+my_function(my_dataframe)
+my_function(my_character_vector)
+
+```
+
+This offers several advantages for clean code, especially if you are used to this style of programming in other languages, but won't be covered today.  [See here for more details if you are keen](http://adv-r.had.co.nz/S3.html). 
+
+## Defensive programming
+
+There are some good habits I have developed over time that mitigate against too many bugs in your code.
+
+The basic premise is you want to know as soon as possible what is wrong, and print an informative error message so you know whats up.  A somewhat valid criticisim of R is that the R error messages are obscure.  By creating your own, you can do something to help yourself and users of your functions know whats wrong.
+
+### Try to avoid names that R already uses
+
+One big gotcha with R is you can assign names to anything, including names already used by base functions.  This means you can do evil things like this:
+
+```{r}
+## very evil
+`+` <- `-`
+3 + 1
+
+## go back again
+rm(`+`)
+3 + 1
+```
+
+Whilst an extreme example, more common are variable such as `c` or `data` which will happily accept your assignment, then throw an obscure error when you forget to assign them later on.  Best is to avoid using these names altogetehr unless you really mean to. 
+
+### stop() - errors are good! (if you control them)
+
+A key element for this is the user of the function `stop()`.  This as it says stops the function and will print out an error message of your choosing:
+
+```{r}
+
+sum_safe <- function(x, y){
+
+  ## if x and y isn't numeric
+  if(!all(is.numeric(x), is.numeric(y))){
+    ## raise an error
+    stop("Need numerics for the sum!")
+  }
+  
+  sum(x,y)
+}
+
+sum_safe(1,2)
+sum_safe("1",2)
+```
+
+A short cut for this common task (`If this is not true, raise an error`) is the `stopifnot()` function, although you can't set a custom error message:
+
+```{r}
+
+sum_safe <- function(x, y){
+  
+  stopifnot(is.numeric(x), is.numeric(y))
+  
+  sum(x,y)
+}
+
+sum_safe(1,2)
+sum_safe("1",2)
+```
+
+As always, Hadley has an alternative that gives better error messages than `stopifnot()` - [`assertthat`](https://cran.r-project.org/package=assertthat)
+
+```{r}
+library(assertthat)
+sum_safe <- function(x, y){
+  
+  assert_that(is.numeric(x), is.numeric(y))
+  
+  sum(x,y)
+}
+
+sum_safe(1,2)
+sum_safe("1",2)
+```
+
+You can also write your own checks with error messages, like these [examples](https://www.r-project.org/nosvn/pandoc/assertthat.html):
+
+```r
+is_odd <- function(x) {
+  assert_that(is.numeric(x), length(x) == 1)
+  x %% 2 == 1
+}
+assert_that(is_odd(2))
+# Error: is_odd(x = 2) is not TRUE
+
+on_failure(is_odd) <- function(call, env) {
+  paste0(deparse(call$x), " is even")
+}
+assert_that(is_odd(2))
+# Error: 2 is even
+```
+
+### try() and tryCatch()
+
+Sometimes you don't want to stop the program, but rather do something else if an error is detected.  
+
+A good use case for this is when fetching from an API, as you can't always guarantee the API will return what you expect.  Wrapping your call in a `try()` command means that instead of an error you will get an object of class `try-error`.  You can then test for this and react accordingly. 
+
+`assertthat` also adds some missing checks that can be useful, such as `is.error` that you can use with a `try()`, otherwise you can use the more verbose in base R `inherits(x "try-error")`
+
+```{r}
+library(assertthat)
+
+get_data_safe <- function(file_name){
+  
+  ##
+  assert_that(is.character(file_name))
+  
+  read_file <- try(read.csv(file_name))
+  
+  if(is.error(read_file)){
+    message("Something went wrong, lets try something else")
+    read_file <- mtcars
+  }
+  
+  ## return the file, or mtcars if it didn't find it
+  read_file
+  
+}
+
+my_data <- get_data_safe("nofile.csv")
+
+```
+
+### Checking arguments
+
+Armed with the above, good habits will be to always check that the inputs (and outputs if you like) are exactly what you expect.  Since the majority of R errors are caused by unexpected types, this should help you mitigate against weird bugs.
+
+As standard now, I always look to check the inputs at the beginning of a created function, and give an error or warning if its not expected.  
+
+```{r}
+library(assertthat)
+extract_xy <- function(data_frame, column_name, row_number){
+  
+  assert_that(
+    is.data.frame(data_frame),
+    is.character(column_name),
+    is.numeric(row_number)
+  )
+  
+  data_frame[row_number, column_name]
+}
+
+extract_xy(mtcars, column_name = "mpg", row_number = 3)
+```
+
+Another tool for this is the function `match.arg()` which lets you limit the choices an argument can have to a vector of choices you provide.  An example on how it is used it below:
+
+```{r}
+library(assertthat)
+extract_xy <- function(data_frame, 
+                       column_name = c("mpg", "cyl", "disp"), 
+                       row_number){
+  ## the syntax to make sure column_name is only from accepted values
+  column_name <- match.arg(column_name)
+  
+  assert_that(
+    is.data.frame(data_frame),
+    is.character(column_name), ## no real need for this now since we hardcoded
+    is.numeric(row_number)
+  )
+  
+  data_frame[row_number, column_name]
+}
+
+extract_xy(mtcars, column_name = "mpg", row_number = 3)
+
+## error as column_name not in match.arg vector
+extract_xy(mtcars, column_name = "foo", row_number = 3)
+```
+
+### Debugging tips
+
+With good defensive programming techniques, you an be more sure that the functions are getting the data you expect, but you will still probably need to debug as you go.  Getting a quick, iterative process to this is key as unfortunetly the time split is usually 90% of the code programmed in 20% of the time (this is the fun bit) with the remaining 80% of the time debugging 10% of your code.
+
+For speed of delivery of useful programs, getting this debugging time down is key.
+
+Below are some tips to help with this:
+
+* Use version control such as Github (so you can check what changed) - when you have a working version, commit. 
+* Use `browser()` to examine the state of a function where its going wrong - use RStudio's breakpoints or insert the line `browser()` where you want the program to stop.  You can then check variables in the environment of the function using RStudio's Environment pane, try executing lines to replicate errors, etc. 
+* Insert `message()` or `cat()` commands to print out what arguments are, to see if they are as you expect.  Comment them out again afterwards as needed, although sometimes its nice to leave them in for user feedback. 
+
+
+### Excercise in writing good errors
+
+Rewrite the `extract_xy` function below so it also gives custom errors: 
+
+* if the `column_name` is not in the `data_frame`: `{column_name} is not in {data_frame}`
+* if the `row_number` is not in the `data_frame`: `{row_number} is not in {data_frame}`
+
+```r
+library(assertthat)
+extract_xy <- function(data_frame, 
+                       column_name = c("mpg", "cyl", "disp"), 
+                       row_number){
+  
+  assert_that(
+  
+  ## insert checks heres
+
+  )
+  
+  data_frame[row_number, column_name]
+}
+
+## this should give the custom errors
+extract_xy(mtcars, column_name = "blah")
+extract_xy(mtcars, row_number = 55)
+extract_xy(mtcars, column_name = "blah", row_number = 55)
+```
+
+Compare with base R, where you instead get three different classes of results (an error, `NA`s, and `NULL`)
+
+```{r}
+mtcars[, "blah"]
+mtcars[55, ]
+mtcars[55, "blah"]
+```
+
+

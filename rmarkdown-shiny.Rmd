@@ -63,3 +63,47 @@ These documents, again, need a Shiny server to run, but take advatage of the eas
 
 An example RMarkdown document with a Shiny element taking care of authentication can be found [here](http://shiny.rstudio.com/tutorial/).
 
+# Shiny or RMarkdown?
+
+There are a few options for data presentation using R so an overview is first presented to help you decide which to choose.
+
+Name    |   Interactive   |  Output    |   Ease of use   |  Cost         |  Server needed?
+--------|-----------------|------------|-----------------|---------------|----------------
+Shiny   | Server-side and client-side | HTML | Advanced  | Free for Shiny Server, $9995 for Shiny Server Pro, $9+ a month Shinyapps.io | Yes
+RMarkdown | client-side only | HTML, PDF, Word, etc. | Easy | Free, can also publish to a Shiny server | Only a normal HTML server if you want to host those (e.g. Github Pages lets you host for free)
+Flexdashboard | Server-side and client-side | HTML | Easy | Free, can also publish to a Shiny server | If using Shiny elements, yes
+
+It generally comes down to the amount of interactivity you need in your app.  For a full solution where data is updated and processed in real-time, Shiny is your best option.  If you just need a nice format for presentation offline, then RMarkdown can produce some very nice looking formats.
+
+Flexdashboard is a bit of both - it is essentially an RMarkdown document that allows Shiny elements to be placed within it. 
+
+All the above is further complicated by HTML Widgets - these render in JavaScript that can do a lot of interactivity by itself, so if you can find a JavaScript library that gives you say dropdowns, then you can use that in RMarkdown instead of using Shiny, without hosting a Shiny server. 
+
+## Shiny
+
+Shiny is a R package by RStudio that lets you run reactive apps on a special Shiny server.
+
+### Shiny server
+
+A Shiny server can be installed on a dedicated machine, or it comes bundled with RStudio for local testing.  Before you deploy an app online you will need to have a Shiny server available to publish to.  At the moment your options are:
+
+* Host it yourself on say Google Compute Engine
+* Publish to https://www.shinyapps.io/
+* Publish to an RStudio Connect service
+
+### Reactive apps
+
+Shiny uses a special approach known as reactive in making its apps.  This allows for very responsive applications.  A typical Shiny app has two elements - a UI script that is in charge of rendering the HTML front end, and a server script that takes care of which R code is run when elements on the UI change.
+
+## RMarkdown
+
+RMarkdown takes a different approach - it renders a special flavour of Markdown into a standard format, which is then in turn rendered into the end product.  The end product varies between HTML, PDF, Word etc. 
+
+Because the end product has no link with the code made to create it, you can't call R functions from a final RMarkdown product.  However, you can render using JavaScript that can interact with the data on the page in real-time (for HTML apps, it obviously wouldn't work with a PDF!)
+
+This documentation is written in RMarkdown, as an example. 
+
+## Flexdashboard
+
+Flexdashboard is a bit of both.  You write pages in RMarkdown that can include Shiny elements.  If you do incude Shiny elements, then when you publish, flexdashboard uses RMarkdown to create the HTML, and then runs a Shiny server to provide the elements. 
+

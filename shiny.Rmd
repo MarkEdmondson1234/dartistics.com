@@ -15,3 +15,157 @@ To run a Shiny app you need to have a Shiny server running.  RStudio comes with 
 Shiny apps use a functionality called *reactivity* that means that apps can be quick and responsive to changes to inputs - this is one of the best features of Excel, where changing one cell can have consequences throughout the Workbook.
 
 Shiny apps can be tricky to get your head around due to its different work flow from normal R programs, its recommended to go through the [tutorials online](http://shiny.rstudio.com/tutorial/).
+
+## Before you begin
+
+The [Shiny website](http://shiny.rstudio.com/tutorial/) is the source of all that will be said here today, for deeper knowledge refer to that.
+
+We will go through today some practical experience that will hopefully smooth off the learning curve, with a digital marketing focus.
+
+## Overview
+
+Shiny uses reactive programming.  What does that mean?
+
+### ui.R
+
+The `ui.R` is the equivalent of a website frontend.  It contains all the HTML, CSS and JavaScript of a normal webpage.  As such its usually easier to get to grips with.
+
+All the most HTML tags are available using `shiny::tags()`, with shortcuts to the most common e.g. `div()`
+
+#### Working with outputs
+
+Most elements that will work with the `server.R` are called `blahOutput()`.  
+
+Behind the scenes this sets up a div tag with the ID of the element that will be changed dynamically via `server.R`:
+
+```r
+## in ui.R
+plotOutput("example")
+## <div id="example" class="shiny-plot-output" style="width: 100% ; height: 400px"></div>
+```
+
+`server.R` interacts with this div ID via a named lists called `output` - *it outputs change to this ID*.  
+
+The ID must match the list name, and the type must be the same via the `renderBlah()` server functions e.g. `plotOutput` in `ui.R`, `renderPlot` in `server.R`
+
+```r
+## in server.R
+output$example <- renderPlot({
+  ## a function that creates a plot
+  plot(mtcars)
+})
+```
+
+#### Working with inputs
+
+Likewise, all the input IDs are available to `server.R` via a named list called `input`.
+
+The input elements in `ui.R` are all called something like `blahInput` e.g. `sliderInput()`
+
+Again, you specify an ID for that input, but also criteria on what a user can input:
+
+```r
+library(shiny)
+
+## create a slide input
+sliderInput("input1", label = "A slider", min = 1, max = 10, value = 2)
+
+# <div class="form-group shiny-input-container">
+#  <label class="control-label" for="input1">A slider</label>
+#  <input class="js-range-slider" id="input1" data-min="1" data-max="10" data-from="2" data-step="1" 
+# data-grid="true" data-grid-num="9" data-grid-snap="false" data-prettify-separator="," data-keyboard="true" 
+# data-keyboard-step="11.1111111111111" data-drag-interval="true" data-data-type="number"/>
+# </div>
+```
+
+The output is more complicated than the `blahOutput` functions, but again it is only HTML. 
+
+To refer to the input elements, `server.R` then refers to a named list called `input`:
+
+```r
+input$input1
+```
+
+Inputs effect outputs, and hence we get interactivity.
+
+A very basic example below:
+
+```r
+## in ui.R
+textInput("text_input", label = "input text")
+textOutput("text_output")
+
+## in server.R
+output$text_output <- renderText({
+  input$text_input
+})
+
+```
+
+All that said, its best to start with `ui.R` first to design your UI, then work on the `server.R` to output what you need. 
+
+### server.R
+
+`server.R` contains the code that will change certain elements defined in the `ui.R`.
+
+`server.R` is in fact a constantly looping function.  As a user interacts with the `ui.R` it sends messages back to the `server.R` which then reacts (see, `reactivity`), outputs data to change and sends this back to the `ui.R` that renders it on the correct ID. 
+
+The looping function is around the objects we spoke about earlier - `input` and `output`.  Optionally, you can also include an object called `session` which contains information about the general user session (such as what URL is being shown), which starts to explain how a minimal `server.R` file looks:
+
+```r
+library(shiny)
+
+function(input, output, session){
+
+  output$plot1 <- renderPlot({
+  
+    plot(mtcars[[1]], mtcars[[input$value1]])
+  
+  })
+
+}
+```
+
+## Exercise
+
+> What will this Shiny app render?  Assume input$value1 is a numeric value between 2 and 11.
+
+> What could the ui.R look like?  You will need to use the functions numericInput() and plotOutput().
+
+### Reactive objects
+
+Because its a looping function, standard R rules about scoping don't apply.  You need to deal with functions like `reactive()`, `observe()`,`isolate()`, `eventReactive()` and `observeEvent()` which control behaviour in this looping function. 
+
+Key to this are a new class of object called `reactive` objects. These are objects that will change according to user input, and as such can't be treated as normal R variables.
+
+Reactive object can react to another reactive object, which sets up a chain of dependencies.  A change in a dependency will effect all other reactive objects.  A key factor in making efficient Shiny apps is to know when to trigger a change and when not to.
+
+### Debugging
+
+The toughest part of Shiny programming over normal programming is that due to its reactive nature, its harder to debug your functions.
+
+### Tips and tricks
+
+* Use req()
+* Reactive data sources
+* Shiny modules
+* Specify if its a reactive or isolated object
+
+## Digital Marketing APIs
+
+In particular, we will look at how to make Shiny apps that interact with digital marketing APIs.
+
+Digital marketing apps typically have 3 models:
+
+1. Working on data preloaded
+2. Working interactivily with your own data
+3. Letting users work interactivly with their data
+
+
+
+
+### Deploying
+
+
+## Excercises
+
