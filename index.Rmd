@@ -5,6 +5,7 @@ author: "Digital Analytics: R and staTISTICS"
 
 ```{r index, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
 ```
 
 This site is intended to be a resource for digital analysts who are interested in learning or expanding their knowledge of R and statistics. That's from whence the semi-silly name came from:

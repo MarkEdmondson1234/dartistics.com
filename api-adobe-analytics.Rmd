@@ -7,7 +7,7 @@ output:
 ---
 
 ```{r analytics-apis setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, error = TRUE, cache = FALSE)
 library(knitr)
 ```
 
@@ -61,7 +61,7 @@ Get the Web Service key under the Adobe Analytics Account Information page.
 
 If you use this method, then you authenticate via:
 
-```{r message=FALSE, results='hide'}
+```{r message=FALSE, results='hide', error=TRUE}
 library(RSiteCatalyst)
 
 key <- Sys.getenv("ADOBE_KEY_OLD")
@@ -583,10 +583,10 @@ And, now, we need to do a few additional things _just_ to make the data match th
 web_data$date <- as.Date(web_data$date)
 
 # Change the `Other` value to be `Desktop` for `deviceCategory.`
-web_data[web_data$deviceCategory=="Other","deviceCategory"] = "Desktop"
+web_data[web_data$deviceCategory=="Other","deviceCategory"] <- "Desktop"
 
 #Change `Natural Search` to `Organic Search` for `channelGrouping.`
-web_data[web_data$channelGrouping=="Natural Search","channelGrouping"] = "Organic Search"
+web_data[web_data$channelGrouping=="Natural Search","channelGrouping"] <- "Organic Search"
 
 ```
 

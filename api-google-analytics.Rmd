@@ -8,7 +8,12 @@ output:
 
 ```{r analytics-apis setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+source("dartistics_packages.R")
+
 library(knitr)
+library(googleAuthR)
+options(googleAuthR.cache_package = "googleAnalyticsR")
+gar_cache_set_loc("gaapicache")
 ```
 
 There are several R packages for accessing the Google Analytics API, but the one we're describing here is `googleAnalyticsR`, as it's the one that one of the creators of this site created (and the co-creator of this site, as well as many, many users, have found to be fantastic)!  However, if you want to check out some of others, see the list on the `googleAnalyticsR` [home page](http://code.markedmondson.me/googleAnalyticsR/).
@@ -17,7 +22,7 @@ The example below generates a `web_data` object that is used in various exercise
 
 ## Installation
 
-```{r message=FALSE}
+```r
 # This installs googleAnalyticsR if you haven't got it installed already
 if(!require(googleAnalyticsR)) install.packages("googleAnalyticsR")
 ```
@@ -26,7 +31,7 @@ if(!require(googleAnalyticsR)) install.packages("googleAnalyticsR")
 
 By default you can authenticate using the `googleAnalyticsR` default project (we're not going to dive into the details of what this means at the moment -- it gets a little into the weeds of Google APIs and development):
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library(googleAnalyticsR)
 ga_auth()
 ```
@@ -52,7 +57,7 @@ The easiest way to find this is to use `google_analytics_account_list()` to list
 ```{r eval=FALSE}
 
 # Pull a full list of the views that you have access to
-my_accounts <- google_analytics_account_list()
+my_accounts <- ga_account_list()
 
 ```
 
@@ -66,7 +71,7 @@ Another way to get the view ID is to go to the [Google Analytics Query Explorer]
 
 Once you have a view ID, you use it to download your data via the [`v4 reporting API`](https://developers.google.com/analytics/devguides/reporting/core/v4/) with the `google_analytics_4()` function.  See `?google_analytics_4` and the website for complete details and examples.
 
-```{r message=FALSE}
+```{r message=FALSE, message=FALSE, warning=FALSE, message=FALSE}
 # Change this to your own view ID, as the one below will only work for accessing
 # data from Mark Edmondson's blog, and it's highly unlikely you have access to that!
 my_id <- 81416156 

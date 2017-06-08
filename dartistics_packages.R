@@ -9,6 +9,8 @@ packages_list <- c("CausalImpact",
                    "forecast",
                    "googleAuthR",
                    "googleAnalyticsR",
+                   "googlesheets",
+                   "pander",
                    "highcharter",
                    "plotly",
                    "reshape2",
@@ -29,4 +31,4 @@ packages_list <- c("CausalImpact",
 packages_to_install <- packages_list[!(packages_list %in% installed.packages()[,"Package"])]
 
 # Install those packages
-if(length(packages_to_install)) install.packages(packages_to_install)
+if(length(packages_to_install)) install.packages(packages_to_install, repos = "http://cran.rstudio.com")

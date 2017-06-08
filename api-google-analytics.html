@@ -502,13 +502,6 @@ if(!require(googleAnalyticsR)) install.packages(&quot;googleAnalyticsR&quot;)</c
 <p>By default you can authenticate using the <code>googleAnalyticsR</code> default project (we’re not going to dive into the details of what this means at the moment – it gets a little into the weeds of Google APIs and development):</p>
 <pre class="r"><code>library(googleAnalyticsR)
 ga_auth()</code></pre>
-<pre><code>## Warning: option(googleAuthR.scopes.selected) not same scopes as current cached token .httr-oauth, will need reauthentication.  
-##                      
-## Token scopes: https://www.googleapis.com/auth/webmasters https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics.manage.users.readonly https://www.googleapis.com/auth/tagmanager.readonly https://www.googleapis.com/auth/urlshortener
-## getOption(googleAuthR.scopes.selected): https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics.manage.users.readonly https://www.googleapis.com/auth/analytics.edit https://www.googleapis.com/auth/analytics.manage.users</code></pre>
-<pre><code>## Token cache file: .httr-oauth</code></pre>
-<pre><code>## Scopes: https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics.manage.users.readonly https://www.googleapis.com/auth/analytics.edit https://www.googleapis.com/auth/analytics.manage.users</code></pre>
-<pre><code>## 2017-06-07 08:31:31&gt; Authenticated</code></pre>
 <p>Pause here, as, the first time you run the script, at least, it should open a web browser and require you allow access to your Google Analytics account. This is <em>just</em> providing the script that you’re running access to the data – nothing broader than that:</p>
 <div style="text-align: center">
 <div class="figure">
@@ -526,7 +519,7 @@ ga_auth()</code></pre>
 <h3>Option 1: Getting View IDs using R</h3>
 <p>The easiest way to find this is to use <code>google_analytics_account_list()</code> to list your Views, then read the number in the <code>viewId</code> column:</p>
 <pre class="r"><code># Pull a full list of the views that you have access to
-my_accounts &lt;- google_analytics_account_list()</code></pre>
+my_accounts &lt;- ga_account_list()</code></pre>
 <p>Now, go to the <strong>Environment</strong> tab (top right pane in RStudio) and double-click <strong>my_accounts</strong>. Find the view you want to use and note the <strong>viewId</strong> value for it.</p>
 </div>
 <div id="option-2-getting-view-ids-with-query-explorer" class="section level3">
