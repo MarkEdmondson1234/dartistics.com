@@ -193,7 +193,7 @@ Some articles used for the above are found here:
 * http://www.jottr.org/2017/06/the-many-faced-future.html
 * https://csgillespie.github.io/efficientR/ 
 
-## Excercise
+## Exercise
 
 Here is some code.  Make it faster.
 

@@ -15,10 +15,13 @@
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
-<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<link href="site_libs/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.7/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.7/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-1.1/highlight.js"></script>
@@ -162,6 +165,101 @@ $(document).ready(function () {
 
 
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
 
 
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
@@ -228,7 +326,7 @@ $(document).ready(function () {
     </li>
     <li class="dropdown-header">ADVANCED TOPICS</li>
     <li>
-      <a href="fast-r-code.html">Fast R code</a>
+      <a href="fast-r-code.html">Faster R code</a>
     </li>
     <li>
       <a href="functions.html">Using R functions</a>
@@ -269,7 +367,7 @@ $(document).ready(function () {
       <a href="api-other.html">Other APIs</a>
     </li>
     <li>
-      <a href="creating-apis.html">Create API libraries</a>
+      <a href="creating-apis.html">Creating API libraries</a>
     </li>
   </ul>
 </li>
@@ -288,7 +386,7 @@ $(document).ready(function () {
       <a href="accessing.html">Accessing elements</a>
     </li>
     <li>
-      <a href="learn-to-love-lists.html">Learn to love lists</a>
+      <a href="learn-to-love-lists.html">Learning to love lists</a>
     </li>
     <li>
       <a href="exercise3-accessing-data.html">Exercise: Accessing Data</a>
@@ -358,10 +456,13 @@ $(document).ready(function () {
       <a href="htmlwidgets.html">htmlwidgets()</a>
     </li>
     <li>
-      <a href="rmarkdown-shiny.html">RMarkdown + Shiny</a>
+      <a href="rmarkdown-shiny.html">RMarkdown or Shiny?</a>
     </li>
     <li>
       <a href="advanced-rmarkdown.html">Advanced RMarkdown</a>
+    </li>
+    <li>
+      <a href="shiny.html">Shiny</a>
     </li>
   </ul>
 </li>
@@ -432,20 +533,44 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h3>ui.R</h3>
 <p>The <code>ui.R</code> is the equivalent of a website frontend. It contains all the HTML, CSS and JavaScript of a normal webpage. As such its usually easier to get to grips with.</p>
 <p>All the most HTML tags are available using <code>shiny::tags()</code>, with shortcuts to the most common e.g. <code>div()</code></p>
-<div id="working-with-outputs" class="section level4">
-<h4>Working with outputs</h4>
-<p>Most elements that will work with the <code>server.R</code> are called <code>blahOutput()</code>.</p>
+<p>The most minimal UI you can make looks like this:</p>
+<pre class="r"><code>## in ui.R
+shinyUI(
+  fluidPage(
+    ## output functions
+)</code></pre>
+<p>The functions <code>shinyUI</code> and <code>fluidPage</code> create the minimal HTML necessary for a Shiny app:</p>
+<pre class="r"><code>library(shiny)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;shiny&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:pander&#39;:
+## 
+##     p</code></pre>
+<pre class="r"><code>shinyUI(fluidPage())</code></pre>
+<div class="container-fluid"></div>
+<p>You will need to deal with <em>a lot</em> of brackets. Be stringent in knowing which closing brack refers to which function, as it can be very hard to debug. Good code style indentation helps:</p>
+<pre class="r"><code>library(shiny)
+shinyUI(
+  fluidPage(
+    
+  ) ## end fluidPage
+) ## end shinyUI</code></pre>
+<p>Building a UI is then a matter of building up the structure in lots of nested UI functions.</p>
+<div id="interaction-with-outputs" class="section level4">
+<h4>Interaction with outputs</h4>
+<p>Most UI elements that will work with the <code>server.R</code> are called <code>blahOutput()</code>.</p>
 <p>Behind the scenes this sets up a div tag with the ID of the element that will be changed dynamically via <code>server.R</code>:</p>
 <pre class="r"><code>## in ui.R
 plotOutput(&quot;example&quot;)
 ## &lt;div id=&quot;example&quot; class=&quot;shiny-plot-output&quot; style=&quot;width: 100% ; height: 400px&quot;&gt;&lt;/div&gt;</code></pre>
-<p><code>server.R</code> interacts with this div ID via a named lists called <code>output</code> - <em>it outputs change to this ID</em>.</p>
+<p><code>server.R</code> interacts with this div ID via a named lists called <code>output</code> - <em>it outputs changes to this ID</em>. If the ID is not there, you will see nothing.</p>
 <p>The ID must match the list name, and the type must be the same via the <code>renderBlah()</code> server functions e.g. <code>plotOutput</code> in <code>ui.R</code>, <code>renderPlot</code> in <code>server.R</code></p>
 <pre class="r"><code>## in server.R
 output$example &lt;- renderPlot({
   ## a function that creates a plot
   plot(mtcars)
 })</code></pre>
+<p>The above uses <code>output$example</code> - this will output to <code>plotOutput(&quot;example&quot;)</code></p>
 </div>
 <div id="working-with-inputs" class="section level4">
 <h4>Working with inputs</h4>
@@ -467,14 +592,25 @@ sliderInput(&quot;input1&quot;, label = &quot;A slider&quot;, min = 1, max = 10,
 <p>To refer to the input elements, <code>server.R</code> then refers to a named list called <code>input</code>:</p>
 <pre class="r"><code>input$input1</code></pre>
 <p>Inputs effect outputs, and hence we get interactivity.</p>
-<p>A very basic example below:</p>
-<pre class="r"><code>## in ui.R
-textInput(&quot;text_input&quot;, label = &quot;input text&quot;)
-textOutput(&quot;text_output&quot;)
+<p>A very basic minimal example below:</p>
+<pre class="r"><code>## ui.R
+library(shiny)
 
-## in server.R
-output$text_output &lt;- renderText({
-  input$text_input
+shinyUI(
+  fluidPage(
+    textInput(&quot;text_input&quot;, label = &quot;input text&quot;),
+    textOutput(&quot;text_output&quot;)
+  )
+)</code></pre>
+<pre class="r"><code># server.R
+library(shiny)
+
+function(input, output) ({
+   
+  output$text_output &lt;- renderText({
+    input$text_input
+  })
+  
 })
 </code></pre>
 <p>All that said, its best to start with <code>ui.R</code> first to design your UI, then work on the <code>server.R</code> to output what you need.</p>
@@ -485,13 +621,16 @@ output$text_output &lt;- renderText({
 <p><code>server.R</code> contains the code that will change certain elements defined in the <code>ui.R</code>.</p>
 <p><code>server.R</code> is in fact a constantly looping function. As a user interacts with the <code>ui.R</code> it sends messages back to the <code>server.R</code> which then reacts (see, <code>reactivity</code>), outputs data to change and sends this back to the <code>ui.R</code> that renders it on the correct ID.</p>
 <p>The looping function is around the objects we spoke about earlier - <code>input</code> and <code>output</code>. Optionally, you can also include an object called <code>session</code> which contains information about the general user session (such as what URL is being shown), which starts to explain how a minimal <code>server.R</code> file looks:</p>
-<pre class="r"><code>library(shiny)
+<pre class="r"><code>## in server.R
+library(shiny)
 
-function(input, output, session){
+function(input, output){
 
   output$plot1 &lt;- renderPlot({
   
-    plot(mtcars[[1]], mtcars[[input$value1]])
+    ## get the data from csv
+    web_data &lt;- read.csv(&quot;gadata_example_2.csv&quot;, stringsAsFactors = FALSE)
+    plot(web_data$date, web_data[[input$value1]])
   
   })
 
@@ -500,51 +639,178 @@ function(input, output, session){
 </div>
 <div id="exercise" class="section level2">
 <h2>Exercise</h2>
-<blockquote>
-<p>What will this Shiny app render? Assume input$value1 is a numeric value between 2 and 11.</p>
-</blockquote>
-<blockquote>
-<p>What could the ui.R look like? You will need to use the functions numericInput() and plotOutput().</p>
-</blockquote>
-<div id="reactive-objects" class="section level3">
-<h3>Reactive objects</h3>
+<ol style="list-style-type: decimal">
+<li><p>What will this Shiny app render? Assume input$value1 is the name of a metric column of <code>web_data</code></p></li>
+<li><p>Make a Shiny app in a new RStudio project. (Click <code>New &gt; Shiny &gt; Multiple File</code> in RStudio interface) construct the ui.R that will alter the <code>server.R</code> code above. You will need to use the functions <code>selectInput()</code> to choose the data column you want to plot and <code>plotOutput()</code> to output the result.</p></li>
+<li><p>What steps should we take to use highcharter instead of base plot?</p></li>
+</ol>
+<p>Use these functions - <code>renderHighchart</code>, <code>highchartOutput</code> and to make the plot with the below:</p>
+<pre class="r"><code>library(highcharter)
+hchart(web_data, &quot;line&quot;, hcaes(x = date, y = sessions))</code></pre>
+</div>
+<div id="reactive-objects" class="section level2">
+<h2>Reactive objects</h2>
 <p>Because its a looping function, standard R rules about scoping don’t apply. You need to deal with functions like <code>reactive()</code>, <code>observe()</code>,<code>isolate()</code>, <code>eventReactive()</code> and <code>observeEvent()</code> which control behaviour in this looping function.</p>
 <p>Key to this are a new class of object called <code>reactive</code> objects. These are objects that will change according to user input, and as such can’t be treated as normal R variables.</p>
 <p>Reactive object can react to another reactive object, which sets up a chain of dependencies. A change in a dependency will effect all other reactive objects. A key factor in making efficient Shiny apps is to know when to trigger a change and when not to.</p>
+<div id="example" class="section level3">
+<h3>Example</h3>
+<p>The below builds on the app below, but we now also want to display the maximum value. As we will now have two UI elements we will have two server.R calls that rely on the same data.</p>
+<p>Instead of importing the data in twice (it could be a API call) we will make a reactive object, and then when that object is ready (e.g. not <code>NULL</code>) pass it to the functions.</p>
+<p>The <code>req()</code>function serves as a roadblock to stop the plot and text firing before the data is ready (important for API calls)</p>
+<p>We use <code>highcharter</code> as the plots are cool.</p>
+<pre class="r"><code>## in server.R
+library(shiny)
+library(highcharts)
+
+function(input, output){
+  
+  ## our reactive object for data
+  the_data &lt;- reactive({
+    
+    ## get the data from csv
+    the_data &lt;- read.csv(&quot;../data/gadata_example_2.csv&quot;, stringsAsFactors = FALSE)
+    
+    ## return the data with the date column for the plot and metric column selected
+    the_data[ , c(&quot;date&quot;, input$metric)]
+    
+  })
+  
+  output$plot1 &lt;- renderHighchart({
+    
+    ## this is a roadblock so this function won&#39;t fire until the_data is non-NULL
+    req(the_data())
+    
+    ## do this as it make debugging a lot easier
+    plot_data &lt;- the_data()
+    
+    ## creates a line chart using highcharts
+    hchart(plot_data, &quot;line&quot; , hcaes(x = date)) %&gt;% 
+      hc_add_series(plot_data[[input$metric]])
+    
+  })
+  
+  output$max_text &lt;- renderText({
+    
+    ## this is a roadblock so this function won&#39;t fire until the_data is non-NULL
+    req(the_data())
+    req(input$metric)
+    
+    ## do this as it make debugging a lot easier
+    max_data &lt;- the_data()
+    
+    paste(&quot;The max is: &quot;, max(max_data))
+    
+  })
+  
+}</code></pre>
+<p>The <code>req(input$value1)</code> is good practice to have as the <code>input list</code> are not necessarily available to the function on start up - this guards against ugly red messages briefly when the app starts up.</p>
+<p>With a ui.R adding the max text:</p>
+<pre class="r"><code>## in ui.R
+
+library(shiny)
+library(highcharter)
+
+shinyUI(
+  fluidPage(
+    selectInput(&quot;metric&quot;, label = &quot;select column&quot;, choices = c(&quot;sessions&quot;,
+                                                               &quot;pageviews&quot;,
+                                                               &quot;entrances&quot;,
+                                                               &quot;bounces&quot;)),
+    textOutput(&quot;max_text&quot;),
+    highchartOutput(&quot;plot1&quot;)
+  )
+)</code></pre>
 </div>
-<div id="debugging" class="section level3">
-<h3>Debugging</h3>
-<p>The toughest part of Shiny programming over normal programming is that due to its reactive nature, its harder to debug your functions.</p>
-</div>
-<div id="tips-and-tricks" class="section level3">
-<h3>Tips and tricks</h3>
-<ul>
-<li>Use req()</li>
-<li>Reactive data sources</li>
-<li>Shiny modules</li>
-<li>Specify if its a reactive or isolated object</li>
-</ul>
-</div>
-</div>
-<div id="digital-marketing-apis" class="section level2">
-<h2>Digital Marketing APIs</h2>
-<p>In particular, we will look at how to make Shiny apps that interact with digital marketing APIs.</p>
-<p>Digital marketing apps typically have 3 models:</p>
+<div id="exercise-1" class="section level3">
+<h3>Exercise</h3>
 <ol style="list-style-type: decimal">
-<li>Working on data preloaded</li>
-<li>Working interactivily with your own data</li>
-<li>Letting users work interactivly with their data</li>
+<li>Add a <code>selectInput</code> that also lets you choose the <code>deviceCategory</code></li>
 </ol>
-<div id="deploying" class="section level3">
-<h3>Deploying</h3>
+<blockquote>
+<p>HINT: you may have a line similar to <code>plot_data &lt;- plot_data[plot_data$device == input$device, c(&quot;date&quot;, input$metric)]</code> to segment your data (or maybe not….check your data and put a breakpoint in the correct place)</p>
+</blockquote>
+<p>Use <code>dplyr</code> to massage the data if necessary</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Extra marks - add another <code>selectInput</code> with <code>channelGrouping</code> - this may be useful:</li>
+</ol>
+<pre class="r"><code>c(&quot;(Other)&quot;,&quot;Direct&quot;,&quot;Display&quot;,&quot;Email&quot;,&quot;Organic Search&quot;,&quot;Paid Search&quot;,&quot;Referral&quot;,&quot;Social&quot;,&quot;Video&quot;)</code></pre>
 </div>
 </div>
-<div id="excercises" class="section level2">
-<h2>Excercises</h2>
+<div id="shiny-modules" class="section level2">
+<h2>Shiny Modules</h2>
+<p>Its possible to package up common UI elements into a <a href="https://shiny.rstudio.com/articles/modules.html">Shiny module</a>. This can let you repeat templated code.</p>
+<p>An example comes with <code>googleAnalyticsR</code> to let you create a login for users. The below is from the documentation.</p>
+<pre class="r"><code>## in server.R
+library(googleAuthR)
+library(googleAnalyticsR)
+library(shiny)
+library(highcharter)
+
+function(input, output, session){
+  
+  ## Get auth code from return URL
+  token &lt;- callModule(googleAuth, &quot;login&quot;)
+  
+  ga_accounts &lt;- reactive({
+    req(token())
+    
+    with_shiny(ga_account_list, shiny_access_token = token())
+    
+  })
+  
+  ## get the ViewId from what the users select in the dropdown
+  selected_id &lt;- callModule(authDropdown, &quot;auth_menu&quot;, ga.table = ga_accounts)
+  
+  gadata &lt;- reactive({
+    
+    req(selected_id())
+    gaid &lt;- selected_id()
+    
+    ## with shiny needed to read the correct token
+    with_shiny(google_analytics,
+               id = gaid,
+               start=input$date_select[1], end=input$date_select[2], 
+               metrics = c(&quot;sessions&quot;), 
+               dimensions = c(&quot;date&quot;),
+               shiny_access_token = token())
+  })
+  
+  output$something &lt;- renderHighchart({
+    
+    ## only trigger once authenticated
+    req(gadata())
+    
+    gadata &lt;- gadata()
+    
+    ## creates a line chart using highcharts
+    hchart(gadata, &quot;line&quot; , hcaes(x = date, y = sessions))
+    
+  })
+  
+}
+</code></pre>
+<p>The modules are used below to render the dropdowns and login buttons:</p>
+<pre class="r"><code>## ui.R
+library(googleAuthR)
+library(googleAnalyticsR)
+library(shiny)
+library(highcharter)
+
+shinyUI(
+  fluidPage(
+    googleAuthUI(&quot;login&quot;),
+    authDropdownUI(&quot;auth_menu&quot;),
+    dateRangeInput(&quot;date_select&quot;, &quot;Select Date&quot;, start = Sys.Date() - 30),
+    highchartOutput(&quot;something&quot;)
+    
+  ))</code></pre>
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 

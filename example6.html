@@ -260,7 +260,7 @@ $(document).ready(function () {
     </li>
     <li class="dropdown-header">ADVANCED TOPICS</li>
     <li>
-      <a href="fast-r-code.html">Fast R code</a>
+      <a href="fast-r-code.html">Faster R code</a>
     </li>
     <li>
       <a href="functions.html">Using R functions</a>
@@ -301,7 +301,7 @@ $(document).ready(function () {
       <a href="api-other.html">Other APIs</a>
     </li>
     <li>
-      <a href="creating-apis.html">Create API libraries</a>
+      <a href="creating-apis.html">Creating API libraries</a>
     </li>
   </ul>
 </li>
@@ -320,7 +320,7 @@ $(document).ready(function () {
       <a href="accessing.html">Accessing elements</a>
     </li>
     <li>
-      <a href="learn-to-love-lists.html">Learn to love lists</a>
+      <a href="learn-to-love-lists.html">Learning to love lists</a>
     </li>
     <li>
       <a href="exercise3-accessing-data.html">Exercise: Accessing Data</a>
@@ -390,10 +390,13 @@ $(document).ready(function () {
       <a href="htmlwidgets.html">htmlwidgets()</a>
     </li>
     <li>
-      <a href="rmarkdown-shiny.html">RMarkdown + Shiny</a>
+      <a href="rmarkdown-shiny.html">RMarkdown or Shiny?</a>
     </li>
     <li>
       <a href="advanced-rmarkdown.html">Advanced RMarkdown</a>
+    </li>
+    <li>
+      <a href="shiny.html">Shiny</a>
     </li>
   </ul>
 </li>
@@ -478,8 +481,8 @@ forecast1 &lt;- HoltWinters(ga_ts)
 # Generate a forecast for next 12 months of the blog sessions
 hchart(forecast(forecast1, h = 12))
 </code></pre>
-<div id="htmlwidget-2553715bfc010913ba0d" style="width:100%;height:500px;" class="highchart html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2553715bfc010913ba0d">{"x":{"hc_opts":{"title":{"text":null},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"plotOptions":{"series":{"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"},"bubble":{"minSize":5,"maxSize":25}},"annotationsOptions":{"enabledButtons":false},"tooltip":{"delayForDisplay":10},"xAxis":{"type":"datetime"},"series":[{"data":[[1375315200000,0],[1377993600000,0],[1380585600000,0],[1383264000000,0],[1385856000000,0],[1388534400000,317],[1391212800000,197],[1393632000000,279],[1396310400000,59],[1398902400000,162],[1401580800000,107],[1404172800000,140],[1406851200000,229],[1409529600000,283],[1412121600000,347],[1414800000000,693],[1417392000000,621],[1420070400000,569],[1422748800000,1397],[1425168000000,1309],[1427846400000,1196],[1430438400000,1015],[1433116800000,1260],[1435708800000,2887],[1438387200000,2105],[1441065600000,2607],[1443657600000,3165],[1446336000000,1994],[1448928000000,2228],[1451606400000,2061],[1454284800000,2146],[1456790400000,2406],[1459468800000,2698],[1462060800000,3103],[1464739200000,2909],[1467331200000,3410]],"name":"Series","zIndex":3},{"data":[[1470009600000,3207.03689030834],[1472688000000,3315.53950414392],[1475280000000,3409.36016541658],[1477958400000,3497.3839247748],[1480550400000,3552.32175393547],[1483228800000,3447.0002046938],[1485907200000,3914.29380174878],[1488326400000,4061.71393449875],[1491004800000,3977.55978152043],[1493596800000,4090.03983792712],[1496275200000,4058.62598318277],[1498867200000,4372.81761910137]],"name":"HoltWinters","zIndex":2,"id":"5xosrjr2mq"},{"data":[[1470009600000,3844.85799408133,2569.21578653534],[1472688000000,4036.04759086489,2595.03141742296],[1475280000000,4206.17794431616,2612.54238651701],[1477958400000,4365.84726648554,2628.92058306405],[1480550400000,4488.86578315238,2615.77772471856],[1483228800000,4448.81346440171,2445.1869449859],[1485907200000,4979.10676567544,2849.48083782211],[1488326400000,5187.66155645004,2935.76631254747],[1491004800000,5163.08785427016,2792.0317087707],[1493596800000,5333.83875499645,2846.24092085779],[1496275200000,5359.58242292622,2757.66954343932],[1498867200000,5729.97838833828,3015.65684986445]],"name":"HoltWinters level 80","type":"arearange","fillOpacity":0.1,"zIndex":1,"lineWidth":0,"linkedTo":"5xosrjr2mq"},{"data":[[1470009600000,4182.50009099775,2231.57368961893],[1472688000000,4417.46153249621,2213.61747579164],[1475280000000,4627.98779685387,2190.73253397929],[1477958400000,4825.58398898604,2169.18386056355],[1480550400000,4984.64224462219,2120.00126324875],[1483228800000,4979.14136939813,1914.85903998948],[1485907200000,5542.78469956196,2285.80290393559],[1488326400000,5783.7022234095,2339.725645588],[1491004800000,5790.66850669547,2164.45105634538],[1493596800000,5992.26612909462,2187.81354675962],[1496275200000,6048.26716181849,2068.98480454705],[1498867200000,6448.4159020348,2297.21933616793]],"name":"HoltWinters level 95","type":"arearange","fillOpacity":0.1,"zIndex":1,"lineWidth":0,"linkedTo":"5xosrjr2mq"}]},"theme":{"chart":{"backgroundColor":"transparent"}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","drillUpText":"Back to {series.name}","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"thousandsSep":" ","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-5ab240fffe1a8b7db5b8" style="width:100%;height:500px;" class="highchart html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5ab240fffe1a8b7db5b8">{"x":{"hc_opts":{"title":{"text":null},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"plotOptions":{"series":{"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"},"bubble":{"minSize":5,"maxSize":25}},"annotationsOptions":{"enabledButtons":false},"tooltip":{"delayForDisplay":10},"xAxis":{"type":"datetime"},"series":[{"data":[[1375315200000,0],[1377993600000,0],[1380585600000,0],[1383264000000,0],[1385856000000,0],[1388534400000,317],[1391212800000,197],[1393632000000,279],[1396310400000,59],[1398902400000,162],[1401580800000,107],[1404172800000,140],[1406851200000,229],[1409529600000,283],[1412121600000,347],[1414800000000,693],[1417392000000,621],[1420070400000,569],[1422748800000,1397],[1425168000000,1309],[1427846400000,1196],[1430438400000,1015],[1433116800000,1260],[1435708800000,2887],[1438387200000,2105],[1441065600000,2607],[1443657600000,3165],[1446336000000,1994],[1448928000000,2228],[1451606400000,2061],[1454284800000,2146],[1456790400000,2406],[1459468800000,2698],[1462060800000,3103],[1464739200000,2909],[1467331200000,3410]],"name":"Series","zIndex":3},{"data":[[1470009600000,3207.03689030834],[1472688000000,3315.53950414392],[1475280000000,3409.36016541658],[1477958400000,3497.3839247748],[1480550400000,3552.32175393547],[1483228800000,3447.0002046938],[1485907200000,3914.29380174878],[1488326400000,4061.71393449875],[1491004800000,3977.55978152043],[1493596800000,4090.03983792712],[1496275200000,4058.62598318277],[1498867200000,4372.81761910137]],"name":"HoltWinters","zIndex":2,"id":"8ts2iq4zbn"},{"data":[[1470009600000,3844.85799408133,2569.21578653534],[1472688000000,4036.04759086489,2595.03141742296],[1475280000000,4206.17794431616,2612.54238651701],[1477958400000,4365.84726648554,2628.92058306405],[1480550400000,4488.86578315238,2615.77772471856],[1483228800000,4448.81346440171,2445.1869449859],[1485907200000,4979.10676567544,2849.48083782211],[1488326400000,5187.66155645004,2935.76631254747],[1491004800000,5163.08785427016,2792.0317087707],[1493596800000,5333.83875499645,2846.24092085779],[1496275200000,5359.58242292622,2757.66954343932],[1498867200000,5729.97838833828,3015.65684986445]],"name":"HoltWinters level 80","type":"arearange","fillOpacity":0.1,"zIndex":1,"lineWidth":0,"linkedTo":"8ts2iq4zbn"},{"data":[[1470009600000,4182.50009099775,2231.57368961893],[1472688000000,4417.46153249621,2213.61747579164],[1475280000000,4627.98779685387,2190.73253397929],[1477958400000,4825.58398898604,2169.18386056355],[1480550400000,4984.64224462219,2120.00126324875],[1483228800000,4979.14136939813,1914.85903998948],[1485907200000,5542.78469956196,2285.80290393559],[1488326400000,5783.7022234095,2339.725645588],[1491004800000,5790.66850669547,2164.45105634538],[1493596800000,5992.26612909462,2187.81354675962],[1496275200000,6048.26716181849,2068.98480454705],[1498867200000,6448.4159020348,2297.21933616793]],"name":"HoltWinters level 95","type":"arearange","fillOpacity":0.1,"zIndex":1,"lineWidth":0,"linkedTo":"8ts2iq4zbn"}]},"theme":{"chart":{"backgroundColor":"transparent"}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","drillUpText":"Back to {series.name}","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"thousandsSep":" ","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
 
 
 

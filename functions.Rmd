@@ -395,7 +395,7 @@ Below are some tips to help with this:
 * Insert `message()` or `cat()` commands to print out what arguments are, to see if they are as you expect.  Comment them out again afterwards as needed, although sometimes its nice to leave them in for user feedback. 
 
 
-### Excercise in writing good errors
+### Exercise in writing good errors
 
 Rewrite the `extract_xy` function below so it also gives custom errors: 
 

@@ -1,9 +1,19 @@
 ---
 title: "Shiny"
+output:
+  html_document:
+    title-prefix: "Digital Analytics R and Statistics Tutorials"
+    theme: flatly
+    css: styles.css
+    toc: true
+    toc_float: true
+    includes:
+      before_body: includes/analytics.html
 ---
 
 ```{r shiny, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+web_data <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE)
 ```
 
 [Shiny](http://shiny.rstudio.com/) is a web application framework for R, produced by RStudio. 
@@ -32,9 +42,39 @@ The `ui.R` is the equivalent of a website frontend.  It contains all the HTML, C
 
 All the most HTML tags are available using `shiny::tags()`, with shortcuts to the most common e.g. `div()`
 
-#### Working with outputs
+The most minimal UI you can make looks like this:
 
-Most elements that will work with the `server.R` are called `blahOutput()`.  
+```r
+## in ui.R
+shinyUI(
+  fluidPage(
+    ## output functions
+)
+```
+
+The functions `shinyUI` and `fluidPage` create the minimal HTML necessary for a Shiny app:
+
+```{r}
+library(shiny)
+shinyUI(fluidPage())
+```
+
+You will need to deal with *a lot* of brackets.  Be stringent in knowing which closing brack refers to which function, as it can be very hard to debug.  Good code style indentation helps:
+
+```r
+library(shiny)
+shinyUI(
+  fluidPage(
+    
+  ) ## end fluidPage
+) ## end shinyUI
+```
+
+Building a UI is then a matter of building up the structure in lots of nested UI functions. 
+
+#### Interaction with outputs 
+
+Most UI elements that will work with the `server.R` are called `blahOutput()`.  
 
 Behind the scenes this sets up a div tag with the ID of the element that will be changed dynamically via `server.R`:
 
@@ -44,7 +84,7 @@ plotOutput("example")
 ## <div id="example" class="shiny-plot-output" style="width: 100% ; height: 400px"></div>
 ```
 
-`server.R` interacts with this div ID via a named lists called `output` - *it outputs change to this ID*.  
+`server.R` interacts with this div ID via a named lists called `output` - *it outputs changes to this ID*.  If the ID is not there, you will see nothing. 
 
 The ID must match the list name, and the type must be the same via the `renderBlah()` server functions e.g. `plotOutput` in `ui.R`, `renderPlot` in `server.R`
 
@@ -55,6 +95,8 @@ output$example <- renderPlot({
   plot(mtcars)
 })
 ```
+
+The above uses `output$example` - this will output to `plotOutput("example")`
 
 #### Working with inputs
 
@@ -88,16 +130,30 @@ input$input1
 
 Inputs effect outputs, and hence we get interactivity.
 
-A very basic example below:
+A very basic minimal example below:
 
 ```r
-## in ui.R
-textInput("text_input", label = "input text")
-textOutput("text_output")
+## ui.R
+library(shiny)
 
-## in server.R
-output$text_output <- renderText({
-  input$text_input
+shinyUI(
+  fluidPage(
+    textInput("text_input", label = "input text"),
+    textOutput("text_output")
+  )
+)
+```
+
+```r
+# server.R
+library(shiny)
+
+function(input, output) ({
+   
+  output$text_output <- renderText({
+    input$text_input
+  })
+  
 })
 
 ```
@@ -113,13 +169,16 @@ All that said, its best to start with `ui.R` first to design your UI, then work 
 The looping function is around the objects we spoke about earlier - `input` and `output`.  Optionally, you can also include an object called `session` which contains information about the general user session (such as what URL is being shown), which starts to explain how a minimal `server.R` file looks:
 
 ```r
+## in server.R
 library(shiny)
 
-function(input, output, session){
+function(input, output){
 
   output$plot1 <- renderPlot({
   
-    plot(mtcars[[1]], mtcars[[input$value1]])
+    ## get the data from csv
+    web_data <- read.csv("gadata_example_2.csv", stringsAsFactors = FALSE)
+    plot(web_data$date, web_data[[input$value1]])
   
   })
 
@@ -128,11 +187,20 @@ function(input, output, session){
 
 ## Exercise
 
-> What will this Shiny app render?  Assume input$value1 is a numeric value between 2 and 11.
+1. What will this Shiny app render?  Assume input$value1 is the name of a metric column of `web_data`
 
-> What could the ui.R look like?  You will need to use the functions numericInput() and plotOutput().
+2. Make a Shiny app in a new RStudio project. (Click `New > Shiny > Multiple File` in RStudio interface)  construct the ui.R that will alter the `server.R` code above.  You will need to use the functions `selectInput()` to choose the data column you want to plot and `plotOutput()` to output the result.
 
-### Reactive objects
+3. What steps should we take to use highcharter instead of base plot? 
+
+Use these functions - `renderHighchart`, `highchartOutput` and to make the plot with the below:
+
+```r
+library(highcharter)
+hchart(web_data, "line", hcaes(x = date, y = sessions))
+```
+ 
+## Reactive objects
 
 Because its a looping function, standard R rules about scoping don't apply.  You need to deal with functions like `reactive()`, `observe()`,`isolate()`, `eventReactive()` and `observeEvent()` which control behaviour in this looping function. 
 
@@ -140,32 +208,178 @@ Key to this are a new class of object called `reactive` objects. These are objec
 
 Reactive object can react to another reactive object, which sets up a chain of dependencies.  A change in a dependency will effect all other reactive objects.  A key factor in making efficient Shiny apps is to know when to trigger a change and when not to.
 
-### Debugging
+### Example
 
-The toughest part of Shiny programming over normal programming is that due to its reactive nature, its harder to debug your functions.
+The below builds on the app below, but we now also want to display the maximum value.  As we will now have two UI elements we will have two server.R calls that rely on the same data.  
 
-### Tips and tricks
+Instead of importing the data in twice (it could be a API call) we will make a reactive object, and then when that object is ready (e.g. not `NULL`) pass it to the functions.  
 
-* Use req()
-* Reactive data sources
-* Shiny modules
-* Specify if its a reactive or isolated object
+The `req()`function serves as a roadblock to stop the plot and text firing before the data is ready (important for API calls)
 
-## Digital Marketing APIs
+We use `highcharter` as the plots are cool.
 
-In particular, we will look at how to make Shiny apps that interact with digital marketing APIs.
+```r
+## in server.R
+library(shiny)
+library(highcharts)
 
-Digital marketing apps typically have 3 models:
+function(input, output){
+  
+  ## our reactive object for data
+  the_data <- reactive({
+    
+    ## get the data from csv
+    the_data <- read.csv("../data/gadata_example_2.csv", stringsAsFactors = FALSE)
+    
+    ## return the data with the date column for the plot and metric column selected
+    the_data[ , c("date", input$metric)]
+    
+  })
+  
+  output$plot1 <- renderHighchart({
+    
+    ## this is a roadblock so this function won't fire until the_data is non-NULL
+    req(the_data())
+    
+    ## do this as it make debugging a lot easier
+    plot_data <- the_data()
+    
+    ## creates a line chart using highcharts
+    hchart(plot_data, "line" , hcaes(x = date)) %>% 
+      hc_add_series(plot_data[[input$metric]])
+    
+  })
+  
+  output$max_text <- renderText({
+    
+    ## this is a roadblock so this function won't fire until the_data is non-NULL
+    req(the_data())
+    req(input$metric)
+    
+    ## do this as it make debugging a lot easier
+    max_data <- the_data()
+    
+    paste("The max is: ", max(max_data))
+    
+  })
+  
+}
+```
 
-1. Working on data preloaded
-2. Working interactivily with your own data
-3. Letting users work interactivly with their data
+The `req(input$value1)` is good practice to have as the `input list` are not necessarily available to the function on start up - this guards against ugly red messages briefly when the app starts up.
+
+With a ui.R adding the max text:
+
+```r
+## in ui.R
+
+library(shiny)
+library(highcharter)
+
+shinyUI(
+  fluidPage(
+    selectInput("metric", label = "select column", choices = c("sessions",
+                                                               "pageviews",
+                                                               "entrances",
+                                                               "bounces")),
+    textOutput("max_text"),
+    highchartOutput("plot1")
+  )
+)
+```
+
+### Exercise
+
+1. Add a `selectInput` that also lets you choose the `deviceCategory`
+
+> HINT: you may have a line similar to `plot_data <- plot_data[plot_data$device == input$device, c("date", input$metric)]` to segment your data (or maybe not....check your data and put a breakpoint in the correct place)
+
+Use `dplyr` to massage the data if necessary
+
+2. Extra marks - add another `selectInput` with `channelGrouping` - this may be useful:
+
+```r
+c("(Other)","Direct","Display","Email","Organic Search","Paid Search","Referral","Social","Video")
+```
+
+
+## Shiny Modules
+
+Its possible to package up common UI elements into a [Shiny module](https://shiny.rstudio.com/articles/modules.html).  This can let you repeat templated code. 
+
+An example comes with `googleAnalyticsR` to let you create a login for users.  The below is from the documentation.
+
+```r
+## in server.R
+library(googleAuthR)
+library(googleAnalyticsR)
+library(shiny)
+library(highcharter)
+
+function(input, output, session){
+  
+  ## Get auth code from return URL
+  token <- callModule(googleAuth, "login")
+  
+  ga_accounts <- reactive({
+    req(token())
+    
+    with_shiny(ga_account_list, shiny_access_token = token())
+    
+  })
+  
+  ## get the ViewId from what the users select in the dropdown
+  selected_id <- callModule(authDropdown, "auth_menu", ga.table = ga_accounts)
+  
+  gadata <- reactive({
+    
+    req(selected_id())
+    gaid <- selected_id()
+    
+    ## with shiny needed to read the correct token
+    with_shiny(google_analytics,
+               id = gaid,
+               start=input$date_select[1], end=input$date_select[2], 
+               metrics = c("sessions"), 
+               dimensions = c("date"),
+               shiny_access_token = token())
+  })
+  
+  output$something <- renderHighchart({
+    
+    ## only trigger once authenticated
+    req(gadata())
+    
+    gadata <- gadata()
+    
+    ## creates a line chart using highcharts
+    hchart(gadata, "line" , hcaes(x = date, y = sessions))
+    
+  })
+  
+}
+
+```
+
+The modules are used below to render the dropdowns and login buttons:
+
+```r
+## ui.R
+library(googleAuthR)
+library(googleAnalyticsR)
+library(shiny)
+library(highcharter)
+
+shinyUI(
+  fluidPage(
+    googleAuthUI("login"),
+    authDropdownUI("auth_menu"),
+    dateRangeInput("date_select", "Select Date", start = Sys.Date() - 30),
+    highchartOutput("something")
+    
+  ))
+```
 
 
 
-
-### Deploying
-
-
-## Excercises
 
