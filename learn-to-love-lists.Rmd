@@ -1,0 +1,228 @@
+---
+title: "Learn to love lists"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Lists
+
+Lists are a key data type in R but can be avoided by beginners due to being a bit harder to work with.  The do however hold the key to many of R's more advanced features.
+
+## Navigating lists
+
+### [ ] vs [[ ]]
+
+A key learning is to know the difference between `[ ]` and `[[ ]]` when subsetting lists.
+
+When using `[ ]` you will always get out another list.  When using `[[ ]]` you will get out the content of that list.
+
+```{r}
+
+a_list <- list(head(mtcars), letters, list(a=1, b=2))
+str(a_list)
+
+a_list[1]
+class(a_list[1])
+
+a_list[[1]]
+class(a_list[[1]])
+
+
+```
+
+This helps you make sure you are working on what you expect when dealing with list elements.
+
+### Named lists
+
+Lists can also have names, and it can be useful do to so you can call specific elements by name, using the `list$name` convention, which is equivalent to `list[["name"]]`
+
+```{r}
+
+a_list <- list(df = head(mtcars), abc = letters, b_list = list(a=1, b=2))
+str(a_list)
+
+a_list["df"]
+class(a_list["df"])
+
+a_list[["df"]]
+class(a_list[["df"]])
+
+```
+
+#### Exercise
+
+What is the code to extract the other elements of `a_list` ?
+
+```r
+a_list <- list(df = head(mtcars), abc = letters, b_list = list(a=1, b=2))
+
+
+a_list_letters <- ## your code here
+
+a_list_b <- ## your code here
+
+## These shoud be TRUE
+class(a_list_letters) == "character"
+class(b_list) == "list"
+```
+
+### Viewing lists
+
+#### str(x, max.level = , list.len = )
+
+`str()` is your friend as usual, but when printing out lists can turn into console spam.  You can limit this by adding these parameters to `str()` to let you have more control on what is printed out. 
+
+#### library(listviewer)
+
+Another handy library to help with lists is `listviewer::jsonedit(your_list)` which gives you a nested structure to look through the list. 
+
+```{r}
+library(listviewer)
+jsonedit(mtcars)
+```
+
+## The "apply" family functions
+
+We move now to apply functions.  We will look at the three most popular: `lapply()`, `vapply()` and `apply()`
+
+### lapply()
+
+List apply will take each element of your list, call a function upon it, then return a list of the results.  `lapply()` can be really useful to write compact, understandable code.
+
+It is often used to replace what would be `for` loops in other languages, and offers benefits like better memory management and vectorisation.  Its one reason some cite use of `for()` loops in R code as bad R-style, although there is still some scope for them.
+
+#### Guide to using lapply()
+
+Lets build up an lapply function, that will work on a list of `data.frame`'s.
+
+1. Choose what you want the `lapply()` function to iterate across.  In this example we have a list of data.frames, `a_list_of_df`
+
+2. Choose our function.  This will operate on each element,
+
+3. Test the function on one element i.e. the contents of `a_list_of_df[[x]]` *NOT*  `a_list_of_df[x]`.  Once happy we know it should work on the entire list.
+
+4. Any constant arguments get added to the end of the `lapply` - e.g. is you are using `sum()` you may want all the `sum` functions to ignore `NA` e.g. `sum(x, na.rm = TRUE)`
+
+5. Construct the full function `result <- lapply(a_list, myfunction, constant_arguments = TRUE)`
+
+
+#### Example
+
+Here we would like to just check the number of rows for each data.frame, so the function chosen is `nrow()`.
+
+Testing the function chosen against our example, we see it works as expected:
+
+```r
+nrow(a_list_of_df[[1]])
+# 345
+```
+
+We can now apply this to all the data.frames in the list:
+
+```r
+lapply(a_list_of_df, nrow)
+```
+
+Note we don't add arguments to the function call (`nrow`, not `nrow()`).  
+
+If we want to add arguments to the function, we can supply those as named arguments to `lapply()`
+
+Here we take advantage that a data.frame is a list of equal length vectors:
+
+```r
+lapply(mtcars, mean, trim = 0.5)
+```
+
+#### Using your own function
+
+What if you want to supply your own function?  You can predefine it before the lapply() and supply it:
+
+```r
+my_func <- function(x){
+  sum(x)
+}
+
+lapply(my_vector, my_func)
+
+```
+
+...or you can add it straight into the lapply function itself - this is normally done when the function is small:
+
+A function defined this way is called an `anonymous function`, as it has no name.
+
+```r
+lapply(my_vector, function(x){
+  sum(x)
+})
+
+```
+
+### vapply()
+
+`vapply()` is an extension on top of `lapply()`.  It works in the same way, but you also supply a `FUN.VALUE` which is a template of what you expect the result to be.  If the result is not of that class, then it will raise an error.  
+
+This is good to stop any nasty surprises messing up your code later, and is recommended over `lapply()` when creating functions.
+
+It also has the `USE.NAMES` argument which is useful to have the list output have the same names as the input list. 
+
+### apply()
+
+`apply()` is similar but lets you work with data.frame rows as inputs, instead of list elements.  Here each element is a data.frame row, which you can then operate on from your supplied function:
+
+```{r}
+apply(mtcars, MARGIN = 2, sum)
+
+```
+
+
+### Exercise
+
+Write a function that iterates over this list of `data.frames` supplied below, to output the `max` of each column.  The output should be a list of numeric vectors, each vector element being the maxium number.  
+
+```r
+## don't touch this, it just creates your data
+a_list_of_df <- lapply(1:10, function(x){
+    data.frame(matrix(runif(1000), ncol = 10))
+})
+
+## perhaps you want to pass more arguments in, replace as you see fit
+your_function <- function(a_data_frame){
+  
+}
+
+your_result <- lapply(a_list_of_df, your_function)
+
+```
+
+> Hint - use `colSums`
+
+How would you change this to use `vapply` ?
+
+
+## Working with the result of lists
+
+There are some handy functions to work with lists: I use mostly `Reduce()`.  This takes a list in its second argument and applies the function given in its first argument in turn, adding the result of the previous call to the next. 
+
+As an example, you can use `rbind()` which binds a data.frame to another and apply it to a list of data.frames.  Reduce will `rbind()` the first two data.frames, then take that result and `rbind()` it to the third, then take that result and `rbind()` it to the forth, etc.  until you have added up all the data.frames into one:
+
+```r
+Reduce(rbind, list_of_df)
+```
+
+### purrr() 
+
+For more advanced useage, [`purrr`](https://github.com/tidyverse/purrr) is a tidyverse package which is very useful for both working with lists and manipulating data. 
+
+Consult the cheatsheet of `list-columns` for some ideas, and this [`Jennifer Bryan presentation`](https://jennybc.github.io/purrr-tutorial/talks.html)
+
+
+
+
+
+

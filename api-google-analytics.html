@@ -303,11 +303,12 @@ div.tocify {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    The Basics
+    R Programming
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">THE BASICS</li>
     <li>
       <a href="whatisr.html">What Is R?</a>
     </li>
@@ -322,6 +323,19 @@ div.tocify {
     </li>
     <li>
       <a href="exercise1-thebasics.html">Exercise: The Basic Basics</a>
+    </li>
+    <li class="dropdown-header">ADVANCED TOPICS</li>
+    <li>
+      <a href="fast-r-code.html">Faster R code</a>
+    </li>
+    <li>
+      <a href="functions.html">Using R functions</a>
+    </li>
+    <li>
+      <a href="creating-packages.html">Creating R packages</a>
+    </li>
+    <li>
+      <a href="cloud-computing.html">Cloud computing &amp; R</a>
     </li>
   </ul>
 </li>
@@ -352,6 +366,9 @@ div.tocify {
     <li>
       <a href="api-other.html">Other APIs</a>
     </li>
+    <li>
+      <a href="creating-apis.html">Creating API libraries</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -367,6 +384,9 @@ div.tocify {
     </li>
     <li>
       <a href="accessing.html">Accessing elements</a>
+    </li>
+    <li>
+      <a href="learn-to-love-lists.html">Learning to love lists</a>
     </li>
     <li>
       <a href="exercise3-accessing-data.html">Exercise: Accessing Data</a>
@@ -436,7 +456,13 @@ div.tocify {
       <a href="htmlwidgets.html">htmlwidgets()</a>
     </li>
     <li>
-      <a href="rmarkdown-shiny.html">RMarkdown + Shiny</a>
+      <a href="rmarkdown-shiny.html">RMarkdown or Shiny?</a>
+    </li>
+    <li>
+      <a href="advanced-rmarkdown.html">Advanced RMarkdown</a>
+    </li>
+    <li>
+      <a href="shiny.html">Shiny</a>
     </li>
   </ul>
 </li>
@@ -502,13 +528,6 @@ if(!require(googleAnalyticsR)) install.packages(&quot;googleAnalyticsR&quot;)</c
 <p>By default you can authenticate using the <code>googleAnalyticsR</code> default project (we’re not going to dive into the details of what this means at the moment – it gets a little into the weeds of Google APIs and development):</p>
 <pre class="r"><code>library(googleAnalyticsR)
 ga_auth()</code></pre>
-<pre><code>## Warning: option(googleAuthR.scopes.selected) not same scopes as current cached token .httr-oauth, will need reauthentication.  
-##                      
-## Token scopes: https://www.googleapis.com/auth/webmasters https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics.manage.users.readonly https://www.googleapis.com/auth/tagmanager.readonly https://www.googleapis.com/auth/urlshortener
-## getOption(googleAuthR.scopes.selected): https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics.manage.users.readonly https://www.googleapis.com/auth/analytics.edit https://www.googleapis.com/auth/analytics.manage.users</code></pre>
-<pre><code>## Token cache file: .httr-oauth</code></pre>
-<pre><code>## Scopes: https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics.manage.users.readonly https://www.googleapis.com/auth/analytics.edit https://www.googleapis.com/auth/analytics.manage.users</code></pre>
-<pre><code>## 2017-06-07 08:31:31&gt; Authenticated</code></pre>
 <p>Pause here, as, the first time you run the script, at least, it should open a web browser and require you allow access to your Google Analytics account. This is <em>just</em> providing the script that you’re running access to the data – nothing broader than that:</p>
 <div style="text-align: center">
 <div class="figure">
@@ -526,7 +545,7 @@ ga_auth()</code></pre>
 <h3>Option 1: Getting View IDs using R</h3>
 <p>The easiest way to find this is to use <code>google_analytics_account_list()</code> to list your Views, then read the number in the <code>viewId</code> column:</p>
 <pre class="r"><code># Pull a full list of the views that you have access to
-my_accounts &lt;- google_analytics_account_list()</code></pre>
+my_accounts &lt;- ga_account_list()</code></pre>
 <p>Now, go to the <strong>Environment</strong> tab (top right pane in RStudio) and double-click <strong>my_accounts</strong>. Find the view you want to use and note the <strong>viewId</strong> value for it.</p>
 </div>
 <div id="option-2-getting-view-ids-with-query-explorer" class="section level3">

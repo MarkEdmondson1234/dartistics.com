@@ -1,0 +1,109 @@
+---
+title: "Creating APIs with R"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Cloud computing
+
+Cloud computing refers to using cloud resources to run your R scripts.  It offers advantages such as:
+
+* Being able to use resources beyond your own computer such as RAM, CPU etc.
+* An always on computer for scheduling scripts
+* Take advantage of specialised platforms such as machine learning APIs
+
+The major providers for cloud computing are Amazon, Microsoft (Azure) and Google Cloud.  We cover some Google Cloud packages here as its the one the author is most familiar with, but check out the [`cloudyr`](https://cloudyr.github.io/) website for other resources covering the other providers.  The same principles should apply.
+
+
+### Launching VMs
+
+RStudio offers a server version that carries the same features as the desktop.  Using packages such as `cronR` this means you can launch powerful *virtual machines* (VMs) or just constantly on cloud computers to help you automate your scripts. 
+
+A demo for launching a VM is [available here](https://cloudyr.github.io/googleComputeEngineR/articles/single-scheduler.html) 
+
+```r
+library(googleComputeEngineR)
+
+## set up and authenticate etc
+googleAuthR::gar_gce_auth()
+
+## get tag name of public pre-made image
+tag <- gce_tag_container("google-auth-r-cron-tidy", project = "gcer-public")
+
+## rstudio template, but with custom rstudio build with cron, googleAuthR etc. 
+vm <- gce_vm("rstudio-cron-googleauthr", 
+              predefined_type = "n1-standard-1",
+              template = "rstudio", 
+              dynamic_image = tag, 
+              username = "mark", 
+              password = "mark1234")
+```
+
+Having an always on VM means you can use it for scheduling scripts, emails data fetches etc, this template in particular uses [cronR](https://cran.r-project.org/package=cronR) and its RStudio plugin to make it as easy as possible.
+
+#### Computer Clustering
+
+As mentioned in the [faster R chapter](fast-r-code.html#6_use_parallel_processing) you can use VMs to run lots of R code at the same time.  
+
+If you have massive data, this can make a lot of difference, although bear in mind the "Get a faster computer" advice will be simpler to enact, by just booting up a VM with more RAM and CPU.
+
+If you can though, [multi-clustering](https://cloudyr.github.io/googleComputeEngineR/articles/docker-ssh-futures.html) can be performed with the following:
+
+```r
+library(future)
+library(googleComputeEngineR)
+
+vm1 <- gce_vm("cluster1", template = "r-base")
+vm2 <- gce_vm("cluster2", template = "r-base")
+vm3 <- gce_vm("cluster2", template = "r-base")
+
+plan(cluster, workers = list(vm1, vm2, vm3))
+
+## use future's %<-% to send a function to the cluster
+si %<-% Sys.info()
+print(si)
+
+## tidy up
+lapply(vms, FUN = gce_vm_stop)
+
+```
+
+You need never worry about computing limitations ever again. 
+
+## Data Analysis cloud tools
+
+As well as servers, the cloud gives you access to tools that would be simply too expensive to run locally.  Some examples are given below
+
+### BigQuery
+
+[BigQuery](https://cloud.google.com/bigquery/) is relevant if you use GA360 since it supports an automatic export to BigQuery, which means you can also access it via R's BigQuery/SQL connectors.
+
+BigQuery (and the equivalents [Amazon Athena](https://aws.amazon.com/athena/) and [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-2016)) are databse's created for analytics, and give you fast access to lots of data via SQL statements. 
+
+BigQuery is well supported in R as it slots into the `dplyr()` package - you can write code that works locally, and then connect to BigQuery to have that code mapped to SQL internally by `dplyr()`
+
+There is also [`bigQueryR`](http://code.markedmondson.me/bigQueryR/) which covers some other features such as working with Shiny apps and upload options. 
+
+### Machine Learning APIs
+
+We are entering a golden age of machine learning APIs, with the cloud companies competing to offer us wide and varied capabilties.
+
+Essentially as simple as fetching an API, you can send data and return a machine learnt result for further analysis.  
+
+Some examples include:
+
+* [Algorithmia R client](https://cran.r-project.org/web/packages/algorithmia/vignettes/introduction-to-algorithmia.html)
+* Google Machine learning APIs e.g. [googleLanguageR](http://github.com/MarkEdmondson1234/googleLanguageR)
+* Microsoft text services [mscsweblm4r](https://cran.r-project.org/web/packages/mscsweblm4r/index.html) and [mscstexta4r](https://cran.r-project.org/web/packages/mscstexta4r/index.html)
+* [tensorflow](https://tensorflow.rstudio.com/) is one of most popular python clients for building ML models, this is an R port for it by RStudio. 
+
+
+
+
+

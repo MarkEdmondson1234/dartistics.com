@@ -205,11 +205,12 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    The Basics
+    R Programming
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">THE BASICS</li>
     <li>
       <a href="whatisr.html">What Is R?</a>
     </li>
@@ -224,6 +225,19 @@ $(document).ready(function () {
     </li>
     <li>
       <a href="exercise1-thebasics.html">Exercise: The Basic Basics</a>
+    </li>
+    <li class="dropdown-header">ADVANCED TOPICS</li>
+    <li>
+      <a href="fast-r-code.html">Faster R code</a>
+    </li>
+    <li>
+      <a href="functions.html">Using R functions</a>
+    </li>
+    <li>
+      <a href="creating-packages.html">Creating R packages</a>
+    </li>
+    <li>
+      <a href="cloud-computing.html">Cloud computing &amp; R</a>
     </li>
   </ul>
 </li>
@@ -254,6 +268,9 @@ $(document).ready(function () {
     <li>
       <a href="api-other.html">Other APIs</a>
     </li>
+    <li>
+      <a href="creating-apis.html">Creating API libraries</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -269,6 +286,9 @@ $(document).ready(function () {
     </li>
     <li>
       <a href="accessing.html">Accessing elements</a>
+    </li>
+    <li>
+      <a href="learn-to-love-lists.html">Learning to love lists</a>
     </li>
     <li>
       <a href="exercise3-accessing-data.html">Exercise: Accessing Data</a>
@@ -338,7 +358,13 @@ $(document).ready(function () {
       <a href="htmlwidgets.html">htmlwidgets()</a>
     </li>
     <li>
-      <a href="rmarkdown-shiny.html">RMarkdown + Shiny</a>
+      <a href="rmarkdown-shiny.html">RMarkdown or Shiny?</a>
+    </li>
+    <li>
+      <a href="advanced-rmarkdown.html">Advanced RMarkdown</a>
+    </li>
+    <li>
+      <a href="shiny.html">Shiny</a>
     </li>
   </ul>
 </li>
@@ -433,6 +459,86 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li><strong>Shiny</strong> - supplied reactive components within your RMarkdown</li>
 </ul>
 <p>An example RMarkdown document with a Shiny element taking care of authentication can be found <a href="http://shiny.rstudio.com/tutorial/">here</a>.</p>
+</div>
+<div id="shiny-or-rmarkdown" class="section level1">
+<h1>Shiny or RMarkdown?</h1>
+<p>There are a few options for data presentation using R so an overview is first presented to help you decide which to choose.</p>
+<table>
+<colgroup>
+<col width="9%" />
+<col width="19%" />
+<col width="14%" />
+<col width="19%" />
+<col width="17%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Interactive</th>
+<th>Output</th>
+<th>Ease of use</th>
+<th>Cost</th>
+<th>Server needed?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Shiny</td>
+<td>Server-side and client-side</td>
+<td>HTML</td>
+<td>Advanced</td>
+<td>Free for Shiny Server, $9995 for Shiny Server Pro, $9+ a month Shinyapps.io</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>RMarkdown</td>
+<td>client-side only</td>
+<td>HTML, PDF, Word, etc.</td>
+<td>Easy</td>
+<td>Free, can also publish to a Shiny server</td>
+<td>Only a normal HTML server if you want to host those (e.g. Github Pages lets you host for free)</td>
+</tr>
+<tr class="odd">
+<td>Flexdashboard</td>
+<td>Server-side and client-side</td>
+<td>HTML</td>
+<td>Easy</td>
+<td>Free, can also publish to a Shiny server</td>
+<td>If using Shiny elements, yes</td>
+</tr>
+</tbody>
+</table>
+<p>It generally comes down to the amount of interactivity you need in your app. For a full solution where data is updated and processed in real-time, Shiny is your best option. If you just need a nice format for presentation offline, then RMarkdown can produce some very nice looking formats.</p>
+<p>Flexdashboard is a bit of both - it is essentially an RMarkdown document that allows Shiny elements to be placed within it.</p>
+<p>All the above is further complicated by HTML Widgets - these render in JavaScript that can do a lot of interactivity by itself, so if you can find a JavaScript library that gives you say dropdowns, then you can use that in RMarkdown instead of using Shiny, without hosting a Shiny server.</p>
+<div id="shiny-1" class="section level2">
+<h2>Shiny</h2>
+<p>Shiny is a R package by RStudio that lets you run reactive apps on a special Shiny server.</p>
+<div id="shiny-server" class="section level3">
+<h3>Shiny server</h3>
+<p>A Shiny server can be installed on a dedicated machine, or it comes bundled with RStudio for local testing. Before you deploy an app online you will need to have a Shiny server available to publish to. At the moment your options are:</p>
+<ul>
+<li>Host it yourself on say Google Compute Engine</li>
+<li>Publish to <a href="https://www.shinyapps.io/" class="uri">https://www.shinyapps.io/</a></li>
+<li>Publish to an RStudio Connect service</li>
+</ul>
+</div>
+<div id="reactive-apps" class="section level3">
+<h3>Reactive apps</h3>
+<p>Shiny uses a special approach known as reactive in making its apps. This allows for very responsive applications. A typical Shiny app has two elements - a UI script that is in charge of rendering the HTML front end, and a server script that takes care of which R code is run when elements on the UI change.</p>
+</div>
+</div>
+<div id="rmarkdown" class="section level2">
+<h2>RMarkdown</h2>
+<p>RMarkdown takes a different approach - it renders a special flavour of Markdown into a standard format, which is then in turn rendered into the end product. The end product varies between HTML, PDF, Word etc.</p>
+<p>Because the end product has no link with the code made to create it, you can’t call R functions from a final RMarkdown product. However, you can render using JavaScript that can interact with the data on the page in real-time (for HTML apps, it obviously wouldn’t work with a PDF!)</p>
+<p>This documentation is written in RMarkdown, as an example.</p>
+</div>
+<div id="flexdashboard" class="section level2">
+<h2>Flexdashboard</h2>
+<p>Flexdashboard is a bit of both. You write pages in RMarkdown that can include Shiny elements. If you do incude Shiny elements, then when you publish, flexdashboard uses RMarkdown to create the HTML, and then runs a Shiny server to provide the elements.</p>
+</div>
 </div>
 
 

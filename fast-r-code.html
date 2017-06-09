@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Fast R code</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">DARTISTICS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="example1.html">Example: Trending</a>
+    </li>
+    <li>
+      <a href="example2.html">Example: Data Explorer</a>
+    </li>
+    <li>
+      <a href="example3.html">Example: Venn Diagram</a>
+    </li>
+    <li>
+      <a href="example4.html">Example: GA Effect</a>
+    </li>
+    <li>
+      <a href="example5.html">Example: Heatmap</a>
+    </li>
+    <li>
+      <a href="example6.html">Example: Forecasting</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    R Programming
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">THE BASICS</li>
+    <li>
+      <a href="whatisr.html">What Is R?</a>
+    </li>
+    <li>
+      <a href="gettingstarted.html">Getting Started</a>
+    </li>
+    <li>
+      <a href="packages.html">Packages</a>
+    </li>
+    <li>
+      <a href="basics-base_r.html">Basics of Base R</a>
+    </li>
+    <li>
+      <a href="exercise1-thebasics.html">Exercise: The Basic Basics</a>
+    </li>
+    <li class="dropdown-header">ADVANCED TOPICS</li>
+    <li>
+      <a href="fast-r-code.html">Faster R code</a>
+    </li>
+    <li>
+      <a href="functions.html">Using R functions</a>
+    </li>
+    <li>
+      <a href="creating-packages.html">Creating R packages</a>
+    </li>
+    <li>
+      <a href="cloud-computing.html">Cloud computing &amp; R</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    I/O
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">WORKING WITH FILES</li>
+    <li>
+      <a href="import-csv-excel.html">CSV import</a>
+    </li>
+    <li>
+      <a href="excel.html">Microsoft Excel(!)</a>
+    </li>
+    <li>
+      <a href="exercise2-io.html">Exercise: I/O</a>
+    </li>
+    <li class="dropdown-header">WORKING WITH APIs</li>
+    <li>
+      <a href="api-google-analytics.html">Google Analytics</a>
+    </li>
+    <li>
+      <a href="api-adobe-analytics.html">Adobe Analytics</a>
+    </li>
+    <li>
+      <a href="api-other.html">Other APIs</a>
+    </li>
+    <li>
+      <a href="creating-apis.html">Creating API libraries</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data Structures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">R CLASSES AND SYNTAX</li>
+    <li>
+      <a href="classes.html">R Classes</a>
+    </li>
+    <li>
+      <a href="accessing.html">Accessing elements</a>
+    </li>
+    <li>
+      <a href="learn-to-love-lists.html">Learning to love lists</a>
+    </li>
+    <li>
+      <a href="exercise3-accessing-data.html">Exercise: Accessing Data</a>
+    </li>
+    <li class="dropdown-header">BASE R vs. TIDY</li>
+    <li>
+      <a href="tidyverse.html">Tidy data / Tidyverse</a>
+    </li>
+    <li>
+      <a href="dplyr.html">dplyr()</a>
+    </li>
+    <li>
+      <a href="exercise4-tidy-dplyr.html">Exercise: Tidy Data / dplyr</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Statistics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="modelling-intro.html">Introduction</a>
+    </li>
+    <li>
+      <a href="nature-of-data.html">Nature of Data</a>
+    </li>
+    <li>
+      <a href="cross-tab-w-chi-square.html">Chi Square</a>
+    </li>
+    <li>
+      <a href="anova.html">ANOVA</a>
+    </li>
+    <li>
+      <a href="correlation.html">Correlation</a>
+    </li>
+    <li>
+      <a href="regression.html">Regression</a>
+    </li>
+    <li>
+      <a href="timeseries.html">Time-series</a>
+    </li>
+    <li>
+      <a href="categorisation.html">Categorisation</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Output
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="viz-options.html">Visualisation Options</a>
+    </li>
+    <li>
+      <a href="base-plots.html">Base Plots</a>
+    </li>
+    <li>
+      <a href="ggplot2.html">ggplot2()</a>
+    </li>
+    <li>
+      <a href="htmlwidgets.html">htmlwidgets()</a>
+    </li>
+    <li>
+      <a href="rmarkdown-shiny.html">RMarkdown or Shiny?</a>
+    </li>
+    <li>
+      <a href="advanced-rmarkdown.html">Advanced RMarkdown</a>
+    </li>
+    <li>
+      <a href="shiny.html">Shiny</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="resources.html">Useful Links</a>
+    </li>
+    <li>
+      <a href="key-topics.html">Key topics</a>
+    </li>
+    <li>
+      <a href="github.html">GitHub</a>
+    </li>
+    <li>
+      <a href="habits.html">Good Habits</a>
+    </li>
+    <li>
+      <a href="going-further.html">Going Further</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-N4DF7T"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N4DF7T');</script>
+<!-- End Google Tag Manager -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Fast R code</h1>
+
+</div>
+
+
+<p>R is a slower language that most as it makes certain sacrifices for convienence at the expense of optimal speed, but there is a lot you can do in your coding style to avoid making it slower than it should be. R has a reputation for being slow that may be in part that if you code it in the same style as say Python, you make inefficient R code.</p>
+<p>However if you make efficient code then R should be fast enough for most uses, and R also gives the opportunity to identify bottlenecks and code it directly in C++ via the <code>Rcpp</code> package. A lot of the tidyverse packages takes advatage of this, which is why in some cases they may be faster that some base implementaions.</p>
+<p>Plenty of companies use R in production, for eample its used with its SQL Server 2016 integration to deect a <a href="http://blog.revolutionanalytics.com/2016/09/fraud-detection.html">fraudalent credit crd transactions at 1 million transactions per second</a>.</p>
+<div id="aside---readability-vs-code-speed" class="section level2">
+<h2>Aside - Readability vs Code Speed</h2>
+<p>The first point address what we mean be speed anyway - do we want code that is quick to production, or code that is quick <em>in</em> production? It can make a big difference to whether you use R in the first place.</p>
+<p>When we talk of code we have the speed of the coder creating it and maintaining, vs the speed of the code when it actually runs.</p>
+<p>In many cases, its better to have slower but more readable code, than obscure code that runs a few ms quicker. If you want code that has impact, and you are collaborating with others, then its almost exclusivly the first type of code you need, and if you are really worrying about code execution speed perhaps should start looking at <code>Java</code> or <code>C#</code> for production, especially if its integrating with exiting systems.</p>
+</div>
+<div id="tips-for-speed" class="section level2">
+<h2>Tips for speed</h2>
+<p>That said, lets go through some tips on making your code faster:</p>
+<div id="use-vectorisation" class="section level3">
+<h3>1. Use Vectorisation</h3>
+<p>A key first step is to embrace R’s vectorisation capabilties. In fact, you could say that R’s unique feature is that it treats everything as a vector (<code>1</code> is actually a length 1 numeric vector in R!)</p>
+<p>R has special functions that treat vectors very efficiently, so you should always be trying to work with vectors rather than looping around objects if you can.</p>
+<p>In general this means that what you may want to achieve with a loop in other languages, you can operate directly on a vector with R.</p>
+<p>Example - these both do the same thing, but one is vastly superior:</p>
+<pre class="r"><code>v &lt;- c(1,4,5,3,54,6,7,5,3,5,6,4,3,4,5)
+
+## add 42 to every element of the vector
+for(i in 1:length(v)){
+  v[i] &lt;- v[i] + 42
+}
+
+v</code></pre>
+<pre><code>##  [1] 43 46 47 45 96 48 49 47 45 47 48 46 45 46 47</code></pre>
+<p>Or, the vectorised example:</p>
+<pre class="r"><code>v &lt;- c(1,4,5,3,54,6,7,5,3,5,6,4,3,4,5)
+
+## add 42 to every element of the vector
+v &lt;- v + 42
+
+v</code></pre>
+<pre><code>##  [1] 43 46 47 45 96 48 49 47 45 47 48 46 45 46 47</code></pre>
+<p>Because of this, always try to operate upon vectors when doing repetitive tasks - it can cause major benefits to code speed if you unfold structures into a vector beore running lots of code over them - for instance instead of a heavily nested list or data.frame make code that runs on a vector.</p>
+</div>
+<div id="avoid-creating-objects-in-a-loop" class="section level3">
+<h3>2. Avoid creating objects in a loop</h3>
+<p>Example: Looping with data.frames</p>
+<p>A key difference with R than other languages is that it isn’t always modifying objects directly, but rather on copies of objects. This can cause major slow downs if for example you are copying a large object every iteration within a loop.</p>
+<p>In particular, data.frames should be avoid to be modified within a loop. As an example, compare these execution times of these methods to add rows to a data.frame</p>
+<blockquote>
+<p>system.time() in this examples are used to output the execution times of the code within the code brackets.</p>
+</blockquote>
+<pre class="r"><code># a 100 column data.frame
+x &lt;- data.frame(matrix(runif(100*1e4), ncol = 100))
+dim(x)</code></pre>
+<pre><code>## [1] 10000   100</code></pre>
+<pre class="r"><code># loop 100 times, adding another row to x
+system.time(
+  for(i in seq_along(1:100)){
+    x &lt;- rbind(x, data.frame(matrix(runif(1*1e4), ncol = 100)))
+    }
+)</code></pre>
+<pre><code>##    user  system elapsed 
+##   8.402   0.681   9.098</code></pre>
+<pre class="r"><code>dim(x)</code></pre>
+<pre><code>## [1] 20000   100</code></pre>
+<p>Each loop is copying the data.frame, then adding the new row to it which is inefficient.</p>
+<p>Some may think this is due to an R myth to avoid for loops, and that can help even though <code>lapply</code> is a more efficient for loop coded in C:</p>
+<pre class="r"><code># a 100 column data.frame
+x &lt;- data.frame(matrix(runif(100*1e4), ncol = 100))
+
+## using lapply
+system.time(
+  lapply(1:100, function(y) rbind(x, data.frame(matrix(runif(1*1e4), ncol = 100))))
+
+)</code></pre>
+<pre><code>##    user  system elapsed 
+##   2.346   0.217   2.571</code></pre>
+<pre class="r"><code>dim(x)</code></pre>
+<pre><code>## [1] 10000   100</code></pre>
+<p>But the biggest improvement is when we avoid copying the data.frame. Instead we create several new data.frames in a list, and only once finished do we rbind by passing it through the <code>Reduce</code> function:</p>
+<pre class="r"><code>## avoid modifying original data.frame x
+x &lt;- data.frame(matrix(runif(100*1e4), ncol = 100))
+
+avoid_copy &lt;- function(z){
+  list_of_dfs &lt;- lapply(1:100, function(z) data.frame(matrix(runif(1*1e4), ncol = 100)))
+  rows &lt;- Reduce(rbind, list_of_dfs)
+  rbind(x, rows)
+}
+
+system.time(
+  y &lt;- avoid_copy(x)
+)</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.527   0.235   0.763</code></pre>
+<pre class="r"><code>dim(y)</code></pre>
+<pre><code>## [1] 20000   100</code></pre>
+<p>But back to the readability point - is it easier to know whats going on with the above or the previous example? Perhaps you needed to look up what <code>?Reduce</code> does first - and where are the comments?</p>
+<blockquote>
+<p>Knowing what <code>Reduce</code> does is totally worth it, see “Learn to love lists” later. Briefly it takes as its first argument a <code>function</code>, and for the second argument a <code>list</code>. It then applys the function to the first and second element of the list, takes that result and applies it to the third, takes that result and applies it to the forth….etc.</p>
+</blockquote>
+</div>
+<div id="get-a-bigger-computer" class="section level3">
+<h3>3. Get a bigger computer</h3>
+<p>Run your code on a machine with bigger RAM and CPU. We talk about how to do this later.</p>
+</div>
+<div id="avoid-expensive-writes" class="section level3">
+<h3>4. Avoid expensive writes</h3>
+<p>It is a lot slower to write/read to formats such as CSV with <code>write.csv</code> than if you are writing/reading to a binary format such as <code>saveRDS</code> and <code>readRDS</code>. Another option and to also get compatibility with Python is the <a href="https://blog.rstudio.org/2016/03/29/feather/"><code>feather</code></a> format.</p>
+<p>This is most relevant when writing a cache or progress. Favour using <code>writeRDS</code> over <code>write.csv</code>.</p>
+</div>
+<div id="find-better-packages" class="section level3">
+<h3>5. Find better packages</h3>
+<p>This is stolen from this <a href="https://www.r-bloggers.com/faster-higher-stonger-a-guide-to-speeding-up-r-code-for-busy-people/">post</a> which shows that although <code>xts</code> and <code>zoo</code> packages offer similar capabilities, <code>xts</code> is written to get rid of bottle necks via <code>C</code> and <code>Fortran</code> so is much faster.</p>
+<p>This is another reason to use the <code>tidyverse</code> packages, as they have also been written with care taken over bottlenecks to give superior performance. Another option with huge data sets is <code>data.table</code> (although I find the syntax confusing, see point above about readability)</p>
+</div>
+<div id="use-parallel-processing" class="section level3">
+<h3>6. Use parallel processing</h3>
+<p>R is by nature a single process language, meaning its only using one core. For multi-core or even multi-computer applications, the speed up can be massive. Bear in mind it will need to be a long running function to benefit otherwise the overhead of setting up parrell processing will outweigh the cost.</p>
+<p>A nice way into this is using the <a href="https://github.com/HenrikBengtsson/future"><code>future</code> package</a> which offers an easy UI, allowing assignment via <code>%&lt;-%</code></p>
+<p>This special assignment is used instead of the standard <code>&lt;-</code> - it allows you to assign R functions to many processes at once, and so can be used to make code at asynchronously. You can then put them back together at the end.</p>
+<pre class="r"><code>library(future)
+plan(multiprocess)
+
+x &lt;- data.frame(matrix(runif(1000*1e4), ncol = 100))
+
+avoid_copy &lt;- function(z){
+  list_of_dfs &lt;- lapply(1:100, function(z) data.frame(matrix(runif(1*1e4), ncol = 100)))
+  rows &lt;- Reduce(rbind, list_of_dfs)
+  rbind(x, rows)
+}
+
+## job 1
+a %&lt;-% {
+  avoid_copy(x[,1:50])
+}
+## job 2
+b %&lt;-% {
+  avoid_copy(x[,51:100])
+}
+
+## probably not quicker as not a long running enough function
+system.time(
+  c &lt;- cbind(a, b)
+)</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.778   0.587   1.098</code></pre>
+<pre class="r"><code>system.time(
+  y &lt;- avoid_copy(x)
+)</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.734   0.252   0.986</code></pre>
+<p>Henrik the package creator goees into some more common parallel work flow examples in this <a href="http://www.jottr.org/2017/06/the-many-faced-future.html">blog post showing how to generate fractals in R</a>.</p>
+</div>
+</div>
+<div id="resources" class="section level2">
+<h2>Resources</h2>
+<p>Some articles used for the above are found here:</p>
+<ul>
+<li><a href="http://www.burns-stat.com/documents/books/the-r-inferno/" class="uri">http://www.burns-stat.com/documents/books/the-r-inferno/</a></li>
+<li><a href="https://datascienceplus.com/strategies-to-speedup-r-code/" class="uri">https://datascienceplus.com/strategies-to-speedup-r-code/</a></li>
+<li><a href="http://adv-r.had.co.nz/Performance.html" class="uri">http://adv-r.had.co.nz/Performance.html</a></li>
+<li><a href="http://www.jottr.org/2017/06/the-many-faced-future.html" class="uri">http://www.jottr.org/2017/06/the-many-faced-future.html</a></li>
+<li><a href="https://csgillespie.github.io/efficientR/" class="uri">https://csgillespie.github.io/efficientR/</a></li>
+</ul>
+</div>
+<div id="exercise" class="section level2">
+<h2>Exercise</h2>
+<p>Here is some code. Make it faster.</p>
+<p>The code creates files that are required in a data folder, and then creates a rollup that has all the data.</p>
+<div id="rules" class="section level3">
+<h3>Rules</h3>
+<ul>
+<li>You have to fetch data into data.frames <code>x</code> and <code>a</code> via the <code>get_data</code> function provided</li>
+<li>You have to write the <code>a</code> data.frames to files (pretend they are from an API call) and read them out again into <code>b</code> data.frames</li>
+<li>You must add <code>42</code> to every number in the data.frame <code>b</code></li>
+<li>You must finally output a <code>fileTotal.csv</code> that is the result of data.frame <code>x</code> with all the processed <code>b</code> frames appended to the end</li>
+<li>Extra marks for readability of code</li>
+</ul>
+<pre class="r"><code>## this function simulates getting data
+## you will need to run this to get the code below to work
+## ignore this bit otherwise
+get_data &lt;- function(){
+  data.frame(matrix(runif(1*1e4), ncol = 100))
+}
+
+## you aren&#39;t allowed to modify this line :)
+x &lt;- get_data()
+
+## the folder to read and write the cache date to
+dir_cache &lt;- file.path(&quot;data&quot;,&quot;fastr&quot;)
+
+## For every row in x, get some more data and write it to a file in dir_cache
+for(i in 1:nrow(x)){
+  
+  ## create the folder if its not there
+  dir.create(dir_cache, showWarnings = FALSE)
+  
+  ## make the file name to write to
+  file_name &lt;- file.path(dir_cache,paste0(&quot;file&quot;,i,&quot;.csv&quot;))
+  message(&quot;Writing &quot;, file_name)
+  ## you aren&#39;t allowed to modify this line :)
+  a &lt;- get_data()
+  
+  ## write the data &#39;a&#39; to the folder specified under the filename
+  write.csv(a, file = file_name, row.names = FALSE)
+  
+}
+
+## some time later....
+
+## for every row of x, read the data from the files
+## Add 42 to the data you read in
+## append it to the x data.frame
+for(i in 1:nrow(x)){
+  
+  ## construct the file name
+  file_name &lt;- file.path(dir_cache,paste0(&quot;file&quot;,i,&quot;.csv&quot;))
+  
+  ## read in the data
+  message(&quot;Reading &quot;, file_name)
+  b &lt;- read.csv(file_name)
+  
+  ## add 42 to every number in the matrix
+  my_result &lt;- data.frame()
+  for(j in 1:nrow(b)){
+    cat(&quot;\nWorking with file&quot;, i, &quot; row&quot;, j, &quot; elements: &quot;)
+    my_row &lt;- b[j, ]
+    for(k in 1:length(my_row)){
+      cat(&quot;.&quot;)
+      my_row[[k]] &lt;- my_row[[k]] + 42
+    }
+    my_result &lt;- rbind(my_result, my_row)
+  }
+  
+  ## add the result to the original data.frame x
+  final &lt;- rbind(my_result, x)
+}
+
+## write the final data.frame to the file
+write.csv(final, file = file.path(dir_cache,paste0(&quot;fileTotal.csv&quot;)))
+</code></pre>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

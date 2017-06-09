@@ -1,0 +1,275 @@
+---
+title: "Fast R code"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+R is a slower language that most as it makes certain sacrifices for convienence at the expense of optimal speed, but there is a lot you can do in your coding style to avoid making it slower than it should be.  R has a reputation for being slow that may be in part that if you code it in the same style as say Python, you make inefficient R code.  
+
+However if you make efficient code then R should be fast enough for most uses, and R also gives the opportunity to identify bottlenecks and code it directly in C++ via the `Rcpp` package. A lot of the tidyverse packages takes advatage of this, which is why in some cases they may be faster that some base implementaions. 
+
+Plenty of companies use R in production, for eample its used with its SQL Server 2016 integration to deect a [fraudalent credit crd transactions at 1 million transactions per second](http://blog.revolutionanalytics.com/2016/09/fraud-detection.html).
+
+## Aside - Readability vs Code Speed
+
+The first point address what we mean be speed anyway - do we want code that is quick to production, or code that is quick *in* production?  It can make a big difference to whether you use R in the first place.
+
+When we talk of code we have the speed of the coder creating it and maintaining, vs the speed of the code when it actually runs.
+
+In many cases, its better to have slower but more readable code, than obscure code that runs a few ms quicker. If you want code that has impact, and you are collaborating with others, then its almost exclusivly the first type of code you need, and if you are really worrying about code execution speed perhaps should start looking at `Java` or `C#` for production, especially if its integrating with exiting systems. 
+
+## Tips for speed
+
+That said, lets go through some tips on making your code faster:
+
+### 1. Use Vectorisation
+
+A key first step is to embrace R's vectorisation capabilties.  In fact, you could say that R's unique feature is that it treats everything as a vector (`1` is actually a length 1 numeric vector in R!) 
+
+R has special functions that treat vectors very efficiently, so you should always be trying to work with vectors rather than looping around objects if you can.
+
+In general this means that what you may want to achieve with a loop in other languages, you can operate directly on a vector with R. 
+
+Example - these both do the same thing, but one is vastly superior:
+
+```{r}
+v <- c(1,4,5,3,54,6,7,5,3,5,6,4,3,4,5)
+
+## add 42 to every element of the vector
+for(i in 1:length(v)){
+  v[i] <- v[i] + 42
+}
+
+v
+```
+
+Or, the vectorised example:
+
+```{r}
+v <- c(1,4,5,3,54,6,7,5,3,5,6,4,3,4,5)
+
+## add 42 to every element of the vector
+v <- v + 42
+
+v
+```
+
+Because of this, always try to operate upon vectors when doing repetitive tasks - it can cause major benefits to code speed if you unfold structures into a vector beore running lots of code over them - for instance instead of a heavily nested list or data.frame make code that runs on a vector. 
+
+
+### 2. Avoid creating objects in a loop
+
+Example: Looping with data.frames
+
+A key difference with R than other languages is that it isn't always modifying objects directly, but rather on copies of objects.  This can cause major slow downs if for example you are copying a large object every iteration within a loop.
+
+In particular, data.frames should be avoid to be modified within a loop.  As an example, compare these execution times of these methods to add rows to a data.frame
+
+> system.time() in this examples are used to output the execution times of the code within the code brackets. 
+
+```{r}
+# a 100 column data.frame
+x <- data.frame(matrix(runif(100*1e4), ncol = 100))
+dim(x)
+
+# loop 100 times, adding another row to x
+system.time(
+  for(i in seq_along(1:100)){
+    x <- rbind(x, data.frame(matrix(runif(1*1e4), ncol = 100)))
+    }
+)
+dim(x)
+```
+
+Each loop is copying the data.frame, then adding the new row to it which is inefficient.
+
+Some may think this is due to an R myth to avoid for loops, and that can help even though `lapply` is a more efficient for loop coded in C:
+
+```{r}
+# a 100 column data.frame
+x <- data.frame(matrix(runif(100*1e4), ncol = 100))
+
+## using lapply
+system.time(
+  lapply(1:100, function(y) rbind(x, data.frame(matrix(runif(1*1e4), ncol = 100))))
+
+)
+dim(x)
+```
+
+But the biggest improvement is when we avoid copying the data.frame.  Instead we create several new data.frames in a list, and only once finished do we rbind by passing it through the `Reduce` function:
+
+```{r}
+## avoid modifying original data.frame x
+x <- data.frame(matrix(runif(100*1e4), ncol = 100))
+
+avoid_copy <- function(z){
+  list_of_dfs <- lapply(1:100, function(z) data.frame(matrix(runif(1*1e4), ncol = 100)))
+  rows <- Reduce(rbind, list_of_dfs)
+  rbind(x, rows)
+}
+
+system.time(
+  y <- avoid_copy(x)
+)
+dim(y)
+```
+
+But back to the readability point - is it easier to know whats going on with the above or the previous example?  Perhaps you needed to look up what `?Reduce` does first - and where are the comments?
+
+> Knowing what `Reduce` does is totally worth it, see "Learn to love lists" later.  Briefly it takes as its first argument a `function`, and for the second argument a `list`.  It then applys the function to the first and second element of the list, takes that result and applies it to the third, takes that result and applies it to the forth....etc.
+
+### 3. Get a bigger computer
+
+Run your code on a machine with bigger RAM and CPU.  We talk about how to do this later.
+
+### 4. Avoid expensive writes
+
+It is a lot slower to write/read to formats such as CSV with `write.csv` than if you are writing/reading to a binary format such as `saveRDS` and `readRDS`.  Another option and to also get compatibility with Python is the [`feather`](https://blog.rstudio.org/2016/03/29/feather/) format. 
+
+This is most relevant when writing a cache or progress.  Favour using `writeRDS` over `write.csv`.
+
+### 5. Find better packages
+
+This is stolen from this [post](https://www.r-bloggers.com/faster-higher-stonger-a-guide-to-speeding-up-r-code-for-busy-people/) which shows that although `xts` and `zoo` packages offer similar capabilities, `xts` is written to get rid of bottle necks via `C` and `Fortran` so is much faster.
+
+This is another reason to use the `tidyverse` packages, as they have also been written with care taken over bottlenecks to give superior performance. Another option with huge data sets is `data.table` (although I find the syntax confusing, see point above about readability)
+
+### 6. Use parallel processing
+
+R is by nature a single process language, meaning its only using one core.  For multi-core or even multi-computer applications, the speed up can be massive.  Bear in mind it will need to be a long running function to benefit otherwise the overhead of setting up parrell processing will outweigh the cost.
+
+A nice way into this is using the [`future` package](https://github.com/HenrikBengtsson/future) which offers an easy UI, allowing assignment via `%<-%`
+
+This special assignment is used instead of the standard `<-` - it allows you to assign R functions to many processes at once, and so can be used to make code at asynchronously. You can then put them back together at the end.
+
+```{r}
+library(future)
+plan(multiprocess)
+
+x <- data.frame(matrix(runif(1000*1e4), ncol = 100))
+
+avoid_copy <- function(z){
+  list_of_dfs <- lapply(1:100, function(z) data.frame(matrix(runif(1*1e4), ncol = 100)))
+  rows <- Reduce(rbind, list_of_dfs)
+  rbind(x, rows)
+}
+
+## job 1
+a %<-% {
+  avoid_copy(x[,1:50])
+}
+## job 2
+b %<-% {
+  avoid_copy(x[,51:100])
+}
+
+## probably not quicker as not a long running enough function
+system.time(
+  c <- cbind(a, b)
+)
+
+system.time(
+  y <- avoid_copy(x)
+)
+
+```
+
+Henrik the package creator goees into some more common parallel work flow examples in this [blog post showing how to generate fractals in R](http://www.jottr.org/2017/06/the-many-faced-future.html).
+
+## Resources
+
+Some articles used for the above are found here:
+
+* http://www.burns-stat.com/documents/books/the-r-inferno/
+* https://datascienceplus.com/strategies-to-speedup-r-code/
+* http://adv-r.had.co.nz/Performance.html
+* http://www.jottr.org/2017/06/the-many-faced-future.html
+* https://csgillespie.github.io/efficientR/ 
+
+## Exercise
+
+Here is some code.  Make it faster.
+
+The code creates files that are required in a data folder, and then creates a rollup that has all the data.
+
+### Rules
+
+* You have to fetch data into data.frames `x` and `a` via the `get_data` function provided
+* You have to write the `a` data.frames to files (pretend they are from an API call) and read them out again into `b` data.frames
+* You must add `42` to every number in the data.frame `b`
+* You must finally output a `fileTotal.csv` that is the result of data.frame `x` with all the processed `b` frames appended to the end
+* Extra marks for readability of code
+
+```r
+## this function simulates getting data
+## you will need to run this to get the code below to work
+## ignore this bit otherwise
+get_data <- function(){
+  data.frame(matrix(runif(1*1e4), ncol = 100))
+}
+
+## you aren't allowed to modify this line :)
+x <- get_data()
+
+## the folder to read and write the cache date to
+dir_cache <- file.path("data","fastr")
+
+## For every row in x, get some more data and write it to a file in dir_cache
+for(i in 1:nrow(x)){
+  
+  ## create the folder if its not there
+  dir.create(dir_cache, showWarnings = FALSE)
+  
+  ## make the file name to write to
+  file_name <- file.path(dir_cache,paste0("file",i,".csv"))
+  message("Writing ", file_name)
+  ## you aren't allowed to modify this line :)
+  a <- get_data()
+  
+  ## write the data 'a' to the folder specified under the filename
+  write.csv(a, file = file_name, row.names = FALSE)
+  
+}
+
+## some time later....
+
+## for every row of x, read the data from the files
+## Add 42 to the data you read in
+## append it to the x data.frame
+for(i in 1:nrow(x)){
+  
+  ## construct the file name
+  file_name <- file.path(dir_cache,paste0("file",i,".csv"))
+  
+  ## read in the data
+  message("Reading ", file_name)
+  b <- read.csv(file_name)
+  
+  ## add 42 to every number in the matrix
+  my_result <- data.frame()
+  for(j in 1:nrow(b)){
+    cat("\nWorking with file", i, " row", j, " elements: ")
+    my_row <- b[j, ]
+    for(k in 1:length(my_row)){
+      cat(".")
+      my_row[[k]] <- my_row[[k]] + 42
+    }
+    my_result <- rbind(my_result, my_row)
+  }
+  
+  ## add the result to the original data.frame x
+  final <- rbind(my_result, x)
+}
+
+## write the final data.frame to the file
+write.csv(final, file = file.path(dir_cache,paste0("fileTotal.csv")))
+
+```
+
