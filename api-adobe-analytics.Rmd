@@ -7,7 +7,7 @@ output:
 ---
 
 ```{r analytics-apis setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, error = TRUE, cache = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, error = TRUE)
 library(knitr)
 ```
 
@@ -170,7 +170,33 @@ head(overtime.data)
 
 You may also wish to set any of the 5 optional named parameters.
 
-```{r, warning=FALSE, message=FALSE, results='hide'}
+```{r, message=FALSE, warning=FALSE, include=FALSE, results='hide'}
+metrics <- c("visits","uniquevisitors","pageviews")
+date.granularity <- "hour"
+segment.id <- "Visit_Natural_Search"
+anomaly.detection <- FALSE
+data.current <- TRUE
+expedite <- FALSE ## only can set to TRUE if you have permission
+
+dir.create("adobecache", showWarnings = FALSE)
+
+if(!file.exists("adobecache/overtime.rds")){
+  overtime.data <- QueueOvertime(reportsuite.id, 
+                                           date.from, date.to, 
+                                           metrics,
+                                           date.granularity = date.granularity,
+                                           segment.id = segment.id,
+                                           anomaly.detection = anomaly.detection,
+                                           data.current = data.current,
+                                           expedite = expedite)
+  saveRDS(overtime.data, file = "adobecache/overtime.rds")
+} else {
+  overtime.data <- readRDS("adobecache/overtime.rds")
+}
+
+```
+
+```r
 metrics <- c("visits","uniquevisitors","pageviews")
 date.granularity <- "hour"
 segment.id <- "Visit_Natural_Search"
@@ -208,7 +234,21 @@ Returns a ranked report. This is an ordered list of elements and associated metr
 
 QueueRanked requires a start and end date, a reportsuite ID, a character vector of elements and a character vector of metrics.
 
-```{r queueranked, message=FALSE, results='hide'}
+```{r queueranked, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+metrics <- c("visits","uniquevisitors","pageviews","event1")
+elements <- c("page","geoCountry","geoCity")
+
+if(!file.exists("adobecache/ranked.data")){
+  ranked.data <- QueueRanked(reportsuite.id, date.from, date.to, metrics, elements)
+  saveRDS(ranked.data, file = "adobecache/ranked.data")
+} else {
+  ranked.data <- readRDS("adobecache/ranked.data")  
+}
+
+
+```
+
+```r
 metrics <- c("visits","uniquevisitors","pageviews","event1")
 elements <- c("page","geoCountry","geoCity")
 
@@ -217,7 +257,7 @@ ranked.data <- QueueRanked(reportsuite.id, date.from, date.to, metrics, elements
 
 You may also wish to set any of the 6 optional named parameters. The 1.4 API only supports this for the first element specified. In the example below, selected applies to the first element, page.
 
-```{r queueranked optional, warning=FALSE, message=FALSE, results='hide'}
+```{r queueranked optional, message=FALSE, warning=FALSE, include=FALSE, results='hide'}
 metrics <- c("visits","uniquevisitors","pageviews","event1","event2")
 elements <- c("page","geoCountry","geoCity")
 top <- 10
@@ -228,7 +268,8 @@ segment.id <- ""
 data.current <- TRUE
 expedite <- FALSE ## only can set to TRUE if you have permission
 
-ranked.data <- QueueRanked(reportsuite.id, 
+if(!file.exists("adobecache/ranked.data2.rds")){
+  ranked.data <- QueueRanked(reportsuite.id, 
                            date.from, date.to,
                            metrics,
                            elements,
@@ -238,6 +279,11 @@ ranked.data <- QueueRanked(reportsuite.id,
                            segment.id = segment.id,
                            data.current = data.current,
                            expedite = expedite)
+  saveRDS(ranked.data, file = "adobecache/ranked.data2.rds")
+} else {
+  ranked.data <- readRDS("adobecache/ranked.data2.rds")
+}
+
 
 unique(ranked.data$page)
 
@@ -261,7 +307,24 @@ Returns a trended report. This is an ordered list of elements and associated met
 
 QueueTrended requires a start and end date, a reportsuite ID, a character vector of elements and a character vector of metrics.
 
-```{r queuetrended, message=FALSE, results='hide'}
+```{r queuetrended, message=FALSE, include=FALSE, results='hide'}
+metrics <- c("visits","uniquevisitors","pageviews","event1")
+elements <- c("page","geoCountry","geoCity")
+
+cache_file <- "adobecache/trended.data.rds"
+
+if(!file.exists(cache_file)){
+  trended.data <- QueueTrended(reportsuite.id, date.from, date.to, metrics, elements)
+  saveRDS(trended.data, file = cache_file)
+} else {
+  trended.data <- readRDS(cache_file)
+}
+
+
+```
+
+
+```r
 metrics <- c("visits","uniquevisitors","pageviews","event1")
 elements <- c("page","geoCountry","geoCity")
 
@@ -271,7 +334,39 @@ trended.data <- QueueTrended(reportsuite.id, date.from, date.to, metrics, elemen
 
 You may also wish to set any of the 7 optional named parameters. As with `QueueRanked()` the 1.4 API only supports selected for the first element specified.
 
-```{r queuetrended optional, message=FALSE, results='hide'}
+```{r queuetrended optional, message=FALSE, include=FALSE, results='hide'}
+metrics <- c("visits","uniquevisitors","pageviews","event1")
+elements <- c("page","geoCountry","geoCity")
+top <- 100
+start <- 100
+selected <- c("excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/",
+              "excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/")
+date.granularity <- "hour"
+segment.id <- ""
+data.current <- TRUE
+expedite <- FALSE
+
+cache_file <- "adobecache/trended_option.rds"
+
+if(!file.exists(cache_file)){
+  trended.data <- QueueTrended(reportsuite.id, 
+                            date.from, date.to,
+                            metrics,
+                            elements,
+                            top = top,
+                            start = start,
+                            selected = selected,
+                            segment.id = segment.id,
+                            data.current = data.current,
+                            expedite = expedite)
+  saveRDS(trended.data, file = cache_file)
+} else {
+  trended.data <- readRDS(cache_file)
+}
+
+```
+
+```
 metrics <- c("visits","uniquevisitors","pageviews","event1")
 elements <- c("page","geoCountry","geoCity")
 top <- 100
@@ -322,13 +417,35 @@ pattern <- c("excel-tips/excel-dropdowns-done-right-data-validation-and-named-ra
              "::anything::",
              "::anything::")
 
+cache_file <- "adobecache/pathing_data.rds"
+
+if(!file.exists(cache_file)){
+  pathing.data <- QueuePathing(reportsuite.id, 
+                             date.from, date.to, 
+                             metric, 
+                             element, 
+                             pattern)
+  saveRDS(pathing.data, file = cache_file)
+} else {
+  pathing.data <- readRDS(cache_file)
+}
+```
+
+```
+metric <- "pageviews"
+element <- "page"
+pattern <- c("excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/",
+             "::anything::",
+             "::anything::")
+
+
 pathing.data <- QueuePathing(reportsuite.id, 
                              date.from, date.to, 
                              metric, 
                              element, 
                              pattern)
-```
 
+```
 ### Data format
 
 Report data is returned with the following R classes:
@@ -347,7 +464,32 @@ Returns a fallout report. This is a pathed list of elements, with fallout values
 
 QueuePathing requires a start and end date, a reportsuite ID, a single element, a character vector of metrics and a character vector of element values that defined the checkpoints.
 
-```{r fallout, message=FALSE, results='hide'}
+```{r fallout, message=FALSE, include=FALSE, results='hide'}
+metrics <- "pageviews"
+element <- "page"
+checkpoints <- c("excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/",
+                 "excel-tips/excel-dropdowns-done-right/",
+                 "excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/")
+
+
+
+cache_file <- "adobecache/fallout.data.rds"
+
+if(!file.exists(cache_file)){
+  fallout.data <- QueueFallout(reportsuite.id, 
+                               date.from, date.to, 
+                               metrics, 
+                               element, 
+                               checkpoints)
+  
+  saveRDS(fallout.data, file = cache_file)
+} else {
+  fallout.data<- readRDS(cache_file)
+}
+
+```
+
+```r
 metrics <- "pageviews"
 element <- "page"
 checkpoints <- c("excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/",
@@ -397,7 +539,32 @@ We require sessions in the Natural Search traffic segment trended over time.
 
 ## Download sample
 
-```{r, message=FALSE, warning=FALSE, results='hide'}
+```{r, message=FALSE, warning=FALSE, include=FALSE, results='hide'}
+date.from <- "2016-01-01"
+date.to <- "2016-09-30"
+reportsuite.id <- "grecodemystified"
+metrics <- "visits"
+segment.id <- "Visit_Natural_Search"
+date.granularity <- "day"
+
+cache_file <- "adobecache/queueexample.rds"
+
+if(!file.exists(cache_file)){
+  overtime.data <- QueueOvertime(reportsuite.id, 
+                               date.from, date.to, 
+                               metrics,
+                               date.granularity = date.granularity,
+                               segment.id = segment.id)
+  
+  saveRDS(overtime.data, file = cache_file)
+} else {
+  overtime.data <- readRDS(cache_file)
+}
+
+```
+
+
+```
 date.from <- "2016-01-01"
 date.to <- "2016-09-30"
 reportsuite.id <- "grecodemystified"
@@ -523,7 +690,7 @@ But, you're reading about the Adobe Analytics API here, so we can assume you mig
 
 To do that, first follow the steps for one of the authentication options described earlier on this page. Once that is done, you can use the following overtime command to pull the base data.
 
-```{r base_settings, echo=FALSE, eval=TRUE, message=FALSE, results='hide'}
+```{r base_settings, echo=FALSE, eval=TRUE, error=TRUE,message=FALSE, results='hide'}
 # Unfortunately, Greco, Inc. doesn't use Marketing Channels, so this cuts
 # over to a different account. It'll be a bit of a pain to rebuild this file,
 # I realize. Hopefully, we won't need to do that very often!
@@ -536,8 +703,32 @@ SCAuth(key, secret)
 
 ```
 
+```{r web_data, message=FALSE, include=FALSE, results='hide'}
 
-```{r web_data, message=FALSE, results='hide'}
+# reportsuite.id <- [uncomment this line and insert your RSID]
+date.from <- "2016-01-01"
+date.to <- "2016-08-01"
+metrics <- c("visits","pageviews","entries","bounces")
+elements <- c("mobiledevicetype","lasttouchchannel")
+top <- 10
+date.granularity <- "day"
+
+cache_file <- "adobecache/example.queue.trend.rds"
+
+if(!file.exists(cache_file)){
+  web_data <- QueueTrended(reportsuite.id,
+                         date.from, date.to,
+                         metrics,
+                         elements,
+                         top = top)
+  saveRDS(web_data, file = cache_file)
+} else {
+  web_data <- readRDS(cache_file)
+}
+
+```
+
+```r
 
 # reportsuite.id <- [uncomment this line and insert your RSID]
 date.from <- "2016-01-01"
