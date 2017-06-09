@@ -112,6 +112,8 @@ navbar:
         href: htmlwidgets.html
       - text: "RMarkdown or Shiny?"
         href: rmarkdown-shiny.html
+      - text: "Basic RMarkdown"
+        href: basic-rmarkdown.html
       - text: "Advanced RMarkdown"
         href: advanced-rmarkdown.html
       - text: "Shiny"
