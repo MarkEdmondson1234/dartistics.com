@@ -172,6 +172,7 @@ The sum of each group errors is:
 That gets us to the _sum_ of squares errors ($SS_e$):
 
 $$SS_e = 2.8+2.8+5.2 = 10.8$$
+
 ### 4. Determine the Sum of Squares _Between_ Groups ($SS_b$)
 
 We determine $SS_b$ by subtracting the group mean from the grand mean and squaring the difference before multiplying by the number of observations in each group. Finally, we sum the products.
