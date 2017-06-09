@@ -100,14 +100,6 @@ _The Google GuRu_]]
 .left-col-7[.last[![](images/unclesam.jpg)]]
 ]
 
-
----
-## The Next Three Days
-
-The class will run from 9:00 AM to ~5:00 PM each day.
-
-![](images/agenda.jpg)
-
 ---
 # How did I hound you?
 
@@ -137,6 +129,11 @@ missing_responses <- filter(combined_data, is.na(Timestamp)) %>%
 ```
 
 ---
+class: inverse, middle, center
+
+# Let's Talk Some Logistics!
+
+---
 ## How many of you are Columbus-based?
 
 ```{r local, echo=FALSE, message=FALSE, include=TRUE, fig.width=11, fig.height=7}
@@ -148,21 +145,6 @@ local_to_cbus$label <- gsub("No","Not Local",local_to_cbus$label) %>%
   gsub("Yes","Local to Columbus",.)
 
 plot_bar(local_to_cbus)
-
-```
-
----
-## What operating systems are you using?
-
-```{r os, echo=FALSE, message=FALSE, include=TRUE, fig.width=11, fig.height=7}
-
-# Get the counts and clean 'em up a bit
-os <- group_by(survey_responses_data, 
-               `What type of laptop (operating system) will you be bringing for the training?`) %>% 
-  summarise(n())
-names(os) <- c("label","student_count")
-
-plot_bar(os)
 
 ```
 
@@ -196,7 +178,7 @@ ggplot(evening, aes(Baseball, WAW)) +
 ```
 
 ---
-## Arrivals and departures?
+## Arrivals and Departures?
 
 ```{r arrival, echo=FALSE, message=FALSE, include=TRUE, fig.width=11, fig.height=7}
 
@@ -228,6 +210,26 @@ ggplot(arrival_departure, aes(Departure, Arrival)) +
   scale_fill_gradient(low = "white", high = "#70c4dd") +
   geom_text(aes(label = comma(student_count)), size = 7) +
   theme_heatmap
+
+```
+
+---
+class: inverse, middle, center
+
+# About You...For the Class!
+
+---
+## What operating systems are you using?
+
+```{r os, echo=FALSE, message=FALSE, include=TRUE, fig.width=11, fig.height=7}
+
+# Get the counts and clean 'em up a bit
+os <- group_by(survey_responses_data, 
+               `What type of laptop (operating system) will you be bringing for the training?`) %>% 
+  summarise(n())
+names(os) <- c("label","student_count")
+
+plot_bar(os)
 
 ```
 
@@ -335,6 +337,13 @@ ggplot(stats, aes(Familiarity, Concept)) +
   theme_heatmap
 
 ```
+
+---
+## The Next Three Days
+
+The class will run from 9:00 AM to ~5:00 PM each day.
+
+![](images/agenda.jpg)
 
 ---
 ## Resources
