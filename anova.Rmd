@@ -207,7 +207,7 @@ $$df = 3 - 1 = 2$$
 
 So:
 
-$$MS_b = \frac{SS_e}{df} = \frac{8.9}{2} = 4.45$$
+$$MS_b = \frac{SS_b}{df} = \frac{8.9}{2} = 4.45$$
 
 ### 7. Determine the Actual F-value
 
