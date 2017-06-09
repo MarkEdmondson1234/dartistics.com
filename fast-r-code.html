@@ -572,7 +572,7 @@ system.time(
     }
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   9.830   0.816  10.667</code></pre>
+##   8.402   0.681   9.098</code></pre>
 <pre class="r"><code>dim(x)</code></pre>
 <pre><code>## [1] 20000   100</code></pre>
 <p>Each loop is copying the data.frame, then adding the new row to it which is inefficient.</p>
@@ -586,7 +586,7 @@ system.time(
 
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   2.437   0.303   2.747</code></pre>
+##   2.346   0.217   2.571</code></pre>
 <pre class="r"><code>dim(x)</code></pre>
 <pre><code>## [1] 10000   100</code></pre>
 <p>But the biggest improvement is when we avoid copying the data.frame. Instead we create several new data.frames in a list, and only once finished do we rbind by passing it through the <code>Reduce</code> function:</p>
@@ -603,7 +603,7 @@ system.time(
   y &lt;- avoid_copy(x)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.578   0.341   0.923</code></pre>
+##   0.527   0.235   0.763</code></pre>
 <pre class="r"><code>dim(y)</code></pre>
 <pre><code>## [1] 20000   100</code></pre>
 <p>But back to the readability point - is it easier to know whats going on with the above or the previous example? Perhaps you needed to look up what <code>?Reduce</code> does first - and where are the comments?</p>
@@ -655,12 +655,12 @@ system.time(
   c &lt;- cbind(a, b)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.857   0.784   1.426</code></pre>
+##   0.778   0.587   1.098</code></pre>
 <pre class="r"><code>system.time(
   y &lt;- avoid_copy(x)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.650   0.351   1.006</code></pre>
+##   0.734   0.252   0.986</code></pre>
 <p>Henrik the package creator goees into some more common parallel work flow examples in this <a href="http://www.jottr.org/2017/06/the-many-faced-future.html">blog post showing how to generate fractals in R</a>.</p>
 </div>
 </div>
