@@ -8,6 +8,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+web_data <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE)
 ```
 
 ## Lists
@@ -84,7 +85,7 @@ Another handy library to help with lists is `listviewer::jsonedit(your_list)` wh
 
 ```{r}
 library(listviewer)
-jsonedit(mtcars)
+jsonedit(web_data)
 ```
 
 ## The "apply" family functions
@@ -136,7 +137,8 @@ If we want to add arguments to the function, we can supply those as named argume
 Here we take advantage that a data.frame is a list of equal length vectors:
 
 ```r
-lapply(mtcars, mean, trim = 0.5)
+## this applies mean to every column
+lapply(web_data, mean, trim = 0.5)
 ```
 
 #### Using your own function
@@ -162,6 +164,7 @@ lapply(my_vector, function(x){
 })
 
 ```
+
 
 ### vapply()
 
@@ -214,8 +217,153 @@ As an example, you can use `rbind()` which binds a data.frame to another and app
 ```r
 Reduce(rbind, list_of_df)
 ```
+### Example - create custom ANOVA
 
-### purrr() 
+Lets make our own function that performs ANOVA on some data using `lapply()` over a data.frames columns.  There are R functions that will do all these steps for you, but its educational to build it up yourself.
+
+First step is to create the data:
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+anova_data <- web_data %>% 
+  filter(deviceCategory == "desktop") %>% 
+  select(date, sessions, channelGrouping) %>% 
+  spread(channelGrouping, sessions) %>% 
+  select(-date)
+```
+
+```{r, echo=FALSE}
+knitr::kable(head(anova_data))
+```
+
+Do the different groups differ significantly from each other?  You can probably see for yourself in this dataset, but for cases such as AB tests this is less obvious.
+
+#### Recap - 1-way ANOVA
+
+The steps for [1-way ANOVA were outlined](http://www.dartistics.com/anova.html) earlier, and repeated here:
+
+1. Calculate the mean for each column
+2. Calculate the mean for all columns combined
+3. Calculate sum of squares error
+4. Calculate sum of squares between groups
+5. Calculate mean square errors
+6. Determine the actual F-value
+7. Look up the critical F-value
+9. Compare actual and critical F-values
+
+We create a function that will create this from fundamentals, using `lapply()` to help us perform on each column (each element of our list)
+
+#### Calculate the mean per colum
+
+```{r}
+
+col_mean <- lapply(anova_data, mean, na.rm = TRUE)
+## compare with..
+colMeans(anova_data)
+```
+
+
+
+#### Calculate the sum of squares for each column
+
+```{r}
+my_ss <- function(df_col){
+  
+  ## df_col is a column of the data.frame we pass into the lapply
+  mean_col <- mean(df_col, na.rm = TRUE)
+  
+  ## squares error
+  se <- (df_col - mean_col)^2
+  
+  ## sum of squares error
+  sum(se, na.rm = TRUE)
+}
+
+ss_a <- lapply(anova_data, my_ss)
+SS_e <- Reduce(sum, ss_a)
+SS_e
+```
+
+
+#### Calculate the total mean
+
+```{r}
+
+totalMean <- sum(colSums(anova_data), na.rm = TRUE) / 
+                   (ncol(anova_data) * nrow(anova_data))
+totalMean
+```
+
+#### Calculate the sum of squares between groups
+
+```{r}
+my_ssg <- function(df_col){
+  
+  mean_col <- mean(df_col, na.rm = TRUE)
+  
+  ((totalMean - mean_col)^2)*length(df_col)
+
+}
+
+ssg <- lapply(anova_data, my_ssg)
+SS_b <- Reduce(sum, ssg)
+SS_b
+```
+
+#### Calculate mean square errors
+
+```{r}
+df1 <- (nrow(anova_data)*ncol(anova_data)) - ncol(anova_data)
+MSe <- SS_e / df1
+MSe
+```
+
+#### Calculate mean square between groups
+
+```{r}
+df2 <- ncol(anova_data) - 1
+MSb <- SS_b / df2
+MSb
+```
+
+#### Determine the F-value
+
+```{r}
+Fvalue <- MSb / MSe
+Fvalue
+```
+
+#### Look up critical F-value
+
+```{r}
+Fcrit <- pf(.95, df1 = df1, df2 = df2)
+Fcrit
+```
+#### Compare the Actual vs critical F-Value
+
+```{r}
+## If TRUE, we can reject null hypothesis that the means of the groups are equal
+## The number of sessions does differ by channel
+Fvalue > Fcrit
+
+```
+
+#### how would we really do this?
+
+```{r}
+anova_data2 <- web_data %>% 
+  filter(deviceCategory == "desktop") %>% 
+  select(sessions, channelGrouping)
+
+anova_data2$channelGrouping <- as.factor(anova_data2$channelGrouping)
+
+anova2 <- aov(sessions ~ channelGrouping , data = anova_data2, na.action = na.exclude)
+summary(anova2)
+```
+
+The numbers are a little different due to ways of treating NAs in the data.
+
+## Where to go from here - purrr() 
 
 For more advanced useage, [`purrr`](https://github.com/tidyverse/purrr) is a tidyverse package which is very useful for both working with lists and manipulating data. 
 
