@@ -633,15 +633,11 @@ my_summary &lt;- function(x){
 <p>Every function you use in R has its code available if you issue the function name with no brackets e.g.</p>
 <pre class="r"><code>library(googleAnalyticsR)
 ga_account_list</code></pre>
-<pre><code>## function(){
-##   
-##   url &lt;- &quot;https://www.googleapis.com/analytics/v3/management/accountSummaries&quot;
-##   acc_sum &lt;- gar_api_generator(url,
-##                                &quot;GET&quot;,
-##                                data_parse_function = parse_ga_account_summary)
-##   
-##   acc_sum()
-##   
+<pre><code>## function () 
+## {
+##     url &lt;- &quot;https://www.googleapis.com/analytics/v3/management/accountSummaries&quot;
+##     acc_sum &lt;- gar_api_generator(url, &quot;GET&quot;, data_parse_function = parse_ga_account_summary)
+##     acc_sum()
 ## }
 ## &lt;environment: namespace:googleAnalyticsR&gt;</code></pre>
 <p>However, some are easier than others. Some functions, including many that are fundamental to R in its base package, are written in C and are called <code>Primitive</code> and the R function simply calls that underlying code. These functions won’t return much of use:</p>

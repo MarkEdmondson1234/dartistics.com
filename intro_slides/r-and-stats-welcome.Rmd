@@ -231,6 +231,40 @@ ggplot(arrival_departure, aes(Departure, Arrival)) +
 
 ```
 
+---
+## R Familiarity
+
+```{r familiarity, echo=FALSE, message=FALSE, include=TRUE, fig.width=11, fig.height=7}
+
+# Get the counts 
+r_familiarity <- group_by(survey_responses_data, `Which of the following best describes your current familiarity with R?`) %>%
+  summarise(n())
+
+# Clean up the column names
+names(r_familiarity) = c("label","student_count")
+
+# Shorten the responses... and cheat by adding a row for the value
+# that had NO responses
+r_familiarity <- mutate(r_familiarity, label = 
+                          gsub("Have heard of R and read a little bit about it, but have never tried to use it",
+                               "Have heard of R\nbut never used it", label)) %>%
+  mutate(label = gsub("Have dabbled with R, but never got comfortable enough with it to use it heavily",
+         "Have dabbled with\nR just a little bit", label)) %>%
+  mutate(label = gsub("Occasionally use the platform",
+         "Occasionally\nuse the platform", label)) %>%
+  rbind(data.frame(label = "Use R all the time!", student_count = 0))
+
+# <Sigh> Reorder things
+r_familiarity <- mutate(r_familiarity, label =
+                          factor(label, levels = c(
+                          "Have heard of R\nbut never used it",
+                          "Have dabbled with\nR just a little bit",
+                          "Occasionally\nuse the platform",
+                          "Use R all the time!")))
+
+plot_bar(r_familiarity)
+
+```
 
 ---
 ## What data sources are you interested in?
@@ -305,4 +339,4 @@ ggplot(stats, aes(Familiarity, Concept)) +
 ---
 ## Resources
 
-dartistics.com
+![](images/dartistics_home.jpg)
