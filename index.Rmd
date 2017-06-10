@@ -14,7 +14,7 @@ This site is intended to be a resource for digital analysts who are interested i
 
 <br>_(Clearly, this is not a site about "branding an initiative" or "coming up with a totally awesome name for a site!")_
 
-This site is developed and maintained by [Mark Edmondson](https://dk.linkedin.com/in/markpeteredmondson) and [Tim Wilson](https://www.linkedin.com/in/tgwilson), with a semi-intentional assist from [Donal Phipps](https://uk.linkedin.com/in/donalp) and others. If you have feedback or suggestions for the site, [hop over to GitHub and log an issue](https://github.com/MarkEdmondson1234/dartistics.com/issues). _(A GitHub account is required, but, if you're using R, you should have one! And, creating one is quick and free if you don't.)_
+This site is developed and maintained by [Mark Edmondson](https://dk.linkedin.com/in/markpeteredmondson) and [Tim Wilson](https://www.linkedin.com/in/tgwilson), with semi-intentional assists from [Donal Phipps](https://uk.linkedin.com/in/donalp), [Dr. Michael Levin](https://www.linkedin.com/in/michael-levin-30479086/) and others. If you have feedback or suggestions for the site, [hop over to GitHub and log an issue](https://github.com/MarkEdmondson1234/dartistics.com/issues). _(A GitHub account is required, but, if you're using R, you should have one! And, creating one is quick and free if you don't.)_
 
 Our hope is that, for the analyst who is new to R, by going through the resources on this site, the code and output below will start to make some real sense!
 
