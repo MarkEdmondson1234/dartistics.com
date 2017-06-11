@@ -1,0 +1,58 @@
+---
+title: ".Renviron"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+
+---
+
+R has robust troubleshooting / debugging capabilities. It also can have maddeningly frustrating and unhelpful error messages ("WTF is a unary operator?!" you will almost certainly exclaim at some point). At the end of the day, most errors come from one of a handful of issues:
+
+* A silly typographical mistake
+* An attempt to perform an operation on data that can't be performed
+* A bug in a package
+
+9 times out of 10, when you are confident that there is a bug in a package... you will be wrong.
+
+One of the challenges in debugging is that many of the functions you will use are available because you have loaded a package. The operation of those functions, in turn, generally rely on other functions behind the scenes, and _those_ functions may live in yet other packages. So, it's not uncommon to get an error message from wayyyyy down a dark hole of functions within functions, and it's difficult to make heads or tails of what you actually did wrong. 
+
+The more you code, the more adept you will get at troubleshooting.
+
+## Warnings vs. Errors
+
+Both warnings and errors show up as red text in the console when a script runs. Warnings can, often, be ignored, but you shouldn't just immediately ignore them. Try to figure out what they're saying, what's causing them, and, if possible, update your script to correct for them.
+
+Errors, on the other hand, will actually halt the codes execution unless you include error handling in your script. When a script errors out, you can see from the message exactly where the error occurred. The actual _problem_ may be elsewhere in the code (i.e., you created an object as a factor -- which was unintentional -- and then later tried to perform a string operation on it -- which then actually generates the error). But, working backwards from where the error was triggered is the best place to start.
+
+**Note** The above note about how you can see exactly where the error occurred applies primarily to plain ol' R scripts (`.R` files). Once you start working with RMarkdown and Shiny, you will discover that tracing errors gets a bit trickier. But, that just means learning about a few additional debugging features.  
+
+## Common Issues
+
+Below is a (probably incomplete) list of some common issues that can trigger errors or unexpected results.
+
+* **`=` instead of `<-`**: remember, `=` is for setting values inside functions, while `<-` is the assignment operator.
+* **`=` instead of `==`**: a cousin of the above, when you're thinking "equals" in a conditional statement, you need to think "equals-really-equals"
+* **Using the wrong class**: if you try to pass a factor into a function that expects to deal with strings, you will get an error; likewise, if you pass a string into a function that is expecting a date (or vice versa), you will get an error. The `as.[class]` coercion functions are your buddy here.
+* **Inconsistent spelling (including capitalization**: one of the reasons to develop a consistent [code styel](/habits.html#code_style) is that you're less likely to have a variable named `ga_data` in one spot and `ga_Data` in another spot...and then find yourself pulling your hair out as to why your code isn't working.
+* **Missing comma**: a best practice is to fairly liberally use carriage returns -- get your code running fairly vertically; this makes it more readable, but means that values being passed into a function -- which need to be separated by a comma -- can inadvertently have a comma "dropped" when you're coding, as you simply pressed `Enter` before adding a comma.
+* **Missing `%>%`**: similar to the above -- when using `dplyr`, you will wind up stringing many operations together and, as you're testing and modifying, it is easy to forget a `%>%` that should be at the end of a line.
+* **Missing / misplaced parenthesis**: RStudio does a good job of highlighting the "partner" to any bracket or parenthesis. Use that! If the error is occurring near a spot where you have 3 or more closing parentheses, check that they're all closing out what you expect them to!
+
+## Debug Mode
+
+RStudio has a number of debugging operations that enable you to actually pause, inspect, and step through code as it runs. You can read up on those [here](https://support.rstudio.com/hc/en-us/articles/205612627-Debugging-with-RStudio). They do come in handy, _especially_ when debugging in RMarkdown and Shiny. In straight-up R script, this often isn't necessary. Two debugging techniques that don't rely on specific debugging features:
+
+* **Closely review your code.** If you can walk away for a few minutes or a couple of hours, all the better.
+
+* **"Step through" the code.** Remember that you can run chunks of R code simply by highlighting it and then pressing `Cmd`-`Enter` or `Ctrl`-`Enter`. So, clear your *Environment*, and then start running the code in pieces -- pausing to inspect the *Environment* pane to confirm that the objects -- and their values and classes -- are what you expect.
+
+## RMarkdown
+
+When running RMarkdown, when you fully knit the file, if it errors out, there will be a message as to which chunk the error occurred in. If you haven't named your chunks, then this will simply be `unnamed-chunk-X`. You can count and try to figure out which one that is... _or you can name your chunks as you code!_
+
+The knitting process does not place anything in the **Environment**, so you can't inspect objects when you knit and the process errors out. However, if you run one chunk at a time (clear the **Environment** before you do this, or you risk getting results different than you got when you knitted), the **Environment** _will_ populate, and you can step through what is going on.
+
+## Shiny
+
+Debugging Shiny sucks. If it's not clear from the error where the issue lies (and the sad irony is that intepretation of the errors comes with experience, which means this can be very frustrating to the newer R user), then you really will need to dive into the debugging operations described above. And Shiny is confusing enough as it is. Stick with it, as it will be worth it!

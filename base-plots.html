@@ -450,10 +450,11 @@ pivoted[is.na(pivoted)] &lt;- 0</code></pre>
 <pre class="r"><code>## a simple scatterplot
 plot(sc_ga_data$sessions)</code></pre>
 <p><img src="base-plots_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<pre class="r"><code>## make it a line graph
+<pre class="r"><code>## make it a line graph. Check ?plot() to get a list of the different available types
 plot(sc_ga_data$sessions, type = &quot;l&quot;)</code></pre>
 <p><img src="base-plots_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
-<pre class="r"><code>## plot against date - will error if you pass in a vector of class character, needs Date class
+<pre class="r"><code>## plot against date - will error if you pass in a vector of class character, needs Date class.
+## And, again checking ?plot(), we see how to add a title to the plot.
 plot(as.Date(sc_ga_data$date), sc_ga_data$sessions, type = &quot;l&quot;, main = &quot;Line plot of date vs sessions&quot;)</code></pre>
 <p><img src="base-plots_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
 <p>Once you have a plot, there are some functions such as <code>abline()</code>, <code>lines()</code>, and <code>points()</code> that when you run on the next line will appear over the previous plot:</p>

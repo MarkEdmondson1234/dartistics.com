@@ -421,16 +421,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 
 
-<p><code>ggplot()</code> is one of the most downloaded R packages and probably the one that bought Hadley to fame.</p>
+<p><code>ggplot2</code> is one of the most downloaded R packages and probably the one that brought Hadley Wickham to fame.</p>
 <p>The “grammar of graphics” philosophy it supports not only lets you create professional looking plots, but once you have mastered its syntax should encourage you to think about plots in a more structured manner too.</p>
-<p>The syntax does take time to master though, so do take time to check out the <a href="http://docs.ggplot2.org/current/">ggplot2 website</a> and the <a href="http://www.cookbook-r.com/Graphs/">ggplot2 cookbook</a> which will walk you through common tasks. The author still refers to these!</p>
-<div id="grammar-rules" class="section level2">
-<h2>Grammar rules</h2>
-<p><code>ggplot</code> looks to break down a plot into various categories, that you can build up into a whole plot.</p>
-<p>A brief explanation of the components are below:</p>
+<p>The syntax does take time to master though, so do take time to check out the <a href="http://ggplot2.tidyverse.org/reference/index.html">ggplot2 website</a> and the <a href="http://www.cookbook-r.com/Graphs/">ggplot2 cookbook</a> which will walk you through common tasks. The author still refers to these!</p>
+<div id="the-mindset-for-building-a-plot" class="section level2">
+<h2>The Mindset for “Building” a Plot</h2>
+<p>While there are lots of ways to head down into the weeds, the <em>core</em> of building a ggplot is the following:</p>
+<ol style="list-style-type: decimal">
+<li><p>Call the <code>ggplot()</code> function. Primarily, this just indicates what data set will be plotted (using the <code>data=</code> parameter). And, when possible and when it makes sense, doing some light mapping of that data to core aspects of the plot (using <code>mapping = aes()</code>). Note that you can pass the function more data than you’re actually going to plot, and you can override aspects of both <code>data</code> and <code>mapping</code> in subsequent steps.</p></li>
+<li><p><em>Add</em> (we actually use the <code>+</code> sign) one <em>or more</em> <code>geom</code> functions, which lays out the type of visualization you want. The image lower on this page shows an extensive list of these. One way to think about it is to consider a chart where you want a line for one set of data and a bar for another set of data (a not-too-uncommon thing to do in Excel). This would use a <code>geom_bar()</code> geom and a <code>geom_line()</code> geom. The data <em>set</em> that will be plotted is already specified (in the <code>data=</code> parameter of <code>ggplot()</code>), but we still <em>may</em> need to do some additional <em>mapping</em> within the geom. For instance, if the <code>data=</code> parameter was time-series data that included users, sessions, and pageviews, the <code>mapping=aes()</code> within the <code>geom_line()</code> function would need to specify which of the metrics to plot on the y axis (e.g., <code>geom_line(mapping = aes(y = sessions)))</code>.</p></li>
+<li><p>Optionally (but often needed), <em>add</em> (again, with the plus sign) “theme” specifications. These are used to tweak the styles: how thick of a line around the plot, whether to include major and/or minor x and or y gridlines (and what color and thickness to make them), where to locate the legend (or not to have a legend at all). Typically, we can start with a <a href="http://ggplot2.tidyverse.org/reference/index.html#section-themes">predefined theme</a> and then just tweak (override) specific elements, similar to how CSS can be loaded from external files and then overridden with styles defined more closely to the specific element being formatted on a web page.</p></li>
+</ol>
+<p>There are other aspects of <code>ggplot2</code> that we’re not going to get into here. To scratch the surface, though, below is a brief explanation of each of the components of the <code>ggplot2</code> world:</p>
 <ul>
 <li><em>Data source</em> - its easiest to use a tidy data source in long format</li>
-<li><em>Aesthetics</em> - this specifies which variables in your data will vary and be plotted</li>
+<li><em>Aesthetics</em> - this specifies which variables in your data will vary and be plotted. In many ways, “aesthetics” is a misnomer – you actually control the look and feel of plots using <em>themes</em>. So, if you want a plot that is “aesthetically pleasing,” you will spend more time adjusting the theme applied to the plot – it will have very little to do with the <em>aesthetics</em> (<code>aes()</code>).</li>
 <li><em>Coordinate systems</em> - usually you’ll be in x-y, but polar and more exotic systems are possible</li>
 <li><em>Scales</em> - How your variables map onto the coordinate system (e.g. a log scale)</li>
 <li><em>Statistics</em> - Statistics applied to the data before plotting - most common is binning, such as for histograms, and smoothers such as trend lines</li>
@@ -438,16 +443,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </ul>
 <p>Thinking about what you want to produce via the componenets above will get you to your desired plot quicker.</p>
 </div>
-<div id="what-plot-to-do" class="section level2">
-<h2>What plot to do?</h2>
-<p>Another great resource is the <a href="https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf">ggplot2 cheatsheet</a> which groups geoms by the type of data you have.</p>
+<div id="which-geom-to-use" class="section level2">
+<h2>Which geom…() to Use?</h2>
+<p>A great resource is the <a href="https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf">ggplot2 cheatsheet</a> which groups geoms by the type of data you have. The first page of this cheatsheet is below, and you can always get to it from RStudio by selecting <strong>Help&gt;&gt;Cheatsheets&gt;&gt;Data Visualization with ggplot2</strong>.</p>
 <div class="figure">
 <img src="images/ggplot2_geoms.png" />
 
 </div>
 </div>
-<div id="workflow" class="section level2">
-<h2>Workflow</h2>
+<div id="example-workflow" class="section level2">
+<h2>Example Workflow</h2>
 <p><em>This example requires having a <code>web_data</code> data frame. You can either load up some sample data by completing the <a href="exercise2-io.html">I/O Exercise</a> (which is what is shown in the details below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the <a href="api-google-analytics.html">Google Analytics API page</a>.</em></p>
 <p>Once you have a <code>web_data</code> data frame to work with, the command <code>head(web_data)</code> should return a table that, at least structurally, looks something like this:</p>
 <pre class="r"><code>kable(head(web_data))</code></pre>
@@ -528,22 +533,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </tbody>
 </table>
 <p>Now, we can get to visualizing!</p>
-<ol style="list-style-type: decimal">
-<li>First get your data ready and tidy. Whilst its possible to use “wide” data, I find it easiest to always start with tidy “long” data, so you can quickly repeat what you have learnt before.</li>
-</ol>
-<pre class="r"><code>## To date I have been using reshape2&#39;s melt() to make the long data:
-library(reshape2)
-web_data_long &lt;- melt(web_data)
-head(web_data_long)</code></pre>
-<pre><code>##         date channelGrouping deviceCategory variable value
-## 1 2016-01-01         (Other)        desktop        X     1
-## 2 2016-01-01         (Other)         mobile        X     2
-## 3 2016-01-01         (Other)         tablet        X     3
-## 4 2016-01-01          Direct        desktop        X     4
-## 5 2016-01-01          Direct         mobile        X     5
-## 6 2016-01-01          Direct         tablet        X     6</code></pre>
-<pre class="r"><code>## But you should (and I) use the newer tidyr() package and use gather() instead:
+<div id="get-the-data-ready-and-tidy" class="section level3">
+<h3>1. Get the Data Ready and Tidy</h3>
+<p>While it’s possible to use “wide” data, it’s generally easiest to always <em>start</em> with tidy “long” data, so you can quickly repeat what you have learned/applied before.</p>
+<pre class="r"><code>## We can use the newer tidyr() package the gather() function to tidy up the data
 library(tidyr)
+
 ## call the key column &#39;variable&#39; and the value colum &#39;value&#39; and 
 ## gather all variables apart from date, channelGrouping and deviceCategory
 web_data_tidy &lt;- web_data %&gt;% gather(variable, value, -date, -channelGrouping, -deviceCategory)
@@ -555,10 +550,12 @@ head(web_data_tidy)</code></pre>
 ## 4 2016-01-01          Direct        desktop        X     4
 ## 5 2016-01-01          Direct         mobile        X     5
 ## 6 2016-01-01          Direct         tablet        X     6</code></pre>
-<ol start="2" style="list-style-type: decimal">
-<li>Make sure all your columns are the right class. In this case, I make the date column a <code>Date</code> object.</li>
-</ol>
-<p>You could also choose to make factors out of your categories, as they let you set the order of colours in legends a bit easier.</p>
+</div>
+<div id="make-sure-all-of-the-columns-are-the-right-class" class="section level3">
+<h3>2. Make Sure All of the Columns are the Right Class</h3>
+<p>In this case, we’re going to make the date column a <code>Date</code> object.</p>
+<p>You could also choose to make factors out of your categories, as they let you set the order of colours in the legends a bit easier.</p>
+<p><strong>Note</strong>: Outside of applying statistical methods, converting columns to be factors will often come into play when you want to control the order of nominal or ordinal variables. This gets a little confusing, in that there are “unordered” factors and “ordered” factors, and you do <em>not</em> actually need an ordered factor to contro the order in a plot (!). We’re not going to dive into this here, as that’s heading down into the weeds a bit. But, make a mental note that order <em>can</em> be controlled when using nonmetric variables. And it’s a quick Google search to get the specifics.</p>
 <pre class="r"><code>str(web_data_tidy)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    28660 obs. of  5 variables:
 ##  $ date           : chr  &quot;2016-01-01&quot; &quot;2016-01-01&quot; &quot;2016-01-01&quot; &quot;2016-01-01&quot; ...
@@ -571,16 +568,18 @@ head(web_data_tidy)</code></pre>
 ## we will only look at sessions
 library(dplyr)
 plot_data &lt;- web_data_tidy %&gt;% filter(variable == &quot;sessions&quot;)</code></pre>
-<ol start="3" style="list-style-type: decimal">
-<li>Start up a gg object with a <code>ggplot()</code> call including your data, and any known aesthetics you want to apply to all plots. I tend to also set the theme here, favouring a minimal look using <code>theme_minimal</code>.</li>
-</ol>
+</div>
+<div id="create-a-plot-object-called-gg" class="section level3">
+<h3>3. Create a Plot Object Called <code>gg</code></h3>
+<p>We can use the <code>ggplot()</code> function to create a plot that we’re going to call <code>gg</code>. This call includes your data and any known aesthetics (mappings) that you want to apply to all of the plots that you will layer in. We can also go ahead and set the basic theme here. <code>theme_minimal()</code> is a nice, clean one to start with.</p>
 <p>As we have made “long” tidy data, we know that our x variable will be <code>date</code>, but also our y variable will be in the <code>value</code> column, so we can set these as defaults in the <code>aes()</code> (aesthetics) call:</p>
 <pre class="r"><code>library(ggplot2)
 ## I don&#39;t know why, but I always call them gg
 gg &lt;- ggplot(data = plot_data, aes(x = date, y = value)) + theme_minimal()</code></pre>
-<ol start="4" style="list-style-type: decimal">
-<li>Now the fun begins - experiment with adding various elements to your <code>gg</code> object using <code>+</code>. Once you have found something you want to keep, assign it to <code>gg</code> and then carry on to the next feature.</li>
-</ol>
+</div>
+<div id="let-the-fun-begin" class="section level3">
+<h3>Let the Fun Begin!</h3>
+<p>Experiment with adding various elements to your <code>gg</code> object using <code>+</code>. Once you have found something you want to keep, assign it to <code>gg</code> and then carry on to the next feature.</p>
 <p>Any aesthetics or statistics you haven’t specified in the global line, you will need to add in the <code>geom</code> you are adding. Note that because we have put the data in the first line, we don’t need to specify it again.</p>
 <pre class="r"><code>## let&#39;s make some line plots
 gg + geom_line()</code></pre>
@@ -620,6 +619,7 @@ gg</code></pre>
 <blockquote>
 <p>Disclaimer, I don’t think area plots are very clear but they look pretty ;)</p>
 </blockquote>
+</div>
 </div>
 
 

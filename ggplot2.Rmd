@@ -2,20 +2,26 @@
 title: "ggplot2"
 ---
 
-`ggplot()` is one of the most downloaded R packages and probably the one that bought Hadley to fame.  
+`ggplot2` is one of the most downloaded R packages and probably the one that brought Hadley Wickham to fame.  
 
 The "grammar of graphics" philosophy it supports not only lets you create professional looking plots, but once you have mastered its syntax should encourage you to think about plots in a more structured manner too.
 
-The syntax does take time to master though, so do take time to check out the [ggplot2 website](http://docs.ggplot2.org/current/) and the [ggplot2 cookbook](http://www.cookbook-r.com/Graphs/) which will walk you through common tasks.  The author still refers to these!
+The syntax does take time to master though, so do take time to check out the [ggplot2 website](http://ggplot2.tidyverse.org/reference/index.html) and the [ggplot2 cookbook](http://www.cookbook-r.com/Graphs/) which will walk you through common tasks.  The author still refers to these!
 
-## Grammar rules
+## The Mindset for "Building" a Plot
 
-`ggplot` looks to break down a plot into various categories, that you can build up into a whole plot.
+While there are lots of ways to head down into the weeds, the _core_ of building a ggplot is the following:
 
-A brief explanation of the components are below:
+1. Call the `ggplot()` function. Primarily, this just indicates what data set will be plotted (using the `data=` parameter). And, when possible and when it makes sense, doing some light mapping of that data to core aspects of the plot (using `mapping = aes()`). Note that you can pass the function more data than you're actually going to plot, and you can override aspects of both `data` and `mapping` in subsequent steps.
+
+2. _Add_ (we actually use the `+` sign) one _or more_ `geom` functions, which lays out the type of visualization you want. The image lower on this page shows an extensive list of these. One way to think about it is to consider a chart where you want a line for one set of data and a bar for another set of data (a not-too-uncommon thing to do in Excel). This would use a `geom_bar()` geom and a `geom_line()` geom. The data _set_ that will be plotted is already specified (in the `data=` parameter of `ggplot()`), but we still _may_ need to do some additional _mapping_ within the geom. For instance, if the `data=` parameter was time-series data that included users, sessions, and pageviews, the `mapping=aes()` within the `geom_line()` function would need to specify which of the metrics to plot on the y axis (e.g., `geom_line(mapping = aes(y = sessions)))`.
+
+3. Optionally (but often needed), _add_ (again, with the plus sign) "theme" specifications. These are used to tweak the styles: how thick of a line around the plot, whether to include major and/or minor x and or y gridlines (and what color and thickness to make them), where to locate the legend (or not to have a legend at all). Typically, we can start with a [predefined theme](http://ggplot2.tidyverse.org/reference/index.html#section-themes) and then just tweak (override) specific elements, similar to how CSS can be loaded from external files and then overridden with styles defined more closely to the specific element being formatted on a web page.
+
+There are other aspects of `ggplot2` that we're not going to get into here. To scratch the surface, though, below is a brief explanation of each of the components of the `ggplot2` world:
 
 * *Data source* - its easiest to use a tidy data source in long format
-* *Aesthetics* - this specifies which variables in your data will vary and be plotted
+* *Aesthetics* - this specifies which variables in your data will vary and be plotted. In many ways, "aesthetics" is a misnomer -- you actually control the look and feel of plots using _themes_. So, if you want a plot that is "aesthetically pleasing," you will spend more time adjusting the theme applied to the plot -- it will have very little to do with the _aesthetics_ (`aes()`).
 * *Coordinate systems* - usually you'll be in x-y, but polar and more exotic systems are possible
 * *Scales* - How your variables map onto the coordinate system (e.g. a log scale)
 * *Statistics* - Statistics applied to the data before plotting - most common is binning, such as for histograms, and smoothers such as trend lines
@@ -23,13 +29,13 @@ A brief explanation of the components are below:
 
 Thinking about what you want to produce via the componenets above will get you to your desired plot quicker. 
 
-## What plot to do?
+## Which geom...() to Use?
 
-Another great resource is the [ggplot2 cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf) which groups geoms by the type of data you have.  
+A great resource is the [ggplot2 cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf) which groups geoms by the type of data you have. The first page of this cheatsheet is below, and you can always get to it from RStudio by selecting **Help>>Cheatsheets>>Data Visualization with ggplot2**.  
 
 ![](images/ggplot2_geoms.png)
 
-## Workflow
+## Example Workflow
 
 _This example requires having a `web_data` data frame. You can either load up some sample data by completing the [I/O Exercise](exercise2-io.html) (which is what is shown in the details below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the [Google Analytics API page](api-google-analytics.html)._
 
@@ -46,25 +52,27 @@ kable(head(web_data))
 
 Now, we can get to visualizing!
 
-1. First get your data ready and tidy.  Whilst its possible to use "wide" data, I find it easiest to always start with tidy "long" data, so you can quickly repeat what you have learnt before.
+### 1. Get the Data Ready and Tidy  
+
+While it's possible to use "wide" data, it's generally easiest to always _start_ with tidy "long" data, so you can quickly repeat what you have learned/applied before.
 
 ```{r ggplot2, message=FALSE}
-## To date I have been using reshape2's melt() to make the long data:
-library(reshape2)
-web_data_long <- melt(web_data)
-head(web_data_long)
-
-## But you should (and I) use the newer tidyr() package and use gather() instead:
+## We can use the newer tidyr() package the gather() function to tidy up the data
 library(tidyr)
+
 ## call the key column 'variable' and the value colum 'value' and 
 ## gather all variables apart from date, channelGrouping and deviceCategory
 web_data_tidy <- web_data %>% gather(variable, value, -date, -channelGrouping, -deviceCategory)
 head(web_data_tidy)
 ```
 
-2. Make sure all your columns are the right class.  In this case, I make the date column a `Date` object.
+### 2. Make Sure All of the Columns are the Right Class 
 
-You could also choose to make factors out of your categories, as they let you set the order of colours in legends a bit easier. 
+In this case, we're going to make the date column a `Date` object.
+
+You could also choose to make factors out of your categories, as they let you set the order of colours in the legends a bit easier.
+
+**Note**: Outside of applying statistical methods, converting columns to be factors will often come into play when you want to control the order of nominal or ordinal variables. This gets a little confusing, in that there are "unordered" factors and "ordered" factors, and you do _not_ actually need an ordered factor to contro the order in a plot (!). We're not going to dive into this here, as that's heading down into the weeds a bit. But, make a mental note that order _can_ be controlled when using nonmetric variables. And it's a quick Google search to get the specifics.
 
 ```{r message=FALSE}
 str(web_data_tidy)
@@ -77,7 +85,9 @@ plot_data <- web_data_tidy %>% filter(variable == "sessions")
 
 ```
 
-3. Start up a gg object with a `ggplot()` call including your data, and any known aesthetics you want to apply to all plots.  I tend to also set the theme here, favouring a minimal look using `theme_minimal`.
+### 3. Create a Plot Object Called `gg`
+
+We can use the `ggplot()` function to create a plot that we're going to call `gg`. This call includes your data and any known aesthetics (mappings) that you want to apply to all of the plots that you will layer in. We can also go ahead and set the basic theme here. `theme_minimal()` is a nice, clean one to start with.
 
 As we have made "long" tidy data, we know that our x variable will be `date`, but also our y variable will be in the `value` column, so we can set these as defaults in the `aes()` (aesthetics) call:
 
@@ -87,7 +97,9 @@ library(ggplot2)
 gg <- ggplot(data = plot_data, aes(x = date, y = value)) + theme_minimal()
 ```
 
-4. Now the fun begins - experiment with adding various elements to your `gg` object using `+`.  Once you have found something you want to keep, assign it to `gg` and then carry on to the next feature.
+### Let the Fun Begin!
+
+Experiment with adding various elements to your `gg` object using `+`.  Once you have found something you want to keep, assign it to `gg` and then carry on to the next feature.
 
 Any aesthetics or statistics you haven't specified in the global line, you will need to add in the `geom` you are adding.  Note that because we have put the data in the first line, we don't need to specify it again.
 

@@ -17,8 +17,6 @@ web_data <- web_data[,2:5]
 
 ```
 
-```
-
 We've touched on this subject already, but a more detailed look at the types -- "classes" -- of objects R uses is worthwhile.
 
 # Useful Class Functions

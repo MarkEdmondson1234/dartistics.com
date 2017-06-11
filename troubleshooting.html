@@ -11,7 +11,7 @@
 
 
 
-<title>RMarkdown</title>
+<title>.Renviron</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -367,6 +367,9 @@ div.tocify {
       <a href="api-other.html">Other APIs</a>
     </li>
     <li>
+      <a href="renviron.html">.Renviron</a>
+    </li>
+    <li>
       <a href="creating-apis.html">Creating API libraries</a>
     </li>
   </ul>
@@ -477,6 +480,9 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="troubleshooting.html">Troubleshooting</a>
+    </li>
+    <li>
       <a href="resources.html">Useful Links</a>
     </li>
     <li>
@@ -514,80 +520,55 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-<h1 class="title toc-ignore">RMarkdown</h1>
+<h1 class="title toc-ignore">.Renviron</h1>
 
 </div>
 
 
-<p>This website is generated using RMarkdown.</p>
-<p>RMarkdown is great for creating quick professional looking reports, with embedded R function output with or without the code that created them. Obviously, when presenting to stakeholders, the “code that created them” is not something you ever really want. But, that is <em>very</em> handy if you’re actually documenting what data was pulled and how. And, of course, we’re revealing the code quite a bit in the examples on this site.</p>
-<div id="what-is-rmarkdown" class="section level2">
-<h2>What is (R)Markdown?</h2>
-<p>“Markdown” is “lightweight” <em>markup language</em> (yeah… markdown is markup…). HTML is <strong>H</strong>yper<strong>T</strong>ext <strong>M</strong>arkup <strong>L</strong>anguage designed specifically for delivering web pages. Mark_down_, generically, is much simpler, and it’s not wedded to any particular output format.</p>
-<p>“RMarkdown” is the R-specific version of markdown. It isn’t infinitely flexible, but it’s still quite rich in what it can render as output. At it’s core, though, it’s just a text file that uses a specific syntax.</p>
-<p>Once you pivot to a specific output format – PDF, HTML, MS Word, slides, books, websites (like this one) – you can start to further extend the formatting options. Sometimes that comes with some complexity, but it’s all generally pretty manageable.</p>
-</div>
-<div id="r-nope.-.rmd" class="section level2">
-<h2>.R? Nope. .Rmd!</h2>
-<p>R scripts (typically) have a <code>.R</code> file extension. RMarkdown files, instead, have a <code>.Rmd</code> extension. When you create an RMarkdown file (<strong>File &gt;&gt; New File &gt;&gt; RMarkdown…</strong>) the script editor will have some additional options at the top of it.</p>
-<p>The top of the script editor in RStudio looks like this if you’re editing an R script:</p>
-<div class="figure">
-<img src="images/script_editor_header_script.jpg" />
-
-</div>
-<p>Contrast that with what it looks like when you open a <code>.Rmd</code> file:</p>
-<div class="figure">
-<img src="images/script_editor_header_rmarkdown.jpg" />
-
-</div>
-<p>What is <strong>Knit?!</strong> Well, we “<strong>Source</strong>” R scripts to execute an entire file. We “<strong>Knit</strong>” RMarkdown files. Basically, that just means a separate engine goes through the file, converts it to “true” markdown, executes any code embedded in the file, generates output from that code, and then builds the final output.</p>
-<p>This web page, for instance, is a file called <code>basic-rmarkdown.Rmd</code>. Whenever we knit it, it generates a file called <code>basic-rmarkdown.html</code>, which is the actual file you are viewing right now.</p>
-</div>
-<div id="basic-formatting" class="section level2">
-<h2>Basic Formatting</h2>
-<p>There are some great and easily accessible resources for getting the basics of formatting with RMarkdown. <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a> is an easy-to-use reference, but so are the links available from the <strong>Help</strong> menu inside RStudio:</p>
-<div class="figure">
-<img src="images\rstudio_cheatsheets.jpg" />
-
-</div>
-<p>Take a minute to check out the **<a href="https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf">R Markdown Reference Guide</a> to see how <code>#</code>, <code>_</code>, <code>*</code>, and <code>[]</code> get put to use to indicate heading styles, bold and italicized text, bullets, links, and images. It’s an easy “language” to learn!</p>
-</div>
-<div id="inserting-code" class="section level2">
-<h2>Inserting Code</h2>
-<p>Simply being able to insert and style text and images isn’t the real power of RMarkdown. The real power comes from embedding code in the file. Think of a weekly report that you need to compile. You can use the <code>Sys.Date()</code> function to dynamically determine the start and end dates for the data in the report, and then, every time the <code>.Rmd</code> file gets “knitted,” the data that it uses will dynamically update to the most appropriate timeframe.</p>
-</div>
-<div id="exercise-make-some-slides" class="section level2">
-<h2>Exercise: Make Some Slides</h2>
-<p>In this exercise, we’re going to create a simple set of slides and put some very simple code in them:</p>
-<ol style="list-style-type: decimal">
-<li>Select <strong>File&gt;&gt;New File&gt;&gt;RMarkdown</strong></li>
-<li>Select <strong>Presentation</strong> and <strong>HTML (ioslides)</strong></li>
-<li>Give the presentation a name like “My First RMarkdown.” You should now have a shell RMarkdown document.</li>
-<li>Go ahead and click <strong>Knit</strong>. You will be prompted to save the file first, so go ahead and do that. The result will be a simple 5-slide deck.</li>
-<li>Go ahead and close the window with the presentation.</li>
-<li>Delete the “Slide with bullets” slide (the <code>##</code> serves as both a “Heading 2” and, in this case, as the indicator that it is a new slide)</li>
-<li>Add a new slide after the <strong>R Markdown</strong> slide with a title of “Today’s Date”</li>
-<li>For this slide, we’ll do full R Code, so place the cursor below the title and click the <strong>Insert</strong> button and select <strong>R</strong> to generate the RMarkdown syntax for embedding R code. This syntax is so simple that it’s almost faster to just type it!</li>
-<li>For the code – inside the gray area – simply type <code>Sys.Date()</code></li>
-<li><strong>Knit</strong> the presentation and check out the slide. It’s not pretty, but it’s displaying the results of a function!</li>
-<li>Go back into the editor and add <em>inline</em> code. On the same slide, but <em>after</em> the closing <code>```</code>’s, enter <code>Put more cleanly, today is</code>, then insert a single backtick, the letter “r”, <code>Sys.Date()</code>, and then another single backtick.</li>
-<li><strong>Knit</strong> the presentation again.</li>
-</ol>
-<p><strong>Extra credit</strong>: Create a new slide that uses the <code>ggplot</code> code we created earlier!</p>
-<p>That’s the basics of RMarkdown. There is a lot more to it – a LOT – but we’ll cover that in the <a href="advanced-rmarkdown.html">Advanced RMarkdown</a> section!</p>
-</div>
-<div id="a-few-more-notes" class="section level2">
-<h2>A Few More Notes</h2>
-<p>A few handy tips:</p>
+<p>R has robust troubleshooting / debugging capabilities. It also can have maddeningly frustrating and unhelpful error messages (“WTF is a unary operator?!” you will almost certainly exclaim at some point). At the end of the day, most errors come from one of a handful of issues:</p>
 <ul>
-<li>Inside curly braces where you initiate a block of R code, there are two things you can add:
-<ul>
-<li>A <em>name</em> for the snippet. This can be handy for troubleshooting where the knitting process is breaking (but, if a snippet has a name, it has to be unique across all snippets in the file)</li>
-<li>You can add parameters like <code>echo</code>, <code>include</code>, <code>eval</code>, and <code>warnings</code> and more to control which aspects of the underlying code actually get displayed and/or executed. Read more about those <a href="http://rmarkdown.rstudio.com/authoring_rcodechunks.html">here</a> and <a href="https://yihui.name/knitr/options/">here</a>.</li>
-</ul></li>
-<li>When you knit an entire document, nothing shows up in your <strong>Environment</strong>. That can make it pesky to troubleshoot. But, just like any R script, you can execute a single line of code in a code snippet by placing your cursor in the line and pressing <code>&lt;Ctrl&gt;</code>-<code>&lt;Enter&gt;</code>. You can highlight multiple lines of code and press <code>&lt;Ctrl&gt;</code>-<code>&lt;Enter&gt;</code> to execute all of those lines. And, you can select <strong>Run&gt;&gt;Run Current Chunk</strong> <em>or</em> press <code>&lt;Ctrl&gt;</code>-<code>Shift</code>-<code>&lt;Enter&gt;</code> to run the current chunk of code. This will both generate the results (if there are any) inline <em>and</em> will create any objects in the <strong>Environment</strong> for you to inspect (or further manipulate).</li>
-<li>It <em>can</em> sometimes be easier to initially write the code as a <code>.R</code> script and then bring it into a <code>.Rmd</code> file once you have the guts of the code working.</li>
+<li>A silly typographical mistake</li>
+<li>An attempt to perform an operation on data that can’t be performed</li>
+<li>A bug in a package</li>
 </ul>
+<p>9 times out of 10, when you are confident that there is a bug in a package… you will be wrong.</p>
+<p>One of the challenges in debugging is that many of the functions you will use are available because you have loaded a package. The operation of those functions, in turn, generally rely on other functions behind the scenes, and <em>those</em> functions may live in yet other packages. So, it’s not uncommon to get an error message from wayyyyy down a dark hole of functions within functions, and it’s difficult to make heads or tails of what you actually did wrong.</p>
+<p>The more you code, the more adept you will get at troubleshooting.</p>
+<div id="warnings-vs.errors" class="section level2">
+<h2>Warnings vs. Errors</h2>
+<p>Both warnings and errors show up as red text in the console when a script runs. Warnings can, often, be ignored, but you shouldn’t just immediately ignore them. Try to figure out what they’re saying, what’s causing them, and, if possible, update your script to correct for them.</p>
+<p>Errors, on the other hand, will actually halt the codes execution unless you include error handling in your script. When a script errors out, you can see from the message exactly where the error occurred. The actual <em>problem</em> may be elsewhere in the code (i.e., you created an object as a factor – which was unintentional – and then later tried to perform a string operation on it – which then actually generates the error). But, working backwards from where the error was triggered is the best place to start.</p>
+<p><strong>Note</strong> The above note about how you can see exactly where the error occurred applies primarily to plain ol’ R scripts (<code>.R</code> files). Once you start working with RMarkdown and Shiny, you will discover that tracing errors gets a bit trickier. But, that just means learning about a few additional debugging features.</p>
+</div>
+<div id="common-issues" class="section level2">
+<h2>Common Issues</h2>
+<p>Below is a (probably incomplete) list of some common issues that can trigger errors or unexpected results.</p>
+<ul>
+<li><strong><code>=</code> instead of <code>&lt;-</code></strong>: remember, <code>=</code> is for setting values inside functions, while <code>&lt;-</code> is the assignment operator.</li>
+<li><strong><code>=</code> instead of <code>==</code></strong>: a cousin of the above, when you’re thinking “equals” in a conditional statement, you need to think “equals-really-equals”</li>
+<li><strong>Using the wrong class</strong>: if you try to pass a factor into a function that expects to deal with strings, you will get an error; likewise, if you pass a string into a function that is expecting a date (or vice versa), you will get an error. The <code>as.[class]</code> coercion functions are your buddy here.</li>
+<li><strong>Inconsistent spelling (including capitalization</strong>: one of the reasons to develop a consistent <a href="/habits.html#code_style">code styel</a> is that you’re less likely to have a variable named <code>ga_data</code> in one spot and <code>ga_Data</code> in another spot…and then find yourself pulling your hair out as to why your code isn’t working.</li>
+<li><strong>Missing comma</strong>: a best practice is to fairly liberally use carriage returns – get your code running fairly vertically; this makes it more readable, but means that values being passed into a function – which need to be separated by a comma – can inadvertently have a comma “dropped” when you’re coding, as you simply pressed <code>Enter</code> before adding a comma.</li>
+<li><strong>Missing <code>%&gt;%</code></strong>: similar to the above – when using <code>dplyr</code>, you will wind up stringing many operations together and, as you’re testing and modifying, it is easy to forget a <code>%&gt;%</code> that should be at the end of a line.</li>
+<li><strong>Missing / misplaced parenthesis</strong>: RStudio does a good job of highlighting the “partner” to any bracket or parenthesis. Use that! If the error is occurring near a spot where you have 3 or more closing parentheses, check that they’re all closing out what you expect them to!</li>
+</ul>
+</div>
+<div id="debug-mode" class="section level2">
+<h2>Debug Mode</h2>
+<p>RStudio has a number of debugging operations that enable you to actually pause, inspect, and step through code as it runs. You can read up on those <a href="https://support.rstudio.com/hc/en-us/articles/205612627-Debugging-with-RStudio">here</a>. They do come in handy, <em>especially</em> when debugging in RMarkdown and Shiny. In straight-up R script, this often isn’t necessary. Two debugging techniques that don’t rely on specific debugging features:</p>
+<ul>
+<li><p><strong>Closely review your code.</strong> If you can walk away for a few minutes or a couple of hours, all the better.</p></li>
+<li><p><strong>“Step through” the code.</strong> Remember that you can run chunks of R code simply by highlighting it and then pressing <code>Cmd</code>-<code>Enter</code> or <code>Ctrl</code>-<code>Enter</code>. So, clear your <em>Environment</em>, and then start running the code in pieces – pausing to inspect the <em>Environment</em> pane to confirm that the objects – and their values and classes – are what you expect.</p></li>
+</ul>
+</div>
+<div id="rmarkdown" class="section level2">
+<h2>RMarkdown</h2>
+<p>When running RMarkdown, when you fully knit the file, if it errors out, there will be a message as to which chunk the error occurred in. If you haven’t named your chunks, then this will simply be <code>unnamed-chunk-X</code>. You can count and try to figure out which one that is… <em>or you can name your chunks as you code!</em></p>
+<p>The knitting process does not place anything in the <strong>Environment</strong>, so you can’t inspect objects when you knit and the process errors out. However, if you run one chunk at a time (clear the <strong>Environment</strong> before you do this, or you risk getting results different than you got when you knitted), the <strong>Environment</strong> <em>will</em> populate, and you can step through what is going on.</p>
+</div>
+<div id="shiny" class="section level2">
+<h2>Shiny</h2>
+<p>Debugging Shiny sucks. If it’s not clear from the error where the issue lies (and the sad irony is that intepretation of the errors comes with experience, which means this can be very frustrating to the newer R user), then you really will need to dive into the debugging operations described above. And Shiny is confusing enough as it is. Stick with it, as it will be worth it!</p>
 </div>
 
 

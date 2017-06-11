@@ -589,11 +589,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 <div id="our-first-real-script" class="section level2">
 <h2>Our First Real Script</h2>
-<p><em>We’re going to do a few things here that wouldn’t exactly be how you would work typically. But, that’s okay:</em> * <em>We’ll get to accessing web analytics data via APIs in a bit, but we’re going to just work with a static data export for now.</em> * <em>We’re working in a web-based environment rather than your local machine, which makes things a little different.</em></p>
+<p><em>We’re going to do a few things here that wouldn’t exactly be how you would work typically. But, that’s okay:</em></p>
+<ul>
+<li><em>We’ll get to accessing web analytics data via APIs in a bit, but we’re going to just work with a static data export for now.</em></li>
+<li><em>You may be working in a web-based environment rather than your local machine, which makes things a little different.</em></li>
+</ul>
 <div id="get-our-sample-data" class="section level3">
 <h3>Get Our Sample Data</h3>
 <p>Download the .csv file at <a href="http://bit.ly/rSampleGA" class="uri">http://bit.ly/rSampleGA</a>. Pay attention to to where this file – td.csv – gets stored.</p>
-<p>Click <strong>Upload File</strong> in the lower right pane in RStudio and upload td.csv. You should now see it in the <strong>Files</strong> tab.</p>
+<p><strong>If you are running RStudio from a web browser</strong>, then go to the <strong>Files</strong> tab in the lower right pane, click <strong>Upload File</strong>, and upload td.csv. You should now see it in the <strong>Files</strong> tab.</p>
+<p><strong>If you are running RStudio locally</strong>, then type <code>getwd()</code> in the console, make note of the file path that it returns, and then use Finder / Windows Explorer to move <code>td.csv</code> to that location.</p>
 </div>
 <div id="set-up-an-empty-script" class="section level3">
 <h3>Set Up an Empty Script</h3>

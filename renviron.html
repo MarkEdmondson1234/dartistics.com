@@ -11,7 +11,7 @@
 
 
 
-<title>RMarkdown</title>
+<title>.Renviron</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -514,80 +514,60 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-<h1 class="title toc-ignore">RMarkdown</h1>
+<h1 class="title toc-ignore">.Renviron</h1>
 
 </div>
 
 
-<p>This website is generated using RMarkdown.</p>
-<p>RMarkdown is great for creating quick professional looking reports, with embedded R function output with or without the code that created them. Obviously, when presenting to stakeholders, the “code that created them” is not something you ever really want. But, that is <em>very</em> handy if you’re actually documenting what data was pulled and how. And, of course, we’re revealing the code quite a bit in the examples on this site.</p>
-<div id="what-is-rmarkdown" class="section level2">
-<h2>What is (R)Markdown?</h2>
-<p>“Markdown” is “lightweight” <em>markup language</em> (yeah… markdown is markup…). HTML is <strong>H</strong>yper<strong>T</strong>ext <strong>M</strong>arkup <strong>L</strong>anguage designed specifically for delivering web pages. Mark_down_, generically, is much simpler, and it’s not wedded to any particular output format.</p>
-<p>“RMarkdown” is the R-specific version of markdown. It isn’t infinitely flexible, but it’s still quite rich in what it can render as output. At it’s core, though, it’s just a text file that uses a specific syntax.</p>
-<p>Once you pivot to a specific output format – PDF, HTML, MS Word, slides, books, websites (like this one) – you can start to further extend the formatting options. Sometimes that comes with some complexity, but it’s all generally pretty manageable.</p>
-</div>
-<div id="r-nope.-.rmd" class="section level2">
-<h2>.R? Nope. .Rmd!</h2>
-<p>R scripts (typically) have a <code>.R</code> file extension. RMarkdown files, instead, have a <code>.Rmd</code> extension. When you create an RMarkdown file (<strong>File &gt;&gt; New File &gt;&gt; RMarkdown…</strong>) the script editor will have some additional options at the top of it.</p>
-<p>The top of the script editor in RStudio looks like this if you’re editing an R script:</p>
-<div class="figure">
-<img src="images/script_editor_header_script.jpg" />
-
-</div>
-<p>Contrast that with what it looks like when you open a <code>.Rmd</code> file:</p>
-<div class="figure">
-<img src="images/script_editor_header_rmarkdown.jpg" />
-
-</div>
-<p>What is <strong>Knit?!</strong> Well, we “<strong>Source</strong>” R scripts to execute an entire file. We “<strong>Knit</strong>” RMarkdown files. Basically, that just means a separate engine goes through the file, converts it to “true” markdown, executes any code embedded in the file, generates output from that code, and then builds the final output.</p>
-<p>This web page, for instance, is a file called <code>basic-rmarkdown.Rmd</code>. Whenever we knit it, it generates a file called <code>basic-rmarkdown.html</code>, which is the actual file you are viewing right now.</p>
-</div>
-<div id="basic-formatting" class="section level2">
-<h2>Basic Formatting</h2>
-<p>There are some great and easily accessible resources for getting the basics of formatting with RMarkdown. <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a> is an easy-to-use reference, but so are the links available from the <strong>Help</strong> menu inside RStudio:</p>
-<div class="figure">
-<img src="images\rstudio_cheatsheets.jpg" />
-
-</div>
-<p>Take a minute to check out the **<a href="https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf">R Markdown Reference Guide</a> to see how <code>#</code>, <code>_</code>, <code>*</code>, and <code>[]</code> get put to use to indicate heading styles, bold and italicized text, bullets, links, and images. It’s an easy “language” to learn!</p>
-</div>
-<div id="inserting-code" class="section level2">
-<h2>Inserting Code</h2>
-<p>Simply being able to insert and style text and images isn’t the real power of RMarkdown. The real power comes from embedding code in the file. Think of a weekly report that you need to compile. You can use the <code>Sys.Date()</code> function to dynamically determine the start and end dates for the data in the report, and then, every time the <code>.Rmd</code> file gets “knitted,” the data that it uses will dynamically update to the most appropriate timeframe.</p>
-</div>
-<div id="exercise-make-some-slides" class="section level2">
-<h2>Exercise: Make Some Slides</h2>
-<p>In this exercise, we’re going to create a simple set of slides and put some very simple code in them:</p>
-<ol style="list-style-type: decimal">
-<li>Select <strong>File&gt;&gt;New File&gt;&gt;RMarkdown</strong></li>
-<li>Select <strong>Presentation</strong> and <strong>HTML (ioslides)</strong></li>
-<li>Give the presentation a name like “My First RMarkdown.” You should now have a shell RMarkdown document.</li>
-<li>Go ahead and click <strong>Knit</strong>. You will be prompted to save the file first, so go ahead and do that. The result will be a simple 5-slide deck.</li>
-<li>Go ahead and close the window with the presentation.</li>
-<li>Delete the “Slide with bullets” slide (the <code>##</code> serves as both a “Heading 2” and, in this case, as the indicator that it is a new slide)</li>
-<li>Add a new slide after the <strong>R Markdown</strong> slide with a title of “Today’s Date”</li>
-<li>For this slide, we’ll do full R Code, so place the cursor below the title and click the <strong>Insert</strong> button and select <strong>R</strong> to generate the RMarkdown syntax for embedding R code. This syntax is so simple that it’s almost faster to just type it!</li>
-<li>For the code – inside the gray area – simply type <code>Sys.Date()</code></li>
-<li><strong>Knit</strong> the presentation and check out the slide. It’s not pretty, but it’s displaying the results of a function!</li>
-<li>Go back into the editor and add <em>inline</em> code. On the same slide, but <em>after</em> the closing <code>```</code>’s, enter <code>Put more cleanly, today is</code>, then insert a single backtick, the letter “r”, <code>Sys.Date()</code>, and then another single backtick.</li>
-<li><strong>Knit</strong> the presentation again.</li>
-</ol>
-<p><strong>Extra credit</strong>: Create a new slide that uses the <code>ggplot</code> code we created earlier!</p>
-<p>That’s the basics of RMarkdown. There is a lot more to it – a LOT – but we’ll cover that in the <a href="advanced-rmarkdown.html">Advanced RMarkdown</a> section!</p>
-</div>
-<div id="a-few-more-notes" class="section level2">
-<h2>A Few More Notes</h2>
-<p>A few handy tips:</p>
+<p>Once you start working with APIs, you will find yourself working with keys and tokens and shared secrets (shhhhh!!!) and the like. To the extent possible, you should <em>avoid putting those sorts of things directly in your code</em>. The reason is quite simple: depending on the platform and its API, those alphanumeric identifiers may very well unlock access to your data for anyone who comes into possession of them. Or, if not unlocking access to your data, they can enable others to use cloud-based resources (like the Google Cloud platform) that can cost you money!</p>
+<p>R has a good way to drastically reduce the risk of this occurring. It’s up to you to take advantage of that mechanism, though.</p>
+<div id="r-startup-files" class="section level2">
+<h2>R Startup Files</h2>
+<p>R has a couple of “startup” files:</p>
 <ul>
-<li>Inside curly braces where you initiate a block of R code, there are two things you can add:
-<ul>
-<li>A <em>name</em> for the snippet. This can be handy for troubleshooting where the knitting process is breaking (but, if a snippet has a name, it has to be unique across all snippets in the file)</li>
-<li>You can add parameters like <code>echo</code>, <code>include</code>, <code>eval</code>, and <code>warnings</code> and more to control which aspects of the underlying code actually get displayed and/or executed. Read more about those <a href="http://rmarkdown.rstudio.com/authoring_rcodechunks.html">here</a> and <a href="https://yihui.name/knitr/options/">here</a>.</li>
-</ul></li>
-<li>When you knit an entire document, nothing shows up in your <strong>Environment</strong>. That can make it pesky to troubleshoot. But, just like any R script, you can execute a single line of code in a code snippet by placing your cursor in the line and pressing <code>&lt;Ctrl&gt;</code>-<code>&lt;Enter&gt;</code>. You can highlight multiple lines of code and press <code>&lt;Ctrl&gt;</code>-<code>&lt;Enter&gt;</code> to execute all of those lines. And, you can select <strong>Run&gt;&gt;Run Current Chunk</strong> <em>or</em> press <code>&lt;Ctrl&gt;</code>-<code>Shift</code>-<code>&lt;Enter&gt;</code> to run the current chunk of code. This will both generate the results (if there are any) inline <em>and</em> will create any objects in the <strong>Environment</strong> for you to inspect (or further manipulate).</li>
-<li>It <em>can</em> sometimes be easier to initially write the code as a <code>.R</code> script and then bring it into a <code>.Rmd</code> file once you have the guts of the code working.</li>
+<li><code>.Rprofile</code> gets executed every time R starts up, so, if you always want to run some specific script, you can put it in the <code>.Rprofile</code> file.</li>
+<li><code>.Renviron</code> also gets evaluated every time an R session starts, but its sole purpose is to set <em>environment variables</em>.</li>
 </ul>
+<p>We’re not going to go into detail on <code>.Rprofile</code> here, as it’s not used for the API key protection that we’re covering.</p>
+<p>So, there’s a <code>.Renviron</code> file. File that away for now.</p>
+</div>
+<div id="a-hierarchy-of-locations" class="section level2">
+<h2>A Hierarchy of Locations</h2>
+<p>These startup files can be located in three different locations, but only <em>one</em> version of any file will be read and used for any given R session. So, which one gets used? The file that gets used is the one that exists at the <em>lowest</em> level of the hierarchy. We’ll start from the top of the hierarchy.</p>
+<div id="r_home" class="section level3">
+<h3>R_HOME</h3>
+<p><code>R_HOME</code> is the directory in which R is installed. Enter <code>R.home()</code> to find out that location.</p>
+<p>There may be cases where you want to put the <code>.Renviron</code> file here…but generally not. It’s just cleaner to keep “the program itself” separate from “the configuration of the program.”</p>
+</div>
+<div id="home" class="section level3">
+<h3>HOME</h3>
+<p><code>HOME</code> is actually the user’s home directory. You can find out what your <code>HOME</code> directory is with <code>Sys.getenv(&quot;HOME&quot;)</code>. This <em>can</em> be a good place to locate your <code>.Renviron</code> file. It’s a good place <em>if</em> you are not setting any variables that you want to change from project to project.</p>
+</div>
+<div id="the-working-directory" class="section level3">
+<h3>The Working Directory</h3>
+<p>We touched on this earlier, and it’s generally set as the current project’s directory. You can find the current working directory with <code>getwd()</code>. If you have different credentials that you use with different projects, then you probably want to place your <code>.Renviron</code> file in the project directory.</p>
+</div>
+</div>
+<div id="renviron-file-structure" class="section level2">
+<h2>.Renviron File Structure</h2>
+<p>The structure of the <code>.Renviron</code> file is quite simple. It’s just a text file with one row for each variable you want to define. As an example, the following <code>.Renviron</code> file establishes two environment variables: <code>ADOBE_KEY</code> and <code>ADOBE_SECRET</code>. There is no magic to the naming – just make them clear (and ALL CAPS is a nice convention to use):</p>
+<pre><code>ADOBE_KEY=&quot;a7xxxxx639-iih-nordic-r&quot;
+ADOBE_SECRET=&quot;2eadxxxxx1495ea49&quot;</code></pre>
+</div>
+<div id="accessing-the-variables" class="section level2">
+<h2>Accessing the Variables</h2>
+<p>Environment variables are accessed using the <code>Sys.getenv()</code> command.</p>
+<p>Consider the above example. Let’s say that we’re writing a script that uses <code>RSiteCatalyst</code> and needs to use the API username and secret. In the script, we could create two new objects, and then set them to be the values from the environment variables:</p>
+<pre><code>adobe_key &lt;- Sys.getenv(&quot;ADOBE_KEY&quot;)
+adobe_secret &lt;- Sys.getenv(&quot;ADOBE SECRET&quot;)</code></pre>
+<p>From that point onward, I can use <code>adobe_key</code> and <code>adobe_secret</code>. In this case, the objects created in the script were just lowercase forms of the actual environment variable. <em>This is not a requirement</em>. But, if what you’re storing is something where that sort of consistency makes sense, then it’s one approach for making things clear and consistent.</p>
+</div>
+<div id="avoiding-sharing-.renviron" class="section level2">
+<h2>Avoiding Sharing .Renviron</h2>
+<p>We’ll cover Github later, but, if you’re using Github to manage your projects (and there are lots of reasons to do that), you do <em>not</em> want to include your <code>.Renviron</code> file when you commit code to the repository. The way to bake this into your process is to add a couple of lines (one line, really, but comments are nice to use):</p>
+<pre><code># Environment file
+.Renviron</code></pre>
+<p>The <code>.gitignore</code> file specifies which files to <em>not</em> include when checking updates into a repository. You may also want to include data files in the <code>.gitignore</code> file…but that’s a topic for another page.</p>
 </div>
 
 

@@ -102,13 +102,16 @@ We've now worked with `c()`, `typeof()`, and `length()`. That's just the beginni
 ## Our First Real Script
 
 _We're going to do a few things here that wouldn't exactly be how you would work typically. But, that's okay:_
+
 * _We'll get to accessing web analytics data via APIs in a bit, but we're going to just work with a static data export for now._
-* _We're working in a web-based environment rather than your local machine, which makes things a little different._
+* _You may be working in a web-based environment rather than your local machine, which makes things a little different._
 
 ### Get Our Sample Data
 Download the .csv file at [http://bit.ly/rSampleGA](http://bit.ly/rSampleGA). Pay attention to to where this file -- td.csv -- gets stored.
 
-Click **Upload File** in the lower right pane in RStudio and upload td.csv. You should now see it in the **Files** tab.
+**If you are running RStudio from a web browser**, then go to the **Files** tab in the lower right pane, click **Upload File**, and upload td.csv. You should now see it in the **Files** tab.
+
+**If you are running RStudio locally**, then type `getwd()` in the console, make note of the file path that it returns, and then use Finder / Windows Explorer to move `td.csv` to that location.
 
 ### Set Up an Empty Script
 We're going to create an actual script now, so either just delete everything in the script you originally created or select **File>>New File>>R Script**. Either way, then select **File>>Save** and name the file **myFirstScript**. The script is being saved in your _working directory_ and now appears -- along with **td.csv** in the **Files** tab. Now, let's start writing some script!

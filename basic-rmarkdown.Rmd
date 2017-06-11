@@ -67,6 +67,8 @@ In this exercise, we're going to create a simple set of slides and put some very
 11. Go back into the editor and add _inline_ code. On the same slide, but _after_ the closing ` ``` `'s, enter `Put more cleanly, today is `, then insert a single backtick, the letter "r", `Sys.Date()`, and then another single backtick. 
 12. **Knit** the presentation again.
 
+**Extra credit**: Create a new slide that uses the `ggplot` code we created earlier!
+
 That's the basics of RMarkdown. There is a lot more to it -- a LOT -- but we'll cover that in the [Advanced RMarkdown](advanced-rmarkdown.html) section!
 
 ## A Few More Notes
@@ -74,7 +76,7 @@ That's the basics of RMarkdown. There is a lot more to it -- a LOT -- but we'll 
 A few handy tips:
 
 * Inside curly braces where you initiate a block of R code, there are two things you can add:
-  + A _name_ for the snippet. This can be handy for troubleshooting where the knitting process is breaking (but, if a snippet has a name, it has to be unique across all snippets in the file)
-  + You can add parameters like `echo`, `include`, `eval`, and `warnings` and more to control which aspects of the underlying code actually get displayed and/or executed. Read more about those [here](http://rmarkdown.rstudio.com/authoring_rcodechunks.html) and [here](https://yihui.name/knitr/options/).
+    + A _name_ for the snippet. This can be handy for troubleshooting where the knitting process is breaking (but, if a snippet has a name, it has to be unique across all snippets in the file)
+    + You can add parameters like `echo`, `include`, `eval`, and `warnings` and more to control which aspects of the underlying code actually get displayed and/or executed. Read more about those [here](http://rmarkdown.rstudio.com/authoring_rcodechunks.html) and [here](https://yihui.name/knitr/options/).
 * When you knit an entire document, nothing shows up in your **Environment**. That can make it pesky to troubleshoot. But, just like any R script, you can execute a single line of code in a code snippet by placing your cursor in the line and pressing `<Ctrl>`-`<Enter>`. You can highlight multiple lines of code and press `<Ctrl>`-`<Enter>` to execute all of those lines. And, you can select **Run>>Run Current Chunk** _or_ press `<Ctrl>`-`Shift`-`<Enter>` to run the current chunk of code. This will both generate the results (if there are any) inline _and_ will create any objects in the **Environment** for you to inspect (or further manipulate).
 * It _can_ sometimes be easier to initially write the code as a `.R` script and then bring it into a `.Rmd` file once you have the guts of the code working. 
