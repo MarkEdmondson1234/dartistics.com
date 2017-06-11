@@ -38,6 +38,8 @@ navbar:
       - text: "Exercise: The Basic Basics"
         href: exercise1-thebasics.html
       - text: "ADVANCED TOPICS"
+      - text: "Troubleshooting"
+        href: troubleshooting.html
       - text: "Faster R code"
         href: fast-r-code.html
       - text: "Using R functions"
@@ -62,6 +64,8 @@ navbar:
         href: api-adobe-analytics.html
       - text: "Other APIs"
         href: api-other.html
+      - text: ".Renviron"
+        href: renviron.html
       - text: "Creating API libraries"
         href: creating-apis.html
     - text: "Data Structures"
