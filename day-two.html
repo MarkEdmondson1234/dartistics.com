@@ -660,8 +660,12 @@ lapply(all_groups, my_class_stats, dimension = &quot;deviceCategory&quot;)</code
 <h2>Cross Tabulation</h2>
 <pre class="r"><code>## how to calculate expected count here?
 my_cross_table &lt;- function(x, cross1, cross2){
-  table(x[[cross1]], x[[cross2]])
+  totals &lt;- table(x[[cross1]], x[[cross2]])
+  ## expected is weighted average 
+  
+  totals
 }
+
 
 lapply(all_groups, my_cross_table, cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)</code></pre>
 <pre><code>## $group_one
@@ -729,12 +733,27 @@ lapply(all_groups, my_chi_table, cross1 = &quot;deviceCategory&quot;, cross2 = &
 ## 
 ## data:  table(x[[cross1]], x[[cross2]])
 ## X-squared = 27.134, df = 14, p-value = 0.01849</code></pre>
+<pre class="r"><code>## see if I can put in Cramers V and/or Phi to compare chi_Table comparisons</code></pre>
 </div>
 <div id="anova" class="section level2">
 <h2>ANOVA</h2>
 <pre class="r"><code>my_anova &lt;- function(x, metric, dim){
   my_form &lt;- as.formula(paste(metric, &quot;~&quot;, dim))
-  summary(aov(my_form , data = x))
+  model &lt;- aov(my_form , data = x)
+  summary(model)
+  
+}
+
+my_anova_tukey &lt;- function(x, metric, dim){
+  my_form &lt;- as.formula(paste(metric, &quot;~&quot;, dim))
+  model &lt;- aov(my_form , data = x)
+  
+  TukeyHSD(model)
+}
+
+my_nway_anova &lt;- function(x, metric, dim){
+  my_form &lt;- as.formula(paste(metric, &quot;~&quot;, dim))
+  anova(lm(my_form , data = x))
 }
 
 lapply(all_groups, my_anova, metric = &quot;Sessions&quot;, dim = &quot;deviceCategory&quot;)</code></pre>
@@ -758,6 +777,27 @@ lapply(all_groups, my_anova, metric = &quot;Sessions&quot;, dim = &quot;deviceCa
 ## Residuals      1254 2.251e+11 1.795e+08                   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>lapply(all_groups, my_anova, metric = &quot;GoalCompletions&quot;, dim = &quot;deviceCategory&quot;)</code></pre>
+<pre><code>## $group_one
+##                  Df  Sum Sq Mean Sq F value Pr(&gt;F)    
+## deviceCategory    2  289451  144725   171.2 &lt;2e-16 ***
+## Residuals      4051 3424251     845                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## $group_two
+##                  Df  Sum Sq Mean Sq F value Pr(&gt;F)    
+## deviceCategory    2  492571  246285     124 &lt;2e-16 ***
+## Residuals      1848 3671475    1987                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## $group_three
+##                  Df   Sum Sq Mean Sq F value Pr(&gt;F)    
+## deviceCategory    2  1738804  869402   96.94 &lt;2e-16 ***
+## Residuals      1254 11246628    8969                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <pre class="r"><code>lapply(all_groups, my_anova, metric = &quot;Sessions&quot;, dim = &quot;channelGrouping&quot;)</code></pre>
 <pre><code>## $group_one
 ##                   Df    Sum Sq   Mean Sq F value Pr(&gt;F)    
@@ -779,6 +819,272 @@ lapply(all_groups, my_anova, metric = &quot;Sessions&quot;, dim = &quot;deviceCa
 ## Residuals       1249 1.683e+11 1.348e+08                   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>lapply(all_groups, my_anova, metric = &quot;GoalCompletions&quot;, dim = &quot;channelGrouping&quot;)</code></pre>
+<pre><code>## $group_one
+##                   Df  Sum Sq Mean Sq F value Pr(&gt;F)    
+## channelGrouping    7 1368177  195454   337.2 &lt;2e-16 ***
+## Residuals       4046 2345525     580                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## $group_two
+##                   Df  Sum Sq Mean Sq F value Pr(&gt;F)    
+## channelGrouping    7 2189341  312763   291.9 &lt;2e-16 ***
+## Residuals       1843 1974705    1071                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## $group_three
+##                   Df  Sum Sq Mean Sq F value Pr(&gt;F)    
+## channelGrouping    7 4701320  671617   101.3 &lt;2e-16 ***
+## Residuals       1249 8284112    6633                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>## tests of between subject effects
+lapply(all_groups, my_nway_anova, metric = &quot;GoalCompletions&quot;, dim = &quot;channelGrouping * deviceCategory&quot;)</code></pre>
+<pre><code>## $group_one
+## Analysis of Variance Table
+## 
+## Response: GoalCompletions
+##                                  Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## channelGrouping                   7 1368177  195454 504.192 &lt; 2.2e-16 ***
+## deviceCategory                    2  328934  164467 424.257 &lt; 2.2e-16 ***
+## channelGrouping:deviceCategory   14  454329   32452  83.713 &lt; 2.2e-16 ***
+## Residuals                      4030 1562262     388                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## $group_two
+## Analysis of Variance Table
+## 
+## Response: GoalCompletions
+##                                  Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## channelGrouping                   7 2189341  312763  822.07 &lt; 2.2e-16 ***
+## deviceCategory                    2  501269  250634  658.77 &lt; 2.2e-16 ***
+## channelGrouping:deviceCategory   13  777963   59843  157.29 &lt; 2.2e-16 ***
+## Residuals                      1828  695473     380                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## $group_three
+## Analysis of Variance Table
+## 
+## Response: GoalCompletions
+##                                  Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## channelGrouping                   7 4701320  671617 178.994 &lt; 2.2e-16 ***
+## deviceCategory                    2 1824328  912164 243.103 &lt; 2.2e-16 ***
+## channelGrouping:deviceCategory   13 1829609  140739  37.509 &lt; 2.2e-16 ***
+## Residuals                      1234 4630175    3752                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="regression-outputs" class="section level2">
+<h2>Regression outputs</h2>
+<pre class="r"><code>my_models_fun &lt;- function(x, dependent, independent){
+  my_form &lt;- as.formula(paste(dependent, &quot;~&quot;, independent))
+  lm(my_form, data = x)
+}
+
+my_models &lt;- lapply(all_groups, my_models_fun, dependent = &quot;GoalCompletions&quot;, independent = &quot;Sessions&quot;)
+lapply(my_models, summary)</code></pre>
+<pre><code>## $group_one
+## 
+## Call:
+## lm(formula = my_form, data = x)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -116.816   -9.471   -7.793    1.106  253.468 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 8.725e+00  4.537e-01   19.23   &lt;2e-16 ***
+## Sessions    3.122e-03  8.019e-05   38.93   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 25.83 on 4052 degrees of freedom
+## Multiple R-squared:  0.2722, Adjusted R-squared:  0.272 
+## F-statistic:  1515 on 1 and 4052 DF,  p-value: &lt; 2.2e-16
+## 
+## 
+## $group_two
+## 
+## Call:
+## lm(formula = my_form, data = x)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -167.539  -19.272  -14.965    0.358  249.740 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 1.872e+01  1.124e+00   16.65   &lt;2e-16 ***
+## Sessions    2.305e-03  1.191e-04   19.35   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 43.27 on 1849 degrees of freedom
+## Multiple R-squared:  0.1685, Adjusted R-squared:  0.168 
+## F-statistic: 374.6 on 1 and 1849 DF,  p-value: &lt; 2.2e-16
+## 
+## 
+## $group_three
+## 
+## Call:
+## lm(formula = my_form, data = x)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -236.83  -39.39  -29.55    4.37  986.24 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 39.159074   2.886895   13.56   &lt;2e-16 ***
+## Sessions     0.002899   0.000182   15.93   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 92.78 on 1255 degrees of freedom
+## Multiple R-squared:  0.1681, Adjusted R-squared:  0.1675 
+## F-statistic: 253.7 on 1 and 1255 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>my_predict_mean &lt;- function(x, model_string = &quot;Sessions ~ GoalCompletions&quot;){
+  my_form &lt;- as.formula(paste(model_string))
+  model &lt;- lm(my_form, data = x)
+  cat(&quot;\nMean Sessions: &quot;,mean(x$Sessions))
+  cat(&quot;\nMean GoalCompletions&quot;,mean(x$GoalCompletions))
+  predict(model, 
+          newdata = data.frame(Sessions = mean(x$Sessions), GoalCompletions = mean(x$GoalCompletions)),
+          interval = &quot;predict&quot;,
+          level = 0.95)
+}
+
+my_conf_interval &lt;- function(x){
+  model &lt;- lm(Sessions ~ GoalCompletions + DeviceClass + ChannelClass, data = x)
+  summary(model)
+  confint(model, level = 0.95)
+  
+}
+
+my_regression &lt;- function(x){
+  model &lt;- lm(Sessions ~ GoalCompletions + DeviceClass + ChannelClass, data = x)
+  summary(model)
+}
+
+
+
+## generate the upper and lower bound for beta coeffcients
+lapply(all_groups, my_predict_mean)</code></pre>
+<pre><code>## 
+## Mean Sessions:  2533.844
+## Mean GoalCompletions 16.63468
+## Mean Sessions:  4219.887
+## Mean GoalCompletions 28.44787
+## Mean Sessions:  6698.333
+## Mean GoalCompletions 58.57916</code></pre>
+<pre><code>## $group_one
+##        fit       lwr      upr
+## 1 2533.844 -5929.603 10997.29
+## 
+## $group_two
+##        fit       lwr      upr
+## 1 4219.887 -10896.49 19336.26
+## 
+## $group_three
+##        fit       lwr      upr
+## 1 6698.333 -19054.41 32451.07</code></pre>
+<pre class="r"><code>lapply(all_groups, my_regression)</code></pre>
+<pre><code>## $group_one
+## 
+## Call:
+## lm(formula = Sessions ~ GoalCompletions + DeviceClass + ChannelClass, 
+##     data = x)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -14049  -1480   -637     56  56652 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     2664.663    247.139  10.782   &lt;2e-16 ***
+## GoalCompletions   85.579      2.265  37.787   &lt;2e-16 ***
+## DeviceClass      -64.934     84.847  -0.765    0.444    
+## ChannelClass    -335.903     35.524  -9.456   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 4270 on 4050 degrees of freedom
+## Multiple R-squared:  0.288,  Adjusted R-squared:  0.2874 
+## F-statistic:   546 on 3 and 4050 DF,  p-value: &lt; 2.2e-16
+## 
+## 
+## $group_two
+## 
+## Call:
+## lm(formula = Sessions ~ GoalCompletions + DeviceClass + ChannelClass, 
+##     data = x)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -13789  -2767  -1509   -569  78532 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     4247.467    668.282   6.356 2.61e-10 ***
+## GoalCompletions   72.815      3.888  18.726  &lt; 2e-16 ***
+## DeviceClass     -166.888    228.919  -0.729    0.466    
+## ChannelClass    -425.762     91.486  -4.654 3.49e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 7664 on 1847 degrees of freedom
+## Multiple R-squared:  0.1782, Adjusted R-squared:  0.1769 
+## F-statistic: 133.5 on 3 and 1847 DF,  p-value: &lt; 2.2e-16
+## 
+## 
+## $group_three
+## 
+## Call:
+## lm(formula = Sessions ~ GoalCompletions + DeviceClass + ChannelClass, 
+##     data = x)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -35387  -4927  -2191   -598 105820 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     8878.663   1344.584   6.603 5.93e-11 ***
+## GoalCompletions   57.195      3.668  15.591  &lt; 2e-16 ***
+## DeviceClass     -835.902    462.911  -1.806   0.0712 .  
+## ChannelClass    -926.726    184.004  -5.036 5.44e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 12990 on 1253 degrees of freedom
+## Multiple R-squared:  0.186,  Adjusted R-squared:  0.1841 
+## F-statistic: 95.44 on 3 and 1253 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>lapply(all_groups, my_conf_interval)</code></pre>
+<pre><code>## $group_one
+##                      2.5 %     97.5 %
+## (Intercept)     2180.13516 3149.19177
+## GoalCompletions   81.13838   90.01876
+## DeviceClass     -231.28003  101.41168
+## ChannelClass    -405.54828 -266.25680
+## 
+## $group_two
+##                      2.5 %     97.5 %
+## (Intercept)     2936.79960 5558.13439
+## GoalCompletions   65.18856   80.44093
+## DeviceClass     -615.85505  282.07864
+## ChannelClass    -605.18869 -246.33515
+## 
+## $group_three
+##                      2.5 %      97.5 %
+## (Intercept)      6240.7783 11516.54741
+## GoalCompletions    49.9981    64.39217
+## DeviceClass     -1744.0690    72.26444
+## ChannelClass    -1287.7158  -565.73718</code></pre>
 </div>
 
 

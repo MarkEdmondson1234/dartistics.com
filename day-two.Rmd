@@ -79,8 +79,12 @@ lapply(all_groups, my_class_stats, dimension = "channelGrouping")
 
 ## how to calculate expected count here?
 my_cross_table <- function(x, cross1, cross2){
-  table(x[[cross1]], x[[cross2]])
+  totals <- table(x[[cross1]], x[[cross2]])
+  ## expected is weighted average 
+  
+  totals
 }
+
 
 lapply(all_groups, my_cross_table, cross1 = "deviceCategory", cross2 = "channelGrouping")
 
@@ -90,6 +94,10 @@ my_chi_table <- function(x, cross1, cross2){
 }
 
 lapply(all_groups, my_chi_table, cross1 = "deviceCategory", cross2 = "channelGrouping")
+
+
+## see if I can put in Cramers V and/or Phi to compare chi_Table comparisons
+
 ```
 
 
@@ -99,12 +107,77 @@ lapply(all_groups, my_chi_table, cross1 = "deviceCategory", cross2 = "channelGro
 
 my_anova <- function(x, metric, dim){
   my_form <- as.formula(paste(metric, "~", dim))
-  summary(aov(my_form , data = x))
+  model <- aov(my_form , data = x)
+  summary(model)
+  
+}
+
+my_anova_tukey <- function(x, metric, dim){
+  my_form <- as.formula(paste(metric, "~", dim))
+  model <- aov(my_form , data = x)
+  
+  TukeyHSD(model)
+}
+
+my_nway_anova <- function(x, metric, dim){
+  my_form <- as.formula(paste(metric, "~", dim))
+  anova(lm(my_form , data = x))
 }
 
 lapply(all_groups, my_anova, metric = "Sessions", dim = "deviceCategory")
+lapply(all_groups, my_anova, metric = "GoalCompletions", dim = "deviceCategory")
+
 
 lapply(all_groups, my_anova, metric = "Sessions", dim = "channelGrouping")
+lapply(all_groups, my_anova, metric = "GoalCompletions", dim = "channelGrouping")
 
 
+## tests of between subject effects
+lapply(all_groups, my_nway_anova, metric = "GoalCompletions", dim = "channelGrouping * deviceCategory")
+
+
+```
+
+
+## Regression outputs
+
+```{r}
+my_models_fun <- function(x, dependent, independent){
+  my_form <- as.formula(paste(dependent, "~", independent))
+  lm(my_form, data = x)
+}
+
+my_models <- lapply(all_groups, my_models_fun, dependent = "GoalCompletions", independent = "Sessions")
+lapply(my_models, summary)
+
+my_predict_mean <- function(x, model_string = "Sessions ~ GoalCompletions"){
+  my_form <- as.formula(paste(model_string))
+  model <- lm(my_form, data = x)
+  cat("\nMean Sessions: ",mean(x$Sessions))
+  cat("\nMean GoalCompletions",mean(x$GoalCompletions))
+  predict(model, 
+          newdata = data.frame(Sessions = mean(x$Sessions), GoalCompletions = mean(x$GoalCompletions)),
+          interval = "predict",
+          level = 0.95)
+}
+
+my_conf_interval <- function(x){
+  model <- lm(Sessions ~ GoalCompletions + DeviceClass + ChannelClass, data = x)
+  summary(model)
+  confint(model, level = 0.95)
+  
+}
+
+my_regression <- function(x){
+  model <- lm(Sessions ~ GoalCompletions + DeviceClass + ChannelClass, data = x)
+  summary(model)
+}
+
+
+
+## generate the upper and lower bound for beta coeffcients
+lapply(all_groups, my_predict_mean)
+
+lapply(all_groups, my_regression)
+lapply(all_groups, my_conf_interval)
 ```

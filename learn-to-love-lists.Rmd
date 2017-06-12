@@ -9,6 +9,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 web_data <- read.csv("data/gadata_example_2.csv", stringsAsFactors = FALSE)
+library(tidyverse)
 ```
 
 ## Lists
@@ -348,7 +349,7 @@ Fvalue > Fcrit
 
 ```
 
-#### how would we really do this?
+#### How would we really do this?
 
 ```{r}
 anova_data2 <- web_data %>% 
@@ -371,6 +372,8 @@ Consult the cheatsheet of `list-columns` for some ideas, and this [`Jennifer Bry
 
 
 
+
+## show how lm works with using dummy variables
 
 
 
