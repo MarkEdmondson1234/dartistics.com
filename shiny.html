@@ -549,13 +549,8 @@ shinyUI(
     ## output functions
 )</code></pre>
 <p>The functions <code>shinyUI</code> and <code>fluidPage</code> create the minimal HTML necessary for a Shiny app:</p>
-<pre class="r"><code>library(shiny)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;shiny&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:pander&#39;:
-## 
-##     p</code></pre>
-<pre class="r"><code>shinyUI(fluidPage())</code></pre>
+<pre class="r"><code>library(shiny)
+shinyUI(fluidPage())</code></pre>
 <div class="container-fluid"></div>
 <p>You will need to deal with <em>a lot</em> of brackets. Be stringent in knowing which closing brack refers to which function, as it can be very hard to debug. Good code style indentation helps:</p>
 <pre class="r"><code>library(shiny)
@@ -664,86 +659,114 @@ hchart(web_data, &quot;line&quot;, hcaes(x = date, y = sessions))</code></pre>
 <p>Reactive object can react to another reactive object, which sets up a chain of dependencies. A change in a dependency will effect all other reactive objects. A key factor in making efficient Shiny apps is to know when to trigger a change and when not to.</p>
 <div id="example" class="section level3">
 <h3>Example</h3>
-<p>The below builds on the app below, but we now also want to display the maximum value. As we will now have two UI elements we will have two server.R calls that rely on the same data.</p>
+<p>The below builds on the app below, but we now also want to display the Chi Squared value. As we will now have two UI elements we will have two server.R calls that rely on the same data.</p>
 <p>Instead of importing the data in twice (it could be a API call) we will make a reactive object, and then when that object is ready (e.g. not <code>NULL</code>) pass it to the functions.</p>
 <p>The <code>req()</code>function serves as a roadblock to stop the plot and text firing before the data is ready (important for API calls)</p>
-<p>We use <code>highcharter</code> as the plots are cool.</p>
-<pre class="r"><code>## in server.R
-library(shiny)
-library(highcharts)
+<pre class="r"><code>library(shiny)
+library(dplyr)
 
 function(input, output){
   
-  ## our reactive object for data
-  the_data &lt;- reactive({
+  ## all ui output rely on this data, but it is only ever called once
+  raw_data &lt;- reactive({
     
     ## get the data from csv
-    the_data &lt;- read.csv(&quot;../data/gadata_example_2.csv&quot;, stringsAsFactors = FALSE)
-    
-    ## return the data with the date column for the plot and metric column selected
-    the_data[ , c(&quot;date&quot;, input$metric)]
+    read.csv(&quot;../data/gadata_example_2.csv&quot;, stringsAsFactors = FALSE)
     
   })
   
-  output$plot1 &lt;- renderHighchart({
+  ## transforms the raw data so it is suitable for chi square
+  chi_data &lt;- reactive({
     
-    ## this is a roadblock so this function won&#39;t fire until the_data is non-NULL
-    req(the_data())
-    
-    ## do this as it make debugging a lot easier
-    plot_data &lt;- the_data()
-    
-    ## creates a line chart using highcharts
-    hchart(plot_data, &quot;line&quot; , hcaes(x = date)) %&gt;% 
-      hc_add_series(plot_data[[input$metric]])
-    
-  })
-  
-  output$max_text &lt;- renderText({
-    
-    ## this is a roadblock so this function won&#39;t fire until the_data is non-NULL
-    req(the_data())
+    req(raw_data())
     req(input$metric)
+    req(input$device)
+    req(input$channel)
+    
+    raw_data &lt;- raw_data()
+    
+    metric_data &lt;- raw_data[, c(&quot;channelGrouping&quot;,&quot;deviceCategory&quot;, input$metric)]
+    metric_data$metric &lt;- metric_data[[input$metric]]
+    
+    metric_data &lt;- metric_data[metric_data$deviceCategory %in% input$device, ]
+    metric_data &lt;- metric_data[metric_data$channelGrouping %in% input$channel, ]
+    
+    metric_data %&gt;% 
+      select(channelGrouping, deviceCategory, metric) %&gt;%
+      group_by(channelGrouping, deviceCategory) %&gt;% 
+      summarise(metric_sum = sum(metric)) %&gt;% 
+      tidyr::spread(channelGrouping, metric_sum)
+    
+  })
+  
+  output$table &lt;- renderTable({
+    req(chi_data())
+    
+    chi_data()
+  })
+  
+  output$chi_text &lt;- renderText({
+    
+    ## this is a roadblock so this function won&#39;t fire until the_Data is non-NULL
+    req(chi_data())
+    req(input$device)
+    req(input$channel)
     
     ## do this as it make debugging a lot easier
-    max_data &lt;- the_data()
-    
-    paste(&quot;The max is: &quot;, max(max_data))
+    chi_data &lt;- chi_data()
+
+    chi_test &lt;- chisq.test(chi_data[-1])
+    paste(&quot;NULL hypothesis there is no relationship between &quot;, paste(input$device, collapse = &quot;, &quot;), 
+          &quot; and &quot;, 
+          paste(input$channel, collapse = &quot;, &quot;),
+          &quot; - &quot;,
+          chi_test$method, &quot; Chi^2: &quot;, chi_test$statistic, &quot; : p-value &quot;, chi_test$p.value)
     
   })
   
 }</code></pre>
-<p>The <code>req(input$value1)</code> is good practice to have as the <code>input list</code> are not necessarily available to the function on start up - this guards against ugly red messages briefly when the app starts up.</p>
+<p>The <code>req(input$device)</code> is good practice to have as the <code>input list</code> are not necessarily available to the function on start up - this guards against ugly red messages briefly when the app starts up.</p>
 <p>With a ui.R adding the max text:</p>
-<pre class="r"><code>## in ui.R
-
-library(shiny)
+<pre class="r"><code>library(shiny)
 library(highcharter)
-
 shinyUI(
   fluidPage(
     selectInput(&quot;metric&quot;, label = &quot;select column&quot;, choices = c(&quot;sessions&quot;,
                                                                &quot;pageviews&quot;,
                                                                &quot;entrances&quot;,
                                                                &quot;bounces&quot;)),
-    textOutput(&quot;max_text&quot;),
-    highchartOutput(&quot;plot1&quot;)
+    selectInput(&quot;device&quot;, label = &quot;select device&quot;, choices = c(&quot;desktop&quot;, &quot;mobile&quot;, &quot;tablet&quot;), multiple = TRUE),
+    selectInput(&quot;channel&quot;, label = &quot;select channel&quot;, choices = c(&quot;(Other)&quot;,&quot;Direct&quot;,&quot;Display&quot;,&quot;Email&quot;,&quot;Organic Search&quot;,&quot;Paid Search&quot;,&quot;Referral&quot;,&quot;Social&quot;,&quot;Video&quot;), multiple = TRUE),
+    tableOutput(&quot;table&quot;),
+    textOutput(&quot;chi_text&quot;),
+    br()
   )
 )</code></pre>
 </div>
 <div id="exercise-1" class="section level3">
 <h3>Exercise</h3>
-<ol style="list-style-type: decimal">
-<li>Add a <code>selectInput</code> that also lets you choose the <code>deviceCategory</code></li>
-</ol>
-<blockquote>
-<p>HINT: you may have a line similar to <code>plot_data &lt;- plot_data[plot_data$device == input$device, c(&quot;date&quot;, input$metric)]</code> to segment your data (or maybe not….check your data and put a breakpoint in the correct place)</p>
-</blockquote>
-<p>Use <code>dplyr</code> to massage the data if necessary</p>
-<ol start="2" style="list-style-type: decimal">
-<li>Extra marks - add another <code>selectInput</code> with <code>channelGrouping</code> - this may be useful:</li>
-</ol>
-<pre class="r"><code>c(&quot;(Other)&quot;,&quot;Direct&quot;,&quot;Display&quot;,&quot;Email&quot;,&quot;Organic Search&quot;,&quot;Paid Search&quot;,&quot;Referral&quot;,&quot;Social&quot;,&quot;Video&quot;)</code></pre>
+<p>Add a plot to the Shiny app displaying some trend data, using the same <code>raw_data()</code> reactive source above. You can use some helper code shown below if you like:</p>
+<pre class="r"><code>library(highcharter)
+library(dplyr)
+
+## get the data from csv
+plot_data &lt;- raw_data()
+
+## filter down to choices
+plot_data &lt;- plot_data[plot_data$channelGrouping %in% input$channel, ]
+plot_data &lt;- plot_data[plot_data$deviceCategory %in% input$device, ]
+
+## trick to make easier to work with dplyr
+plot_data$metric &lt;- plot_data[[input$metric]]
+
+## aggregate on metric
+plot_data %&gt;% 
+  select(date, metric) %&gt;% 
+  group_by(date) %&gt;% 
+  summarise(metric_sum = sum(metric))
+
+## create trend plot
+hchart(plot_data, &quot;line&quot; , hcaes(x = date)) %&gt;% hc_add_series(plot_data$metric_sum)</code></pre>
 </div>
 </div>
 <div id="shiny-modules" class="section level2">

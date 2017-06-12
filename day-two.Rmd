@@ -1,0 +1,87 @@
+---
+title: "Day 2 in R"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load the data
+
+```{r}
+all_data <- readxl::read_excel("data/day2/SampleGA2 for R Mark.xlsx")
+names(all_data)
+```
+
+The three files match to the following:
+
+* Group 1 (row 2 - row 4055)
+* Group 2 (row 4056 - 5906)
+* Group 3 (row 5907 - 7163)
+
+```{r}
+## 1 indexed not including header row (1)
+group_one <- all_data[1:4054, ]
+group_two <- all_data[4055:5905, ]
+group_three <- all_data[5906:7162, ]
+
+all_groups <- list(group_one = group_one,
+                   group_two = group_two,
+                   group_three = group_three)
+```
+
+## Summary statistics
+
+```{R}
+library(psych) # statistics
+
+my_summary <- function(x, metric){
+  y <- x[, metric]
+  ## do we need skewness/kutosis se too?      
+  ## https://estatistics.eu/what-is-statistics-standard-error-of-skewness-standard-error-of-kurtosis/
+  
+  ## tidy summary
+  describe(y)
+}
+
+
+lapply(all_groups, my_summary, metric = c("Sessions", "GoalCompletions"))
+
+```
+
+Create class statistics
+
+```{r}
+my_class_stats <- function(x, dimension){
+  dim <- x[[dimension]]
+  
+  ## makes a dataframe of $Var1 and $Freq
+  my_df <- as.data.frame(table(dim))
+  sum_all <- sum(my_df$Freq)
+  my_df$percent <- round(my_df$Freq / sum_all, 4)
+  my_df$cum.percent <- cumsum(my_df$percent)
+  
+  my_df
+}
+
+## do we need to order factors?
+lapply(all_groups, my_class_stats, dimension = "deviceCategory")
+lapply(all_groups, my_class_stats, dimension = "channelGrouping")
+```
+
+## Cross Tabulation
+
+```{r}
+
+## how to calculate expected count here?
+my_cross_table <- function(x, cross1, cross2){
+  table(x[[cross1]], x[[cross2]])
+}
+
+
+lapply(all_groups, my_cross_table, cross1 = "deviceCategory", cross2 = "channelGrouping")
+```

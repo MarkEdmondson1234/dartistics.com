@@ -185,7 +185,7 @@ function(input, output){
 }
 ```
 
-## Exercise
+### Exercise
 
 1. What will this Shiny app render?  Assume input$value1 is the name of a metric column of `web_data`
 
@@ -208,100 +208,129 @@ Key to this are a new class of object called `reactive` objects. These are objec
 
 Reactive object can react to another reactive object, which sets up a chain of dependencies.  A change in a dependency will effect all other reactive objects.  A key factor in making efficient Shiny apps is to know when to trigger a change and when not to.
 
-### Example
+### Using Reactives example
 
-The below builds on the app below, but we now also want to display the maximum value.  As we will now have two UI elements we will have two server.R calls that rely on the same data.  
+The below builds on the app below, but we now also want to display the Chi Squared value.  As we will now have two UI elements we will have two server.R calls that rely on the same data.  
 
 Instead of importing the data in twice (it could be a API call) we will make a reactive object, and then when that object is ready (e.g. not `NULL`) pass it to the functions.  
 
 The `req()`function serves as a roadblock to stop the plot and text firing before the data is ready (important for API calls)
 
-We use `highcharter` as the plots are cool.
-
 ```r
-## in server.R
 library(shiny)
-library(highcharts)
+library(dplyr)
 
 function(input, output){
   
-  ## our reactive object for data
-  the_data <- reactive({
+  ## all ui output rely on this data, but it is only ever called once
+  raw_data <- reactive({
     
     ## get the data from csv
-    the_data <- read.csv("../data/gadata_example_2.csv", stringsAsFactors = FALSE)
-    
-    ## return the data with the date column for the plot and metric column selected
-    the_data[ , c("date", input$metric)]
+    read.csv("../data/gadata_example_2.csv", stringsAsFactors = FALSE)
     
   })
   
-  output$plot1 <- renderHighchart({
+  ## transforms the raw data so it is suitable for chi square
+  chi_data <- reactive({
     
-    ## this is a roadblock so this function won't fire until the_data is non-NULL
-    req(the_data())
-    
-    ## do this as it make debugging a lot easier
-    plot_data <- the_data()
-    
-    ## creates a line chart using highcharts
-    hchart(plot_data, "line" , hcaes(x = date)) %>% 
-      hc_add_series(plot_data[[input$metric]])
-    
-  })
-  
-  output$max_text <- renderText({
-    
-    ## this is a roadblock so this function won't fire until the_data is non-NULL
-    req(the_data())
+    req(raw_data())
     req(input$metric)
+    req(input$device)
+    req(input$channel)
+    
+    raw_data <- raw_data()
+    
+    metric_data <- raw_data[, c("channelGrouping","deviceCategory", input$metric)]
+    metric_data$metric <- metric_data[[input$metric]]
+    
+    metric_data <- metric_data[metric_data$deviceCategory %in% input$device, ]
+    metric_data <- metric_data[metric_data$channelGrouping %in% input$channel, ]
+    
+    metric_data %>% 
+      select(channelGrouping, deviceCategory, metric) %>%
+      group_by(channelGrouping, deviceCategory) %>% 
+      summarise(metric_sum = sum(metric)) %>% 
+      tidyr::spread(channelGrouping, metric_sum)
+    
+  })
+  
+  output$table <- renderTable({
+    req(chi_data())
+    
+    chi_data()
+  })
+  
+  output$chi_text <- renderText({
+    
+    ## this is a roadblock so this function won't fire until the_Data is non-NULL
+    req(chi_data())
+    req(input$device)
+    req(input$channel)
     
     ## do this as it make debugging a lot easier
-    max_data <- the_data()
-    
-    paste("The max is: ", max(max_data))
+    chi_data <- chi_data()
+
+    chi_test <- chisq.test(chi_data[-1])
+    paste("NULL hypothesis there is no relationship between ", paste(input$device, collapse = ", "), 
+          " and ", 
+          paste(input$channel, collapse = ", "),
+          " - ",
+          chi_test$method, " Chi^2: ", chi_test$statistic, " : p-value ", chi_test$p.value)
     
   })
   
 }
 ```
 
-The `req(input$value1)` is good practice to have as the `input list` are not necessarily available to the function on start up - this guards against ugly red messages briefly when the app starts up.
+The `req(input$device)` is good practice to have as the `input list` are not necessarily available to the function on start up - this guards against ugly red messages briefly when the app starts up.
 
 With a ui.R adding the max text:
 
 ```r
-## in ui.R
-
 library(shiny)
 library(highcharter)
-
 shinyUI(
   fluidPage(
     selectInput("metric", label = "select column", choices = c("sessions",
                                                                "pageviews",
                                                                "entrances",
                                                                "bounces")),
-    textOutput("max_text"),
-    highchartOutput("plot1")
+    selectInput("device", label = "select device", choices = c("desktop", "mobile", "tablet"), multiple = TRUE),
+    selectInput("channel", label = "select channel", choices = c("(Other)","Direct","Display","Email","Organic Search","Paid Search","Referral","Social","Video"), multiple = TRUE),
+    tableOutput("table"),
+    textOutput("chi_text"),
+    br()
   )
 )
 ```
 
-### Exercise
+### Using reactive() Exercise
 
-1. Add a `selectInput` that also lets you choose the `deviceCategory`
-
-> HINT: you may have a line similar to `plot_data <- plot_data[plot_data$device == input$device, c("date", input$metric)]` to segment your data (or maybe not....check your data and put a breakpoint in the correct place)
-
-Use `dplyr` to massage the data if necessary
-
-2. Extra marks - add another `selectInput` with `channelGrouping` - this may be useful:
+Add a plot to the Shiny app displaying some trend data, using the same `raw_data()` reactive source above. You can use some helper code shown below if you like:
 
 ```r
-c("(Other)","Direct","Display","Email","Organic Search","Paid Search","Referral","Social","Video")
-```
+library(highcharter)
+library(dplyr)
 
+## get the data from csv
+plot_data <- raw_data()
+
+## filter down to choices
+plot_data <- plot_data[plot_data$channelGrouping %in% input$channel, ]
+plot_data <- plot_data[plot_data$deviceCategory %in% input$device, ]
+
+## trick to make easier to work with dplyr
+plot_data$metric <- plot_data[[input$metric]]
+
+## aggregate on metric
+plot_data %>% 
+  select(date, metric) %>% 
+  group_by(date) %>% 
+  summarise(metric_sum = sum(metric))
+
+## create trend plot
+hchart(plot_data, "line" , hcaes(x = date)) %>% hc_add_series(plot_data$metric_sum)
+```
 
 ## Shiny Modules
 

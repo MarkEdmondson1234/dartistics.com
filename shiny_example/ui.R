@@ -1,12 +1,3 @@
-#
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-# 
-#    http://shiny.rstudio.com/
-#
-
 library(shiny)
 library(highcharter)
 shinyUI(
@@ -15,9 +6,11 @@ shinyUI(
                                                                "pageviews",
                                                                "entrances",
                                                                "bounces")),
-    selectInput("device", label = "select device", choices = c("desktop", "mobile", "tablet")),
-    selectInput("channel", label = "select channel", choices = c("(Other)","Direct","Display","Email","Organic Search","Paid Search","Referral","Social","Video")),
-    textOutput("max_text"),
-    highchartOutput("plot1")
+    selectInput("device", label = "select device", choices = c("desktop", "mobile", "tablet"), multiple = TRUE),
+    selectInput("channel", label = "select channel", choices = c("(Other)","Direct","Display","Email","Organic Search","Paid Search","Referral","Social","Video"), multiple = TRUE),
+    tableOutput("table"),
+    textOutput("chi_text"),
+    highchartOutput("plot1"),
+    br()
   )
 )
