@@ -82,6 +82,29 @@ my_cross_table <- function(x, cross1, cross2){
   table(x[[cross1]], x[[cross2]])
 }
 
-
 lapply(all_groups, my_cross_table, cross1 = "deviceCategory", cross2 = "channelGrouping")
+
+## how to calculate expected count here?
+my_chi_table <- function(x, cross1, cross2){
+  chisq.test(table(x[[cross1]], x[[cross2]]))
+}
+
+lapply(all_groups, my_chi_table, cross1 = "deviceCategory", cross2 = "channelGrouping")
+```
+
+
+## ANOVA
+
+```{r}
+
+my_anova <- function(x, metric, dim){
+  my_form <- as.formula(paste(metric, "~", dim))
+  summary(aov(my_form , data = x))
+}
+
+lapply(all_groups, my_anova, metric = "Sessions", dim = "deviceCategory")
+
+lapply(all_groups, my_anova, metric = "Sessions", dim = "channelGrouping")
+
+
 ```

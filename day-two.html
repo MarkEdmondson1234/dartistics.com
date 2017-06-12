@@ -663,7 +663,6 @@ my_cross_table &lt;- function(x, cross1, cross2){
   table(x[[cross1]], x[[cross2]])
 }
 
-
 lapply(all_groups, my_cross_table, cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)</code></pre>
 <pre><code>## $group_one
 ##          
@@ -700,6 +699,86 @@ lapply(all_groups, my_cross_table, cross1 = &quot;deviceCategory&quot;, cross2 =
 ##   desktop     61
 ##   mobile      61
 ##   tablet      61</code></pre>
+<pre class="r"><code>## how to calculate expected count here?
+my_chi_table &lt;- function(x, cross1, cross2){
+  chisq.test(table(x[[cross1]], x[[cross2]]))
+}
+
+lapply(all_groups, my_chi_table, cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)</code></pre>
+<pre><code>## Warning in chisq.test(table(x[[cross1]], x[[cross2]])): Chi-squared
+## approximation may be incorrect</code></pre>
+<pre><code>## $group_one
+## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  table(x[[cross1]], x[[cross2]])
+## X-squared = 38.827, df = 14, p-value = 0.0003879
+## 
+## 
+## $group_two
+## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  table(x[[cross1]], x[[cross2]])
+## X-squared = 41.047, df = 14, p-value = 0.0001749
+## 
+## 
+## $group_three
+## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  table(x[[cross1]], x[[cross2]])
+## X-squared = 27.134, df = 14, p-value = 0.01849</code></pre>
+</div>
+<div id="anova" class="section level2">
+<h2>ANOVA</h2>
+<pre class="r"><code>my_anova &lt;- function(x, metric, dim){
+  my_form &lt;- as.formula(paste(metric, &quot;~&quot;, dim))
+  summary(aov(my_form , data = x))
+}
+
+lapply(all_groups, my_anova, metric = &quot;Sessions&quot;, dim = &quot;deviceCategory&quot;)</code></pre>
+<pre><code>## $group_one
+##                  Df    Sum Sq   Mean Sq F value Pr(&gt;F)    
+## deviceCategory    2 1.113e+10 5.566e+09   243.5 &lt;2e-16 ***
+## Residuals      4051 9.259e+10 2.286e+07                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## $group_two
+##                  Df    Sum Sq  Mean Sq F value Pr(&gt;F)    
+## deviceCategory    2 1.930e+10 9.65e+09   158.2 &lt;2e-16 ***
+## Residuals      1848 1.127e+11 6.10e+07                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## $group_three
+##                  Df    Sum Sq   Mean Sq F value Pr(&gt;F)    
+## deviceCategory    2 3.469e+10 1.734e+10   96.64 &lt;2e-16 ***
+## Residuals      1254 2.251e+11 1.795e+08                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>lapply(all_groups, my_anova, metric = &quot;Sessions&quot;, dim = &quot;channelGrouping&quot;)</code></pre>
+<pre><code>## $group_one
+##                   Df    Sum Sq   Mean Sq F value Pr(&gt;F)    
+## channelGrouping    7 1.998e+10 2.854e+09   137.9 &lt;2e-16 ***
+## Residuals       4046 8.375e+10 2.070e+07                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## $group_two
+##                   Df    Sum Sq   Mean Sq F value Pr(&gt;F)    
+## channelGrouping    7 4.004e+10 5.720e+09   114.6 &lt;2e-16 ***
+## Residuals       1843 9.198e+10 4.991e+07                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## $group_three
+##                   Df    Sum Sq   Mean Sq F value Pr(&gt;F)    
+## channelGrouping    7 9.141e+10 1.306e+10   96.89 &lt;2e-16 ***
+## Residuals       1249 1.683e+11 1.348e+08                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </div>
 
 
