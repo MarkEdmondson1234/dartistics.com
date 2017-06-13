@@ -62,14 +62,17 @@ One more time: **R IS CASE-SENSITIVE**.
 Functions are fundamental to any programming language, and R is no different. There are three main sources for functions.
 
 ### Defined in Base R
+
 There are many-many of these, and we will touch on some common ones throughout this class. Consider the code below:
 ```{r}
 sum(c(1,2,2,3,3,3,4,4,4,4,5,5,5,5,5))
 ```
 
 This code uses two functions:
+
 * `c()` -- this is the Base R "combine" function. In this example, it's creating a "vector" of numeric values
 * `sum()` -- this is just like the `SUM()` function in Excel. It finds the sum of the values within it
+
 As shown, the result is the sum of the combined values.
 
 ### Defined in Packages

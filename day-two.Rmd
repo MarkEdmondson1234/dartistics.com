@@ -12,23 +12,33 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Load the data
 
+`readxl` is recommended as the best way to read in data.  You can also use the `Import Dataset` button in `RStudio` that will help you set options and write the `readxl` code for you:
+
 ```{r}
 all_data <- readxl::read_excel("data/day2/SampleGA2 for R Mark.xlsx")
 names(all_data)
 ```
 
-The three files match to the following:
+The statistical analysis was carried out on three subsets of this data. (see data two content)
 
-* Group 1 (row 2 - row 4055)
-* Group 2 (row 4056 - 5906)
-* Group 3 (row 5907 - 7163)
+The three files match to the following rows:
+
+* Group 1 (row 1 - row 4054)
+* Group 2 (row 4055 - 5905)
+* Group 3 (row 5906 - 7162)
+
+We want to run analysis on these groups seperately, so we split them up into three different data frames:
 
 ```{r}
 ## 1 indexed not including header row (1)
 group_one <- all_data[1:4054, ]
 group_two <- all_data[4055:5905, ]
 group_three <- all_data[5906:7162, ]
+```
 
+Because we want to run analysis at the same time, we put those data.frames into a list.  This means we can run functions over them using `lapply`
+
+```{r}
 all_groups <- list(group_one = group_one,
                    group_two = group_two,
                    group_three = group_three)
@@ -36,15 +46,20 @@ all_groups <- list(group_one = group_one,
 
 ## Summary statistics
 
+We start with creating summary statistics.  One option would be to use `summary()` but `describe()` from the `psych` package as it also shows `skew` and `kurtosis`.
+
+The output is generated via the same general workflow:
+
+1. Create a function that will operate on one of the group data.frames (e.g `all_groups[[1]]`)
+2. Run the function over the list of group data.frames
+3. Analyse the result
+
 ```{R}
 library(psych) # statistics
 
 my_summary <- function(x, metric){
   y <- x[, metric]
-  ## do we need skewness/kutosis se too?      
-  ## https://estatistics.eu/what-is-statistics-standard-error-of-skewness-standard-error-of-kurtosis/
-  
-  ## tidy summary
+
   describe(y)
 }
 
@@ -53,7 +68,11 @@ lapply(all_groups, my_summary, metric = c("Sessions", "GoalCompletions"))
 
 ```
 
-Create class statistics
+Note that we pass the `metric` argument via `lapply()`, which is constant for all the data passed to the functions.
+
+### Create class statistics
+
+To create other statistics, we need to create a new function:
 
 ```{r}
 my_class_stats <- function(x, dimension){
@@ -67,41 +86,48 @@ my_class_stats <- function(x, dimension){
   
   my_df
 }
+```
 
-## do we need to order factors?
+To run the function over the different dimensions, we change the function argument:
+
+```{r}
 lapply(all_groups, my_class_stats, dimension = "deviceCategory")
 lapply(all_groups, my_class_stats, dimension = "channelGrouping")
 ```
 
 ## Cross Tabulation
 
-```{r}
 
-## how to calculate expected count here?
+```{r}
 my_cross_table <- function(x, cross1, cross2){
   totals <- table(x[[cross1]], x[[cross2]])
-  ## expected is weighted average 
   
   totals
 }
 
-
 lapply(all_groups, my_cross_table, cross1 = "deviceCategory", cross2 = "channelGrouping")
+```
 
+
+## Chi Squared and expected value
+
+Here we first print out the expected values (Compare with above) and then perform a chi-squared test on if the actual values are signficantly different.
+
+```{R}
 ## how to calculate expected count here?
 my_chi_table <- function(x, cross1, cross2){
-  chisq.test(table(x[[cross1]], x[[cross2]]))
+  x <- chisq.test(table(x[[cross1]], x[[cross2]]))
+  print(x$expected)
+  x
 }
 
 lapply(all_groups, my_chi_table, cross1 = "deviceCategory", cross2 = "channelGrouping")
-
-
-## see if I can put in Cramers V and/or Phi to compare chi_Table comparisons
-
 ```
 
 
 ## ANOVA
+
+Analysis of variance applied to the groups
 
 ```{r}
 

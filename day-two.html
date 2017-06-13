@@ -527,6 +527,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <div id="load-the-data" class="section level2">
 <h2>Load the data</h2>
+<p><code>readxl</code> is recommended as the best way to read in data. You can also use the <code>Import Dataset</code> button in <code>RStudio</code> that will help you set options and write the <code>readxl</code> code for you:</p>
 <pre class="r"><code>all_data &lt;- readxl::read_excel(&quot;data/day2/SampleGA2 for R Mark.xlsx&quot;)
 names(all_data)</code></pre>
 <pre><code>##  [1] &quot;date&quot;               &quot;deviceCategory&quot;     &quot;channelGrouping&quot;   
@@ -537,31 +538,37 @@ names(all_data)</code></pre>
 ## [16] &quot;ReferralDummy&quot;      &quot;SocialDummy&quot;        &quot;EmailDummy&quot;        
 ## [19] &quot;BreakTimeClass&quot;     &quot;BreakTimeDummy1&quot;    &quot;BreakTimeDummy2&quot;   
 ## [22] &quot;BreakTimeDummy3&quot;</code></pre>
-<p>The three files match to the following:</p>
+<p>The statistical analysis was carried out on three subsets of this data. (see data two content)</p>
+<p>The three files match to the following rows:</p>
 <ul>
-<li>Group 1 (row 2 - row 4055)</li>
-<li>Group 2 (row 4056 - 5906)</li>
-<li>Group 3 (row 5907 - 7163)</li>
+<li>Group 1 (row 1 - row 4054)</li>
+<li>Group 2 (row 4055 - 5905)</li>
+<li>Group 3 (row 5906 - 7162)</li>
 </ul>
+<p>We want to run analysis on these groups seperately, so we split them up into three different data frames:</p>
 <pre class="r"><code>## 1 indexed not including header row (1)
 group_one &lt;- all_data[1:4054, ]
 group_two &lt;- all_data[4055:5905, ]
-group_three &lt;- all_data[5906:7162, ]
-
-all_groups &lt;- list(group_one = group_one,
+group_three &lt;- all_data[5906:7162, ]</code></pre>
+<p>Because we want to run analysis at the same time, we put those data.frames into a list. This means we can run functions over them using <code>lapply</code></p>
+<pre class="r"><code>all_groups &lt;- list(group_one = group_one,
                    group_two = group_two,
                    group_three = group_three)</code></pre>
 </div>
 <div id="summary-statistics" class="section level2">
 <h2>Summary statistics</h2>
+<p>We start with creating summary statistics. One option would be to use <code>summary()</code> but <code>describe()</code> from the <code>psych</code> package as it also shows <code>skew</code> and <code>kurtosis</code>.</p>
+<p>The output is generated via the same general workflow:</p>
+<ol style="list-style-type: decimal">
+<li>Create a function that will operate on one of the group data.frames (e.g <code>all_groups[[1]]</code>)</li>
+<li>Run the function over the list of group data.frames</li>
+<li>Analyse the result</li>
+</ol>
 <pre class="r"><code>library(psych) # statistics
 
 my_summary &lt;- function(x, metric){
   y &lt;- x[, metric]
-  ## do we need skewness/kutosis se too?      
-  ## https://estatistics.eu/what-is-statistics-standard-error-of-skewness-standard-error-of-kurtosis/
-  
-  ## tidy summary
+
   describe(y)
 }
 
@@ -590,7 +597,10 @@ lapply(all_groups, my_summary, metric = c(&quot;Sessions&quot;, &quot;GoalComple
 ##                    max  range skew kurtosis     se
 ## Sessions        125992 125966 4.31    22.11 405.62
 ## GoalCompletions   1176   1176 3.95    25.37   2.87</code></pre>
-<p>Create class statistics</p>
+<p>Note that we pass the <code>metric</code> argument via <code>lapply()</code>, which is constant for all the data passed to the functions.</p>
+<div id="create-class-statistics" class="section level3">
+<h3>Create class statistics</h3>
+<p>To create other statistics, we need to create a new function:</p>
 <pre class="r"><code>my_class_stats &lt;- function(x, dimension){
   dim &lt;- x[[dimension]]
   
@@ -601,10 +611,9 @@ lapply(all_groups, my_summary, metric = c(&quot;Sessions&quot;, &quot;GoalComple
   my_df$cum.percent &lt;- cumsum(my_df$percent)
   
   my_df
-}
-
-## do we need to order factors?
-lapply(all_groups, my_class_stats, dimension = &quot;deviceCategory&quot;)</code></pre>
+}</code></pre>
+<p>To run the function over the different dimensions, we change the function argument:</p>
+<pre class="r"><code>lapply(all_groups, my_class_stats, dimension = &quot;deviceCategory&quot;)</code></pre>
 <pre><code>## $group_one
 ##       dim Freq percent cum.percent
 ## 1 desktop 1359  0.3352      0.3352
@@ -656,16 +665,14 @@ lapply(all_groups, my_class_stats, dimension = &quot;deviceCategory&quot;)</code
 ## 7       Referral  181  0.1440      0.8545
 ## 8         Social  183  0.1456      1.0001</code></pre>
 </div>
+</div>
 <div id="cross-tabulation" class="section level2">
 <h2>Cross Tabulation</h2>
-<pre class="r"><code>## how to calculate expected count here?
-my_cross_table &lt;- function(x, cross1, cross2){
+<pre class="r"><code>my_cross_table &lt;- function(x, cross1, cross2){
   totals &lt;- table(x[[cross1]], x[[cross2]])
-  ## expected is weighted average 
   
   totals
 }
-
 
 lapply(all_groups, my_cross_table, cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)</code></pre>
 <pre><code>## $group_one
@@ -703,14 +710,50 @@ lapply(all_groups, my_cross_table, cross1 = &quot;deviceCategory&quot;, cross2 =
 ##   desktop     61
 ##   mobile      61
 ##   tablet      61</code></pre>
+</div>
+<div id="chi-squared-and-expected-value" class="section level2">
+<h2>Chi Squared and expected value</h2>
+<p>Here we first print out the expected values (Compare with above) and then perform a chi-squared test on if the actual values are signficantly different.</p>
 <pre class="r"><code>## how to calculate expected count here?
 my_chi_table &lt;- function(x, cross1, cross2){
-  chisq.test(table(x[[cross1]], x[[cross2]]))
+  x &lt;- chisq.test(table(x[[cross1]], x[[cross2]]))
+  print(x$expected)
+  x
 }
 
 lapply(all_groups, my_chi_table, cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)</code></pre>
+<pre><code>##          
+##             (Other)   Direct  Display    Email Organic Search Paid Search
+##   desktop  96.54465 214.2084 213.5380 5.698816       214.2084    198.4529
+##   mobile  100.59398 223.1929 222.4943 5.937839       223.1929    206.7765
+##   tablet   90.86137 201.5987 200.9677 5.363345       201.5987    186.7706
+##          
+##           Referral   Social
+##   desktop 206.1630 210.1857
+##   mobile  214.8101 219.0015
+##   tablet  194.0269 197.8128</code></pre>
 <pre><code>## Warning in chisq.test(table(x[[cross1]], x[[cross2]])): Chi-squared
 ## approximation may be incorrect</code></pre>
+<pre><code>##          
+##            (Other)   Direct  Display    Email Organic Search Paid Search
+##   desktop 61.73420 87.37763 87.37763 2.216099       87.37763    87.37763
+##   mobile  67.94976 96.17504 96.17504 2.439222       96.17504    96.17504
+##   tablet  65.31605 92.44733 92.44733 2.344679       92.44733    92.44733
+##          
+##           Referral   Social
+##   desktop 85.16153 87.37763
+##   mobile  93.73582 96.17504
+##   tablet  90.10265 92.44733
+##          
+##            (Other)   Direct  Display    Email Organic Search Paid Search
+##   desktop 45.36516 57.65155 57.65155 5.355609       57.65155    57.65155
+##   mobile  50.06205 63.62053 63.62053 5.910103       63.62053    63.62053
+##   tablet  48.57279 61.72792 61.72792 5.734288       61.72792    61.72792
+##          
+##           Referral   Social
+##   desktop 57.02148 57.65155
+##   mobile  62.92522 63.62053
+##   tablet  61.05330 61.72792</code></pre>
 <pre><code>## $group_one
 ## 
 ##  Pearson&#39;s Chi-squared test
@@ -733,10 +776,10 @@ lapply(all_groups, my_chi_table, cross1 = &quot;deviceCategory&quot;, cross2 = &
 ## 
 ## data:  table(x[[cross1]], x[[cross2]])
 ## X-squared = 27.134, df = 14, p-value = 0.01849</code></pre>
-<pre class="r"><code>## see if I can put in Cramers V and/or Phi to compare chi_Table comparisons</code></pre>
 </div>
 <div id="anova" class="section level2">
 <h2>ANOVA</h2>
+<p>Analysis of variance applied to the groups</p>
 <pre class="r"><code>my_anova &lt;- function(x, metric, dim){
   my_form &lt;- as.formula(paste(metric, &quot;~&quot;, dim))
   model &lt;- aov(my_form , data = x)
