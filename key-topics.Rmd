@@ -39,13 +39,29 @@ Some additional topics that start to move from "making R work" to "making it wor
 * **The pipe** -- if you're using `dplyr()` you can use the `%>%` operator to pass the output of a function in to a subsequent function. Once you get the hang of it, this makes for efficient and readable code.
 * **Untidying Data** -- once you have tidy data, it's very easy to untidy it (or subsets of it) for specific uses; the key to this are the functions in the `tidyr` package.
 * **Analytics APIs** -- it's getting easier and easier to bring data in directly from Google Analytics, the Google Search Console, Adobe Analytics, and more. There are packages for this!
+* **.Renviron** -- you don't want to inadvertently share your API keys, so use a `.Renviron` file to store those as environment variables and then `Sys.getenv()` to retrieve and assign them.
+* **Github** -- RStudio integrates nicely with Github, and, as a platform built for the version control of code, it's a platform you really should consider using; the free service makes all of your repositories public, but it's inexpensive to have a paid service that enables private repositories, too.
 
-### And...Your Brain Runneth Over
-These remaining topics were covered in the afternoon and are where some of the real, _real_ power of R starts to shine:
+### And That Just Gets Us to Statistics!
 
-* **Modeling the Data** -- R and statistics go hand in hand; even with just base R, you can quickly perform correlations, regressions, categorisation, and more!
-* **Data Visualization** -- while base plotting functions in R are good for quick visualizations, `ggplot2()` is where there starts to be real power in the layout and formatting. The "gg" in `ggplot2()` is for "**g**rammar of **g**raphics," and that grammar can be a bit of a mind-bender.
-* **Outputting the Results** -- RMarkdown has a relatively simple syntax that can be used to output results to slides, to a PDF, to HTML, and more; RShiny lets you build web applications that are actually "reactive" (when the user changes something, the data/visualisations refresh automatically).
+* **The Nature of Data** -- getting from "dimensions and metrics" to "variables" opens up a lot of (sometimes confusing) possibilities. Variables can be nonmetric or metric; or, more specifically, they can have nominal, ordinal, interval, or ratio scales.
+* **Different statistical methods** -- we covered the Cross Tabulation with a $\chi^2$ Test for Independence, ANOVA, Correlation, and Regression; those are a good start!
+
+### And Back to More R Stuff!
+
+* **Making Fast R Code** -- at first...don't worry too much about it; but, _be aware_ that, when you've got something running for 20 minutes or 40 minutes or over night, _it might be because_ you didn't appropriate use vectorisation (you used loops), or you didn't take advantage of the best packages or parallel processing
+* **Functions** -- you started off using (and will continue to use) functions from Base R and various R packages; you should pretty quickly be writing your own functions inside your scripts (as a start -- see the next point) to make your code cleaner and easier to read and maintain
+* **Lists** -- they can be confusing, but they are truly unique and powerful; applying functions to lists is fast, slick, and awesome with `lapply()` once you've fully grokked it
+* **Creating Your Own Packages** -- once you're comfortable with the basics of R, and once you start using functions within your scripts, you will quickly want to start making your own packages for internal use. They let you re-use code very easily -- just for yourself, or with others.
+* **Creating APIs with R** -- using packages someone else built to access APIs is great...until those packages don't exist; as long as a platform has an API, though, you can likely use the `httr` package to build your own functions to access it! (And maybe even put it in your own package; and maybe even _publish_ that package!)
+
+### Getting to Deliverables
+
+* **Data Visualization** -- while base plotting functions in R are good for quick visualizations, `ggplot2` is where there starts to be real power in the layout and formatting. The "gg" in `ggplot2()` is for "**g**rammar of **g**raphics," and that grammar can be a bit of a mind-bender. But, once you embrace geoms, aesthetics, and themes, you will be off to the races!
+* **Interactivity Easily** -- packages like `highcharter` and `plotly` add a nice level of interactivity to your visualizations _very_ easily
+* **RMarkdown** -- RMarkdown has a relatively simple syntax that can be used to output results to slides, to a PDF, to HTML, _to emails!_ and more.
+* **Shiny** -- Shiny lets you build web applications that are actually "reactive" (when the user changes something, the data/visualisations refresh automatically).
+* **RMarkdown WITH Shiny** -- yeah; it's awesome.
 
 _<whew>_ That's about it. Once you've got these "key" topics mastered...you'll realize that your adventure with R has, really, just begun!
 

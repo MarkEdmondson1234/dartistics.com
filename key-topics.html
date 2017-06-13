@@ -465,15 +465,35 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li><strong>The pipe</strong> – if you’re using <code>dplyr()</code> you can use the <code>%&gt;%</code> operator to pass the output of a function in to a subsequent function. Once you get the hang of it, this makes for efficient and readable code.</li>
 <li><strong>Untidying Data</strong> – once you have tidy data, it’s very easy to untidy it (or subsets of it) for specific uses; the key to this are the functions in the <code>tidyr</code> package.</li>
 <li><strong>Analytics APIs</strong> – it’s getting easier and easier to bring data in directly from Google Analytics, the Google Search Console, Adobe Analytics, and more. There are packages for this!</li>
+<li><strong>.Renviron</strong> – you don’t want to inadvertently share your API keys, so use a <code>.Renviron</code> file to store those as environment variables and then <code>Sys.getenv()</code> to retrieve and assign them.</li>
+<li><strong>Github</strong> – RStudio integrates nicely with Github, and, as a platform built for the version control of code, it’s a platform you really should consider using; the free service makes all of your repositories public, but it’s inexpensive to have a paid service that enables private repositories, too.</li>
 </ul>
 </div>
-<div id="andyour-brain-runneth-over" class="section level3">
-<h3>And…Your Brain Runneth Over</h3>
-<p>These remaining topics were covered in the afternoon and are where some of the real, <em>real</em> power of R starts to shine:</p>
+<div id="and-that-just-gets-us-to-statistics" class="section level3">
+<h3>And That Just Gets Us to Statistics!</h3>
 <ul>
-<li><strong>Modeling the Data</strong> – R and statistics go hand in hand; even with just base R, you can quickly perform correlations, regressions, categorisation, and more!</li>
-<li><strong>Data Visualization</strong> – while base plotting functions in R are good for quick visualizations, <code>ggplot2()</code> is where there starts to be real power in the layout and formatting. The “gg” in <code>ggplot2()</code> is for “<strong>g</strong>rammar of <strong>g</strong>raphics,” and that grammar can be a bit of a mind-bender.</li>
-<li><strong>Outputting the Results</strong> – RMarkdown has a relatively simple syntax that can be used to output results to slides, to a PDF, to HTML, and more; RShiny lets you build web applications that are actually “reactive” (when the user changes something, the data/visualisations refresh automatically).</li>
+<li><strong>The Nature of Data</strong> – getting from “dimensions and metrics” to “variables” opens up a lot of (sometimes confusing) possibilities. Variables can be nonmetric or metric; or, more specifically, they can have nominal, ordinal, interval, or ratio scales.</li>
+<li><strong>Different statistical methods</strong> – we covered the Cross Tabulation with a <span class="math inline">\(\chi^2\)</span> Test for Independence, ANOVA, Correlation, and Regression; those are a good start!</li>
+</ul>
+</div>
+<div id="and-back-to-more-r-stuff" class="section level3">
+<h3>And Back to More R Stuff!</h3>
+<ul>
+<li><strong>Making Fast R Code</strong> – at first…don’t worry too much about it; but, <em>be aware</em> that, when you’ve got something running for 20 minutes or 40 minutes or over night, <em>it might be because</em> you didn’t appropriate use vectorisation (you used loops), or you didn’t take advantage of the best packages or parallel processing</li>
+<li><strong>Functions</strong> – you started off using (and will continue to use) functions from Base R and various R packages; you should pretty quickly be writing your own functions inside your scripts (as a start – see the next point) to make your code cleaner and easier to read and maintain</li>
+<li><strong>Lists</strong> – they can be confusing, but they are truly unique and powerful; applying functions to lists is fast, slick, and awesome with <code>lapply()</code> once you’ve fully grokked it</li>
+<li><strong>Creating Your Own Packages</strong> – once you’re comfortable with the basics of R, and once you start using functions within your scripts, you will quickly want to start making your own packages for internal use. They let you re-use code very easily – just for yourself, or with others.</li>
+<li><strong>Creating APIs with R</strong> – using packages someone else built to access APIs is great…until those packages don’t exist; as long as a platform has an API, though, you can likely use the <code>httr</code> package to build your own functions to access it! (And maybe even put it in your own package; and maybe even <em>publish</em> that package!)</li>
+</ul>
+</div>
+<div id="getting-to-deliverables" class="section level3">
+<h3>Getting to Deliverables</h3>
+<ul>
+<li><strong>Data Visualization</strong> – while base plotting functions in R are good for quick visualizations, <code>ggplot2</code> is where there starts to be real power in the layout and formatting. The “gg” in <code>ggplot2()</code> is for “<strong>g</strong>rammar of <strong>g</strong>raphics,” and that grammar can be a bit of a mind-bender. But, once you embrace geoms, aesthetics, and themes, you will be off to the races!</li>
+<li><strong>Interactivity Easily</strong> – packages like <code>highcharter</code> and <code>plotly</code> add a nice level of interactivity to your visualizations <em>very</em> easily</li>
+<li><strong>RMarkdown</strong> – RMarkdown has a relatively simple syntax that can be used to output results to slides, to a PDF, to HTML, <em>to emails!</em> and more.</li>
+<li><strong>Shiny</strong> – Shiny lets you build web applications that are actually “reactive” (when the user changes something, the data/visualisations refresh automatically).</li>
+<li><strong>RMarkdown WITH Shiny</strong> – yeah; it’s awesome.</li>
 </ul>
 <p><em><whew></em> That’s about it. Once you’ve got these “key” topics mastered…you’ll realize that your adventure with R has, really, just begun!</p>
 </div>
