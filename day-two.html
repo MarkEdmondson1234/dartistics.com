@@ -912,11 +912,9 @@ lapply(all_groups, my_chi_table, cross1 = &quot;deviceCategory&quot;, cross2 = &
 <div id="a-nice-plot" class="section level3">
 <h3>A nice plot</h3>
 <pre class="r"><code>## get the chi-squared results into its own list
-plot_this_list &lt;- lapply(all_groups, my_chi_table, cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)</code></pre>
-<pre><code>## Warning in chisq.test(tab): Chi-squared approximation may be incorrect</code></pre>
-<pre><code>## Warning in stats::chisq.test(tab, correct = FALSE): Chi-squared
-## approximation may be incorrect</code></pre>
-<pre class="r"><code>plot_func &lt;- function(x){
+plot_this_list &lt;- lapply(all_groups, my_chi_table, cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)
+
+plot_func &lt;- function(x){
   barplot(x$difference, 
           beside = TRUE, 
           main = &quot;Expected - Observed&quot;, 

@@ -160,7 +160,7 @@ lapply(all_groups, my_chi_table, cross1 = "deviceCategory", cross2 = "channelGro
 
 ### A nice plot 
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 ## get the chi-squared results into its own list
 plot_this_list <- lapply(all_groups, my_chi_table, cross1 = "deviceCategory", cross2 = "channelGrouping")
 
