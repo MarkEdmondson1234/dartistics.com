@@ -923,77 +923,8 @@ plot_func &lt;- function(x){
   legend(&quot;topright&quot;,fill=c(&quot;#91210E&quot;,&quot;#A9E317&quot;,&quot;#2F5CAA&quot;), legend=rownames(x$difference))
 }
 
-lapply(plot_this_list, plot_func)</code></pre>
+p &lt;- lapply(plot_this_list, plot_func)</code></pre>
 <p><img src="day-two_files/figure-html/unnamed-chunk-10-1.png" width="672" /><img src="day-two_files/figure-html/unnamed-chunk-10-2.png" width="672" /><img src="day-two_files/figure-html/unnamed-chunk-10-3.png" width="672" /></p>
-<pre><code>## $group_one
-## $group_one$rect
-## $group_one$rect$w
-## [1] 6.270178
-## 
-## $group_one$rect$h
-## [1] 16.77655
-## 
-## $group_one$rect$left
-## [1] 26.96982
-## 
-## $group_one$rect$top
-## [1] 27.86137
-## 
-## 
-## $group_one$text
-## $group_one$text$x
-## [1] 29.41107 29.41107 29.41107
-## 
-## $group_one$text$y
-## [1] 23.66723 19.47309 15.27896
-## 
-## 
-## 
-## $group_two
-## $group_two$rect
-## $group_two$rect$w
-## [1] 6.270178
-## 
-## $group_two$rect$h
-## [1] 14.62897
-## 
-## $group_two$rect$left
-## [1] 26.96982
-## 
-## $group_two$rect$top
-## [1] 33.7342
-## 
-## 
-## $group_two$text
-## $group_two$text$x
-## [1] 29.41107 29.41107 29.41107
-## 
-## $group_two$text$y
-## [1] 30.07695 26.41971 22.76247
-## 
-## 
-## 
-## $group_three
-## $group_three$rect
-## $group_three$rect$w
-## [1] 6.270178
-## 
-## $group_three$rect$h
-## [1] 8.555029
-## 
-## $group_three$rect$left
-## [1] 26.96982
-## 
-## $group_three$rect$top
-## [1] 22.36516
-## 
-## 
-## $group_three$text
-## $group_three$text$x
-## [1] 29.41107 29.41107 29.41107
-## 
-## $group_three$text$y
-## [1] 20.22640 18.08764 15.94888</code></pre>
 </div>
 </div>
 <div id="anova" class="section level2">
