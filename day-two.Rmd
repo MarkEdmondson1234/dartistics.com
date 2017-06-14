@@ -18,8 +18,12 @@ library(dplyr)
 ```{r}
 all_data <- readxl::read_excel("data/day2/SampleGA2 for R Mark.xlsx")
 
-summary(all_data %>% 
-          select(date, deviceCategory, channelGrouping, Sessions, GoalCompletions))
+## we only want these columns
+all_data <- all_data %>% 
+          select(date, deviceCategory, channelGrouping, Sessions, GoalCompletions, DeviceClass, ChannelClass)
+
+knitr::kable(head(all_data))
+summary(all_data)
 ```
 ## First plot to find shape of the data
 
@@ -77,7 +81,9 @@ my_cross_table <- function(x, cross1, cross2){
   totals
 }
 
-lapply(all_groups, my_cross_table, cross1 = "deviceCategory", cross2 = "channelGrouping")
+lapply(all_groups, 
+       my_cross_table, 
+       cross1 = "deviceCategory", cross2 = "channelGrouping")
 ```
 
 
@@ -148,14 +154,16 @@ my_chi_table <- function(x, cross1, cross2){
   list(
     expected = y$expected,
     observed = y$observed,
-    difference = y$expected - y$observed,
+    error = y$expected - y$observed,
     chi = y,
     cramerV = round(cramer.v(tab), digits = 4)
   )
 
 }
 
-lapply(all_groups, my_chi_table, cross1 = "deviceCategory", cross2 = "channelGrouping")
+lapply(all_groups, 
+       my_chi_table, 
+       cross1 = "deviceCategory", cross2 = "channelGrouping")
 ```
 
 ### A nice plot 
@@ -164,13 +172,14 @@ lapply(all_groups, my_chi_table, cross1 = "deviceCategory", cross2 = "channelGro
 ## get the chi-squared results into its own list
 plot_this_list <- lapply(all_groups, my_chi_table, cross1 = "deviceCategory", cross2 = "channelGrouping")
 
+my_cols <- c("#AAA81B","#77774B","#3D81AA")
 plot_func <- function(x){
-  barplot(x$difference, 
+  barplot(x$error, 
           beside = TRUE, 
           main = "Expected - Observed", 
           sub = paste(x$chi$method, x$chi$p.value, " CramerV: ", x$cramerV),
-          col = c("#91210E","#A9E317","#2F5CAA"))
-  legend("topright",fill=c("#91210E","#A9E317","#2F5CAA"), legend=rownames(x$difference))
+          col = my_cols)
+  legend("topright",fill=my_cols, legend=rownames(x$error))
 }
 
 p <- lapply(plot_this_list, plot_func)
@@ -179,16 +188,57 @@ p <- lapply(plot_this_list, plot_func)
 
 ## ANOVA
 
-Analysis of variance applied to the groups
+Where is the source of error?
+
+### 1-Way ANOVA
+
+By channel, do sessions differ?  Here we compare all the groups.
+
+* Between Groups (SSx) - line 1 (`channelGrouping`)
+* Within Groups (SSe) - line 2 (`Residuals`)
+* F (actual) - `F value`
+* The p-value of F (actual) | F (expected) - `Pr(>F)`
 
 ```{r}
-
-my_anova <- function(x, metric, dim){
+my_oneway_anova <- function(x, metric, dim){
   my_form <- as.formula(paste(metric, "~", dim))
   model <- aov(my_form , data = x)
   summary(model)
 }
 
+## Sessions ~ channelGrouping
+lapply(all_groups, 
+       my_oneway_anova, 
+       metric = "Sessions", dim = "channelGrouping")
+
+```
+
+### Tukey 
+
+If it is significant, run some post-hoc results.  In this example we use Tukey (vs say Bonferroni).
+
+This runs over each channel, for each group.  
+
+If 0 is between the lower and upper bound then don't reject the NULL hypothesis. 
+
+```{R}
+my_oneway_anova_tukey <- function(x, metric, dim){
+  my_form <- as.formula(paste(metric, "~", dim))
+  model <- aov(my_form , data = x)
+  TukeyHSD(model)
+}
+
+## Sessions ~ deviceCategory
+my_oneway_anova_tukey_results <- lapply(all_groups, 
+                                        my_oneway_anova_tukey, 
+                                        metric = "Sessions", dim = "deviceCategory")
+my_oneway_anova_tukey_results$group_two
+```
+
+
+
+
+```{R}
 my_anova_tukey <- function(x, metric, dim){
   my_form <- as.formula(paste(metric, "~", dim))
   model <- aov(my_form , data = x)
@@ -196,23 +246,35 @@ my_anova_tukey <- function(x, metric, dim){
   TukeyHSD(model)
 }
 
+# tukey_results <- lapply(all_groups, my_anova_tukey, metric = "GoalCompletions", dim = "channelGrouping * deviceCategory")
+tukey_results <- lapply(all_groups, my_anova_tukey, metric = "GoalCompletions", dim = "channelGrouping")
+```
+
+This is a big list. (each channel compared with one another, per group).
+
+We look at just one channel for Group 1:
+
+```{r}
+# tukey_results$group_one$`channelGrouping:deviceCategory`
+tukey_results$group_one$channelGrouping
+```
+
+### Multi way ANOVA
+
+* Hoa the group means for first factor are equal
+* Hob The group means for the second factor are equal
+* H0c There is no interaction between the two factors
+
+```{r}
 my_nway_anova <- function(x, metric, dim){
   my_form <- as.formula(paste(metric, "~", dim))
   anova(lm(my_form , data = x))
 }
 
-lapply(all_groups, my_anova, metric = "Sessions", dim = "deviceCategory")
-lapply(all_groups, my_anova, metric = "GoalCompletions", dim = "deviceCategory")
-
-
-lapply(all_groups, my_anova, metric = "Sessions", dim = "channelGrouping")
-lapply(all_groups, my_anova, metric = "GoalCompletions", dim = "channelGrouping")
-
-
 ## tests of between subject effects
-lapply(all_groups, my_nway_anova, metric = "GoalCompletions", dim = "channelGrouping * deviceCategory")
-
-
+lapply(all_groups, 
+       my_nway_anova, 
+       metric = "Sessions", dim = "deviceCategory *channelGrouping")
 ```
 
 

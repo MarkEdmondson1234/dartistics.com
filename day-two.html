@@ -530,8 +530,81 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p><code>readxl</code> is recommended as the best way to read in data. You can also use the <code>Import Dataset</code> button in <code>RStudio</code> that will help you set options and write the <code>readxl</code> code for you:</p>
 <pre class="r"><code>all_data &lt;- readxl::read_excel(&quot;data/day2/SampleGA2 for R Mark.xlsx&quot;)
 
-summary(all_data %&gt;% 
-          select(date, deviceCategory, channelGrouping, Sessions, GoalCompletions))</code></pre>
+## we only want these columns
+all_data &lt;- all_data %&gt;% 
+          select(date, deviceCategory, channelGrouping, Sessions, GoalCompletions, DeviceClass, ChannelClass)
+
+knitr::kable(head(all_data))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">date</th>
+<th align="left">deviceCategory</th>
+<th align="left">channelGrouping</th>
+<th align="right">Sessions</th>
+<th align="right">GoalCompletions</th>
+<th align="right">DeviceClass</th>
+<th align="right">ChannelClass</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">mobile</td>
+<td align="left">(Other)</td>
+<td align="right">186</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">tablet</td>
+<td align="left">(Other)</td>
+<td align="right">80</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">desktop</td>
+<td align="left">Direct</td>
+<td align="right">744</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">mobile</td>
+<td align="left">Direct</td>
+<td align="right">4491</td>
+<td align="right">21</td>
+<td align="right">2</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">2016-01-01</td>
+<td align="left">tablet</td>
+<td align="left">Direct</td>
+<td align="right">611</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">2016-01-01</td>
+<td align="left">desktop</td>
+<td align="left">Display</td>
+<td align="right">18174</td>
+<td align="right">63</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>summary(all_data)</code></pre>
 <pre><code>##       date                     deviceCategory     channelGrouping   
 ##  Min.   :2016-01-01 00:00:00   Length:7162        Length:7162       
 ##  1st Qu.:2016-04-04 00:00:00   Class :character   Class :character  
@@ -539,13 +612,13 @@ summary(all_data %&gt;%
 ##  Mean   :2016-07-05 04:48:07                                        
 ##  3rd Qu.:2016-10-05 00:00:00                                        
 ##  Max.   :2016-12-31 00:00:00                                        
-##     Sessions      GoalCompletions  
-##  Min.   :    26   Min.   :   0.00  
-##  1st Qu.:   292   1st Qu.:   0.00  
-##  Median :   956   Median :   8.00  
-##  Mean   :  3701   Mean   :  27.05  
-##  3rd Qu.:  3587   3rd Qu.:  25.00  
-##  Max.   :125992   Max.   :1176.00</code></pre>
+##     Sessions      GoalCompletions    DeviceClass     ChannelClass
+##  Min.   :    26   Min.   :   0.00   Min.   :1.000   Min.   :1.0  
+##  1st Qu.:   292   1st Qu.:   0.00   1st Qu.:1.000   1st Qu.:3.0  
+##  Median :   956   Median :   8.00   Median :2.000   Median :4.0  
+##  Mean   :  3701   Mean   :  27.05   Mean   :1.997   Mean   :4.2  
+##  3rd Qu.:  3587   3rd Qu.:  25.00   3rd Qu.:3.000   3rd Qu.:6.0  
+##  Max.   :125992   Max.   :1176.00   Max.   :3.000   Max.   :8.0</code></pre>
 </div>
 <div id="first-plot-to-find-shape-of-the-data" class="section level2">
 <h2>First plot to find shape of the data</h2>
@@ -756,7 +829,7 @@ my_chi_table &lt;- function(x, cross1, cross2){
   list(
     expected = y$expected,
     observed = y$observed,
-    difference = y$expected - y$observed,
+    error = y$expected - y$observed,
     chi = y,
     cramerV = round(cramer.v(tab), digits = 4)
   )
@@ -789,7 +862,7 @@ lapply(all_groups, my_chi_table, cross1 = &quot;deviceCategory&quot;, cross2 = &
 ##   mobile     213
 ##   tablet     202
 ## 
-## $group_one$difference
+## $group_one$error
 ##          
 ##              (Other)     Direct    Display      Email Organic Search
 ##   desktop  10.544647   1.208436   1.537987  -6.301184       1.208436
@@ -838,7 +911,7 @@ lapply(all_groups, my_chi_table, cross1 = &quot;deviceCategory&quot;, cross2 = &
 ##   mobile      92
 ##   tablet      92
 ## 
-## $group_two$difference
+## $group_two$error
 ##          
 ##               (Other)      Direct     Display       Email Organic Search
 ##   desktop  33.7341977  -4.6223663  -4.6223663  -3.7839006     -4.6223663
@@ -887,7 +960,7 @@ lapply(all_groups, my_chi_table, cross1 = &quot;deviceCategory&quot;, cross2 = &
 ##   mobile      61
 ##   tablet      61
 ## 
-## $group_three$difference
+## $group_three$error
 ##          
 ##               (Other)      Direct     Display       Email Organic Search
 ##   desktop  22.3651551  -3.3484487  -3.3484487  -1.6443914     -3.3484487
@@ -914,13 +987,14 @@ lapply(all_groups, my_chi_table, cross1 = &quot;deviceCategory&quot;, cross2 = &
 <pre class="r"><code>## get the chi-squared results into its own list
 plot_this_list &lt;- lapply(all_groups, my_chi_table, cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)
 
+my_cols &lt;- c(&quot;#AAA81B&quot;,&quot;#77774B&quot;,&quot;#3D81AA&quot;)
 plot_func &lt;- function(x){
-  barplot(x$difference, 
+  barplot(x$error, 
           beside = TRUE, 
           main = &quot;Expected - Observed&quot;, 
           sub = paste(x$chi$method, x$chi$p.value, &quot; CramerV: &quot;, x$cramerV),
-          col = c(&quot;#91210E&quot;,&quot;#A9E317&quot;,&quot;#2F5CAA&quot;))
-  legend(&quot;topright&quot;,fill=c(&quot;#91210E&quot;,&quot;#A9E317&quot;,&quot;#2F5CAA&quot;), legend=rownames(x$difference))
+          col = my_cols)
+  legend(&quot;topright&quot;,fill=my_cols, legend=rownames(x$error))
 }
 
 p &lt;- lapply(plot_this_list, plot_func)</code></pre>
@@ -929,68 +1003,24 @@ p &lt;- lapply(plot_this_list, plot_func)</code></pre>
 </div>
 <div id="anova" class="section level2">
 <h2>ANOVA</h2>
-<p>Analysis of variance applied to the groups</p>
-<pre class="r"><code>my_anova &lt;- function(x, metric, dim){
+<p>Where is the source of error?</p>
+<div id="way-anova" class="section level3">
+<h3>1-Way ANOVA</h3>
+<p>By channel, do sessions differ? Here we compare all the groups.</p>
+<ul>
+<li>Between Groups (SSx) - line 1 (<code>channelGrouping</code>)</li>
+<li>Within Groups (SSe) - line 2 (<code>Residuals</code>)</li>
+<li>F (actual) - <code>F value</code></li>
+<li>The p-value of F (actual) | F (expected) - <code>Pr(&gt;F)</code></li>
+</ul>
+<pre class="r"><code>my_oneway_anova &lt;- function(x, metric, dim){
   my_form &lt;- as.formula(paste(metric, &quot;~&quot;, dim))
   model &lt;- aov(my_form , data = x)
   summary(model)
 }
 
-my_anova_tukey &lt;- function(x, metric, dim){
-  my_form &lt;- as.formula(paste(metric, &quot;~&quot;, dim))
-  model &lt;- aov(my_form , data = x)
-  
-  TukeyHSD(model)
-}
-
-my_nway_anova &lt;- function(x, metric, dim){
-  my_form &lt;- as.formula(paste(metric, &quot;~&quot;, dim))
-  anova(lm(my_form , data = x))
-}
-
-lapply(all_groups, my_anova, metric = &quot;Sessions&quot;, dim = &quot;deviceCategory&quot;)</code></pre>
-<pre><code>## $group_one
-##                  Df    Sum Sq   Mean Sq F value Pr(&gt;F)    
-## deviceCategory    2 1.113e+10 5.566e+09   243.5 &lt;2e-16 ***
-## Residuals      4051 9.259e+10 2.286e+07                   
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## $group_two
-##                  Df    Sum Sq  Mean Sq F value Pr(&gt;F)    
-## deviceCategory    2 1.930e+10 9.65e+09   158.2 &lt;2e-16 ***
-## Residuals      1848 1.127e+11 6.10e+07                   
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## $group_three
-##                  Df    Sum Sq   Mean Sq F value Pr(&gt;F)    
-## deviceCategory    2 3.469e+10 1.734e+10   96.64 &lt;2e-16 ***
-## Residuals      1254 2.251e+11 1.795e+08                   
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>lapply(all_groups, my_anova, metric = &quot;GoalCompletions&quot;, dim = &quot;deviceCategory&quot;)</code></pre>
-<pre><code>## $group_one
-##                  Df  Sum Sq Mean Sq F value Pr(&gt;F)    
-## deviceCategory    2  289451  144725   171.2 &lt;2e-16 ***
-## Residuals      4051 3424251     845                   
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## $group_two
-##                  Df  Sum Sq Mean Sq F value Pr(&gt;F)    
-## deviceCategory    2  492571  246285     124 &lt;2e-16 ***
-## Residuals      1848 3671475    1987                   
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## $group_three
-##                  Df   Sum Sq Mean Sq F value Pr(&gt;F)    
-## deviceCategory    2  1738804  869402   96.94 &lt;2e-16 ***
-## Residuals      1254 11246628    8969                   
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>lapply(all_groups, my_anova, metric = &quot;Sessions&quot;, dim = &quot;channelGrouping&quot;)</code></pre>
+## Sessions ~ channelGrouping
+lapply(all_groups, my_oneway_anova, metric = &quot;Sessions&quot;, dim = &quot;channelGrouping&quot;)</code></pre>
 <pre><code>## $group_one
 ##                   Df    Sum Sq   Mean Sq F value Pr(&gt;F)    
 ## channelGrouping    7 1.998e+10 2.854e+09   137.9 &lt;2e-16 ***
@@ -1011,64 +1041,139 @@ lapply(all_groups, my_anova, metric = &quot;Sessions&quot;, dim = &quot;deviceCa
 ## Residuals       1249 1.683e+11 1.348e+08                   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>lapply(all_groups, my_anova, metric = &quot;GoalCompletions&quot;, dim = &quot;channelGrouping&quot;)</code></pre>
+</div>
+<div id="tukey" class="section level3">
+<h3>Tukey</h3>
+<p>If it is significant, run some post-hoc results. In this example we use Tukey (vs say Bonferroni).</p>
+<p>This runs over each channel, for each group.</p>
+<p>If 0 is between the lower and upper bound then don’t reject the NULL hypothesis.</p>
+<pre class="r"><code>my_oneway_anova_tukey &lt;- function(x, metric, dim){
+  my_form &lt;- as.formula(paste(metric, &quot;~&quot;, dim))
+  model &lt;- aov(my_form , data = x)
+  TukeyHSD(model)
+}
+
+## Sessions ~ deviceCategory
+my_oneway_anova_tukey_results &lt;- lapply(all_groups, my_oneway_anova_tukey, metric = &quot;Sessions&quot;, dim = &quot;deviceCategory&quot;)
+my_oneway_anova_tukey_results$group_two</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = my_form, data = x)
+## 
+## $deviceCategory
+##                     diff       lwr       upr   p adj
+## mobile-desktop  5316.034  4270.575  6361.492 0.0e+00
+## tablet-desktop -2290.483 -3345.928 -1235.038 1.2e-06
+## tablet-mobile  -7606.517 -8636.847 -6576.187 0.0e+00</code></pre>
+<pre class="r"><code>my_anova_tukey &lt;- function(x, metric, dim){
+  my_form &lt;- as.formula(paste(metric, &quot;~&quot;, dim))
+  model &lt;- aov(my_form , data = x)
+  
+  TukeyHSD(model)
+}
+
+# tukey_results &lt;- lapply(all_groups, my_anova_tukey, metric = &quot;GoalCompletions&quot;, dim = &quot;channelGrouping * deviceCategory&quot;)
+tukey_results &lt;- lapply(all_groups, my_anova_tukey, metric = &quot;GoalCompletions&quot;, dim = &quot;channelGrouping&quot;)</code></pre>
+<p>This is a big list. (each channel compared with one another, per group).</p>
+<p>We look at just one channel for Group 1:</p>
+<pre class="r"><code># tukey_results$group_one$`channelGrouping:deviceCategory`
+tukey_results$group_one$channelGrouping</code></pre>
+<pre><code>##                                   diff         lwr        upr        p adj
+## Direct-(Other)               9.6331182   4.4511197  14.815117 5.419218e-07
+## Display-(Other)             14.3642399   9.1797147  19.548765 2.778761e-08
+## Email-(Other)                1.1825980 -17.0409653  19.406161 9.999994e-01
+## Organic Search-(Other)      56.7896127  51.6076142  61.971611 2.778753e-08
+## Paid Search-(Other)          7.3316441   2.0861268  12.577161 6.067543e-04
+## Referral-(Other)             1.9773374  -3.2359799   7.190655 9.454969e-01
+## Social-(Other)               8.4263357   3.2289540  13.623717 2.518169e-05
+## Display-Direct               4.7311218   0.6431369   8.819107 1.071746e-02
+## Email-Direct                -8.4505201 -26.3929441   9.491904 8.443331e-01
+## Organic Search-Direct       47.1564945  43.0717147  51.241274 2.778753e-08
+## Paid Search-Direct          -2.3014740  -6.4665395   1.863591 7.031916e-01
+## Referral-Direct             -7.6557808 -11.7802196  -3.531342 5.672371e-07
+## Social-Direct               -1.2067824  -5.3110601   2.897495 9.868718e-01
+## Email-Display              -13.1816419 -31.1247958   4.761512 3.351188e-01
+## Organic Search-Display      42.4253727  38.3373879  46.513358 2.778753e-08
+## Paid Search-Display         -7.0325958 -11.2008045  -2.864387 9.027361e-06
+## Referral-Display           -12.3869025 -16.5145156  -8.259289 2.778762e-08
+## Social-Display              -5.9379042 -10.0453717  -1.830437 3.191855e-04
+## Organic Search-Email        55.6070146  37.6645906  73.549439 2.778761e-08
+## Paid Search-Email            6.1490461 -11.8118259  24.109918 9.686214e-01
+## Referral-Email               0.7947394 -17.1567550  18.746234 1.000000e+00
+## Social-Email                 7.2437377 -10.7031353  25.190611 9.250059e-01
+## Paid Search-Organic Search -49.4579685 -53.6230340 -45.292903 2.778753e-08
+## Referral-Organic Search    -54.8122753 -58.9367141 -50.687836 2.778753e-08
+## Social-Organic Search      -48.3632770 -52.4675547 -44.258999 2.778753e-08
+## Referral-Paid Search        -5.3543067  -9.5582739  -1.150340 2.877763e-03
+## Social-Paid Search           1.0946916  -3.0894976   5.278881 9.934945e-01
+## Social-Referral              6.4489983   2.3052482  10.592748 6.660036e-05</code></pre>
+</div>
+<div id="multi-way-anova" class="section level3">
+<h3>Multi way ANOVA</h3>
+<ul>
+<li>Hoa the group means for first factor are equal</li>
+<li>Hob The group means for the second factor are equal</li>
+<li>H0c There is no interaction between the two factors</li>
+</ul>
+<pre class="r"><code>my_nway_anova &lt;- function(x, metric, dim){
+  my_form &lt;- as.formula(paste(metric, &quot;~&quot;, dim))
+  anova(lm(my_form , data = x))
+}
+
+## tests of between subject effects
+lapply(all_groups, my_nway_anova, metric = &quot;Sessions&quot;, dim = &quot;deviceCategory *channelGrouping&quot;)</code></pre>
 <pre><code>## $group_one
-##                   Df  Sum Sq Mean Sq F value Pr(&gt;F)    
-## channelGrouping    7 1368177  195454   337.2 &lt;2e-16 ***
-## Residuals       4046 2345525     580                   
+## Analysis of Variance Table
+## 
+## Response: Sessions
+##                                  Df     Sum Sq    Mean Sq F value
+## deviceCategory                    2 1.1133e+10 5566266656 384.106
+## channelGrouping                   7 2.0847e+10 2978197493 205.513
+## deviceCategory:channelGrouping   14 1.3343e+10  953069521  65.767
+## Residuals                      4030 5.8401e+10   14491490        
+##                                   Pr(&gt;F)    
+## deviceCategory                 &lt; 2.2e-16 ***
+## channelGrouping                &lt; 2.2e-16 ***
+## deviceCategory:channelGrouping &lt; 2.2e-16 ***
+## Residuals                                   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## $group_two
-##                   Df  Sum Sq Mean Sq F value Pr(&gt;F)    
-## channelGrouping    7 2189341  312763   291.9 &lt;2e-16 ***
-## Residuals       1843 1974705    1071                   
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## $group_three
-##                   Df  Sum Sq Mean Sq F value Pr(&gt;F)    
-## channelGrouping    7 4701320  671617   101.3 &lt;2e-16 ***
-## Residuals       1249 8284112    6633                   
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>## tests of between subject effects
-lapply(all_groups, my_nway_anova, metric = &quot;GoalCompletions&quot;, dim = &quot;channelGrouping * deviceCategory&quot;)</code></pre>
-<pre><code>## $group_one
 ## Analysis of Variance Table
 ## 
-## Response: GoalCompletions
-##                                  Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
-## channelGrouping                   7 1368177  195454 504.192 &lt; 2.2e-16 ***
-## deviceCategory                    2  328934  164467 424.257 &lt; 2.2e-16 ***
-## channelGrouping:deviceCategory   14  454329   32452  83.713 &lt; 2.2e-16 ***
-## Residuals                      4030 1562262     388                      
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## $group_two
-## Analysis of Variance Table
-## 
-## Response: GoalCompletions
-##                                  Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
-## channelGrouping                   7 2189341  312763  822.07 &lt; 2.2e-16 ***
-## deviceCategory                    2  501269  250634  658.77 &lt; 2.2e-16 ***
-## channelGrouping:deviceCategory   13  777963   59843  157.29 &lt; 2.2e-16 ***
-## Residuals                      1828  695473     380                      
+## Response: Sessions
+##                                  Df     Sum Sq    Mean Sq F value
+## deviceCategory                    2 1.9301e+10 9650312596  529.89
+## channelGrouping                   7 4.1135e+10 5876374179  322.67
+## deviceCategory:channelGrouping   13 3.8296e+10 2945873003  161.76
+## Residuals                      1828 3.3291e+10   18211834        
+##                                   Pr(&gt;F)    
+## deviceCategory                 &lt; 2.2e-16 ***
+## channelGrouping                &lt; 2.2e-16 ***
+## deviceCategory:channelGrouping &lt; 2.2e-16 ***
+## Residuals                                   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## $group_three
 ## Analysis of Variance Table
 ## 
-## Response: GoalCompletions
-##                                  Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
-## channelGrouping                   7 4701320  671617 178.994 &lt; 2.2e-16 ***
-## deviceCategory                    2 1824328  912164 243.103 &lt; 2.2e-16 ***
-## channelGrouping:deviceCategory   13 1829609  140739  37.509 &lt; 2.2e-16 ***
-## Residuals                      1234 4630175    3752                      
+## Response: Sessions
+##                                  Df     Sum Sq    Mean Sq F value
+## deviceCategory                    2 3.4688e+10 1.7344e+10  461.06
+## channelGrouping                   7 9.3466e+10 1.3352e+10  354.95
+## deviceCategory:channelGrouping   13 8.5180e+10 6.5523e+09  174.18
+## Residuals                      1234 4.6420e+10 3.7617e+07        
+##                                   Pr(&gt;F)    
+## deviceCategory                 &lt; 2.2e-16 ***
+## channelGrouping                &lt; 2.2e-16 ***
+## deviceCategory:channelGrouping &lt; 2.2e-16 ***
+## Residuals                                   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
 </div>
 <div id="regression-outputs" class="section level2">
 <h2>Regression outputs</h2>

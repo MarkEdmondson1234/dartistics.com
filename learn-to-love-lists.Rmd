@@ -218,7 +218,7 @@ As an example, you can use `rbind()` which binds a data.frame to another and app
 ```r
 Reduce(rbind, list_of_df)
 ```
-### Example - create custom ANOVA
+## Example - create custom ANOVA
 
 Lets make our own function that performs ANOVA on some data using `lapply()` over a data.frames columns.  There are R functions that will do all these steps for you, but its educational to build it up yourself.
 
@@ -369,11 +369,6 @@ The numbers are a little different due to ways of treating NAs in the data.
 For more advanced useage, [`purrr`](https://github.com/tidyverse/purrr) is a tidyverse package which is very useful for both working with lists and manipulating data. 
 
 Consult the cheatsheet of `list-columns` for some ideas, and this [`Jennifer Bryan presentation`](https://jennybc.github.io/purrr-tutorial/talks.html)
-
-
-
-
-## show how lm works with using dummy variables
 
 
 
