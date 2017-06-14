@@ -1441,6 +1441,35 @@ mr2$group_one</code></pre>
 <p>When creating your model, you may consider taking out the non-significant dummy variables.</p>
 </div>
 </div>
+<div id="creating-dummy-variables-in-r" class="section level2">
+<h2>Creating Dummy variables in R</h2>
+<p>R will attempt to use dummy variables when it can, but if you want to make your own R has some tools to help:</p>
+<pre class="r"><code>head(small_data)</code></pre>
+<pre><code>##         date deviceCategory channelGrouping Sessions GoalCompletions
+## 1 2016-01-01         mobile         (Other)      186               0
+## 2 2016-01-01         tablet         (Other)       80               0
+## 3 2016-01-01        desktop          Direct      744               4
+## 4 2016-01-01         mobile          Direct     4491              21
+## 5 2016-01-01         tablet          Direct      611               4
+## 6 2016-01-01        desktop         Display    18174              63</code></pre>
+<pre class="r"><code>dummy_vars &lt;- model.matrix(GoalCompletions ~ Sessions + deviceCategory + 0, 
+                           data = small_data) 
+head(cbind(data.frame(GoalCompletions = small_data$GoalCompletions), dummy_vars))</code></pre>
+<pre><code>##   GoalCompletions Sessions deviceCategorydesktop deviceCategorymobile
+## 1               0      186                     0                    1
+## 2               0       80                     0                    0
+## 3               4      744                     1                    0
+## 4              21     4491                     0                    1
+## 5               4      611                     0                    0
+## 6              63    18174                     1                    0
+##   deviceCategorytablet
+## 1                    0
+## 2                    1
+## 3                    0
+## 4                    0
+## 5                    1
+## 6                    0</code></pre>
+</div>
 
 
 

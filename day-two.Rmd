@@ -29,6 +29,7 @@ small_data <- all_data %>%
 knitr::kable(head(small_data))
 summary(small_data)
 ```
+
 ## First plot to find shape of the data
 
 ```{R}
@@ -396,3 +397,15 @@ mr2$group_one
 ```
 
 When creating your model, you may consider taking out the non-significant dummy variables.
+
+## Creating Dummy variables in R
+
+R will attempt to use dummy variables when it can, but if you want to make your own R has some tools to help:
+
+```{r}
+head(small_data)
+
+dummy_vars <- model.matrix(GoalCompletions ~ Sessions + deviceCategory + 0, 
+                           data = small_data) 
+head(cbind(data.frame(GoalCompletions = small_data$GoalCompletions), dummy_vars))
+```
