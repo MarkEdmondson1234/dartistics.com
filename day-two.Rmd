@@ -16,19 +16,23 @@ library(dplyr)
 `readxl` is recommended as the best way to read in data.  You can also use the `Import Dataset` button in `RStudio` that will help you set options and write the `readxl` code for you:
 
 ```{r}
-all_data <- readxl::read_excel("data/day2/SampleGA2 for R Mark.xlsx")
+raw_data <- "sampleStatsData.csv"
+if(!file.exists(raw_data)){
+  download.file("https://raw.githubusercontent.com/MarkEdmondson1234/dartistics.com/master/sampleStatsData.csv", 
+              destfile = raw_data)
+}
 
-## we only want these columns
-all_data <- all_data %>% 
-          select(date, deviceCategory, channelGrouping, Sessions, GoalCompletions, DeviceClass, ChannelClass)
+all_data <- read.csv(raw_data, stringsAsFactors = FALSE)
 
-knitr::kable(head(all_data))
-summary(all_data)
+small_data <- all_data %>% 
+          select(date, deviceCategory, channelGrouping, Sessions, GoalCompletions)
+knitr::kable(head(small_data))
+summary(small_data)
 ```
 ## First plot to find shape of the data
 
 ```{R}
-
+all_data$date <- as.Date(all_data$date)
 overall_data <- all_data %>% 
   select(date, deviceCategory, channelGrouping, Sessions) %>% 
   mutate(yearMonth = format(date, format = "%Y%m")) %>% 
@@ -57,7 +61,6 @@ The three files match to the following rows:
 We want to run analysis on these groups seperately, so we split them up into three different data frames:
 
 ```{r}
-## 1 indexed not including header row (1)
 group_one <- all_data[1:4054, ]
 group_two <- all_data[4055:5905, ]
 group_three <- all_data[5906:7162, ]
@@ -97,7 +100,7 @@ The output is generated via the same general workflow:
 2. Run the function over the list of group data.frames
 3. Analyse the result
 
-```{R}
+```{R, message=FALSE, warning=FALSE}
 library(psych) # statistics
 
 my_summary <- function(x, metric){
@@ -280,43 +283,116 @@ lapply(all_groups,
 
 ## Regression outputs
 
+The basic function for calculating regression is `lm`
+
+```
+lm(dependent ~ independent, data = x)
+```
+
+The first argument is an R formula, recognised via the `~` symbol.  This is a common way for R to work more easily with statistics.
+
+* `F statistic` - is the model significant
+* `Estimate` the `B0` and `B1` of `y = B0 + B1x`
+  - `(Intercept)` = `B0`
+  - `Sessions` = `B1`
+* `R^2` - how much is explained by the presence of the inclusion of `Sessions`
+
 ```{r}
 my_models_fun <- function(x, dependent, independent){
   my_form <- as.formula(paste(dependent, "~", independent))
-  lm(my_form, data = x)
+  model <- lm(my_form, data = x)
 }
 
-my_models <- lapply(all_groups, my_models_fun, dependent = "GoalCompletions", independent = "Sessions")
-lapply(my_models, summary)
+my_models <- lapply(all_groups, 
+                    my_models_fun, 
+                    dependent = "GoalCompletions", 
+                    independent = "Sessions")
 
-my_predict_mean <- function(x, model_string = "GoalCompletions ~ Sessions", new_value = mean(x$Sessions)){
-  my_form <- as.formula(paste(model_string))
-  model <- lm(my_form, data = x)
-  cat("\nMean Sessions: ",mean(x$Sessions))
-  cat("\nMean GoalCompletions",mean(x$GoalCompletions))
-  predict(model, 
-          newdata = data.frame(Sessions = mean(x$Sessions)),
+results <- lapply(my_models, summary)
+
+results
+```
+
+
+### Calculating the prediction interval for mean
+
+What to pay attention to and what to ignore.  If within this bound its within acceptable range. 
+
+If its outside, then something significant has happened. 
+
+This is the range of the dependent variable. (Confidence interval is of the independent variable)
+
+```{R}
+my_predict_mean <- function(x, new_value = mean(x$Sessions)){
+  model <- lm(GoalCompletions ~ Sessions, data = x)
+  
+  
+  p <- predict(model, 
+          newdata = data.frame(Sessions = new_value),
           interval = "predict",
           level = 0.95)
-}
-
-my_conf_interval <- function(x){
-  model <- lm(Sessions ~ GoalCompletions + DeviceClass + ChannelClass, data = x)
-  summary(model)
-  confint(model, level = 0.95)
+  conf <- confint(model, level = 0.95)
   
+  list(prediction.interval = p,
+       confidence.interval = conf)
 }
 
-my_regression <- function(x){
-  model <- lm(Sessions ~ GoalCompletions + DeviceClass + ChannelClass, data = x)
+## generate the upper and lower bound for beta coefficents
+lapply(all_groups, my_predict_mean)
+```
+
+
+### Multilinear regression
+
+Using the dummary variables:
+
+```{r}
+multi_regression <- function(x){
+  model <- lm(GoalCompletions ~ DesktopDummy + TabletDummy + Sessions, data = x)
   summary(model)
 }
 
-
-
-## generate the upper and lower bound for beta coeffcients
-lapply(all_groups, my_predict_mean)
-
-lapply(all_groups, my_regression)
-lapply(all_groups, my_conf_interval)
+mr1 <- lapply(all_groups, multi_regression)
+mr1$group_one
 ```
+
+If you forget to leave out one of your dummy variables:
+
+```{r}
+multi_regression <- function(x){
+  model <- lm(GoalCompletions ~ DesktopDummy + TabletDummy + MobileDummy + Sessions, data = x)
+  summary(model)
+}
+
+mr1 <- lapply(all_groups, multi_regression)
+mr1$group_one
+```
+
+Interpretation: A mobile session that was instead on desktop would be 246% more likely to convert:
+
+```{r}
+multi_regression <- function(x){
+  model <- lm(GoalCompletions ~ DesktopDummy + TabletDummy + MobileDummy + Sessions, data = x)
+  summary(model)
+}
+
+mr1 <- lapply(all_groups, multi_regression)
+mr1$group_one
+```
+
+Repeated for channel groupings, dummy variables:
+
+```{r}
+
+multi_regression2 <- function(x){
+  x$deviceCategory <- as.factor(x$deviceCategory)
+  model <- lm(GoalCompletions  ~ Sessions + DirectDummy + DisplayDummy + OrganicSearchDummy + PaidSearchDummy + ReferralDummy + SocialDummy + EmailDummy, data = x)
+  summary(model)
+}
+
+mr2 <- lapply(all_groups, multi_regression2)
+
+mr2$group_one
+```
+
+When creating your model, you may consider taking out the non-significant dummy variables.

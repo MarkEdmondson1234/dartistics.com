@@ -528,13 +528,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <div id="load-the-data" class="section level2">
 <h2>Load the data</h2>
 <p><code>readxl</code> is recommended as the best way to read in data. You can also use the <code>Import Dataset</code> button in <code>RStudio</code> that will help you set options and write the <code>readxl</code> code for you:</p>
-<pre class="r"><code>all_data &lt;- readxl::read_excel(&quot;data/day2/SampleGA2 for R Mark.xlsx&quot;)
+<pre class="r"><code>raw_data &lt;- &quot;sampleStatsData.csv&quot;
+if(!file.exists(raw_data)){
+  download.file(&quot;https://raw.githubusercontent.com/MarkEdmondson1234/dartistics.com/master/sampleStatsData.csv&quot;, 
+              destfile = raw_data)
+}
 
-## we only want these columns
-all_data &lt;- all_data %&gt;% 
-          select(date, deviceCategory, channelGrouping, Sessions, GoalCompletions, DeviceClass, ChannelClass)
+all_data &lt;- read.csv(raw_data, stringsAsFactors = FALSE)
 
-knitr::kable(head(all_data))</code></pre>
+small_data &lt;- all_data %&gt;% 
+          select(date, deviceCategory, channelGrouping, Sessions, GoalCompletions)
+knitr::kable(head(small_data))</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -543,8 +547,6 @@ knitr::kable(head(all_data))</code></pre>
 <th align="left">channelGrouping</th>
 <th align="right">Sessions</th>
 <th align="right">GoalCompletions</th>
-<th align="right">DeviceClass</th>
-<th align="right">ChannelClass</th>
 </tr>
 </thead>
 <tbody>
@@ -554,8 +556,6 @@ knitr::kable(head(all_data))</code></pre>
 <td align="left">(Other)</td>
 <td align="right">186</td>
 <td align="right">0</td>
-<td align="right">2</td>
-<td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">2016-01-01</td>
@@ -563,8 +563,6 @@ knitr::kable(head(all_data))</code></pre>
 <td align="left">(Other)</td>
 <td align="right">80</td>
 <td align="right">0</td>
-<td align="right">3</td>
-<td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">2016-01-01</td>
@@ -572,8 +570,6 @@ knitr::kable(head(all_data))</code></pre>
 <td align="left">Direct</td>
 <td align="right">744</td>
 <td align="right">4</td>
-<td align="right">1</td>
-<td align="right">2</td>
 </tr>
 <tr class="even">
 <td align="left">2016-01-01</td>
@@ -581,8 +577,6 @@ knitr::kable(head(all_data))</code></pre>
 <td align="left">Direct</td>
 <td align="right">4491</td>
 <td align="right">21</td>
-<td align="right">2</td>
-<td align="right">2</td>
 </tr>
 <tr class="odd">
 <td align="left">2016-01-01</td>
@@ -590,8 +584,6 @@ knitr::kable(head(all_data))</code></pre>
 <td align="left">Direct</td>
 <td align="right">611</td>
 <td align="right">4</td>
-<td align="right">3</td>
-<td align="right">2</td>
 </tr>
 <tr class="even">
 <td align="left">2016-01-01</td>
@@ -599,30 +591,29 @@ knitr::kable(head(all_data))</code></pre>
 <td align="left">Display</td>
 <td align="right">18174</td>
 <td align="right">63</td>
-<td align="right">1</td>
-<td align="right">3</td>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>summary(all_data)</code></pre>
-<pre><code>##       date                     deviceCategory     channelGrouping   
-##  Min.   :2016-01-01 00:00:00   Length:7162        Length:7162       
-##  1st Qu.:2016-04-04 00:00:00   Class :character   Class :character  
-##  Median :2016-07-09 00:00:00   Mode  :character   Mode  :character  
-##  Mean   :2016-07-05 04:48:07                                        
-##  3rd Qu.:2016-10-05 00:00:00                                        
-##  Max.   :2016-12-31 00:00:00                                        
-##     Sessions      GoalCompletions    DeviceClass     ChannelClass
-##  Min.   :    26   Min.   :   0.00   Min.   :1.000   Min.   :1.0  
-##  1st Qu.:   292   1st Qu.:   0.00   1st Qu.:1.000   1st Qu.:3.0  
-##  Median :   956   Median :   8.00   Median :2.000   Median :4.0  
-##  Mean   :  3701   Mean   :  27.05   Mean   :1.997   Mean   :4.2  
-##  3rd Qu.:  3587   3rd Qu.:  25.00   3rd Qu.:3.000   3rd Qu.:6.0  
-##  Max.   :125992   Max.   :1176.00   Max.   :3.000   Max.   :8.0</code></pre>
+<pre class="r"><code>summary(small_data)</code></pre>
+<pre><code>##      date           deviceCategory     channelGrouping       Sessions     
+##  Length:7162        Length:7162        Length:7162        Min.   :    26  
+##  Class :character   Class :character   Class :character   1st Qu.:   292  
+##  Mode  :character   Mode  :character   Mode  :character   Median :   956  
+##                                                           Mean   :  3701  
+##                                                           3rd Qu.:  3587  
+##                                                           Max.   :125992  
+##  GoalCompletions  
+##  Min.   :   0.00  
+##  1st Qu.:   0.00  
+##  Median :   8.00  
+##  Mean   :  27.05  
+##  3rd Qu.:  25.00  
+##  Max.   :1176.00</code></pre>
 </div>
 <div id="first-plot-to-find-shape-of-the-data" class="section level2">
 <h2>First plot to find shape of the data</h2>
-<pre class="r"><code>overall_data &lt;- all_data %&gt;% 
+<pre class="r"><code>all_data$date &lt;- as.Date(all_data$date)
+overall_data &lt;- all_data %&gt;% 
   select(date, deviceCategory, channelGrouping, Sessions) %&gt;% 
   mutate(yearMonth = format(date, format = &quot;%Y%m&quot;)) %&gt;% 
   group_by(yearMonth) %&gt;% 
@@ -648,8 +639,7 @@ gg + geom_vline(xintercept=c(6,10), linetype = &quot;dotted&quot;)</code></pre>
 <li>Group 3 (row 5906 - 7162)</li>
 </ul>
 <p>We want to run analysis on these groups seperately, so we split them up into three different data frames:</p>
-<pre class="r"><code>## 1 indexed not including header row (1)
-group_one &lt;- all_data[1:4054, ]
+<pre class="r"><code>group_one &lt;- all_data[1:4054, ]
 group_two &lt;- all_data[4055:5905, ]
 group_three &lt;- all_data[5906:7162, ]</code></pre>
 <p>Because we want to run analysis at the same time, we put those data.frames into a list. This means we can run functions over them using <code>lapply</code></p>
@@ -665,7 +655,9 @@ group_three &lt;- all_data[5906:7162, ]</code></pre>
   totals
 }
 
-lapply(all_groups, my_cross_table, cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)</code></pre>
+lapply(all_groups, 
+       my_cross_table, 
+       cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)</code></pre>
 <pre><code>## $group_one
 ##          
 ##           (Other) Direct Display Email Organic Search Paid Search Referral
@@ -711,13 +703,9 @@ lapply(all_groups, my_cross_table, cross1 = &quot;deviceCategory&quot;, cross2 =
 <li>Run the function over the list of group data.frames</li>
 <li>Analyse the result</li>
 </ol>
-<pre class="r"><code>library(psych) # statistics</code></pre>
-<pre><code>## 
-## Attaching package: &#39;psych&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:ggplot2&#39;:
-## 
-##     %+%, alpha</code></pre>
-<pre class="r"><code>my_summary &lt;- function(x, metric){
+<pre class="r"><code>library(psych) # statistics
+
+my_summary &lt;- function(x, metric){
   y &lt;- x[, metric]
 
   describe(y)
@@ -836,7 +824,9 @@ my_chi_table &lt;- function(x, cross1, cross2){
 
 }
 
-lapply(all_groups, my_chi_table, cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)</code></pre>
+lapply(all_groups, 
+       my_chi_table, 
+       cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)</code></pre>
 <pre><code>## $group_one
 ## $group_one$expected
 ##          
@@ -1020,7 +1010,9 @@ p &lt;- lapply(plot_this_list, plot_func)</code></pre>
 }
 
 ## Sessions ~ channelGrouping
-lapply(all_groups, my_oneway_anova, metric = &quot;Sessions&quot;, dim = &quot;channelGrouping&quot;)</code></pre>
+lapply(all_groups, 
+       my_oneway_anova, 
+       metric = &quot;Sessions&quot;, dim = &quot;channelGrouping&quot;)</code></pre>
 <pre><code>## $group_one
 ##                   Df    Sum Sq   Mean Sq F value Pr(&gt;F)    
 ## channelGrouping    7 1.998e+10 2.854e+09   137.9 &lt;2e-16 ***
@@ -1054,7 +1046,9 @@ lapply(all_groups, my_oneway_anova, metric = &quot;Sessions&quot;, dim = &quot;c
 }
 
 ## Sessions ~ deviceCategory
-my_oneway_anova_tukey_results &lt;- lapply(all_groups, my_oneway_anova_tukey, metric = &quot;Sessions&quot;, dim = &quot;deviceCategory&quot;)
+my_oneway_anova_tukey_results &lt;- lapply(all_groups, 
+                                        my_oneway_anova_tukey, 
+                                        metric = &quot;Sessions&quot;, dim = &quot;deviceCategory&quot;)
 my_oneway_anova_tukey_results$group_two</code></pre>
 <pre><code>##   Tukey multiple comparisons of means
 ##     95% family-wise confidence level
@@ -1122,7 +1116,9 @@ tukey_results$group_one$channelGrouping</code></pre>
 }
 
 ## tests of between subject effects
-lapply(all_groups, my_nway_anova, metric = &quot;Sessions&quot;, dim = &quot;deviceCategory *channelGrouping&quot;)</code></pre>
+lapply(all_groups, 
+       my_nway_anova, 
+       metric = &quot;Sessions&quot;, dim = &quot;deviceCategory *channelGrouping&quot;)</code></pre>
 <pre><code>## $group_one
 ## Analysis of Variance Table
 ## 
@@ -1177,13 +1173,29 @@ lapply(all_groups, my_nway_anova, metric = &quot;Sessions&quot;, dim = &quot;dev
 </div>
 <div id="regression-outputs" class="section level2">
 <h2>Regression outputs</h2>
+<p>The basic function for calculating regression is <code>lm</code></p>
+<pre><code>lm(dependent ~ independent, data = x)</code></pre>
+<p>The first argument is an R formula, recognised via the <code>~</code> symbol. This is a common way for R to work more easily with statistics.</p>
+<ul>
+<li><code>F statistic</code> - is the model significant</li>
+<li><code>Estimate</code> the <code>B0</code> and <code>B1</code> of <code>y = B0 + B1x</code></li>
+<li><code>(Intercept)</code> = <code>B0</code></li>
+<li><code>Sessions</code> = <code>B1</code></li>
+<li><code>R^2</code> - how much is explained by the presence of the inclusion of <code>Sessions</code></li>
+</ul>
 <pre class="r"><code>my_models_fun &lt;- function(x, dependent, independent){
   my_form &lt;- as.formula(paste(dependent, &quot;~&quot;, independent))
-  lm(my_form, data = x)
+  model &lt;- lm(my_form, data = x)
 }
 
-my_models &lt;- lapply(all_groups, my_models_fun, dependent = &quot;GoalCompletions&quot;, independent = &quot;Sessions&quot;)
-lapply(my_models, summary)</code></pre>
+my_models &lt;- lapply(all_groups, 
+                    my_models_fun, 
+                    dependent = &quot;GoalCompletions&quot;, 
+                    independent = &quot;Sessions&quot;)
+
+results &lt;- lapply(my_models, summary)
+
+results</code></pre>
 <pre><code>## $group_one
 ## 
 ## Call:
@@ -1245,143 +1257,189 @@ lapply(my_models, summary)</code></pre>
 ## Residual standard error: 92.78 on 1255 degrees of freedom
 ## Multiple R-squared:  0.1681, Adjusted R-squared:  0.1675 
 ## F-statistic: 253.7 on 1 and 1255 DF,  p-value: &lt; 2.2e-16</code></pre>
-<pre class="r"><code>my_predict_mean &lt;- function(x, model_string = &quot;GoalCompletions ~ Sessions&quot;, new_value = mean(x$Sessions)){
-  my_form &lt;- as.formula(paste(model_string))
-  model &lt;- lm(my_form, data = x)
-  cat(&quot;\nMean Sessions: &quot;,mean(x$Sessions))
-  cat(&quot;\nMean GoalCompletions&quot;,mean(x$GoalCompletions))
-  predict(model, 
-          newdata = data.frame(Sessions = mean(x$Sessions)),
+<div id="calculating-the-prediction-interval-for-mean" class="section level3">
+<h3>Calculating the prediction interval for mean</h3>
+<p>What to pay attention to and what to ignore. If within this bound its within acceptable range.</p>
+<p>If its outside, then something significant has happened.</p>
+<p>This is the range of the dependent variable. (Confidence interval is of the independent variable)</p>
+<pre class="r"><code>my_predict_mean &lt;- function(x, new_value = mean(x$Sessions)){
+  model &lt;- lm(GoalCompletions ~ Sessions, data = x)
+  
+  
+  p &lt;- predict(model, 
+          newdata = data.frame(Sessions = new_value),
           interval = &quot;predict&quot;,
           level = 0.95)
-}
-
-my_conf_interval &lt;- function(x){
-  model &lt;- lm(Sessions ~ GoalCompletions + DeviceClass + ChannelClass, data = x)
-  summary(model)
-  confint(model, level = 0.95)
+  conf &lt;- confint(model, level = 0.95)
   
+  list(prediction.interval = p,
+       confidence.interval = conf)
 }
 
-my_regression &lt;- function(x){
-  model &lt;- lm(Sessions ~ GoalCompletions + DeviceClass + ChannelClass, data = x)
-  summary(model)
-}
-
-
-
-## generate the upper and lower bound for beta coeffcients
+## generate the upper and lower bound for beta coefficents
 lapply(all_groups, my_predict_mean)</code></pre>
-<pre><code>## 
-## Mean Sessions:  2533.844
-## Mean GoalCompletions 16.63468
-## Mean Sessions:  4219.887
-## Mean GoalCompletions 28.44787
-## Mean Sessions:  6698.333
-## Mean GoalCompletions 58.57916</code></pre>
 <pre><code>## $group_one
+## $group_one$prediction.interval
 ##        fit       lwr      upr
 ## 1 16.63468 -34.00746 67.27682
 ## 
+## $group_one$confidence.interval
+##                   2.5 %     97.5 %
+## (Intercept) 7.835264462 9.61421734
+## Sessions    0.002964491 0.00327894
+## 
+## 
 ## $group_two
+## $group_two$prediction.interval
 ##        fit       lwr      upr
 ## 1 28.44787 -56.44689 113.3426
 ## 
+## $group_two$confidence.interval
+##                    2.5 %       97.5 %
+## (Intercept) 16.515567148 20.926061956
+## Sessions     0.002071468  0.002538632
+## 
+## 
 ## $group_three
+## $group_three$prediction.interval
 ##        fit       lwr      upr
-## 1 58.57916 -123.5045 240.6628</code></pre>
-<pre class="r"><code>lapply(all_groups, my_regression)</code></pre>
-<pre><code>## $group_one
+## 1 58.57916 -123.5045 240.6628
 ## 
+## $group_three$confidence.interval
+##                    2.5 %       97.5 %
+## (Intercept) 33.495402152 44.822745799
+## Sessions     0.002542118  0.003256364</code></pre>
+</div>
+<div id="multilinear-regression" class="section level3">
+<h3>Multilinear regression</h3>
+<p>Using the dummary variables:</p>
+<pre class="r"><code>multi_regression &lt;- function(x){
+  model &lt;- lm(GoalCompletions ~ DesktopDummy + TabletDummy + Sessions, data = x)
+  summary(model)
+}
+
+mr1 &lt;- lapply(all_groups, multi_regression)
+mr1$group_one</code></pre>
+<pre><code>## 
 ## Call:
-## lm(formula = Sessions ~ GoalCompletions + DeviceClass + ChannelClass, 
+## lm(formula = GoalCompletions ~ DesktopDummy + TabletDummy + Sessions, 
 ##     data = x)
 ## 
 ## Residuals:
-##    Min     1Q Median     3Q    Max 
-## -14049  -1480   -637     56  56652 
+##      Min       1Q   Median       3Q      Max 
+## -109.007  -11.837   -3.912    1.510  253.560 
 ## 
 ## Coefficients:
-##                 Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)     2664.663    247.139  10.782   &lt;2e-16 ***
-## GoalCompletions   85.579      2.265  37.787   &lt;2e-16 ***
-## DeviceClass      -64.934     84.847  -0.765    0.444    
-## ChannelClass    -335.903     35.524  -9.456   &lt;2e-16 ***
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   1.098e+01  7.801e-01  14.073  &lt; 2e-16 ***
+## DesktopDummy  2.461e+00  9.895e-01   2.487   0.0129 *  
+## TabletDummy  -8.317e+00  1.037e+00  -8.019 1.38e-15 ***
+## Sessions      2.942e-03  8.363e-05  35.183  &lt; 2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 4270 on 4050 degrees of freedom
-## Multiple R-squared:  0.288,  Adjusted R-squared:  0.2874 
-## F-statistic:   546 on 3 and 4050 DF,  p-value: &lt; 2.2e-16
-## 
-## 
-## $group_two
-## 
+## Residual standard error: 25.45 on 4050 degrees of freedom
+## Multiple R-squared:  0.2938, Adjusted R-squared:  0.2933 
+## F-statistic: 561.6 on 3 and 4050 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>If you forget to leave out one of your dummy variables:</p>
+<pre class="r"><code>multi_regression &lt;- function(x){
+  model &lt;- lm(GoalCompletions ~ DesktopDummy + TabletDummy + MobileDummy + Sessions, data = x)
+  summary(model)
+}
+
+mr1 &lt;- lapply(all_groups, multi_regression)
+mr1$group_one</code></pre>
+<pre><code>## 
 ## Call:
-## lm(formula = Sessions ~ GoalCompletions + DeviceClass + ChannelClass, 
-##     data = x)
+## lm(formula = GoalCompletions ~ DesktopDummy + TabletDummy + MobileDummy + 
+##     Sessions, data = x)
 ## 
 ## Residuals:
-##    Min     1Q Median     3Q    Max 
-## -13789  -2767  -1509   -569  78532 
+##      Min       1Q   Median       3Q      Max 
+## -109.007  -11.837   -3.912    1.510  253.560 
 ## 
-## Coefficients:
-##                 Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)     4247.467    668.282   6.356 2.61e-10 ***
-## GoalCompletions   72.815      3.888  18.726  &lt; 2e-16 ***
-## DeviceClass     -166.888    228.919  -0.729    0.466    
-## ChannelClass    -425.762     91.486  -4.654 3.49e-06 ***
+## Coefficients: (1 not defined because of singularities)
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   1.098e+01  7.801e-01  14.073  &lt; 2e-16 ***
+## DesktopDummy  2.461e+00  9.895e-01   2.487   0.0129 *  
+## TabletDummy  -8.317e+00  1.037e+00  -8.019 1.38e-15 ***
+## MobileDummy          NA         NA      NA       NA    
+## Sessions      2.942e-03  8.363e-05  35.183  &lt; 2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 7664 on 1847 degrees of freedom
-## Multiple R-squared:  0.1782, Adjusted R-squared:  0.1769 
-## F-statistic: 133.5 on 3 and 1847 DF,  p-value: &lt; 2.2e-16
-## 
-## 
-## $group_three
-## 
+## Residual standard error: 25.45 on 4050 degrees of freedom
+## Multiple R-squared:  0.2938, Adjusted R-squared:  0.2933 
+## F-statistic: 561.6 on 3 and 4050 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Interpretation: A mobile session that was instead on desktop would be 246% more likely to convert:</p>
+<pre class="r"><code>multi_regression &lt;- function(x){
+  model &lt;- lm(GoalCompletions ~ DesktopDummy + TabletDummy + MobileDummy + Sessions, data = x)
+  summary(model)
+}
+
+mr1 &lt;- lapply(all_groups, multi_regression)
+mr1$group_one</code></pre>
+<pre><code>## 
 ## Call:
-## lm(formula = Sessions ~ GoalCompletions + DeviceClass + ChannelClass, 
-##     data = x)
+## lm(formula = GoalCompletions ~ DesktopDummy + TabletDummy + MobileDummy + 
+##     Sessions, data = x)
 ## 
 ## Residuals:
-##    Min     1Q Median     3Q    Max 
-## -35387  -4927  -2191   -598 105820 
+##      Min       1Q   Median       3Q      Max 
+## -109.007  -11.837   -3.912    1.510  253.560 
 ## 
-## Coefficients:
-##                 Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)     8878.663   1344.584   6.603 5.93e-11 ***
-## GoalCompletions   57.195      3.668  15.591  &lt; 2e-16 ***
-## DeviceClass     -835.902    462.911  -1.806   0.0712 .  
-## ChannelClass    -926.726    184.004  -5.036 5.44e-07 ***
+## Coefficients: (1 not defined because of singularities)
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   1.098e+01  7.801e-01  14.073  &lt; 2e-16 ***
+## DesktopDummy  2.461e+00  9.895e-01   2.487   0.0129 *  
+## TabletDummy  -8.317e+00  1.037e+00  -8.019 1.38e-15 ***
+## MobileDummy          NA         NA      NA       NA    
+## Sessions      2.942e-03  8.363e-05  35.183  &lt; 2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 12990 on 1253 degrees of freedom
-## Multiple R-squared:  0.186,  Adjusted R-squared:  0.1841 
-## F-statistic: 95.44 on 3 and 1253 DF,  p-value: &lt; 2.2e-16</code></pre>
-<pre class="r"><code>lapply(all_groups, my_conf_interval)</code></pre>
-<pre><code>## $group_one
-##                      2.5 %     97.5 %
-## (Intercept)     2180.13516 3149.19177
-## GoalCompletions   81.13838   90.01876
-## DeviceClass     -231.28003  101.41168
-## ChannelClass    -405.54828 -266.25680
+## Residual standard error: 25.45 on 4050 degrees of freedom
+## Multiple R-squared:  0.2938, Adjusted R-squared:  0.2933 
+## F-statistic: 561.6 on 3 and 4050 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Repeated for channel groupings, dummy variables:</p>
+<pre class="r"><code>multi_regression2 &lt;- function(x){
+  x$deviceCategory &lt;- as.factor(x$deviceCategory)
+  model &lt;- lm(GoalCompletions  ~ Sessions + DirectDummy + DisplayDummy + OrganicSearchDummy + PaidSearchDummy + ReferralDummy + SocialDummy + EmailDummy, data = x)
+  summary(model)
+}
+
+mr2 &lt;- lapply(all_groups, multi_regression2)
+
+mr2$group_one</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = GoalCompletions ~ Sessions + DirectDummy + DisplayDummy + 
+##     OrganicSearchDummy + PaidSearchDummy + ReferralDummy + SocialDummy + 
+##     EmailDummy, data = x)
 ## 
-## $group_two
-##                      2.5 %     97.5 %
-## (Intercept)     2936.79960 5558.13439
-## GoalCompletions   65.18856   80.44093
-## DeviceClass     -615.85505  282.07864
-## ChannelClass    -605.18869 -246.33515
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -90.261  -6.523  -1.954   3.701 219.727 
 ## 
-## $group_three
-##                      2.5 %      97.5 %
-## (Intercept)      6240.7783 11516.54741
-## GoalCompletions    49.9981    64.39217
-## DeviceClass     -1744.0690    72.26444
-## ChannelClass    -1287.7158  -565.73718</code></pre>
+## Coefficients:
+##                      Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)        -2.268e+00  1.194e+00  -1.900  0.05752 .  
+## Sessions            2.878e-03  6.983e-05  41.214  &lt; 2e-16 ***
+## DirectDummy         8.315e+00  1.435e+00   5.796 7.30e-09 ***
+## DisplayDummy       -1.890e+00  1.488e+00  -1.270  0.20414    
+## OrganicSearchDummy  4.546e+00  5.044e+00   0.901  0.36753    
+## PaidSearchDummy     4.792e+01  1.450e+00  33.042  &lt; 2e-16 ***
+## ReferralDummy       8.704e+00  1.452e+00   5.994 2.23e-09 ***
+## SocialDummy         3.917e+00  1.444e+00   2.713  0.00669 ** 
+## EmailDummy          7.494e+00  1.439e+00   5.209 1.99e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 20.21 on 4045 degrees of freedom
+## Multiple R-squared:  0.5552, Adjusted R-squared:  0.5543 
+## F-statistic: 631.1 on 8 and 4045 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>When creating your model, you may consider taking out the non-significant dummy variables.</p>
+</div>
 </div>
 
 
