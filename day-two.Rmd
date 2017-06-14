@@ -8,6 +8,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
 ```
 
 ## Load the data
@@ -16,8 +17,30 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 all_data <- readxl::read_excel("data/day2/SampleGA2 for R Mark.xlsx")
-names(all_data)
+
+summary(all_data %>% 
+          select(date, deviceCategory, channelGrouping, Sessions, GoalCompletions))
 ```
+## First plot to find shape of the data
+
+```{R}
+
+overall_data <- all_data %>% 
+  select(date, deviceCategory, channelGrouping, Sessions) %>% 
+  mutate(yearMonth = format(date, format = "%Y%m")) %>% 
+  group_by(yearMonth) %>% 
+  summarise(sessionSum = sum(Sessions))
+
+plot(overall_data, type = "l")
+
+## a ggplot version
+library(ggplot2)
+gg <- ggplot(overall_data, aes(yearMonth, sessionSum)) + theme_dark()
+gg <- gg + geom_line(aes(group = 1))
+gg + geom_vline(xintercept=c(6,10), linetype = "dotted")
+```
+
+## Splitting into Groups
 
 The statistical analysis was carried out on three subsets of this data. (see data two content)
 
@@ -43,6 +66,20 @@ all_groups <- list(group_one = group_one,
                    group_two = group_two,
                    group_three = group_three)
 ```
+
+## Cross Tabulation
+
+
+```{r}
+my_cross_table <- function(x, cross1, cross2){
+  totals <- table(x[[cross1]], x[[cross2]])
+  
+  totals
+}
+
+lapply(all_groups, my_cross_table, cross1 = "deviceCategory", cross2 = "channelGrouping")
+```
+
 
 ## Summary statistics
 
@@ -95,35 +132,50 @@ lapply(all_groups, my_class_stats, dimension = "deviceCategory")
 lapply(all_groups, my_class_stats, dimension = "channelGrouping")
 ```
 
-## Cross Tabulation
-
-
-```{r}
-my_cross_table <- function(x, cross1, cross2){
-  totals <- table(x[[cross1]], x[[cross2]])
-  
-  totals
-}
-
-lapply(all_groups, my_cross_table, cross1 = "deviceCategory", cross2 = "channelGrouping")
-```
 
 
 ## Chi Squared and expected value
 
 Here we first print out the expected values (Compare with above) and then perform a chi-squared test on if the actual values are signficantly different.
 
-```{R}
-## how to calculate expected count here?
+```{R, message=FALSE, warning=FALSE}
+library(questionr) ## for cramerV
+
 my_chi_table <- function(x, cross1, cross2){
-  x <- chisq.test(table(x[[cross1]], x[[cross2]]))
-  print(x$expected)
-  x
+  tab <- table(x[[cross1]], x[[cross2]])
+  y <- chisq.test(tab)
+  
+  list(
+    expected = y$expected,
+    observed = y$observed,
+    difference = y$expected - y$observed,
+    chi = y,
+    cramerV = round(cramer.v(tab), digits = 4)
+  )
+
 }
 
 lapply(all_groups, my_chi_table, cross1 = "deviceCategory", cross2 = "channelGrouping")
 ```
 
+### A nice plot 
+
+```{r}
+## get the chi-squared results into its own list
+plot_this_list <- lapply(all_groups, my_chi_table, cross1 = "deviceCategory", cross2 = "channelGrouping")
+
+plot_func <- function(x){
+  barplot(x$difference, 
+          beside = TRUE, 
+          main = "Expected - Observed", 
+          sub = paste(x$chi$method, x$chi$p.value, " CramerV: ", x$cramerV),
+          col = c("#91210E","#A9E317","#2F5CAA"))
+  legend("topright",fill=c("#91210E","#A9E317","#2F5CAA"), legend=rownames(x$difference))
+}
+
+lapply(plot_this_list, plot_func)
+
+```
 
 ## ANOVA
 
@@ -135,7 +187,6 @@ my_anova <- function(x, metric, dim){
   my_form <- as.formula(paste(metric, "~", dim))
   model <- aov(my_form , data = x)
   summary(model)
-  
 }
 
 my_anova_tukey <- function(x, metric, dim){
@@ -176,13 +227,13 @@ my_models_fun <- function(x, dependent, independent){
 my_models <- lapply(all_groups, my_models_fun, dependent = "GoalCompletions", independent = "Sessions")
 lapply(my_models, summary)
 
-my_predict_mean <- function(x, model_string = "Sessions ~ GoalCompletions"){
+my_predict_mean <- function(x, model_string = "GoalCompletions ~ Sessions", new_value = mean(x$Sessions)){
   my_form <- as.formula(paste(model_string))
   model <- lm(my_form, data = x)
   cat("\nMean Sessions: ",mean(x$Sessions))
   cat("\nMean GoalCompletions",mean(x$GoalCompletions))
   predict(model, 
-          newdata = data.frame(Sessions = mean(x$Sessions), GoalCompletions = mean(x$GoalCompletions)),
+          newdata = data.frame(Sessions = mean(x$Sessions)),
           interval = "predict",
           level = 0.95)
 }

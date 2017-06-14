@@ -303,6 +303,8 @@ assert_that(is_odd(2))
 # Error: 2 is even
 ```
 
+Errors that fail as soon as something is wrong means you will be closer to where the problem occured when debugging.
+
 ### try() and tryCatch()
 
 Sometimes you don't want to stop the program, but rather do something else if an error is detected.  

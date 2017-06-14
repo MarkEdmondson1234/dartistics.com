@@ -172,4 +172,4 @@ The most common method of unit testing for the R community is via the travis ser
 
 3) Make a change to some documentation, and rebuild the package. 
 
-4) Make a change to a function (or add a new one), rebuild, and run the new function.
+4) Add a new function from [creating APIs](creating.apis.html), rebuild, and run the new function.

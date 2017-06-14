@@ -66,6 +66,15 @@ web_data_tidy <- web_data %>% gather(variable, value, -date, -channelGrouping, -
 head(web_data_tidy)
 ```
 
+`gather()` is the opposite of `spread()` - it "unpivots" data.  Its taking the 7 columns into 4.
+
+Example:
+
+```{r}
+web_data %>% filter(date == "2016-01-01", channelGrouping == "(Other)", deviceCategory=="desktop")
+web_data_tidy %>% filter(date == "2016-01-01", channelGrouping == "(Other)", deviceCategory=="desktop")
+```
+
 ### 2. Make Sure All of the Columns are the Right Class 
 
 In this case, we're going to make the date column a `Date` object.
@@ -146,3 +155,10 @@ gg
 ```
 
 > Disclaimer, I don't think area plots are very clear but they look pretty ;)
+
+
+
+```{r, eval=FALSE, include=FALSE}
+# Another example of `ggplot`'s power is faceting:
+ggplot(data = web_data_tidy, aes(x= date, y = value, color = deviceCategory)) + geom_line() + facet_grid(deviceCategory ~ channelGrouping) + theme_minimal()
+```

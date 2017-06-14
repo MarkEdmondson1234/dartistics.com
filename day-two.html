@@ -529,15 +529,44 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h2>Load the data</h2>
 <p><code>readxl</code> is recommended as the best way to read in data. You can also use the <code>Import Dataset</code> button in <code>RStudio</code> that will help you set options and write the <code>readxl</code> code for you:</p>
 <pre class="r"><code>all_data &lt;- readxl::read_excel(&quot;data/day2/SampleGA2 for R Mark.xlsx&quot;)
-names(all_data)</code></pre>
-<pre><code>##  [1] &quot;date&quot;               &quot;deviceCategory&quot;     &quot;channelGrouping&quot;   
-##  [4] &quot;Sessions&quot;           &quot;GoalCompletions&quot;    &quot;DeviceClass&quot;       
-##  [7] &quot;DesktopDummy&quot;       &quot;MobileDummy&quot;        &quot;TabletDummy&quot;       
-## [10] &quot;ChannelClass&quot;       &quot;OtherDummy&quot;         &quot;DirectDummy&quot;       
-## [13] &quot;DisplayDummy&quot;       &quot;OrganicSearchDummy&quot; &quot;PaidSearchDummy&quot;   
-## [16] &quot;ReferralDummy&quot;      &quot;SocialDummy&quot;        &quot;EmailDummy&quot;        
-## [19] &quot;BreakTimeClass&quot;     &quot;BreakTimeDummy1&quot;    &quot;BreakTimeDummy2&quot;   
-## [22] &quot;BreakTimeDummy3&quot;</code></pre>
+
+summary(all_data %&gt;% 
+          select(date, deviceCategory, channelGrouping, Sessions, GoalCompletions))</code></pre>
+<pre><code>##       date                     deviceCategory     channelGrouping   
+##  Min.   :2016-01-01 00:00:00   Length:7162        Length:7162       
+##  1st Qu.:2016-04-04 00:00:00   Class :character   Class :character  
+##  Median :2016-07-09 00:00:00   Mode  :character   Mode  :character  
+##  Mean   :2016-07-05 04:48:07                                        
+##  3rd Qu.:2016-10-05 00:00:00                                        
+##  Max.   :2016-12-31 00:00:00                                        
+##     Sessions      GoalCompletions  
+##  Min.   :    26   Min.   :   0.00  
+##  1st Qu.:   292   1st Qu.:   0.00  
+##  Median :   956   Median :   8.00  
+##  Mean   :  3701   Mean   :  27.05  
+##  3rd Qu.:  3587   3rd Qu.:  25.00  
+##  Max.   :125992   Max.   :1176.00</code></pre>
+</div>
+<div id="first-plot-to-find-shape-of-the-data" class="section level2">
+<h2>First plot to find shape of the data</h2>
+<pre class="r"><code>overall_data &lt;- all_data %&gt;% 
+  select(date, deviceCategory, channelGrouping, Sessions) %&gt;% 
+  mutate(yearMonth = format(date, format = &quot;%Y%m&quot;)) %&gt;% 
+  group_by(yearMonth) %&gt;% 
+  summarise(sessionSum = sum(Sessions))
+
+plot(overall_data, type = &quot;l&quot;)
+
+## a ggplot version
+library(ggplot2)</code></pre>
+<p><img src="day-two_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>gg &lt;- ggplot(overall_data, aes(yearMonth, sessionSum)) + theme_dark()
+gg &lt;- gg + geom_line(aes(group = 1))
+gg + geom_vline(xintercept=c(6,10), linetype = &quot;dotted&quot;)</code></pre>
+<p><img src="day-two_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+</div>
+<div id="splitting-into-groups" class="section level2">
+<h2>Splitting into Groups</h2>
 <p>The statistical analysis was carried out on three subsets of this data. (see data two content)</p>
 <p>The three files match to the following rows:</p>
 <ul>
@@ -555,6 +584,51 @@ group_three &lt;- all_data[5906:7162, ]</code></pre>
                    group_two = group_two,
                    group_three = group_three)</code></pre>
 </div>
+<div id="cross-tabulation" class="section level2">
+<h2>Cross Tabulation</h2>
+<pre class="r"><code>my_cross_table &lt;- function(x, cross1, cross2){
+  totals &lt;- table(x[[cross1]], x[[cross2]])
+  
+  totals
+}
+
+lapply(all_groups, my_cross_table, cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)</code></pre>
+<pre><code>## $group_one
+##          
+##           (Other) Direct Display Email Organic Search Paid Search Referral
+##   desktop      86    213     212    12            213         198      213
+##   mobile      139    213     213     3            213         209      213
+##   tablet       63    213     212     2            213         185      189
+##          
+##           Social
+##   desktop    212
+##   mobile     213
+##   tablet     202
+## 
+## $group_two
+##          
+##           (Other) Direct Display Email Organic Search Paid Search Referral
+##   desktop      28     92      92     6             92          92       92
+##   mobile       92     92      92     1             92          92       92
+##   tablet       75     92      92     0             92          92       85
+##          
+##           Social
+##   desktop     92
+##   mobile      92
+##   tablet      92
+## 
+## $group_three
+##          
+##           (Other) Direct Display Email Organic Search Paid Search Referral
+##   desktop      23     61      61     7             61          61       61
+##   mobile       61     61      61    10             61          61       61
+##   tablet       60     61      61     0             61          61       59
+##          
+##           Social
+##   desktop     61
+##   mobile      61
+##   tablet      61</code></pre>
+</div>
 <div id="summary-statistics" class="section level2">
 <h2>Summary statistics</h2>
 <p>We start with creating summary statistics. One option would be to use <code>summary()</code> but <code>describe()</code> from the <code>psych</code> package as it also shows <code>skew</code> and <code>kurtosis</code>.</p>
@@ -564,9 +638,13 @@ group_three &lt;- all_data[5906:7162, ]</code></pre>
 <li>Run the function over the list of group data.frames</li>
 <li>Analyse the result</li>
 </ol>
-<pre class="r"><code>library(psych) # statistics
-
-my_summary &lt;- function(x, metric){
+<pre class="r"><code>library(psych) # statistics</code></pre>
+<pre><code>## 
+## Attaching package: &#39;psych&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:ggplot2&#39;:
+## 
+##     %+%, alpha</code></pre>
+<pre class="r"><code>my_summary &lt;- function(x, metric){
   y &lt;- x[, metric]
 
   describe(y)
@@ -666,16 +744,40 @@ lapply(all_groups, my_summary, metric = c(&quot;Sessions&quot;, &quot;GoalComple
 ## 8         Social  183  0.1456      1.0001</code></pre>
 </div>
 </div>
-<div id="cross-tabulation" class="section level2">
-<h2>Cross Tabulation</h2>
-<pre class="r"><code>my_cross_table &lt;- function(x, cross1, cross2){
-  totals &lt;- table(x[[cross1]], x[[cross2]])
+<div id="chi-squared-and-expected-value" class="section level2">
+<h2>Chi Squared and expected value</h2>
+<p>Here we first print out the expected values (Compare with above) and then perform a chi-squared test on if the actual values are signficantly different.</p>
+<pre class="r"><code>library(questionr) ## for cramerV
+
+my_chi_table &lt;- function(x, cross1, cross2){
+  tab &lt;- table(x[[cross1]], x[[cross2]])
+  y &lt;- chisq.test(tab)
   
-  totals
+  list(
+    expected = y$expected,
+    observed = y$observed,
+    difference = y$expected - y$observed,
+    chi = y,
+    cramerV = round(cramer.v(tab), digits = 4)
+  )
+
 }
 
-lapply(all_groups, my_cross_table, cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)</code></pre>
+lapply(all_groups, my_chi_table, cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)</code></pre>
 <pre><code>## $group_one
+## $group_one$expected
+##          
+##             (Other)   Direct  Display    Email Organic Search Paid Search
+##   desktop  96.54465 214.2084 213.5380 5.698816       214.2084    198.4529
+##   mobile  100.59398 223.1929 222.4943 5.937839       223.1929    206.7765
+##   tablet   90.86137 201.5987 200.9677 5.363345       201.5987    186.7706
+##          
+##           Referral   Social
+##   desktop 206.1630 210.1857
+##   mobile  214.8101 219.0015
+##   tablet  194.0269 197.8128
+## 
+## $group_one$observed
 ##          
 ##           (Other) Direct Display Email Organic Search Paid Search Referral
 ##   desktop      86    213     212    12            213         198      213
@@ -687,7 +789,44 @@ lapply(all_groups, my_cross_table, cross1 = &quot;deviceCategory&quot;, cross2 =
 ##   mobile     213
 ##   tablet     202
 ## 
+## $group_one$difference
+##          
+##              (Other)     Direct    Display      Email Organic Search
+##   desktop  10.544647   1.208436   1.537987  -6.301184       1.208436
+##   mobile  -38.406019  10.192896   9.494327   2.937839      10.192896
+##   tablet   27.861371 -11.401332 -11.032314   3.363345     -11.401332
+##          
+##           Paid Search   Referral     Social
+##   desktop    0.452886  -6.836951  -1.814258
+##   mobile    -2.223483   1.810064   6.001480
+##   tablet     1.770597   5.026887  -4.187222
+## 
+## $group_one$chi
+## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  tab
+## X-squared = 38.827, df = 14, p-value = 0.0003879
+## 
+## 
+## $group_one$cramerV
+## [1] 0.0692
+## 
+## 
 ## $group_two
+## $group_two$expected
+##          
+##            (Other)   Direct  Display    Email Organic Search Paid Search
+##   desktop 61.73420 87.37763 87.37763 2.216099       87.37763    87.37763
+##   mobile  67.94976 96.17504 96.17504 2.439222       96.17504    96.17504
+##   tablet  65.31605 92.44733 92.44733 2.344679       92.44733    92.44733
+##          
+##           Referral   Social
+##   desktop 85.16153 87.37763
+##   mobile  93.73582 96.17504
+##   tablet  90.10265 92.44733
+## 
+## $group_two$observed
 ##          
 ##           (Other) Direct Display Email Organic Search Paid Search Referral
 ##   desktop      28     92      92     6             92          92       92
@@ -699,51 +838,32 @@ lapply(all_groups, my_cross_table, cross1 = &quot;deviceCategory&quot;, cross2 =
 ##   mobile      92
 ##   tablet      92
 ## 
+## $group_two$difference
+##          
+##               (Other)      Direct     Display       Email Organic Search
+##   desktop  33.7341977  -4.6223663  -4.6223663  -3.7839006     -4.6223663
+##   mobile  -24.0502431   4.1750405   4.1750405   1.4392220      4.1750405
+##   tablet   -9.6839546   0.4473258   0.4473258   2.3446786      0.4473258
+##          
+##           Paid Search    Referral      Social
+##   desktop  -4.6223663  -6.8384657  -4.6223663
+##   mobile    4.1750405   1.7358185   4.1750405
+##   tablet    0.4473258   5.1026472   0.4473258
+## 
+## $group_two$chi
+## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  tab
+## X-squared = 41.047, df = 14, p-value = 0.0001749
+## 
+## 
+## $group_two$cramerV
+## [1] 0.1053
+## 
+## 
 ## $group_three
-##          
-##           (Other) Direct Display Email Organic Search Paid Search Referral
-##   desktop      23     61      61     7             61          61       61
-##   mobile       61     61      61    10             61          61       61
-##   tablet       60     61      61     0             61          61       59
-##          
-##           Social
-##   desktop     61
-##   mobile      61
-##   tablet      61</code></pre>
-</div>
-<div id="chi-squared-and-expected-value" class="section level2">
-<h2>Chi Squared and expected value</h2>
-<p>Here we first print out the expected values (Compare with above) and then perform a chi-squared test on if the actual values are signficantly different.</p>
-<pre class="r"><code>## how to calculate expected count here?
-my_chi_table &lt;- function(x, cross1, cross2){
-  x &lt;- chisq.test(table(x[[cross1]], x[[cross2]]))
-  print(x$expected)
-  x
-}
-
-lapply(all_groups, my_chi_table, cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)</code></pre>
-<pre><code>##          
-##             (Other)   Direct  Display    Email Organic Search Paid Search
-##   desktop  96.54465 214.2084 213.5380 5.698816       214.2084    198.4529
-##   mobile  100.59398 223.1929 222.4943 5.937839       223.1929    206.7765
-##   tablet   90.86137 201.5987 200.9677 5.363345       201.5987    186.7706
-##          
-##           Referral   Social
-##   desktop 206.1630 210.1857
-##   mobile  214.8101 219.0015
-##   tablet  194.0269 197.8128</code></pre>
-<pre><code>## Warning in chisq.test(table(x[[cross1]], x[[cross2]])): Chi-squared
-## approximation may be incorrect</code></pre>
-<pre><code>##          
-##            (Other)   Direct  Display    Email Organic Search Paid Search
-##   desktop 61.73420 87.37763 87.37763 2.216099       87.37763    87.37763
-##   mobile  67.94976 96.17504 96.17504 2.439222       96.17504    96.17504
-##   tablet  65.31605 92.44733 92.44733 2.344679       92.44733    92.44733
-##          
-##           Referral   Social
-##   desktop 85.16153 87.37763
-##   mobile  93.73582 96.17504
-##   tablet  90.10265 92.44733
+## $group_three$expected
 ##          
 ##            (Other)   Direct  Display    Email Organic Search Paid Search
 ##   desktop 45.36516 57.65155 57.65155 5.355609       57.65155    57.65155
@@ -753,29 +873,130 @@ lapply(all_groups, my_chi_table, cross1 = &quot;deviceCategory&quot;, cross2 = &
 ##           Referral   Social
 ##   desktop 57.02148 57.65155
 ##   mobile  62.92522 63.62053
-##   tablet  61.05330 61.72792</code></pre>
-<pre><code>## $group_one
+##   tablet  61.05330 61.72792
+## 
+## $group_three$observed
+##          
+##           (Other) Direct Display Email Organic Search Paid Search Referral
+##   desktop      23     61      61     7             61          61       61
+##   mobile       61     61      61    10             61          61       61
+##   tablet       60     61      61     0             61          61       59
+##          
+##           Social
+##   desktop     61
+##   mobile      61
+##   tablet      61
+## 
+## $group_three$difference
+##          
+##               (Other)      Direct     Display       Email Organic Search
+##   desktop  22.3651551  -3.3484487  -3.3484487  -1.6443914     -3.3484487
+##   mobile  -10.9379475   2.6205251   2.6205251  -4.0898966      2.6205251
+##   tablet  -11.4272076   0.7279236   0.7279236   5.7342880      0.7279236
+##          
+##           Paid Search    Referral      Social
+##   desktop  -3.3484487  -3.9785203  -3.3484487
+##   mobile    2.6205251   1.9252188   2.6205251
+##   tablet    0.7279236   2.0533015   0.7279236
+## 
+## $group_three$chi
 ## 
 ##  Pearson&#39;s Chi-squared test
 ## 
-## data:  table(x[[cross1]], x[[cross2]])
-## X-squared = 38.827, df = 14, p-value = 0.0003879
+## data:  tab
+## X-squared = 27.134, df = 14, p-value = 0.01849
+## 
+## 
+## $group_three$cramerV
+## [1] 0.1039</code></pre>
+<div id="a-nice-plot" class="section level3">
+<h3>A nice plot</h3>
+<pre class="r"><code>## get the chi-squared results into its own list
+plot_this_list &lt;- lapply(all_groups, my_chi_table, cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)</code></pre>
+<pre><code>## Warning in chisq.test(tab): Chi-squared approximation may be incorrect</code></pre>
+<pre><code>## Warning in stats::chisq.test(tab, correct = FALSE): Chi-squared
+## approximation may be incorrect</code></pre>
+<pre class="r"><code>plot_func &lt;- function(x){
+  barplot(x$difference, 
+          beside = TRUE, 
+          main = &quot;Expected - Observed&quot;, 
+          sub = paste(x$chi$method, x$chi$p.value, &quot; CramerV: &quot;, x$cramerV),
+          col = c(&quot;#91210E&quot;,&quot;#A9E317&quot;,&quot;#2F5CAA&quot;))
+  legend(&quot;topright&quot;,fill=c(&quot;#91210E&quot;,&quot;#A9E317&quot;,&quot;#2F5CAA&quot;), legend=rownames(x$difference))
+}
+
+lapply(plot_this_list, plot_func)</code></pre>
+<p><img src="day-two_files/figure-html/unnamed-chunk-10-1.png" width="672" /><img src="day-two_files/figure-html/unnamed-chunk-10-2.png" width="672" /><img src="day-two_files/figure-html/unnamed-chunk-10-3.png" width="672" /></p>
+<pre><code>## $group_one
+## $group_one$rect
+## $group_one$rect$w
+## [1] 6.270178
+## 
+## $group_one$rect$h
+## [1] 16.77655
+## 
+## $group_one$rect$left
+## [1] 26.96982
+## 
+## $group_one$rect$top
+## [1] 27.86137
+## 
+## 
+## $group_one$text
+## $group_one$text$x
+## [1] 29.41107 29.41107 29.41107
+## 
+## $group_one$text$y
+## [1] 23.66723 19.47309 15.27896
+## 
 ## 
 ## 
 ## $group_two
+## $group_two$rect
+## $group_two$rect$w
+## [1] 6.270178
 ## 
-##  Pearson&#39;s Chi-squared test
+## $group_two$rect$h
+## [1] 14.62897
 ## 
-## data:  table(x[[cross1]], x[[cross2]])
-## X-squared = 41.047, df = 14, p-value = 0.0001749
+## $group_two$rect$left
+## [1] 26.96982
+## 
+## $group_two$rect$top
+## [1] 33.7342
+## 
+## 
+## $group_two$text
+## $group_two$text$x
+## [1] 29.41107 29.41107 29.41107
+## 
+## $group_two$text$y
+## [1] 30.07695 26.41971 22.76247
+## 
 ## 
 ## 
 ## $group_three
+## $group_three$rect
+## $group_three$rect$w
+## [1] 6.270178
 ## 
-##  Pearson&#39;s Chi-squared test
+## $group_three$rect$h
+## [1] 8.555029
 ## 
-## data:  table(x[[cross1]], x[[cross2]])
-## X-squared = 27.134, df = 14, p-value = 0.01849</code></pre>
+## $group_three$rect$left
+## [1] 26.96982
+## 
+## $group_three$rect$top
+## [1] 22.36516
+## 
+## 
+## $group_three$text
+## $group_three$text$x
+## [1] 29.41107 29.41107 29.41107
+## 
+## $group_three$text$y
+## [1] 20.22640 18.08764 15.94888</code></pre>
+</div>
 </div>
 <div id="anova" class="section level2">
 <h2>ANOVA</h2>
@@ -784,7 +1005,6 @@ lapply(all_groups, my_chi_table, cross1 = &quot;deviceCategory&quot;, cross2 = &
   my_form &lt;- as.formula(paste(metric, &quot;~&quot;, dim))
   model &lt;- aov(my_form , data = x)
   summary(model)
-  
 }
 
 my_anova_tukey &lt;- function(x, metric, dim){
@@ -991,13 +1211,13 @@ lapply(my_models, summary)</code></pre>
 ## Residual standard error: 92.78 on 1255 degrees of freedom
 ## Multiple R-squared:  0.1681, Adjusted R-squared:  0.1675 
 ## F-statistic: 253.7 on 1 and 1255 DF,  p-value: &lt; 2.2e-16</code></pre>
-<pre class="r"><code>my_predict_mean &lt;- function(x, model_string = &quot;Sessions ~ GoalCompletions&quot;){
+<pre class="r"><code>my_predict_mean &lt;- function(x, model_string = &quot;GoalCompletions ~ Sessions&quot;, new_value = mean(x$Sessions)){
   my_form &lt;- as.formula(paste(model_string))
   model &lt;- lm(my_form, data = x)
   cat(&quot;\nMean Sessions: &quot;,mean(x$Sessions))
   cat(&quot;\nMean GoalCompletions&quot;,mean(x$GoalCompletions))
   predict(model, 
-          newdata = data.frame(Sessions = mean(x$Sessions), GoalCompletions = mean(x$GoalCompletions)),
+          newdata = data.frame(Sessions = mean(x$Sessions)),
           interval = &quot;predict&quot;,
           level = 0.95)
 }
@@ -1027,15 +1247,15 @@ lapply(all_groups, my_predict_mean)</code></pre>
 ## Mean GoalCompletions 58.57916</code></pre>
 <pre><code>## $group_one
 ##        fit       lwr      upr
-## 1 2533.844 -5929.603 10997.29
+## 1 16.63468 -34.00746 67.27682
 ## 
 ## $group_two
 ##        fit       lwr      upr
-## 1 4219.887 -10896.49 19336.26
+## 1 28.44787 -56.44689 113.3426
 ## 
 ## $group_three
 ##        fit       lwr      upr
-## 1 6698.333 -19054.41 32451.07</code></pre>
+## 1 58.57916 -123.5045 240.6628</code></pre>
 <pre class="r"><code>lapply(all_groups, my_regression)</code></pre>
 <pre><code>## $group_one
 ## 
