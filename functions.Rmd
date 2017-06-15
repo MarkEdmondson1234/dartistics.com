@@ -364,7 +364,7 @@ Another tool for this is the function `match.arg()` which lets you limit the cho
 ```{r}
 library(assertthat)
 extract_xy <- function(data_frame, 
-                       column_name = c("mpg", "cyl", "disp"), 
+                       column_name, 
                        row_number){
   ## the syntax to make sure column_name is only from accepted values
   column_name <- match.arg(column_name)

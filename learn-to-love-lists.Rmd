@@ -187,7 +187,7 @@ apply(mtcars, MARGIN = 2, sum)
 
 ### Exercise
 
-Write a function that iterates over this list of `data.frames` supplied below, to output the `max` of each column.  The output should be a list of numeric vectors, each vector element being the maxium number.  
+Write a function that iterates over this list of `data.frames` supplied below, to output the `sum` of each column.  The output should be a list of numeric vectors, each vector element being the maxium number.  
 
 ```r
 ## don't touch this, it just creates your data

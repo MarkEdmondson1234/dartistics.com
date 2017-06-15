@@ -807,7 +807,7 @@ extract_xy(mtcars, column_name = &quot;mpg&quot;, row_number = 3)</code></pre>
 <p>Another tool for this is the function <code>match.arg()</code> which lets you limit the choices an argument can have to a vector of choices you provide. An example on how it is used it below:</p>
 <pre class="r"><code>library(assertthat)
 extract_xy &lt;- function(data_frame, 
-                       column_name = c(&quot;mpg&quot;, &quot;cyl&quot;, &quot;disp&quot;), 
+                       column_name, 
                        row_number){
   ## the syntax to make sure column_name is only from accepted values
   column_name &lt;- match.arg(column_name)
@@ -822,10 +822,10 @@ extract_xy &lt;- function(data_frame,
 }
 
 extract_xy(mtcars, column_name = &quot;mpg&quot;, row_number = 3)</code></pre>
-<pre><code>## [1] 22.8</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): argument is missing, with no default</code></pre>
 <pre class="r"><code>## error as column_name not in match.arg vector
 extract_xy(mtcars, column_name = &quot;foo&quot;, row_number = 3)</code></pre>
-<pre><code>## Error in match.arg(column_name): &#39;arg&#39; should be one of &quot;mpg&quot;, &quot;cyl&quot;, &quot;disp&quot;</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): argument is missing, with no default</code></pre>
 </div>
 <div id="debugging-tips" class="section level3">
 <h3>Debugging tips</h3>

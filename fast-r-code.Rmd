@@ -133,7 +133,7 @@ Run your code on a machine with bigger RAM and CPU.  We talk about how to do thi
 
 It is a lot slower to write/read to formats such as CSV with `write.csv` than if you are writing/reading to a binary format such as `saveRDS` and `readRDS`.  Another option and to also get compatibility with Python is the [`feather`](https://blog.rstudio.org/2016/03/29/feather/) format. 
 
-This is most relevant when writing a cache or progress.  Favour using `writeRDS` over `write.csv`.
+This is most relevant when writing a cache or progress.  Favour using `saveRDS` over `write.csv`.
 
 ### 5. Find better packages
 
