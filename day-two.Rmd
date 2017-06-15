@@ -13,7 +13,7 @@ library(dplyr)
 
 ## Load the data
 
-`readxl` is recommended as the best way to read in data.  You can also use the `Import Dataset` button in `RStudio` that will help you set options and write the `readxl` code for you:
+We download the data used for the statistics class:
 
 ```{r}
 raw_data <- "sampleStatsData.csv"
@@ -77,6 +77,7 @@ all_groups <- list(group_one = group_one,
 
 ## Cross Tabulation
 
+As the result of `lapply` is always a list, you can take the result of `lapply` and use it in another:
 
 ```{r}
 my_cross_table <- function(x, cross1, cross2){
@@ -85,9 +86,11 @@ my_cross_table <- function(x, cross1, cross2){
   totals
 }
 
-lapply(all_groups, 
+result <- lapply(all_groups, 
        my_cross_table, 
        cross1 = "deviceCategory", cross2 = "channelGrouping")
+
+result$group_one
 ```
 
 
@@ -143,7 +146,6 @@ lapply(all_groups, my_class_stats, dimension = "channelGrouping")
 ```
 
 
-
 ## Chi Squared and expected value
 
 Here we first print out the expected values (Compare with above) and then perform a chi-squared test on if the actual values are signficantly different.
@@ -165,17 +167,15 @@ my_chi_table <- function(x, cross1, cross2){
 
 }
 
-lapply(all_groups, 
-       my_chi_table, 
-       cross1 = "deviceCategory", cross2 = "channelGrouping")
 ```
 
-### A nice plot 
+#### Exercise
+
+1. Run the Chi Squared function above over all the `data.frames` in list `all_groups` with `cross1="deviceCategory"` and `cross2="channelGrouping"`
+2. What is the cramerV for Group 2?
+3. A function to create a barplot of the Chi Squared result is below. Run it upon the results you got in part 1.
 
 ```{r, echo=TRUE, message=FALSE, warning=FALSE}
-## get the chi-squared results into its own list
-plot_this_list <- lapply(all_groups, my_chi_table, cross1 = "deviceCategory", cross2 = "channelGrouping")
-
 my_cols <- c("#AAA81B","#77774B","#3D81AA")
 plot_func <- function(x){
   barplot(x$error, 
@@ -186,13 +186,13 @@ plot_func <- function(x){
   legend("topright",fill=my_cols, legend=rownames(x$error))
 }
 
-p <- lapply(plot_this_list, plot_func)
-
 ```
+
+4. Change the colours of the barplot to something you like. Try this [website for color wheels](https://color.adobe.com/create/color-wheel/).
 
 ## ANOVA
 
-Where is the source of error?
+Analysis of variance - find out where is the source of the error that you identified in the chi-squared. 
 
 ### 1-Way ANOVA
 
@@ -239,35 +239,11 @@ my_oneway_anova_tukey_results <- lapply(all_groups,
 my_oneway_anova_tukey_results$group_two
 ```
 
-
-
-
-```{R}
-my_anova_tukey <- function(x, metric, dim){
-  my_form <- as.formula(paste(metric, "~", dim))
-  model <- aov(my_form , data = x)
-  
-  TukeyHSD(model)
-}
-
-# tukey_results <- lapply(all_groups, my_anova_tukey, metric = "GoalCompletions", dim = "channelGrouping * deviceCategory")
-tukey_results <- lapply(all_groups, my_anova_tukey, metric = "GoalCompletions", dim = "channelGrouping")
-```
-
-This is a big list. (each channel compared with one another, per group).
-
-We look at just one channel for Group 1:
-
-```{r}
-# tukey_results$group_one$`channelGrouping:deviceCategory`
-tukey_results$group_one$channelGrouping
-```
-
 ### Multi way ANOVA
 
-* Hoa the group means for first factor are equal
-* Hob The group means for the second factor are equal
-* H0c There is no interaction between the two factors
+* `H0_a` the group means for first factor are equal
+* `H0_b` The group means for the second factor are equal
+* `H0_c` There is no interaction between the two factors
 
 ```{r}
 my_nway_anova <- function(x, metric, dim){
@@ -278,7 +254,7 @@ my_nway_anova <- function(x, metric, dim){
 ## tests of between subject effects
 lapply(all_groups, 
        my_nway_anova, 
-       metric = "Sessions", dim = "deviceCategory *channelGrouping")
+       metric = "Sessions", dim = "deviceCategory * channelGrouping")
 ```
 
 
@@ -314,7 +290,6 @@ results <- lapply(my_models, summary)
 results
 ```
 
-
 ### Calculating the prediction interval for mean
 
 What to pay attention to and what to ignore.  If within this bound its within acceptable range. 
@@ -342,7 +317,6 @@ my_predict_mean <- function(x, new_value = mean(x$Sessions)){
 lapply(all_groups, my_predict_mean)
 ```
 
-
 ### Multilinear regression
 
 Using the dummary variables:
@@ -357,7 +331,7 @@ mr1 <- lapply(all_groups, multi_regression)
 mr1$group_one
 ```
 
-If you forget to leave out one of your dummy variables:
+If you forget to leave out one of your dummy variables, its ok:
 
 ```{r}
 multi_regression <- function(x){
@@ -386,7 +360,6 @@ Repeated for channel groupings, dummy variables:
 ```{r}
 
 multi_regression2 <- function(x){
-  x$deviceCategory <- as.factor(x$deviceCategory)
   model <- lm(GoalCompletions  ~ Sessions + DirectDummy + DisplayDummy + OrganicSearchDummy + PaidSearchDummy + ReferralDummy + SocialDummy + EmailDummy, data = x)
   summary(model)
 }

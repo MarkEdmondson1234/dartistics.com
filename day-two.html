@@ -527,7 +527,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <div id="load-the-data" class="section level2">
 <h2>Load the data</h2>
-<p><code>readxl</code> is recommended as the best way to read in data. You can also use the <code>Import Dataset</code> button in <code>RStudio</code> that will help you set options and write the <code>readxl</code> code for you:</p>
+<p>We download the data used for the statistics class:</p>
 <pre class="r"><code>raw_data &lt;- &quot;sampleStatsData.csv&quot;
 if(!file.exists(raw_data)){
   download.file(&quot;https://raw.githubusercontent.com/MarkEdmondson1234/dartistics.com/master/sampleStatsData.csv&quot;, 
@@ -623,6 +623,7 @@ plot(overall_data, type = &quot;l&quot;)
 
 ## a ggplot version
 library(ggplot2)</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.3.2</code></pre>
 <p><img src="day-two_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <pre class="r"><code>gg &lt;- ggplot(overall_data, aes(yearMonth, sessionSum)) + theme_dark()
 gg &lt;- gg + geom_line(aes(group = 1))
