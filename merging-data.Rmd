@@ -1,0 +1,49 @@
+---
+title: "Merging data with dplyr"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Merging data with dplyr
+
+A common use case in digital marketing is combining two datasets. 
+
+We will simulate some data you may use:
+
+```{r}
+search_console <- data.frame(
+  pageURL = paste0("www.example.com/blah-blah",1:50),
+  clicks = round(runif(50,5, 100)),
+  impressions = round(runif(50, 200, 1000)),
+  avg.position = round(runif(50,1,30),1),
+  stringsAsFactors = FALSE
+)
+
+web_analytics <- data.frame(
+  pageName = paste0("www.example.com/blah-blah",2:51),
+  sessions = round(runif(50,3, 95)),
+  transactions = round(runif(50, 0,2)),
+  stringsAsFactors = FALSE
+)
+
+knitr::kable(head(search_console))
+knitr::kable(head(web_analytics))
+```
+
+`dplyr` allows you to join datasets using the `left_join` command. 
+
+```{r, message=FALSE, warning=FALSE}
+library(dplyr)
+
+merged_left <- search_console %>% 
+  left_join(web_analytics, by = c(pageURL = "pageName"))
+
+knitr::kable(head(merged_left))
+
+merged_inner <- search_console %>% 
+  inner_join(web_analytics, by = c(pageURL = "pageName"))
+
+knitr::kable(head(merged_inner))
+```
