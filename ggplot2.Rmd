@@ -59,10 +59,13 @@ While it's possible to use "wide" data, it's generally easiest to always _start_
 ```{r ggplot2, message=FALSE}
 ## We can use the newer tidyr() package the gather() function to tidy up the data
 library(tidyr)
+library(dplyr)
 
 ## call the key column 'variable' and the value colum 'value' and 
 ## gather all variables apart from date, channelGrouping and deviceCategory
-web_data_tidy <- web_data %>% gather(variable, value, -date, -channelGrouping, -deviceCategory)
+web_data_tidy <- web_data %>% 
+  select(-X) %>%   ## get rid of column X
+  gather(variable, value, -date, -channelGrouping, -deviceCategory)
 head(web_data_tidy)
 ```
 
@@ -156,9 +159,24 @@ gg
 
 > Disclaimer, I don't think area plots are very clear but they look pretty ;)
 
+# Another example of `ggplot`'s power is faceting
 
+```{r, fig.width=10}
 
-```{r, eval=FALSE, include=FALSE}
-# Another example of `ggplot`'s power is faceting:
-ggplot(data = web_data_tidy, aes(x= date, y = value, color = deviceCategory)) + geom_line() + facet_grid(deviceCategory ~ channelGrouping) + theme_minimal()
+gg <- ggplot(data = web_data_tidy, aes(x= date, y = value)) + theme_linedraw()
+gg <- gg + geom_line(aes(color = deviceCategory))
+gg <- gg + facet_grid(deviceCategory ~ channelGrouping) 
+gg
 ```
+
+## Lets do a bar plot
+
+But call it the right name - *geom_col* (`geom_bar` is for count data)
+
+```{r, fig.width=10}
+gg <- ggplot(data = web_data_tidy) + theme_bw()
+gg <- gg + scale_fill_brewer(palette = "Blues")
+gg + geom_col(aes(x = channelGrouping, fill = deviceCategory, y = value), position = "dodge")
+
+```
+

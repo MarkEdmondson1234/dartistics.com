@@ -460,6 +460,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <div id="example-workflow" class="section level2">
 <h2>Example Workflow</h2>
 <p><em>This example requires having a <code>web_data</code> data frame. You can either load up some sample data by completing the <a href="exercise2-io.html">I/O Exercise</a> (which is what is shown in the details below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the <a href="api-google-analytics.html">Google Analytics API page</a>.</em></p>
+<pre><code>## Warning: package &#39;knitr&#39; was built under R version 3.3.2</code></pre>
 <p>Once you have a <code>web_data</code> data frame to work with, the command <code>head(web_data)</code> should return a table that, at least structurally, looks something like this:</p>
 <pre class="r"><code>kable(head(web_data))</code></pre>
 <table>
@@ -543,19 +544,36 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h3>1. Get the Data Ready and Tidy</h3>
 <p>While it’s possible to use “wide” data, it’s generally easiest to always <em>start</em> with tidy “long” data, so you can quickly repeat what you have learned/applied before.</p>
 <pre class="r"><code>## We can use the newer tidyr() package the gather() function to tidy up the data
-library(tidyr)
+library(tidyr)</code></pre>
+<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.3.2</code></pre>
+<pre class="r"><code>library(dplyr)
 
 ## call the key column &#39;variable&#39; and the value colum &#39;value&#39; and 
 ## gather all variables apart from date, channelGrouping and deviceCategory
-web_data_tidy &lt;- web_data %&gt;% gather(variable, value, -date, -channelGrouping, -deviceCategory)
+web_data_tidy &lt;- web_data %&gt;% 
+  select(-X) %&gt;%   ## get rid of column X
+  gather(variable, value, -date, -channelGrouping, -deviceCategory)
 head(web_data_tidy)</code></pre>
 <pre><code>##         date channelGrouping deviceCategory variable value
-## 1 2016-01-01         (Other)        desktop        X     1
-## 2 2016-01-01         (Other)         mobile        X     2
-## 3 2016-01-01         (Other)         tablet        X     3
-## 4 2016-01-01          Direct        desktop        X     4
-## 5 2016-01-01          Direct         mobile        X     5
-## 6 2016-01-01          Direct         tablet        X     6</code></pre>
+## 1 2016-01-01         (Other)        desktop sessions    19
+## 2 2016-01-01         (Other)         mobile sessions   112
+## 3 2016-01-01         (Other)         tablet sessions    24
+## 4 2016-01-01          Direct        desktop sessions   133
+## 5 2016-01-01          Direct         mobile sessions   345
+## 6 2016-01-01          Direct         tablet sessions   126</code></pre>
+<p><code>gather()</code> is the opposite of <code>spread()</code> - it “unpivots” data. Its taking the 7 columns into 4.</p>
+<p>Example:</p>
+<pre class="r"><code>web_data %&gt;% filter(date == &quot;2016-01-01&quot;, channelGrouping == &quot;(Other)&quot;, deviceCategory==&quot;desktop&quot;)</code></pre>
+<pre><code>##   X       date channelGrouping deviceCategory sessions pageviews entrances
+## 1 1 2016-01-01         (Other)        desktop       19        23        19
+##   bounces
+## 1      15</code></pre>
+<pre class="r"><code>web_data_tidy %&gt;% filter(date == &quot;2016-01-01&quot;, channelGrouping == &quot;(Other)&quot;, deviceCategory==&quot;desktop&quot;)</code></pre>
+<pre><code>##         date channelGrouping deviceCategory  variable value
+## 1 2016-01-01         (Other)        desktop  sessions    19
+## 2 2016-01-01         (Other)        desktop pageviews    23
+## 3 2016-01-01         (Other)        desktop entrances    19
+## 4 2016-01-01         (Other)        desktop   bounces    15</code></pre>
 </div>
 <div id="make-sure-all-of-the-columns-are-the-right-class" class="section level3">
 <h3>2. Make Sure All of the Columns are the Right Class</h3>
@@ -563,12 +581,12 @@ head(web_data_tidy)</code></pre>
 <p>You could also choose to make factors out of your categories, as they let you set the order of colours in the legends a bit easier.</p>
 <p><strong>Note</strong>: Outside of applying statistical methods, converting columns to be factors will often come into play when you want to control the order of nominal or ordinal variables. This gets a little confusing, in that there are “unordered” factors and “ordered” factors, and you do <em>not</em> actually need an ordered factor to contro the order in a plot (!). We’re not going to dive into this here, as that’s heading down into the weeds a bit. But, make a mental note that order <em>can</em> be controlled when using nonmetric variables. And it’s a quick Google search to get the specifics.</p>
 <pre class="r"><code>str(web_data_tidy)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    28660 obs. of  5 variables:
+<pre><code>## &#39;data.frame&#39;:    22928 obs. of  5 variables:
 ##  $ date           : chr  &quot;2016-01-01&quot; &quot;2016-01-01&quot; &quot;2016-01-01&quot; &quot;2016-01-01&quot; ...
 ##  $ channelGrouping: chr  &quot;(Other)&quot; &quot;(Other)&quot; &quot;(Other)&quot; &quot;Direct&quot; ...
 ##  $ deviceCategory : chr  &quot;desktop&quot; &quot;mobile&quot; &quot;tablet&quot; &quot;desktop&quot; ...
-##  $ variable       : chr  &quot;X&quot; &quot;X&quot; &quot;X&quot; &quot;X&quot; ...
-##  $ value          : int  1 2 3 4 5 6 7 8 9 10 ...</code></pre>
+##  $ variable       : chr  &quot;sessions&quot; &quot;sessions&quot; &quot;sessions&quot; &quot;sessions&quot; ...
+##  $ value          : int  19 112 24 133 345 126 307 3266 1025 17 ...</code></pre>
 <pre class="r"><code>web_data_tidy$date &lt;- as.Date(web_data_tidy$date)
 
 ## we will only look at sessions
@@ -579,8 +597,9 @@ plot_data &lt;- web_data_tidy %&gt;% filter(variable == &quot;sessions&quot;)</c
 <h3>3. Create a Plot Object Called <code>gg</code></h3>
 <p>We can use the <code>ggplot()</code> function to create a plot that we’re going to call <code>gg</code>. This call includes your data and any known aesthetics (mappings) that you want to apply to all of the plots that you will layer in. We can also go ahead and set the basic theme here. <code>theme_minimal()</code> is a nice, clean one to start with.</p>
 <p>As we have made “long” tidy data, we know that our x variable will be <code>date</code>, but also our y variable will be in the <code>value</code> column, so we can set these as defaults in the <code>aes()</code> (aesthetics) call:</p>
-<pre class="r"><code>library(ggplot2)
-## I don&#39;t know why, but I always call them gg
+<pre class="r"><code>library(ggplot2)</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.3.2</code></pre>
+<pre class="r"><code>## I don&#39;t know why, but I always call them gg
 gg &lt;- ggplot(data = plot_data, aes(x = date, y = value)) + theme_minimal()</code></pre>
 </div>
 <div id="let-the-fun-begin" class="section level3">
@@ -589,22 +608,22 @@ gg &lt;- ggplot(data = plot_data, aes(x = date, y = value)) + theme_minimal()</c
 <p>Any aesthetics or statistics you haven’t specified in the global line, you will need to add in the <code>geom</code> you are adding. Note that because we have put the data in the first line, we don’t need to specify it again.</p>
 <pre class="r"><code>## let&#39;s make some line plots
 gg + geom_line()</code></pre>
-<p><img src="ggplot2_files/figure-html/unnamed-chunk-4-1.png" width="960" /></p>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-5-1.png" width="960" /></p>
 <pre class="r"><code>## hmm, too much data in there, let&#39;s colour by the channelGroupings
 gg + geom_line(aes(colour = channelGrouping))</code></pre>
-<p><img src="ggplot2_files/figure-html/unnamed-chunk-4-2.png" width="960" /></p>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-5-2.png" width="960" /></p>
 <pre class="r"><code>## we have desktop, mobile and tablet all in there, let&#39;s seperate them out with facet
 gg + geom_line(aes(colour = channelGrouping)) + facet_grid(. ~ deviceCategory)</code></pre>
-<p><img src="ggplot2_files/figure-html/unnamed-chunk-4-3.png" width="960" /></p>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-5-3.png" width="960" /></p>
 <pre class="r"><code>## I prefer it one over the other
 gg + geom_line(aes(colour = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
-<p><img src="ggplot2_files/figure-html/unnamed-chunk-4-4.png" width="960" /></p>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-5-4.png" width="960" /></p>
 <pre class="r"><code>## let&#39;s try an area plot
 gg + geom_area(aes(colour = channelGrouping, group = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
-<p><img src="ggplot2_files/figure-html/unnamed-chunk-4-5.png" width="960" /></p>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-5-5.png" width="960" /></p>
 <pre class="r"><code>## ahh, area plots colour by scale &#39;fill&#39; rather than scale &#39;colour&#39; (see ?geom_area)
 gg + geom_area(aes(fill = channelGrouping, group = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
-<p><img src="ggplot2_files/figure-html/unnamed-chunk-4-6.png" width="960" /></p>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-5-6.png" width="960" /></p>
 <pre class="r"><code>## ok, let&#39;s keep that for now
 gg &lt;- gg + geom_area(aes(group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
 <p>The point above is to show how modifications can be quickly added as you try out ideas.</p>
@@ -621,10 +640,26 @@ gg &lt;- gg + guides(fill = guide_legend(title = &quot;Channel Grouping&quot;))
 gg &lt;- gg + theme(legend.position = &quot;bottom&quot;)
 ## print the final plot
 gg</code></pre>
-<p><img src="ggplot2_files/figure-html/unnamed-chunk-5-1.png" width="960" /></p>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-6-1.png" width="960" /></p>
 <blockquote>
 <p>Disclaimer, I don’t think area plots are very clear but they look pretty ;)</p>
 </blockquote>
+</div>
+</div>
+<div id="another-example-of-ggplots-power-is-faceting" class="section level1">
+<h1>Another example of <code>ggplot</code>’s power is faceting</h1>
+<pre class="r"><code>gg &lt;- ggplot(data = web_data_tidy, aes(x= date, y = value)) + theme_linedraw()
+gg &lt;- gg + geom_line(aes(color = deviceCategory))
+gg &lt;- gg + facet_grid(deviceCategory ~ channelGrouping) 
+gg</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-7-1.png" width="960" /></p>
+<div id="lets-do-a-bar-plot" class="section level2">
+<h2>Lets do a bar plot</h2>
+<p>But call it the right name - <em>geom_col</em> (<code>geom_bar</code> is for count data)</p>
+<pre class="r"><code>gg &lt;- ggplot(data = web_data_tidy) + theme_bw()
+gg &lt;- gg + scale_fill_brewer(palette = &quot;Blues&quot;)
+gg + geom_col(aes(x = channelGrouping, fill = deviceCategory, y = value), position = &quot;dodge&quot;)</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-8-1.png" width="960" /></p>
 </div>
 </div>
 
