@@ -223,7 +223,7 @@ model <- glm(sale ~ saw.promotion + existing.customer + hour.of.day,
 
 ```
 
-## Probit Regression
+## Tobit Regression
 
 This form of regression is an extension of logit regression.
 
