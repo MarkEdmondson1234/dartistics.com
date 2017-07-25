@@ -428,39 +428,147 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 <p><code>ggplot2</code> is one of the most downloaded R packages and probably the one that brought Hadley Wickham to fame.</p>
-<p>The “grammar of graphics” philosophy it supports not only lets you create professional looking plots, but once you have mastered its syntax should encourage you to think about plots in a more structured manner too.</p>
-<p>The syntax does take time to master though, so do take time to check out the <a href="http://ggplot2.tidyverse.org/reference/index.html">ggplot2 website</a> and the <a href="http://www.cookbook-r.com/Graphs/">ggplot2 cookbook</a> which will walk you through common tasks. The author still refers to these!</p>
+<p>The “grammar of graphics” philosophy it supports not only lets you create professional looking plots, but once you have mastered its syntax should encourage you to think about plots in a more structured manner.</p>
+<p>The syntax does take time to master though, so take time to check out the <a href="http://ggplot2.tidyverse.org/reference/index.html">ggplot2 website</a> and the <a href="http://www.cookbook-r.com/Graphs/">ggplot2 cookbook</a> which will walk you through common tasks. The author still refers to these!</p>
 <div id="the-mindset-for-building-a-plot" class="section level2">
 <h2>The Mindset for “Building” a Plot</h2>
 <p>While there are lots of ways to head down into the weeds, the <em>core</em> of building a ggplot is the following:</p>
 <ol style="list-style-type: decimal">
-<li><p>Call the <code>ggplot()</code> function. Primarily, this just indicates what data set will be plotted (using the <code>data=</code> parameter). And, when possible and when it makes sense, doing some light mapping of that data to core aspects of the plot (using <code>mapping = aes()</code>). Note that you can pass the function more data than you’re actually going to plot, and you can override aspects of both <code>data</code> and <code>mapping</code> in subsequent steps.</p></li>
+<li><p>Call the <code>ggplot()</code> function. Primarily, this just indicates what data set will be plotted (using the <code>data=</code> parameter). And, when possible and when it makes sense, doing some light “mapping” of that data to core aspects of the plot (using <code>mapping = aes()</code>). Note that you can pass the function more data than you’re actually going to plot, and you can override aspects of both <code>data</code> and <code>mapping</code> in subsequent steps.</p></li>
 <li><p><em>Add</em> (we actually use the <code>+</code> sign) one <em>or more</em> <code>geom</code> functions, which lays out the type of visualization you want. The image lower on this page shows an extensive list of these. One way to think about it is to consider a chart where you want a line for one set of data and a bar for another set of data (a not-too-uncommon thing to do in Excel). This would use a <code>geom_bar()</code> geom and a <code>geom_line()</code> geom. The data <em>set</em> that will be plotted is already specified (in the <code>data=</code> parameter of <code>ggplot()</code>), but we still <em>may</em> need to do some additional <em>mapping</em> within the geom. For instance, if the <code>data=</code> parameter was time-series data that included users, sessions, and pageviews, the <code>mapping=aes()</code> within the <code>geom_line()</code> function would need to specify which of the metrics to plot on the y axis (e.g., <code>geom_line(mapping = aes(y = sessions)))</code>.</p></li>
 <li><p>Optionally (but often needed), <em>add</em> (again, with the plus sign) “theme” specifications. These are used to tweak the styles: how thick of a line around the plot, whether to include major and/or minor x and or y gridlines (and what color and thickness to make them), where to locate the legend (or not to have a legend at all). Typically, we can start with a <a href="http://ggplot2.tidyverse.org/reference/index.html#section-themes">predefined theme</a> and then just tweak (override) specific elements, similar to how CSS can be loaded from external files and then overridden with styles defined more closely to the specific element being formatted on a web page.</p></li>
 </ol>
-<p>There are other aspects of <code>ggplot2</code> that we’re not going to get into here. To scratch the surface, though, below is a brief explanation of each of the components of the <code>ggplot2</code> world:</p>
+<p>Visually, you can think of these three steps like this:</p>
+<div align="center">
+<div class="figure">
+<img src="images/ggplot2_basics.png" />
+
+</div>
+</div>
+<p><strong>Note</strong>: The <em>order</em> of steps 2 and 3 does not matter. This is, after all, addition. As a best practice, though, keeping the buildup of a visualization in this order makes logical sense: initiate the plot <em>then</em> define the different layers <em>then</em> apply styling. But, it’s not technically required to perform the latter steps in this order.</p>
+<p>If you can lock in on this basic model, almost everything else is fairly readily Google-able. The above covers four things that we’re going to dive into a little bit deeper:</p>
 <ul>
 <li><em>Data source</em> - its easiest to use a tidy data source in long format</li>
+<li><em>Geoms</em> - geometric objects, the type of plot to produce. Line charts, bar charts, tiled plots etc.</li>
 <li><em>Aesthetics</em> - this specifies which variables in your data will vary and be plotted. In many ways, “aesthetics” is a misnomer – you actually control the look and feel of plots using <em>themes</em>. So, if you want a plot that is “aesthetically pleasing,” you will spend more time adjusting the theme applied to the plot – it will have very little to do with the <em>aesthetics</em> (<code>aes()</code>).</li>
+<li><em>Themes</em> - think of the theme like styles and CSS in HTML – they’re what you use to tweak and refine the specifics of the font, colors, spacing, and visibility of different “non-data” elements of the visualization.</li>
+</ul>
+<p>There are other aspects of <code>ggplot2</code> that we’re <em>not</em> going to get into here. To scratch the surface, though, below is a brief explanation of a few more of the components of the <code>ggplot2</code> world:</p>
+<ul>
 <li><em>Coordinate systems</em> - usually you’ll be in x-y, but polar and more exotic systems are possible</li>
 <li><em>Scales</em> - How your variables map onto the coordinate system (e.g. a log scale)</li>
 <li><em>Statistics</em> - Statistics applied to the data before plotting - most common is binning, such as for histograms, and smoothers such as trend lines</li>
-<li><em>Geoms</em> - Geometric objects, the type of plot to produce. Line charts, bar charts, tiled plots etc.</li>
 </ul>
-<p>Thinking about what you want to produce via the componenets above will get you to your desired plot quicker.</p>
+<p>Thinking about what you want to produce via the components above will get you to your desired plot quicker.</p>
 </div>
-<div id="which-geom-to-use" class="section level2">
-<h2>Which geom…() to Use?</h2>
-<p>A great resource is the <a href="https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf">ggplot2 cheatsheet</a> which groups geoms by the type of data you have. The first page of this cheatsheet is below, and you can always get to it from RStudio by selecting <strong>Help&gt;&gt;Cheatsheets&gt;&gt;Data Visualization with ggplot2</strong>.</p>
+<div id="data-sources" class="section level2">
+<h2>Data Sources</h2>
+<p><em>Primarily</em>, the data that you are plotting gets passed as the first argument (the <code>data=</code> argument) of the <code>ggplot()</code> function. This is just like Excel if you simply highlight a set of data and then click to generate a chart. Now, that is almost never the “final chart as you really want it displayed.” The same goes for <code>ggplot()</code> – when you specify the <code>data=</code> argument, you are really just defining the rough contours of the final plot.</p>
+<p>There <em>may</em> even be data that is not in the data frame specified in this <code>data=</code> argument that, ultimately, you will include in your plot! That’s fine – <code>ggplot2</code> is set up for that.</p>
+<p>As already noted a couple of times, the tidier and longer you can get your data (fewer columns, more rows!), the better.</p>
+</div>
+<div id="geoms" class="section level2">
+<h2>Geoms</h2>
+<p>Think of the different “geoms” as different “layers” that are added to the plot. You <em>must</em> have <em>at least one</em> geom. But, in many cases, you will have multiple geoms.</p>
+<p>The <a href="https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf">ggplot2 cheatsheet</a> is a great – if not particularly eye-friendly – resource that groups geoms by the type of data you have. The first page of this cheatsheet is below, and you can always get to it from RStudio by selecting <strong>Help&gt;&gt;Cheatsheets&gt;&gt;Data Visualization with ggplot2</strong>. See how quickly you can find the geom for a line chart (hint: it’s called <code>geom_line()</code>).</p>
 <div class="figure">
 <img src="images/ggplot2_geoms.png" />
 
 </div>
+<p> <br> If your eye went straight to it, you are unique! (If you’re still looking, it’s in the very last column about halfway down).</p>
+<p>Geoms, like many components of R, are just functions. They are tied to specific types of visualizations, though. In simple situations, you won’t need to pass <em>any</em> arguments to the specific geom function. If you’ve already defined the <code>data=</code> and the <code>mapping = aes(...)</code> arguments that you need to use for the geom in the <code>ggplot()</code> call, then you can just add the geom itself (e.g., <code>+ geom_line()</code>). More often than not, though, you will need to specify <em>which</em> data to plot (as the <code>data=</code> argument for the geom), as well as, possibly, some additional <em>aesthetic mappings</em> that are specific to that geom (we’ll get to that very shortly!).</p>
+<p>You may be wondering “Why would I have multiple geoms?” A few examples:</p>
+<ul>
+<li>A bar chart with a line chart on it (<code>geom_bar()</code> + <code>geom_line()</code>)</li>
+<li>A bar chart with each bar labeled with its value (<code>geom_bar()</code> + <code>geom_text()</code>)</li>
+<li>A bar chart where the bars in the top quintile are highlighted in a different color (<code>geom_bar()</code> + … another <code>geom_bar()</code>)</li>
+</ul>
+<p>This does <em>not</em> mean that, if you’re plotting a line chart with three different series (e.g., visits over time by device category) that you need three separate geoms. A single geom can plot multiple lines, but that gets us into mappings and aesthetics, which we’ll cover next!</p>
+</div>
+<div id="aesthetics" class="section level2">
+<h2>Aesthetics</h2>
+<p>Aesthetics are defined using the <code>aes()</code> function, virtually always (maybe <em>actually</em> always) as the value for a <code>mapping=</code> parameter. There are three main things to know about aesthetics:</p>
+<ul>
+<li>They are only minimally about “style.” Instead, they are, truly, a <em>mapping</em> of which aspects of the data will be used where and for what. In simpler visualizations – like a column chart – you simply need to specify (“map”) which data to use for <code>x</code> value (<code>mapping = aes(x = [where the x values are])</code>) and what to use for the <code>y</code> value (<code>mapping = aes(x = [where the x values are], y = [where the y values are])</code>).</li>
+<li>They can be specified inside the <code>ggplot()</code> function, inside the <code>geom_xxx()</code> functions <em>or</em> as a combination of both of these. For instance, if your x values (e.g., “date”) are going to be the same for all of the “layers” of the plot, then you can specify it in the <code>aes()</code> call inside of <code>ggplot()</code>. But, if you have different y values for different layers, then you need to specify that aspect of the mapping as <code>aes()</code> calls within each individual geom.</li>
+<li>They support <em>inheritance</em>. If you are familiar with CSS, then it’s useful to think of aesthetics as being similar to the “cascading” nature of styles: an aesthetic mapping (e.g., <code>x=</code> or <code>y=</code>) defined in the <code>ggplot()</code> function call is available to every subsequent geom. <em>But</em>, if a <code>mapping = aes()</code> argument is added <em>within</em> a geom, then it can override the mapping that is in the <code>ggplot()</code> function. These are selective – just like styles are for CSS – if <code>x</code> and <code>y</code> mappings are defined inside <code>ggplot()</code>, and then a mapping for <code>y</code> is included in <code>geom_line()</code>, then the <code>x</code> mapping will persist from the <code>ggplot()</code> definition, while the <code>y</code> value will use what is specified inside <code>geom_line()</code>.</li>
+</ul>
+<p><em><whew></em> Confused? It can be a bit! But it should start to make sense fairly quickly.</p>
+</div>
+<div id="themes" class="section level2">
+<h2>Themes</h2>
+<p><em>Themes are just styling</em>. That’s the key. A simple horizontal bar chart using <code>ggplot2</code> with no theme applied looks like this:</p>
+<div class="figure">
+<img src="images/ggplot2_notheme.png" />
+
+</div>
+<p> <br> Solely through the addition of themes, the chart can be transformed to look like this instead:</p>
+<div class="figure">
+<img src="images/ggplot2_theme.png" />
+
+</div>
+<p>For a blow-by-blow explanation of the steps involved in that transformation, check out <a href="https://rpubs.com/tgwilson/ggplot-meets-lea-pica-and-domo">How to Build a Brain-Friendly Bar Chart in R</a>. Note that the <em>color of the bars</em> is not something that is controlled by the theme. That’s actually an attribute of the geom (<code>geom_bar</code> in this case).</p>
+<p>In general, themes are simultaneously: conceptually pretty straightforward, a little tricky to grasp at first, and maddening when it comes to certain specific tweaks. The <em>critical</em> things to understand are a bit of a chicken-and-egg:</p>
+<ul>
+<li><code>theme()</code> is the function used to build/modify a theme, and it has a <em>ton</em> of arguments (see the <a href="http://ggplot2.tidyverse.org/reference/theme.html">theme reference</a> or <code>?theme()</code> for a complete list). These just take a bit of getting used to, but there is cascading/inheritance that goes on even within these arguments. For instance:
+<ul>
+<li><code>line</code> is an argument for defining the color, width, and style of <em>all</em> of the lines in the visualization</li>
+<li><code>axis.line</code> specifies <em>just</em> the color, width, and style of the x- and y-axes. If this isn’t defined, then it will just use the properties for <code>line</code> (which, if not defined, just uses the defaults). If <code>line</code> specifies a line color, and <code>axis.line</code> does not explicitly override it, then the axes will be the color specified by <code>line</code></li>
+<li><code>axis.line.x</code> controls <em>just</em> the x-axis. The x-axis will first look to properties defined in <code>axis.line.x</code> and use those. Any properties not defined there, but defined in <code>axis.line</code>, will use the <code>axis.line</code> definitions. Anything <em>still</em> not defined will use the properties defined in <code>line</code>. And, anything that’s still left undefined will use the defaults.</li>
+</ul></li>
+<li><code>element_xxx()</code> are a series of functions that actually define the properties of text (<code>element_text()</code>), lines (<code>element_line()</code>), borders and backgrounds for the plot and panels (<code>element_rect()</code>), and “don’t display this element” (<code>element_blank()</code>). In the example above, <code>axis.line = element_blank()</code> was used to turn off the axis lines, for instance. See the <a href="http://ggplot2.tidyverse.org/reference/element.html">theme elements page</a> or <code>?element_text()</code> for details on the different arguments for elements.</li>
+</ul>
+<p>Got it? Now, let’s add just a few more things about themes:</p>
+<ul>
+<li><p>There are some built-in themes with <code>ggplot2</code> that can be your “starting point.” I like to use <code>theme_light()</code> or <code>theme_bw()</code>, but you can see the full list of these on the <a href="http://ggplot2.tidyverse.org/reference/ggtheme.html">Complete themes</a> page.</p></li>
+<li><p>The <a href="https://cran.r-project.org/web/packages/ggthemes/vignettes/ggthemes.html"><code>ggthemes</code> package</a> has a number of additional themes that can be used as is or as a starting point. This includes a (Stephen) Few theme, an (Edward) Tufte theme, a FiveThirtyEight.com theme, a WSJ theme, and more.</p></li>
+<li><p><em>Themes are additive!</em> Regardless of what you use as your starting point (either of the above options…or nothing), simply adding an additional <code>theme()</code> call to the build of your plot lets you selectively override aspects of the theme you started with.</p></li>
+<li><p>Because you will likely want to use the same theme in multiple visualizations, you will likely want to make your own “theme” function that you can call for any visualization (and then selectively tweak as needed in the visualization definition itself). This can actually be in a separate file (that then gets “sourced” using <code>source()</code> or even in your own package!).</p></li>
+</ul>
+<p>Bringing these points together, below is the code that was used to generate the bar chart above.</p>
+<pre><code>my_theme &lt;- function(){
+  theme_light() +
+    theme(text = element_text(family = &quot;Open Sans&quot;),  
+          panel.grid = element_blank(),
+          panel.border = element_blank(),
+          axis.title = element_blank(),
+          axis.ticks = element_blank(),
+          axis.text.x = element_blank(),
+          axis.text.y = element_text(size = 9, color = &quot;gray10&quot;))
+  }
+  
+ggplot(channel_data, aes(x = Marketing.Channel, y = Sales)) +
+  geom_bar(stat = &quot;identity&quot;) + 
+  coord_flip() +
+  scale_y_continuous(expand = c(0, 0)) +
+  my_theme()    # THIS IS WHERE THE &quot;STEP #3 - THEME&quot; PIECE IS HAPPENING</code></pre>
+<p>Focus on how the <em>theme</em> works here – not so much on the <code>ggplot()</code>, <code>geom_bar()</code>, mysterious <code>coord_flip()</code> (the same geom is used for both horizontal and vertical bar charts, so we have “flip the coordinates” to make it horizontal), and <code>scale_y_continuous()</code> (a nuisance in <code>ggplot</code> – axes don’t cross at 0 by default).</p>
+<p>The highlights:</p>
+<ul>
+<li>The <code>my_theme()</code> function actually defines the theme. That way, it can be easily called/applied in multiple visualizations</li>
+<li><code>theme_light()</code> is the “starting point” theme</li>
+<li><em>All</em> theme-controlled text is set to use <code>Open Sans</code> as the font</li>
+<li>A lot of the lines are turned off (“panel” and “axes”) using <code>element_blank()</code></li>
+<li>The y-axis text gets a size and color specified (but will already be <code>Open Sans</code> because it inherits that from <code>text</code>)</li>
+<li>The theme is applied in the actual building of the plot by adding <code>+ my_theme()</code></li>
+</ul>
+<p>I <em>could</em> have added additional <code>+ theme()</code> calls to tweak what is defined in <code>my_theme()</code> further for this specific plot.</p>
+<p><strong>A Handy (Obscure) Tip on Debugging</strong>: Especially when it comes to tweaking the spacing in a plot, the <code>debug = TRUE</code> flag inside <code>element_text()</code> can be very handy. For whatever reason, it isn’t often discussed online.</p>
+<p>For the bar chart above, there is this line defining the y-axis text:</p>
+<pre><code>axis.text.y = element_text(size = 9, color = &quot;gray10&quot;)</code></pre>
+<p>We can modify that by (temporarily) adding a <code>debug = TRUE</code> flag if we want to get a better understanding on the exact range of the y-axis text area:</p>
+<pre><code>axis.text.y = element_text(size = 9, color = &quot;gray10&quot;, debug = TRUE)</code></pre>
+<p>Now, when we build the plot, it looks like this:</p>
+<div class="figure">
+<img src="images/ggplot2_theme_debug.png" />
+
+</div>
+<p>This is similar to inspecting an element using developer tools in a browser, in that it draws a solid rectangle behind the complete text area and adds a little circle where each label is anchored (which can be useful in adjusting padding/margins).</p>
+<p>Make sense? Let’s now walk through an actual example where we build up a full plot and then play around with it a bit!</p>
 </div>
 <div id="example-workflow" class="section level2">
 <h2>Example Workflow</h2>
 <p><em>This example requires having a <code>web_data</code> data frame. You can either load up some sample data by completing the <a href="exercise2-io.html">I/O Exercise</a> (which is what is shown in the details below), or, if you have access to a Google Analytics account, you can use your own data by following the steps on the <a href="api-google-analytics.html">Google Analytics API page</a>.</em></p>
-<pre><code>## Warning: package &#39;knitr&#39; was built under R version 3.3.2</code></pre>
 <p>Once you have a <code>web_data</code> data frame to work with, the command <code>head(web_data)</code> should return a table that, at least structurally, looks something like this:</p>
 <pre class="r"><code>kable(head(web_data))</code></pre>
 <table>
@@ -544,9 +652,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h3>1. Get the Data Ready and Tidy</h3>
 <p>While it’s possible to use “wide” data, it’s generally easiest to always <em>start</em> with tidy “long” data, so you can quickly repeat what you have learned/applied before.</p>
 <pre class="r"><code>## We can use the newer tidyr() package the gather() function to tidy up the data
-library(tidyr)</code></pre>
-<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.3.2</code></pre>
-<pre class="r"><code>library(dplyr)
+library(tidyr)
+library(dplyr)
 
 ## call the key column &#39;variable&#39; and the value colum &#39;value&#39; and 
 ## gather all variables apart from date, channelGrouping and deviceCategory
@@ -561,7 +668,7 @@ head(web_data_tidy)</code></pre>
 ## 4 2016-01-01          Direct        desktop sessions   133
 ## 5 2016-01-01          Direct         mobile sessions   345
 ## 6 2016-01-01          Direct         tablet sessions   126</code></pre>
-<p><code>gather()</code> is the opposite of <code>spread()</code> - it “unpivots” data. Its taking the 7 columns into 4.</p>
+<p><code>gather()</code> is the opposite of <code>spread()</code> - it “unpivots” data. This transforms the data from having 7 columns to having 4 without any loss of data.</p>
 <p>Example:</p>
 <pre class="r"><code>web_data %&gt;% filter(date == &quot;2016-01-01&quot;, channelGrouping == &quot;(Other)&quot;, deviceCategory==&quot;desktop&quot;)</code></pre>
 <pre><code>##   X       date channelGrouping deviceCategory sessions pageviews entrances
@@ -579,7 +686,7 @@ head(web_data_tidy)</code></pre>
 <h3>2. Make Sure All of the Columns are the Right Class</h3>
 <p>In this case, we’re going to make the date column a <code>Date</code> object.</p>
 <p>You could also choose to make factors out of your categories, as they let you set the order of colours in the legends a bit easier.</p>
-<p><strong>Note</strong>: Outside of applying statistical methods, converting columns to be factors will often come into play when you want to control the order of nominal or ordinal variables. This gets a little confusing, in that there are “unordered” factors and “ordered” factors, and you do <em>not</em> actually need an ordered factor to contro the order in a plot (!). We’re not going to dive into this here, as that’s heading down into the weeds a bit. But, make a mental note that order <em>can</em> be controlled when using nonmetric variables. And it’s a quick Google search to get the specifics.</p>
+<p><strong>Note</strong>: Outside of applying statistical methods, converting columns to be factors will often come into play when you want to control the order of nominal or ordinal variables. This gets a little confusing, in that there are “unordered” factors and “ordered” factors, and you do <em>not</em> actually need an ordered factor to control the order in a plot (!). We’re not going to dive into this here, as that’s heading down into the weeds a bit. But, make a mental note that order <em>can</em> be controlled when using nonmetric variables. And it’s a quick Google search to get the specifics.</p>
 <pre class="r"><code>str(web_data_tidy)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    22928 obs. of  5 variables:
 ##  $ date           : chr  &quot;2016-01-01&quot; &quot;2016-01-01&quot; &quot;2016-01-01&quot; &quot;2016-01-01&quot; ...
@@ -597,48 +704,52 @@ plot_data &lt;- web_data_tidy %&gt;% filter(variable == &quot;sessions&quot;)</c
 <h3>3. Create a Plot Object Called <code>gg</code></h3>
 <p>We can use the <code>ggplot()</code> function to create a plot that we’re going to call <code>gg</code>. This call includes your data and any known aesthetics (mappings) that you want to apply to all of the plots that you will layer in. We can also go ahead and set the basic theme here. <code>theme_minimal()</code> is a nice, clean one to start with.</p>
 <p>As we have made “long” tidy data, we know that our x variable will be <code>date</code>, but also our y variable will be in the <code>value</code> column, so we can set these as defaults in the <code>aes()</code> (aesthetics) call:</p>
-<pre class="r"><code>library(ggplot2)</code></pre>
-<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.3.2</code></pre>
-<pre class="r"><code>## I don&#39;t know why, but I always call them gg
+<pre class="r"><code>library(ggplot2)
+## I don&#39;t know why, but I always call them gg, as do many other folks!
 gg &lt;- ggplot(data = plot_data, aes(x = date, y = value)) + theme_minimal()</code></pre>
 </div>
 <div id="let-the-fun-begin" class="section level3">
 <h3>Let the Fun Begin!</h3>
 <p>Experiment with adding various elements to your <code>gg</code> object using <code>+</code>. Once you have found something you want to keep, assign it to <code>gg</code> and then carry on to the next feature.</p>
 <p>Any aesthetics or statistics you haven’t specified in the global line, you will need to add in the <code>geom</code> you are adding. Note that because we have put the data in the first line, we don’t need to specify it again.</p>
-<pre class="r"><code>## let&#39;s make some line plots
+<pre class="r"><code>## Let&#39;s make some line plots
 gg + geom_line()</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-5-1.png" width="960" /></p>
-<pre class="r"><code>## hmm, too much data in there, let&#39;s colour by the channelGroupings
+<pre class="r"><code>## Hmm, too much data in there, let&#39;s colour by the channelGroupings
 gg + geom_line(aes(colour = channelGrouping))</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-5-2.png" width="960" /></p>
-<pre class="r"><code>## we have desktop, mobile and tablet all in there, let&#39;s seperate them out with facet
+<pre class="r"><code>## We have desktop, mobile and tablet all in there, let&#39;s separate them out as &quot;facets.&quot;
+## We haven&#39;t discussed facets so far here, but, hopefully, it makes some sense what is
+## happening. We&#39;re just defining which dimensions to use for the rows (none, in this case,
+## as signified by the &quot;.&quot;) and columns (deviceCategory in this case). Check ?facet_grid()
+## for details!
 gg + geom_line(aes(colour = channelGrouping)) + facet_grid(. ~ deviceCategory)</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-5-3.png" width="960" /></p>
-<pre class="r"><code>## I prefer it one over the other
+<pre class="r"><code>## I prefer it one over the other. See how this just swaps the row and column definitions
+## in facet_grid()?
 gg + geom_line(aes(colour = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-5-4.png" width="960" /></p>
-<pre class="r"><code>## let&#39;s try an area plot
+<pre class="r"><code>## Let&#39;s try an area plot -- just changing the geom that we&#39;re using!
 gg + geom_area(aes(colour = channelGrouping, group = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-5-5.png" width="960" /></p>
-<pre class="r"><code>## ahh, area plots colour by scale &#39;fill&#39; rather than scale &#39;colour&#39; (see ?geom_area)
+<pre class="r"><code>## Ahh, area plots colour by scale &#39;fill&#39; rather than scale &#39;colour&#39; (see ?geom_area)
 gg + geom_area(aes(fill = channelGrouping, group = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-5-6.png" width="960" /></p>
-<pre class="r"><code>## ok, let&#39;s keep that for now
+<pre class="r"><code>## Okay, let&#39;s keep that for now
 gg &lt;- gg + geom_area(aes(group = channelGrouping, fill = channelGrouping)) + facet_grid(deviceCategory ~ .)</code></pre>
 <p>The point above is to show how modifications can be quickly added as you try out ideas.</p>
 <p>A little more styling, and we are done with this example:</p>
-<pre class="r"><code>## make the colours nicer
+<pre class="r"><code>## Make the colours nicer
 gg &lt;- gg + scale_fill_brewer(palette = &quot;Blues&quot;)
-## add a title
+## Add a title
 gg &lt;- gg + ggtitle(&quot;Sessions per device category&quot;)
-## rename the x and y axis
+## Rename the x and y axis
 gg &lt;- gg + xlab(&quot;Date&quot;) + ylab(&quot;Sessions&quot;)
-## change the legend title
+## Change the legend title
 gg &lt;- gg + guides(fill = guide_legend(title = &quot;Channel Grouping&quot;))
-## put the legend at the bottom
+## Put the legend at the bottom
 gg &lt;- gg + theme(legend.position = &quot;bottom&quot;)
-## print the final plot
+## Print the final plot
 gg</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-6-1.png" width="960" /></p>
 <blockquote>
@@ -646,21 +757,21 @@ gg</code></pre>
 </blockquote>
 </div>
 </div>
-<div id="another-example-of-ggplots-power-is-faceting" class="section level1">
-<h1>Another example of <code>ggplot</code>’s power is faceting</h1>
+<div id="facets-can-be-two-dimensional-of-course" class="section level2">
+<h2>Facets Can be Two Dimensional (Of Course!)</h2>
 <pre class="r"><code>gg &lt;- ggplot(data = web_data_tidy, aes(x= date, y = value)) + theme_linedraw()
 gg &lt;- gg + geom_line(aes(color = deviceCategory))
 gg &lt;- gg + facet_grid(deviceCategory ~ channelGrouping) 
 gg</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-7-1.png" width="960" /></p>
+</div>
 <div id="lets-do-a-bar-plot" class="section level2">
-<h2>Lets do a bar plot</h2>
+<h2>Lets Do a Bar Plot</h2>
 <p>But call it the right name - <em>geom_col</em> (<code>geom_bar</code> is for count data)</p>
 <pre class="r"><code>gg &lt;- ggplot(data = web_data_tidy) + theme_bw()
 gg &lt;- gg + scale_fill_brewer(palette = &quot;Blues&quot;)
 gg + geom_col(aes(x = channelGrouping, fill = deviceCategory, y = value), position = &quot;dodge&quot;)</code></pre>
 <p><img src="ggplot2_files/figure-html/unnamed-chunk-8-1.png" width="960" /></p>
-</div>
 </div>
 
 
