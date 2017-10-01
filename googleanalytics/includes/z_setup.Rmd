@@ -1,0 +1,45 @@
+Be sure you've completed the steps on the [Initial Setup](setup.html) page before running this code.
+
+For the setup, we're going to load a few libraries, load our specific Google Analytics credentials, and then authorize with Google.
+
+```{r hidden-setup, echo=FALSE, message=FALSE, warnings=FALSE}
+
+# This snipped won't get rendered. It's purely for functionality that will make the web
+# pages render more cleanly.
+
+library(knitr)   # Mainly... so we can use kable()
+
+```
+
+```{r setup, message=FALSE, warnings=FALSE}
+# Load the necessary libraries
+library(googleAnalyticsR)
+library(tidyverse)
+library(devtools)
+
+# Load the client ID, client secret, and GA view ID
+client_id <- Sys.getenv("GA_CLIENT_ID")
+client_secret <- Sys.getenv("GA_CLIENT_SECRET")
+
+# Set the client ID and client secret as options for googleAuthR
+options(googleAuthR.client_id = client_id)
+options(googleAuthR.client_secret = client_secret)
+
+# Reload the googleAnalyticsR package so those options get set in googleAuthR
+devtools::reload(pkg = devtools::inst("googleAnalyticsR"))
+
+# Authorize GA. Depending on if you've done this already and a .httr-oauth file has
+# been saved or not, this may pop you over to a browser to authenticate.
+ga_auth()
+
+# Set the view ID and the date range. If you want to, you can swap out the Sys.getenv()
+# call and just replace that with a hardcoded value for the view ID. And, the start 
+# and end date are currently set to choose the last 30 days, but those can be 
+# hardcoded as well.
+view_id <- Sys.getenv("GA_VIEW_ID")
+start_date <- Sys.Date() - 31        # 30 days back from yesterday
+end_date <- Sys.Date() - 1           # Yesterday
+
+```
+
+If that all runs with just some messages but no errors, then you're set for the next chunk of code: pulling the data.

@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Simple Dimension Filter</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/simplex.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="includes/styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 41px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+
+.section h2 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h3 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h4 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h5 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h6 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">GA & R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Overview</a>
+</li>
+<li>
+  <a href="setup.html">Initial Setup</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Basic Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="simple-trended-sessions-by-medium.html">Trended Sessions by Medium</a>
+    </li>
+    <li>
+      <a href="simple-dim-filter.html">Simple Dimension Filter</a>
+    </li>
+    <li>
+      <a href="simple-medium-ordered-by-sessions.html">Medium Ordered by Sessions</a>
+    </li>
+    <li>
+      <a href="segment-by-id.html">Apply Segment by Segment ID</a>
+    </li>
+    <li>
+      <a href="pivot-in-query.html">Pivot in a Query</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Intermediate Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="pivot-sparklines-heatmap.html">2D Sparklines/Heatmap</a>
+    </li>
+    <li>
+      <a href="simple-dynamic-segment.html">Simple Dynamic Segment - v4</a>
+    </li>
+    <li>
+      <a href="simple-dynamic-segment-v3.html">Simple Dynamic Segment - v3</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-N4DF7T"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N4DF7T');</script>
+<!-- End Google Tag Manager -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Simple Dimension Filter</h1>
+
+</div>
+
+
+<p>This example pulls the top 10 pages for the last thirty days, <em>for pages that have “adobe” in the page name</em>.* With the v4 API, filters are more powerful than v3, but (alas!) very basic filters can feel pretty convoluted.</p>
+<div id="setupconfig" class="section level1">
+<h1>Setup/Config</h1>
+<p>Be sure you’ve completed the steps on the <a href="setup.html">Initial Setup</a> page before running this code.</p>
+<p>For the setup, we’re going to load a few libraries, load our specific Google Analytics credentials, and then authorize with Google.</p>
+<pre class="r"><code># Load the necessary libraries
+library(googleAnalyticsR)
+library(tidyverse)
+library(devtools)
+
+# Load the client ID, client secret, and GA view ID
+client_id &lt;- Sys.getenv(&quot;GA_CLIENT_ID&quot;)
+client_secret &lt;- Sys.getenv(&quot;GA_CLIENT_SECRET&quot;)
+
+# Set the client ID and client secret as options for googleAuthR
+options(googleAuthR.client_id = client_id)
+options(googleAuthR.client_secret = client_secret)
+
+# Reload the googleAnalyticsR package so those options get set in googleAuthR
+devtools::reload(pkg = devtools::inst(&quot;googleAnalyticsR&quot;))
+
+# Authorize GA. Depending on if you&#39;ve done this already and a .httr-oauth file has
+# been saved or not, this may pop you over to a browser to authenticate.
+ga_auth()
+
+# Set the view ID and the date range. If you want to, you can swap out the Sys.getenv()
+# call and just replace that with a hardcoded value for the view ID. And, the start 
+# and end date are currently set to choose the last 30 days, but those can be 
+# hardcoded as well.
+view_id &lt;- Sys.getenv(&quot;GA_VIEW_ID&quot;)
+start_date &lt;- Sys.Date() - 31        # 30 days back from yesterday
+end_date &lt;- Sys.Date() - 1           # Yesterday</code></pre>
+<p>If that all runs with just some messages but no errors, then you’re set for the next chunk of code: pulling the data.</p>
+</div>
+<div id="pull-the-data" class="section level1">
+<h1>Pull the Data</h1>
+<p>There are two main parts to this:</p>
+<ol style="list-style-type: decimal">
+<li>Creating the dimension filter</li>
+<li>Pulling the data while using that filter</li>
+</ol>
+<p>Creating the dimension filter can feel convoluted. Or, at least, it can feel redundant. This is recognized – it’s the way the API is built and, for now, adding helper functions for “simple” filters would just add more confusion. Creating v4 dimension filters is a three-step process:</p>
+<ol style="list-style-type: decimal">
+<li>Create a “filter object” using the <code>dim_filter()</code> function. This is, essentially, “one condition” if you were building a filter in the web interface. You <em>can</em> have multiple filter objects, but, in this example, we’re only going to create one.</li>
+<li>Create a “filter <em>clause</em>” using the <code>filter_clause_ga4()</code> function. This bundles together one or more filter objects. In this example, it’s going to be a 1-object bundle, which makes the code look a little funny.</li>
+<li>Actually use the filter clause in the <code>google_analytics_4()</code> query.</li>
+</ol>
+<pre class="r"><code># Create a dimension filter object. See ?dim_filter() for details. We&#39;re using a 
+# regular expression here (REGEXP) but also could have used a &quot;partial&quot; match (PARTIAL).
+# You should be using regEx in general. It&#39;s cleaner. And, the more comfortable you are
+# with it, the easier it will be to use when you have more complex needs. &lt;/soapbox&gt;
+my_dim_filter_object &lt;- dim_filter(&quot;pagePath&quot;, 
+                                   operator = &quot;REGEXP&quot;,
+                                   expressions = &quot;.*adobe.*&quot;)
+
+# Now, put that filter object into a filter clause. If you had multiple filters, there
+# are two aspects of this that wouldn&#39;t seem so weird. With one... they do seem weird:
+# 1. The &quot;filters&quot; argument takes a list. So, you have to put your filter object in a
+#    list. It&#39;s a one-element list.
+# 2. The &quot;operator&quot; argument is moot -- it can be AND or OR...but you have to have
+#    it be something, even though it doesn&#39;t do anything.
+my_dim_filter_clause &lt;- filter_clause_ga4(list(my_dim_filter_object),
+                                          operator = &quot;AND&quot;)
+
+# Pull the data. See ?google_analytics_4() for additional parameters. Depending on what
+# you&#39;re expecting back, you probably would want to use an &quot;order&quot; argument to get the
+# results in descending order. But, we&#39;re keeping this example simple.
+ga_data &lt;- google_analytics_4(viewId = view_id,
+                              date_range = c(start_date, end_date),
+                              metrics = &quot;pageviews&quot;,
+                              dimensions = &quot;pagePath&quot;,
+                              dim_filters = my_dim_filter_clause)
+
+# Go ahead and do a quick inspection of the data that was returned. This isn&#39;t required,
+# but it&#39;s a good check along the way.
+head(ga_data)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">pagePath</th>
+<th align="right">pageviews</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">/?vz_t=b&amp;mboxEdit=1&amp;mboxDisable=1&amp;vz_i=1&amp;vz_e=<a href="https://demystified.marketing.adobe.com/content/mac/default/target/proxyerror.html&amp;vz_url=http://analyticsdemystified.com/" class="uri">https://demystified.marketing.adobe.com/content/mac/default/target/proxyerror.html&amp;vz_url=http://analyticsdemystified.com/</a></td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">/2/library/index.asp?p=Adobe</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">/2013/03/07/conducting-cohort-analysis-with-adobe-sitecatalyst/</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">/adobe-analytics-top-gun-training/</td>
+<td align="right">80</td>
+</tr>
+<tr class="odd">
+<td align="left">/adobe-analytics/</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">/adobe-analytics/1000-success-events-really-mean/</td>
+<td align="right">16</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="data-munging" class="section level1">
+<h1>Data Munging</h1>
+<p>Since we didn’t sort the data when we queried it, let’s go ahead and sort it here <em>and</em> grab just the top 10 pages.</p>
+<pre class="r"><code># Using dplyr, sort descending and then grab the top 10 values. We also need to make the
+# page column a factor so that the order will be what we want when we chart the data.
+# This is a nuisance, but you get used to it. That&#39;s what the mutate function is doing
+ga_data_top_10 &lt;- ga_data %&gt;%
+  arrange(-pageviews) %&gt;% 
+  top_n(10) %&gt;% 
+  mutate(pagePath = factor(pagePath,
+                           levels = rev(pagePath)))
+
+# Take a quick look at the result.
+head(ga_data_top_10)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">pagePath</th>
+<th align="right">pageviews</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">/adobe-analytics/using-utm-campaign-parameters-adobe-analytics/</td>
+<td align="right">877</td>
+</tr>
+<tr class="even">
+<td align="left">/adobe-analytics/advanced-click-rates-adobe-analytics-placement/</td>
+<td align="right">414</td>
+</tr>
+<tr class="odd">
+<td align="left">/adobe-analytics/adobes-new-marketing-cloud-visitor-id-how-does-it-work/</td>
+<td align="right">331</td>
+</tr>
+<tr class="even">
+<td align="left">/adobe-analytics/click-rates-adobe-analytics/</td>
+<td align="right">308</td>
+</tr>
+<tr class="odd">
+<td align="left">/adobe-analytics/merchandising-evars-omniture/</td>
+<td align="right">298</td>
+</tr>
+<tr class="even">
+<td align="left">/adobe-analytics/content-freshness-adobe-analytics/</td>
+<td align="right">217</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="data-visualization" class="section level1">
+<h1>Data Visualization</h1>
+<p>This won’t be the prettiest bar chart, but let’s make a horizontal bar chart with the data. Remember, in <strong>ggplot2</strong>, a horizontal bar chart is just a normal bar chart with <code>coord_flip()</code>.</p>
+<pre class="r"><code># Create the plot. Note the stat=&quot;identity&quot;&quot; (because the data is already aggregated) and
+# the coord_flip(). And, I just can&#39;t stand it... added on the additional theme stuff to
+# clean up the plot a bit more.
+gg &lt;- ggplot(ga_data_top_10, mapping = aes(x = pagePath, y = pageviews)) +
+  geom_bar(stat = &quot;identity&quot;) +
+  coord_flip() +
+  theme_light() +
+  theme(panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.border = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks.y = element_blank())
+
+# Output the plot. You *could* just remove the &quot;gg &lt;-&quot; in the code above, but it&#39;s
+# generally a best practice to create a plot object and then output it, rather than
+# outputting it on the fly.
+gg</code></pre>
+<p><img src="simple-dim-filter_files/figure-html/visualize-1.png" width="672" /></p>
+<p><em>* Yes. This is intentionally ironic.</em></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

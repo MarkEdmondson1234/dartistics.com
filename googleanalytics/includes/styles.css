@@ -1,0 +1,23 @@
+h1 {font-size: 1.7em;
+}
+
+h2 {font-size: 1.3em;
+}
+
+.section {
+  margin-top: 1.5em;
+}
+
+h1.title {font-size: 2.2em;
+}
+
+table {background-color: #F0F0F0;
+  width: 75%;
+}
+
+th {background-color: #2c3e50;
+color: #FFFFFF;
+border-bottom: 1.5px solid #FFFFFF;
+}
+
+td {border-bottom: 1.5px solid #FFFFFF;}
