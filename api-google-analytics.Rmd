@@ -11,9 +11,9 @@ knitr::opts_chunk$set(echo = TRUE)
 source("dartistics_packages.R")
 
 library(knitr)
-library(googleAuthR)
-options(googleAuthR.cache_package = "googleAnalyticsR")
-gar_cache_set_loc("gaapicache")
+# library(googleAuthR)
+# options(googleAuthR.cache_package = "googleAnalyticsR")
+# gar_cache_set_loc("gaapicache")
 ```
 
 There are several R packages for accessing the Google Analytics API, but the one we're describing here is `googleAnalyticsR`, as it's the one that one of the creators of this site created (and the co-creator of this site, as well as many, many users, have found to be fantastic)!  However, if you want to check out some of others, see the list on the `googleAnalyticsR` [home page](http://code.markedmondson.me/googleAnalyticsR/).

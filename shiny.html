@@ -489,6 +489,9 @@ div.tocify {
       <a href="key-topics.html">Key topics</a>
     </li>
     <li>
+      <a href="googleanalytics/index.html">Google Analytics Examples</a>
+    </li>
+    <li>
       <a href="github.html">GitHub</a>
     </li>
     <li>
@@ -549,8 +552,13 @@ shinyUI(
     ## output functions
 )</code></pre>
 <p>The functions <code>shinyUI</code> and <code>fluidPage</code> create the minimal HTML necessary for a Shiny app:</p>
-<pre class="r"><code>library(shiny)
-shinyUI(fluidPage())</code></pre>
+<pre class="r"><code>library(shiny)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;shiny&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:pander&#39;:
+## 
+##     p</code></pre>
+<pre class="r"><code>shinyUI(fluidPage())</code></pre>
 <div class="container-fluid"></div>
 <p>You will need to deal with <em>a lot</em> of brackets. Be stringent in knowing which closing brack refers to which function, as it can be very hard to debug. Good code style indentation helps:</p>
 <pre class="r"><code>library(shiny)
@@ -640,9 +648,8 @@ function(input, output){
 
 }</code></pre>
 </div>
-</div>
-<div id="exercise" class="section level2">
-<h2>Exercise</h2>
+<div id="exercise" class="section level3">
+<h3>Exercise</h3>
 <ol style="list-style-type: decimal">
 <li><p>What will this Shiny app render? Assume input$value1 is the name of a metric column of <code>web_data</code></p></li>
 <li><p>Make a Shiny app in a new RStudio project. (Click <code>New &gt; Shiny &gt; Multiple File</code> in RStudio interface) construct the ui.R that will alter the <code>server.R</code> code above. You will need to use the functions <code>selectInput()</code> to choose the data column you want to plot and <code>plotOutput()</code> to output the result.</p></li>
@@ -652,13 +659,14 @@ function(input, output){
 <pre class="r"><code>library(highcharter)
 hchart(web_data, &quot;line&quot;, hcaes(x = date, y = sessions))</code></pre>
 </div>
+</div>
 <div id="reactive-objects" class="section level2">
 <h2>Reactive objects</h2>
 <p>Because its a looping function, standard R rules about scoping don’t apply. You need to deal with functions like <code>reactive()</code>, <code>observe()</code>,<code>isolate()</code>, <code>eventReactive()</code> and <code>observeEvent()</code> which control behaviour in this looping function.</p>
 <p>Key to this are a new class of object called <code>reactive</code> objects. These are objects that will change according to user input, and as such can’t be treated as normal R variables.</p>
 <p>Reactive object can react to another reactive object, which sets up a chain of dependencies. A change in a dependency will effect all other reactive objects. A key factor in making efficient Shiny apps is to know when to trigger a change and when not to.</p>
-<div id="example" class="section level3">
-<h3>Example</h3>
+<div id="using-reactives-example" class="section level3">
+<h3>Using Reactives example</h3>
 <p>The below builds on the app below, but we now also want to display the Chi Squared value. As we will now have two UI elements we will have two server.R calls that rely on the same data.</p>
 <p>Instead of importing the data in twice (it could be a API call) we will make a reactive object, and then when that object is ready (e.g. not <code>NULL</code>) pass it to the functions.</p>
 <p>The <code>req()</code>function serves as a roadblock to stop the plot and text firing before the data is ready (important for API calls)</p>
@@ -743,8 +751,8 @@ shinyUI(
   )
 )</code></pre>
 </div>
-<div id="exercise-1" class="section level3">
-<h3>Exercise</h3>
+<div id="using-reactive-exercise" class="section level3">
+<h3>Using reactive() Exercise</h3>
 <p>Add a plot to the Shiny app displaying some trend data, using the same <code>raw_data()</code> reactive source above. You can use some helper code shown below if you like:</p>
 <pre class="r"><code>library(highcharter)
 library(dplyr)

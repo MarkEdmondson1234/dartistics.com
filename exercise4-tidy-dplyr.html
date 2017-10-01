@@ -489,6 +489,9 @@ div.tocify {
       <a href="key-topics.html">Key topics</a>
     </li>
     <li>
+      <a href="googleanalytics/index.html">Google Analytics Examples</a>
+    </li>
+    <li>
       <a href="github.html">GitHub</a>
     </li>
     <li>
@@ -587,20 +590,19 @@ Once you have a <code>web_data</code> data frame to work with, the command <code
 <p>To get the averages for each combination of <strong>deviceCategory</strong> and <strong>channelGrouping</strong> we simply use <code>summarise()</code> with <code>group_by</code>:</p>
 <pre class="r"><code>group_by(web_data, deviceCategory, channelGrouping) %&gt;%
   summarise(mean(pageviews))</code></pre>
-<pre><code>## Source: local data frame [27 x 3]
-## Groups: deviceCategory [?]
-## 
+<pre><code>## # A tibble: 27 x 3
+## # Groups:   deviceCategory [?]
 ##    deviceCategory channelGrouping `mean(pageviews)`
 ##             &lt;chr&gt;           &lt;chr&gt;             &lt;dbl&gt;
-## 1         desktop         (Other)          108.4413
-## 2         desktop          Direct         2220.2394
-## 3         desktop         Display          576.0329
-## 4         desktop           Email          246.8169
-## 5         desktop  Organic Search         2902.8826
-## 6         desktop     Paid Search         1927.7136
-## 7         desktop        Referral         1401.0094
-## 8         desktop          Social          368.0798
-## 9         desktop           Video          584.2358
+##  1        desktop         (Other)          108.4413
+##  2        desktop          Direct         2220.2394
+##  3        desktop         Display          576.0329
+##  4        desktop           Email          246.8169
+##  5        desktop  Organic Search         2902.8826
+##  6        desktop     Paid Search         1927.7136
+##  7        desktop        Referral         1401.0094
+##  8        desktop          Social          368.0798
+##  9        desktop           Video          584.2358
 ## 10         mobile         (Other)          193.7981
 ## # ... with 17 more rows</code></pre>
 <p>This function uses the <code>group_by</code> function to take the data set (<code>web_data</code>) and specify that it should be grouped together by two fields: <strong>deviceCategory</strong> and <strong>channelGrouping</strong>. That, in and of itself, isn’t enough, as this simply identifies the grouped rows. It doesn’t actually collapse them in any way (run the code above without the <code>summarise()</code> function to see).</p>
@@ -610,20 +612,19 @@ Once you have a <code>web_data</code> data frame to work with, the command <code
 <p><strong>Note #2:</strong> We <em>could</em> include multiple metrics in the <code>summarise()</code> function. For instance, if we wanted to get the <em>total</em> visits and the <em>average</em> pageviews, we could alter the code slightly:</p>
 <pre class="r"><code>group_by(web_data, deviceCategory, channelGrouping) %&gt;%
   summarise(mean(pageviews),sum(sessions))</code></pre>
-<pre><code>## Source: local data frame [27 x 4]
-## Groups: deviceCategory [?]
-## 
+<pre><code>## # A tibble: 27 x 4
+## # Groups:   deviceCategory [?]
 ##    deviceCategory channelGrouping `mean(pageviews)` `sum(sessions)`
 ##             &lt;chr&gt;           &lt;chr&gt;             &lt;dbl&gt;           &lt;int&gt;
-## 1         desktop         (Other)          108.4413           10820
-## 2         desktop          Direct         2220.2394          297580
-## 3         desktop         Display          576.0329           88688
-## 4         desktop           Email          246.8169           22350
-## 5         desktop  Organic Search         2902.8826          156144
-## 6         desktop     Paid Search         1927.7136          154535
-## 7         desktop        Referral         1401.0094           75253
-## 8         desktop          Social          368.0798           22434
-## 9         desktop           Video          584.2358           92885
+##  1        desktop         (Other)          108.4413           10820
+##  2        desktop          Direct         2220.2394          297580
+##  3        desktop         Display          576.0329           88688
+##  4        desktop           Email          246.8169           22350
+##  5        desktop  Organic Search         2902.8826          156144
+##  6        desktop     Paid Search         1927.7136          154535
+##  7        desktop        Referral         1401.0094           75253
+##  8        desktop          Social          368.0798           22434
+##  9        desktop           Video          584.2358           92885
 ## 10         mobile         (Other)          193.7981           29115
 ## # ... with 17 more rows</code></pre>
 <p><strong>Note #3:</strong> Both <code>summarise()</code> and <code>summarize()</code> do the same thing. On this site, we skew towards the Queen’s English either because one of the key contributors is British or because Hadley Wickham is from New Zealand. Or both. Either will work!</p>
@@ -650,7 +651,7 @@ head(web_data[c(&quot;date&quot;,&quot;channelGrouping&quot;,&quot;deviceCategor
 <p>This is a little bit of a trick question. Since we’ve already calculated the bounce rate and added that as a new column in our <strong>web_data</strong> data frame, we may be tempted to simply average those values:</p>
 <pre class="r"><code>group_by(web_data,deviceCategory) %&gt;%
   summarise(mean(bounce_rate))</code></pre>
-<pre><code>## # A tibble: 3 × 2
+<pre><code>## # A tibble: 3 x 2
 ##   deviceCategory `mean(bounce_rate)`
 ##            &lt;chr&gt;               &lt;dbl&gt;
 ## 1        desktop           0.5614256
@@ -662,7 +663,7 @@ head(web_data[c(&quot;date&quot;,&quot;channelGrouping&quot;,&quot;deviceCategor
 summarise(entrances = sum(entrances), 
           bounces = sum(bounces)) %&gt;%
   mutate(bounce_rate = bounces / entrances)</code></pre>
-<pre><code>## # A tibble: 3 × 4
+<pre><code>## # A tibble: 3 x 4
 ##   deviceCategory entrances bounces bounce_rate
 ##            &lt;chr&gt;     &lt;int&gt;   &lt;int&gt;       &lt;dbl&gt;
 ## 1        desktop    914621  565252   0.6180177

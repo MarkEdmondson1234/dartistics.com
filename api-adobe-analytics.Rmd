@@ -119,7 +119,6 @@ head(suites)
 
 ## Pulling Data Reports
 
-
 There are 5 different types of Adobe Analytics reports that can be pulled out via the API:
 
 * Overtime - `QueueOvertime()`
@@ -148,7 +147,7 @@ We set some common parameters here:
 
 ```{r}
 date.from <- "2016-03-01"
-date.to <- "2016-03-8"
+date.to <- "2016-03-08"
 reportsuite.id <- "grecodemystified"
 ```
 
@@ -166,6 +165,7 @@ metrics <- c("visits","uniquevisitors","pageviews")
 ## wrap in system.time to report how long it takes
 overtime.data <- QueueOvertime(reportsuite.id, date.from, date.to, metrics)
 head(overtime.data)
+
 ```
 
 You may also wish to set any of the 5 optional named parameters.
@@ -284,9 +284,7 @@ if(!file.exists("adobecache/ranked.data2.rds")){
   ranked.data <- readRDS("adobecache/ranked.data2.rds")
 }
 
-
 unique(ranked.data$page)
-
 ```
 
 ### Data format
@@ -696,8 +694,8 @@ To do that, first follow the steps for one of the authentication options describ
 # I realize. Hopefully, we won't need to do that very often!
 
 reportsuite.id <- "mscprod"
-key <- Sys.getenv("ADOBE_KEY_OLD_ALT")
-secret <- Sys.getenv("ADOBE_SECRET_OLD_ALT")
+key <- Sys.getenv("ADOBE_API_USERNAME_M")
+secret <- Sys.getenv("ADOBE_API_SECRET_M")
 
 SCAuth(key, secret)
 

@@ -489,6 +489,9 @@ div.tocify {
       <a href="key-topics.html">Key topics</a>
     </li>
     <li>
+      <a href="googleanalytics/index.html">Google Analytics Examples</a>
+    </li>
+    <li>
       <a href="github.html">GitHub</a>
     </li>
     <li>
@@ -619,13 +622,11 @@ overall_data &lt;- all_data %&gt;%
   group_by(yearMonth) %&gt;% 
   summarise(sessionSum = sum(Sessions))
 
-plot(overall_data, type = &quot;l&quot;)
-
-## a ggplot version
-library(ggplot2)</code></pre>
-<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.3.2</code></pre>
+plot(overall_data, type = &quot;l&quot;)</code></pre>
 <p><img src="day-two_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<pre class="r"><code>gg &lt;- ggplot(overall_data, aes(yearMonth, sessionSum)) + theme_dark()
+<pre class="r"><code>## a ggplot version
+library(ggplot2)
+gg &lt;- ggplot(overall_data, aes(yearMonth, sessionSum)) + theme_dark()
 gg &lt;- gg + geom_line(aes(group = 1))
 gg + geom_vline(xintercept=c(6,10), linetype = &quot;dotted&quot;)</code></pre>
 <p><img src="day-two_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
@@ -650,17 +651,19 @@ group_three &lt;- all_data[5906:7162, ]</code></pre>
 </div>
 <div id="cross-tabulation" class="section level2">
 <h2>Cross Tabulation</h2>
+<p>As the result of <code>lapply</code> is always a list, you can take the result of <code>lapply</code> and use it in another:</p>
 <pre class="r"><code>my_cross_table &lt;- function(x, cross1, cross2){
   totals &lt;- table(x[[cross1]], x[[cross2]])
   
   totals
 }
 
-lapply(all_groups, 
+result &lt;- lapply(all_groups, 
        my_cross_table, 
-       cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)</code></pre>
-<pre><code>## $group_one
-##          
+       cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)
+
+result$group_one</code></pre>
+<pre><code>##          
 ##           (Other) Direct Display Email Organic Search Paid Search Referral
 ##   desktop      86    213     212    12            213         198      213
 ##   mobile      139    213     213     3            213         209      213
@@ -669,31 +672,7 @@ lapply(all_groups,
 ##           Social
 ##   desktop    212
 ##   mobile     213
-##   tablet     202
-## 
-## $group_two
-##          
-##           (Other) Direct Display Email Organic Search Paid Search Referral
-##   desktop      28     92      92     6             92          92       92
-##   mobile       92     92      92     1             92          92       92
-##   tablet       75     92      92     0             92          92       85
-##          
-##           Social
-##   desktop     92
-##   mobile      92
-##   tablet      92
-## 
-## $group_three
-##          
-##           (Other) Direct Display Email Organic Search Paid Search Referral
-##   desktop      23     61      61     7             61          61       61
-##   mobile       61     61      61    10             61          61       61
-##   tablet       60     61      61     0             61          61       59
-##          
-##           Social
-##   desktop     61
-##   mobile      61
-##   tablet      61</code></pre>
+##   tablet     202</code></pre>
 </div>
 <div id="summary-statistics" class="section level2">
 <h2>Summary statistics</h2>
@@ -823,162 +802,15 @@ my_chi_table &lt;- function(x, cross1, cross2){
     cramerV = round(cramer.v(tab), digits = 4)
   )
 
-}
-
-lapply(all_groups, 
-       my_chi_table, 
-       cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)</code></pre>
-<pre><code>## $group_one
-## $group_one$expected
-##          
-##             (Other)   Direct  Display    Email Organic Search Paid Search
-##   desktop  96.54465 214.2084 213.5380 5.698816       214.2084    198.4529
-##   mobile  100.59398 223.1929 222.4943 5.937839       223.1929    206.7765
-##   tablet   90.86137 201.5987 200.9677 5.363345       201.5987    186.7706
-##          
-##           Referral   Social
-##   desktop 206.1630 210.1857
-##   mobile  214.8101 219.0015
-##   tablet  194.0269 197.8128
-## 
-## $group_one$observed
-##          
-##           (Other) Direct Display Email Organic Search Paid Search Referral
-##   desktop      86    213     212    12            213         198      213
-##   mobile      139    213     213     3            213         209      213
-##   tablet       63    213     212     2            213         185      189
-##          
-##           Social
-##   desktop    212
-##   mobile     213
-##   tablet     202
-## 
-## $group_one$error
-##          
-##              (Other)     Direct    Display      Email Organic Search
-##   desktop  10.544647   1.208436   1.537987  -6.301184       1.208436
-##   mobile  -38.406019  10.192896   9.494327   2.937839      10.192896
-##   tablet   27.861371 -11.401332 -11.032314   3.363345     -11.401332
-##          
-##           Paid Search   Referral     Social
-##   desktop    0.452886  -6.836951  -1.814258
-##   mobile    -2.223483   1.810064   6.001480
-##   tablet     1.770597   5.026887  -4.187222
-## 
-## $group_one$chi
-## 
-##  Pearson&#39;s Chi-squared test
-## 
-## data:  tab
-## X-squared = 38.827, df = 14, p-value = 0.0003879
-## 
-## 
-## $group_one$cramerV
-## [1] 0.0692
-## 
-## 
-## $group_two
-## $group_two$expected
-##          
-##            (Other)   Direct  Display    Email Organic Search Paid Search
-##   desktop 61.73420 87.37763 87.37763 2.216099       87.37763    87.37763
-##   mobile  67.94976 96.17504 96.17504 2.439222       96.17504    96.17504
-##   tablet  65.31605 92.44733 92.44733 2.344679       92.44733    92.44733
-##          
-##           Referral   Social
-##   desktop 85.16153 87.37763
-##   mobile  93.73582 96.17504
-##   tablet  90.10265 92.44733
-## 
-## $group_two$observed
-##          
-##           (Other) Direct Display Email Organic Search Paid Search Referral
-##   desktop      28     92      92     6             92          92       92
-##   mobile       92     92      92     1             92          92       92
-##   tablet       75     92      92     0             92          92       85
-##          
-##           Social
-##   desktop     92
-##   mobile      92
-##   tablet      92
-## 
-## $group_two$error
-##          
-##               (Other)      Direct     Display       Email Organic Search
-##   desktop  33.7341977  -4.6223663  -4.6223663  -3.7839006     -4.6223663
-##   mobile  -24.0502431   4.1750405   4.1750405   1.4392220      4.1750405
-##   tablet   -9.6839546   0.4473258   0.4473258   2.3446786      0.4473258
-##          
-##           Paid Search    Referral      Social
-##   desktop  -4.6223663  -6.8384657  -4.6223663
-##   mobile    4.1750405   1.7358185   4.1750405
-##   tablet    0.4473258   5.1026472   0.4473258
-## 
-## $group_two$chi
-## 
-##  Pearson&#39;s Chi-squared test
-## 
-## data:  tab
-## X-squared = 41.047, df = 14, p-value = 0.0001749
-## 
-## 
-## $group_two$cramerV
-## [1] 0.1053
-## 
-## 
-## $group_three
-## $group_three$expected
-##          
-##            (Other)   Direct  Display    Email Organic Search Paid Search
-##   desktop 45.36516 57.65155 57.65155 5.355609       57.65155    57.65155
-##   mobile  50.06205 63.62053 63.62053 5.910103       63.62053    63.62053
-##   tablet  48.57279 61.72792 61.72792 5.734288       61.72792    61.72792
-##          
-##           Referral   Social
-##   desktop 57.02148 57.65155
-##   mobile  62.92522 63.62053
-##   tablet  61.05330 61.72792
-## 
-## $group_three$observed
-##          
-##           (Other) Direct Display Email Organic Search Paid Search Referral
-##   desktop      23     61      61     7             61          61       61
-##   mobile       61     61      61    10             61          61       61
-##   tablet       60     61      61     0             61          61       59
-##          
-##           Social
-##   desktop     61
-##   mobile      61
-##   tablet      61
-## 
-## $group_three$error
-##          
-##               (Other)      Direct     Display       Email Organic Search
-##   desktop  22.3651551  -3.3484487  -3.3484487  -1.6443914     -3.3484487
-##   mobile  -10.9379475   2.6205251   2.6205251  -4.0898966      2.6205251
-##   tablet  -11.4272076   0.7279236   0.7279236   5.7342880      0.7279236
-##          
-##           Paid Search    Referral      Social
-##   desktop  -3.3484487  -3.9785203  -3.3484487
-##   mobile    2.6205251   1.9252188   2.6205251
-##   tablet    0.7279236   2.0533015   0.7279236
-## 
-## $group_three$chi
-## 
-##  Pearson&#39;s Chi-squared test
-## 
-## data:  tab
-## X-squared = 27.134, df = 14, p-value = 0.01849
-## 
-## 
-## $group_three$cramerV
-## [1] 0.1039</code></pre>
-<div id="a-nice-plot" class="section level3">
-<h3>A nice plot</h3>
-<pre class="r"><code>## get the chi-squared results into its own list
-plot_this_list &lt;- lapply(all_groups, my_chi_table, cross1 = &quot;deviceCategory&quot;, cross2 = &quot;channelGrouping&quot;)
-
-my_cols &lt;- c(&quot;#AAA81B&quot;,&quot;#77774B&quot;,&quot;#3D81AA&quot;)
+}</code></pre>
+<div id="exercise" class="section level4">
+<h4>Exercise</h4>
+<ol style="list-style-type: decimal">
+<li>Run the Chi Squared function above over all the <code>data.frames</code> in list <code>all_groups</code> with <code>cross1=&quot;deviceCategory&quot;</code> and <code>cross2=&quot;channelGrouping&quot;</code></li>
+<li>What is the cramerV for Group 2?</li>
+<li>A function to create a barplot of the Chi Squared result is below. Run it upon the results you got in part 1.</li>
+</ol>
+<pre class="r"><code>my_cols &lt;- c(&quot;#AAA81B&quot;,&quot;#77774B&quot;,&quot;#3D81AA&quot;)
 plot_func &lt;- function(x){
   barplot(x$error, 
           beside = TRUE, 
@@ -986,15 +818,15 @@ plot_func &lt;- function(x){
           sub = paste(x$chi$method, x$chi$p.value, &quot; CramerV: &quot;, x$cramerV),
           col = my_cols)
   legend(&quot;topright&quot;,fill=my_cols, legend=rownames(x$error))
-}
-
-p &lt;- lapply(plot_this_list, plot_func)</code></pre>
-<p><img src="day-two_files/figure-html/unnamed-chunk-10-1.png" width="672" /><img src="day-two_files/figure-html/unnamed-chunk-10-2.png" width="672" /><img src="day-two_files/figure-html/unnamed-chunk-10-3.png" width="672" /></p>
+}</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Change the colours of the barplot to something you like. Try this <a href="https://color.adobe.com/create/color-wheel/">website for color wheels</a>.</li>
+</ol>
 </div>
 </div>
 <div id="anova" class="section level2">
 <h2>ANOVA</h2>
-<p>Where is the source of error?</p>
+<p>Analysis of variance - find out where is the source of the error that you identified in the chi-squared.</p>
 <div id="way-anova" class="section level3">
 <h3>1-Way ANOVA</h3>
 <p>By channel, do sessions differ? Here we compare all the groups.</p>
@@ -1061,55 +893,13 @@ my_oneway_anova_tukey_results$group_two</code></pre>
 ## mobile-desktop  5316.034  4270.575  6361.492 0.0e+00
 ## tablet-desktop -2290.483 -3345.928 -1235.038 1.2e-06
 ## tablet-mobile  -7606.517 -8636.847 -6576.187 0.0e+00</code></pre>
-<pre class="r"><code>my_anova_tukey &lt;- function(x, metric, dim){
-  my_form &lt;- as.formula(paste(metric, &quot;~&quot;, dim))
-  model &lt;- aov(my_form , data = x)
-  
-  TukeyHSD(model)
-}
-
-# tukey_results &lt;- lapply(all_groups, my_anova_tukey, metric = &quot;GoalCompletions&quot;, dim = &quot;channelGrouping * deviceCategory&quot;)
-tukey_results &lt;- lapply(all_groups, my_anova_tukey, metric = &quot;GoalCompletions&quot;, dim = &quot;channelGrouping&quot;)</code></pre>
-<p>This is a big list. (each channel compared with one another, per group).</p>
-<p>We look at just one channel for Group 1:</p>
-<pre class="r"><code># tukey_results$group_one$`channelGrouping:deviceCategory`
-tukey_results$group_one$channelGrouping</code></pre>
-<pre><code>##                                   diff         lwr        upr        p adj
-## Direct-(Other)               9.6331182   4.4511197  14.815117 5.419218e-07
-## Display-(Other)             14.3642399   9.1797147  19.548765 2.778761e-08
-## Email-(Other)                1.1825980 -17.0409653  19.406161 9.999994e-01
-## Organic Search-(Other)      56.7896127  51.6076142  61.971611 2.778753e-08
-## Paid Search-(Other)          7.3316441   2.0861268  12.577161 6.067543e-04
-## Referral-(Other)             1.9773374  -3.2359799   7.190655 9.454969e-01
-## Social-(Other)               8.4263357   3.2289540  13.623717 2.518169e-05
-## Display-Direct               4.7311218   0.6431369   8.819107 1.071746e-02
-## Email-Direct                -8.4505201 -26.3929441   9.491904 8.443331e-01
-## Organic Search-Direct       47.1564945  43.0717147  51.241274 2.778753e-08
-## Paid Search-Direct          -2.3014740  -6.4665395   1.863591 7.031916e-01
-## Referral-Direct             -7.6557808 -11.7802196  -3.531342 5.672371e-07
-## Social-Direct               -1.2067824  -5.3110601   2.897495 9.868718e-01
-## Email-Display              -13.1816419 -31.1247958   4.761512 3.351188e-01
-## Organic Search-Display      42.4253727  38.3373879  46.513358 2.778753e-08
-## Paid Search-Display         -7.0325958 -11.2008045  -2.864387 9.027361e-06
-## Referral-Display           -12.3869025 -16.5145156  -8.259289 2.778762e-08
-## Social-Display              -5.9379042 -10.0453717  -1.830437 3.191855e-04
-## Organic Search-Email        55.6070146  37.6645906  73.549439 2.778761e-08
-## Paid Search-Email            6.1490461 -11.8118259  24.109918 9.686214e-01
-## Referral-Email               0.7947394 -17.1567550  18.746234 1.000000e+00
-## Social-Email                 7.2437377 -10.7031353  25.190611 9.250059e-01
-## Paid Search-Organic Search -49.4579685 -53.6230340 -45.292903 2.778753e-08
-## Referral-Organic Search    -54.8122753 -58.9367141 -50.687836 2.778753e-08
-## Social-Organic Search      -48.3632770 -52.4675547 -44.258999 2.778753e-08
-## Referral-Paid Search        -5.3543067  -9.5582739  -1.150340 2.877763e-03
-## Social-Paid Search           1.0946916  -3.0894976   5.278881 9.934945e-01
-## Social-Referral              6.4489983   2.3052482  10.592748 6.660036e-05</code></pre>
 </div>
 <div id="multi-way-anova" class="section level3">
 <h3>Multi way ANOVA</h3>
 <ul>
-<li>Hoa the group means for first factor are equal</li>
-<li>Hob The group means for the second factor are equal</li>
-<li>H0c There is no interaction between the two factors</li>
+<li><code>H0_a</code> the group means for first factor are equal</li>
+<li><code>H0_b</code> The group means for the second factor are equal</li>
+<li><code>H0_c</code> There is no interaction between the two factors</li>
 </ul>
 <pre class="r"><code>my_nway_anova &lt;- function(x, metric, dim){
   my_form &lt;- as.formula(paste(metric, &quot;~&quot;, dim))
@@ -1119,7 +909,7 @@ tukey_results$group_one$channelGrouping</code></pre>
 ## tests of between subject effects
 lapply(all_groups, 
        my_nway_anova, 
-       metric = &quot;Sessions&quot;, dim = &quot;deviceCategory *channelGrouping&quot;)</code></pre>
+       metric = &quot;Sessions&quot;, dim = &quot;deviceCategory * channelGrouping&quot;)</code></pre>
 <pre><code>## $group_one
 ## Analysis of Variance Table
 ## 
@@ -1342,7 +1132,7 @@ mr1$group_one</code></pre>
 ## Residual standard error: 25.45 on 4050 degrees of freedom
 ## Multiple R-squared:  0.2938, Adjusted R-squared:  0.2933 
 ## F-statistic: 561.6 on 3 and 4050 DF,  p-value: &lt; 2.2e-16</code></pre>
-<p>If you forget to leave out one of your dummy variables:</p>
+<p>If you forget to leave out one of your dummy variables, its ok:</p>
 <pre class="r"><code>multi_regression &lt;- function(x){
   model &lt;- lm(GoalCompletions ~ DesktopDummy + TabletDummy + MobileDummy + Sessions, data = x)
   summary(model)
@@ -1404,7 +1194,6 @@ mr1$group_one</code></pre>
 ## F-statistic: 561.6 on 3 and 4050 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Repeated for channel groupings, dummy variables:</p>
 <pre class="r"><code>multi_regression2 &lt;- function(x){
-  x$deviceCategory &lt;- as.factor(x$deviceCategory)
   model &lt;- lm(GoalCompletions  ~ Sessions + DirectDummy + DisplayDummy + OrganicSearchDummy + PaidSearchDummy + ReferralDummy + SocialDummy + EmailDummy, data = x)
   summary(model)
 }
