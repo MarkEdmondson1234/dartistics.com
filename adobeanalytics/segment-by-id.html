@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Apply Segment by Segment ID</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/simplex.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="includes/styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 41px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+
+.section h2 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h3 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h4 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h5 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h6 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Adobe Analytics & R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Overview</a>
+</li>
+<li>
+  <a href="setup.html">Initial Setup</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Basic Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="simple-trended-visits-by-devicetype.html">Trended Visits by Device Type</a>
+    </li>
+    <li>
+      <a href="simple-dim-filter.html">Simple Dimension Filter</a>
+    </li>
+    <li>
+      <a href="segment-by-id.html">Apply Segment by Segment ID</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Intermediate Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="pivot-sparklines-heatmap.html">2D Sparklines/Heatmap</a>
+    </li>
+    <li>
+      <a href="simple-inline-segment.html">Simple Inline Segment</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-N4DF7T"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N4DF7T');</script>
+<!-- End Google Tag Manager -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Apply Segment by Segment ID</h1>
+
+</div>
+
+
+<p>This example pulls the top 10 pages for the last thirty days, <em>for visits where the entry page included the word “excel”</em>.* We’ll do this by referencing a segment that was built in the Adobe Analytics web UI.</p>
+<div id="setupconfig" class="section level1">
+<h1>Setup/Config</h1>
+<p>Be sure you’ve completed the steps on the <a href="setup.html">Initial Setup</a> page before running this code.</p>
+<p>For the setup, we’re going to load a few libraries, load our specific Adobe Analytics credentials, and then authorize with Adobe.</p>
+<pre class="r"><code># Load the necessary libraries
+library(RSiteCatalyst)
+library(tidyverse)
+library(devtools)
+
+# Load the username, shared secret, and report suite ID
+username &lt;- Sys.getenv(&quot;ADOBE_API_USERNAME&quot;)
+secret &lt;- Sys.getenv(&quot;ADOBE_API_SECRET&quot;)
+
+# Authorize Adobe Aalytics.
+SCAuth(username, secret)</code></pre>
+<pre><code>## [1] &quot;Credentials Saved in RSiteCatalyst Namespace.&quot;</code></pre>
+<pre class="r"><code># Set the RSID and the date range. If you want to, you can swap out the Sys.getenv()
+# call and just replace that with a hardcoded value for the RSID. And, the start 
+# and end date are currently set to choose the last 30 days, but those can be 
+# hardcoded as well.
+rsid &lt;- Sys.getenv(&quot;ADOBE_RSID&quot;)
+start_date &lt;- Sys.Date() - 31        # 30 days back from yesterday
+end_date &lt;- Sys.Date() - 1           # Yesterday</code></pre>
+<p>If that all runs with just some messages but no errors, then you’re set for the next chunk of code: pulling the data.</p>
+</div>
+<div id="pull-the-data" class="section level1">
+<h1>Pull the Data</h1>
+<p>The key step here is figuring out the ID of the segment that you want to use. The easiest way to find this is to use the <code>GetSegments()</code> function:</p>
+<p><code>segs &lt;- GetSegments(rsid)</code></p>
+<p>That will create a data frame that you can then view/filter to find the specific ID you want to use, which you can then copy and paste into the actual data pulling code.</p>
+<pre class="r"><code># Pull the data. See ?QueueRankes() for details on the arguments available.
+aa_data &lt;- QueueRanked(rsid,
+                       date.from = start_date,
+                       date.to = end_date,
+                       metrics = &quot;pageviews&quot;,
+                       elements = &quot;page&quot;,
+                       top = 10,
+                       segment.id = &quot;s300005730_59d38b213f1e920264d17ecd&quot;)
+  
+# Go ahead and do a quick inspection of the data that was returned. This isn&#39;t required,
+# but it&#39;s a good check along the way.
+head(aa_data)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">name</th>
+<th align="left">url</th>
+<th align="right">pageviews</th>
+<th align="left">segment.id</th>
+<th align="left">segment.name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
+<td align="left"><a href="http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges" class="uri">http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges</a></td>
+<td align="right">3549</td>
+<td align="left">s300005730_59d38b213f1e920264d17ecd</td>
+<td align="left">(Visit) Include Entry Page contains “excel”</td>
+</tr>
+<tr class="even">
+<td align="left">excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
+<td align="left"><a href="http://analyticsdemystified.com/excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2" class="uri">http://analyticsdemystified.com/excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2</a></td>
+<td align="right">3412</td>
+<td align="left">s300005730_59d38b213f1e920264d17ecd</td>
+<td align="left">(Visit) Include Entry Page contains “excel”</td>
+</tr>
+<tr class="odd">
+<td align="left">excel-tips/excel-dropdowns-done-right/</td>
+<td align="left"><a href="http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right" class="uri">http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right</a></td>
+<td align="right">3147</td>
+<td align="left">s300005730_59d38b213f1e920264d17ecd</td>
+<td align="left">(Visit) Include Entry Page contains “excel”</td>
+</tr>
+<tr class="even">
+<td align="left">excel-tips/converting-a-date-in-excel-to-week-bi-week-month-and-more/</td>
+<td align="left"><a href="http://analyticsdemystified.com/excel-tips/converting-a-date-in-excel-to-week-bi-week-month-and-more" class="uri">http://analyticsdemystified.com/excel-tips/converting-a-date-in-excel-to-week-bi-week-month-and-more</a></td>
+<td align="right">2536</td>
+<td align="left">s300005730_59d38b213f1e920264d17ecd</td>
+<td align="left">(Visit) Include Entry Page contains “excel”</td>
+</tr>
+<tr class="odd">
+<td align="left">excel-tips/excel-dynamic-named-ranges-with-tables-never-manually-updating-your-charts/</td>
+<td align="left"><a href="http://analyticsdemystified.com/excel-tips/excel-dynamic-named-ranges-with-tables-never-manually-updating-your-charts" class="uri">http://analyticsdemystified.com/excel-tips/excel-dynamic-named-ranges-with-tables-never-manually-updating-your-charts</a></td>
+<td align="right">1945</td>
+<td align="left">s300005730_59d38b213f1e920264d17ecd</td>
+<td align="left">(Visit) Include Entry Page contains “excel”</td>
+</tr>
+<tr class="even">
+<td align="left">excel-tips/10-tips-for-building-a-dashboard-in-excel/</td>
+<td align="left"><a href="http://analyticsdemystified.com/excel-tips/10-tips-for-building-a-dashboard-in-excel" class="uri">http://analyticsdemystified.com/excel-tips/10-tips-for-building-a-dashboard-in-excel</a></td>
+<td align="right">507</td>
+<td align="left">s300005730_59d38b213f1e920264d17ecd</td>
+<td align="left">(Visit) Include Entry Page contains “excel”</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="data-munging" class="section level1">
+<h1>Data Munging</h1>
+<p>In order to keep the order in the bar chart, we need to convert the page column to be a factor. We’ll reverse the order so that, when displayed in a bar chart, they’ll be in descending order.</p>
+<pre class="r"><code># Convert page to be a factor
+aa_data$name &lt;- factor(aa_data$name,
+                       levels = rev(aa_data$name))</code></pre>
+</div>
+<div id="data-visualization" class="section level1">
+<h1>Data Visualization</h1>
+<p>This won’t be the prettiest bar chart, but let’s make a horizontal bar chart with the data. Remember, in <strong>ggplot2</strong>, a horizontal bar chart is just a normal bar chart with <code>coord_flip()</code>.</p>
+<pre class="r"><code># Create the plot. Note the stat=&quot;identity&quot;&quot; (because the data is already aggregated) and
+# the coord_flip(). And, I just can&#39;t stand it... added on the additional theme stuff to
+# clean up the plot a bit more.
+gg &lt;- ggplot(aa_data, mapping = aes(x = name, y = pageviews)) +
+  geom_bar(stat = &quot;identity&quot;) +
+  coord_flip() +
+  theme_light() +
+  theme(panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.border = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks.y = element_blank())
+
+# Output the plot. You *could* just remove the &quot;gg &lt;-&quot; in the code above, but it&#39;s
+# generally a best practice to create a plot object and then output it, rather than
+# outputting it on the fly.
+gg</code></pre>
+<p><img src="segment-by-id_files/figure-html/visualize-1.png" width="672" /></p>
+<p><em>* Yes. This is intentionally ironic.</em></p>
+</div>
+
+<hr>
+<p align="center"><em></em>This site is a sub-site to <a href="http://dartistics.com" target="_blank">dartistics.com</em></p>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

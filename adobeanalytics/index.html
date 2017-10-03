@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Overview</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/simplex.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="includes/styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 41px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+
+.section h2 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h3 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h4 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h5 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h6 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Adobe Analytics & R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Overview</a>
+</li>
+<li>
+  <a href="setup.html">Initial Setup</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Basic Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="simple-trended-visits-by-devicetype.html">Trended Visits by Device Type</a>
+    </li>
+    <li>
+      <a href="simple-dim-filter.html">Simple Dimension Filter</a>
+    </li>
+    <li>
+      <a href="segment-by-id.html">Apply Segment by Segment ID</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Intermediate Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="pivot-sparklines-heatmap.html">2D Sparklines/Heatmap</a>
+    </li>
+    <li>
+      <a href="simple-inline-segment.html">Simple Inline Segment</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-N4DF7T"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N4DF7T');</script>
+<!-- End Google Tag Manager -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Overview</h1>
+
+</div>
+
+
+<p>This site is intended to provide a (hopefully growing) list of standalone examples of using Adobe Analytics with R. The target user is, primarily, analysts who are using Adobe Analytics and starting to dip their toe into the R waters and, along the way, are wishing they had some standalone examples that they can quickly get to work, after which they can then start tinkering with it.</p>
+<p><strong>This site is not a tutorial on how to use R. There IS a great site for that, though – the <a href="http://dartistics.com">parent site</a> of this site!</strong></p>
+<div id="key-tenets-of-the-site" class="section level1">
+<h1>Key Tenets of the Site</h1>
+<p>These are partly to drive consistency (“Once I’ve gotten one example to work, I can <em>totally</em> get any of these examples to work.”), but also, admittedly, are also partly driven by the personal preferences of the site owner:</p>
+<ul>
+<li>All pulling of Adobe Analytics data uses Randy Zwitch’s <a href="http://randyzwitch.com/RSiteCatalyst/">RSiteCatalyst</a> package</li>
+<li>The examples expect that the steps on the <a href="setup.html">Initial Setup</a> page have been followed/completed</li>
+<li>Each example is <em>standalone</em> – all of the code needed is included in the example</li>
+<li>Each example follows the same basic structure (see below)</li>
+<li>All visualizations use <a href="http://ggplot2.tidyverse.org/reference/">ggplot2</a></li>
+</ul>
+</div>
+<div id="example-structure" class="section level1">
+<h1>Example Structure</h1>
+<p>Unless it just makes no sense, each example follows the same structure:</p>
+<ol style="list-style-type: decimal">
+<li><em>Setup/Config</em> – loading of packages, configurable variables, authorization of Google Analytics; this is pretty redundant across many of the examples, but it’s required to make each page a standalone example</li>
+<li><em>Data Pulling</em> – the actual call(s) to pull in Adobe Analytics data</li>
+<li><em>Data Munging</em> – manipulation of the data as warranted</li>
+<li><em>Data Visualization</em> – one visualization of the resulting data</li>
+</ol>
+</div>
+<div id="initial-setup" class="section level1">
+<h1>Initial Setup</h1>
+<p>The steps listed on the <a href="setup.html">Initial Setup</a> page are <em>required</em> in order for the example code to work. Don’t skip that!</p>
+</div>
+<div id="using-the-code" class="section level1">
+<h1>Using the Code</h1>
+<p>Each page has blocks of code that are shaded gray. If you copy each of the blocks of code – one after the other – into an R script, the example should then run.</p>
+</div>
+<div id="making-requests-or-reporting-bugs" class="section level1">
+<h1>Making Requests or Reporting Bugs</h1>
+<p>To request an example or report an issue with one of the existing examples, log an issue on the <a href="https://github.com/gilliganondata/dartistics-adobeanalytics/issues">Github repository for this site</a>.</p>
+</div>
+
+<hr>
+<p align="center"><em></em>This site is a sub-site to <a href="http://dartistics.com" target="_blank">dartistics.com</em></p>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

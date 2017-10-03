@@ -196,13 +196,7 @@ $(document).ready(function () {
       <a href="simple-dim-filter.html">Simple Dimension Filter</a>
     </li>
     <li>
-      <a href="simple-medium-ordered-by-sessions.html">Medium Ordered by Sessions</a>
-    </li>
-    <li>
       <a href="segment-by-id.html">Apply Segment by Segment ID</a>
-    </li>
-    <li>
-      <a href="pivot-in-query.html">Pivot in a Query</a>
     </li>
   </ul>
 </li>
@@ -217,10 +211,7 @@ $(document).ready(function () {
       <a href="pivot-sparklines-heatmap.html">2D Sparklines/Heatmap</a>
     </li>
     <li>
-      <a href="simple-dynamic-segment.html">Simple Dynamic Segment - v4</a>
-    </li>
-    <li>
-      <a href="simple-dynamic-segment-v3.html">Simple Dynamic Segment - v3</a>
+      <a href="simple-inline-segment.html">Simple Inline Segment</a>
     </li>
   </ul>
 </li>
@@ -279,9 +270,7 @@ end_date &lt;- Sys.Date() - 1           # Yesterday</code></pre>
 <div id="pull-the-data" class="section level1">
 <h1>Pull the Data</h1>
 <p>There are two main parts to this:</p>
-<pre class="r"><code># Pull the data. See ?google_analytics_4() for additional parameters. Depending on what
-# you&#39;re expecting back, you probably would want to use an &quot;order&quot; argument to get the
-# results in descending order. But, we&#39;re keeping this example simple.
+<pre class="r"><code># Pull the data. See ?QueueRankes() for details on the arguments available.
 aa_data &lt;- QueueRanked(rsid,
                        date.from = start_date,
                        date.to = end_date,
@@ -307,42 +296,42 @@ head(aa_data)</code></pre>
 <tr class="odd">
 <td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
 <td align="left"><a href="http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges" class="uri">http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges</a></td>
-<td align="right">3575</td>
+<td align="right">3552</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
 <td align="left"><a href="http://analyticsdemystified.com/excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2" class="uri">http://analyticsdemystified.com/excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2</a></td>
-<td align="right">3405</td>
+<td align="right">3416</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left">excel-tips/excel-dropdowns-done-right/</td>
 <td align="left"><a href="http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right" class="uri">http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right</a></td>
-<td align="right">3140</td>
+<td align="right">3157</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">excel-tips/converting-a-date-in-excel-to-week-bi-week-month-and-more/</td>
 <td align="left"><a href="http://analyticsdemystified.com/excel-tips/converting-a-date-in-excel-to-week-bi-week-month-and-more" class="uri">http://analyticsdemystified.com/excel-tips/converting-a-date-in-excel-to-week-bi-week-month-and-more</a></td>
-<td align="right">2499</td>
+<td align="right">2537</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left">excel-tips/excel-dynamic-named-ranges-with-tables-never-manually-updating-your-charts/</td>
 <td align="left"><a href="http://analyticsdemystified.com/excel-tips/excel-dynamic-named-ranges-with-tables-never-manually-updating-your-charts" class="uri">http://analyticsdemystified.com/excel-tips/excel-dynamic-named-ranges-with-tables-never-manually-updating-your-charts</a></td>
-<td align="right">1969</td>
+<td align="right">1949</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">excel-tips/10-tips-for-building-a-dashboard-in-excel/</td>
 <td align="left"><a href="http://analyticsdemystified.com/excel-tips/10-tips-for-building-a-dashboard-in-excel" class="uri">http://analyticsdemystified.com/excel-tips/10-tips-for-building-a-dashboard-in-excel</a></td>
-<td align="right">537</td>
+<td align="right">533</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>

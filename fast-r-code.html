@@ -492,6 +492,9 @@ div.tocify {
       <a href="googleanalytics/index.html">Google Analytics Examples</a>
     </li>
     <li>
+      <a href="adobeanalytics/index.html">Adobe Analytics Examples</a>
+    </li>
+    <li>
       <a href="github.html">GitHub</a>
     </li>
     <li>
@@ -584,7 +587,7 @@ system.time(
     }
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   7.804   0.703   8.526</code></pre>
+##   8.368   0.653   9.033</code></pre>
 <pre class="r"><code>dim(x)</code></pre>
 <pre><code>## [1] 20000   100</code></pre>
 <p>Each loop is copying the data.frame, then adding the new row to it which is inefficient.</p>
@@ -598,7 +601,7 @@ system.time(
 
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   2.501   0.243   2.751</code></pre>
+##   2.610   0.290   2.933</code></pre>
 <pre class="r"><code>dim(x)</code></pre>
 <pre><code>## [1] 10000   100</code></pre>
 <p>But the biggest improvement is when we avoid copying the data.frame. Instead we create several new data.frames in a list, and only once finished do we rbind by passing it through the <code>Reduce</code> function:</p>
@@ -615,7 +618,7 @@ system.time(
   y &lt;- avoid_copy(x)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.897   0.333   1.234</code></pre>
+##   0.901   0.320   1.255</code></pre>
 <pre class="r"><code>dim(y)</code></pre>
 <pre><code>## [1] 20000   100</code></pre>
 <p>But back to the readability point - is it easier to know whats going on with the above or the previous example? Perhaps you needed to look up what <code>?Reduce</code> does first - and where are the comments?</p>
@@ -667,12 +670,12 @@ system.time(
   c &lt;- cbind(a, b)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   1.493   0.785   2.362</code></pre>
+##   1.632   0.724   2.317</code></pre>
 <pre class="r"><code>system.time(
   y &lt;- avoid_copy(x)
 )</code></pre>
 <pre><code>##    user  system elapsed 
-##   1.014   0.412   1.428</code></pre>
+##   1.031   0.391   1.431</code></pre>
 <p>Henrik the package creator goees into some more common parallel work flow examples in this <a href="http://www.jottr.org/2017/06/the-many-faced-future.html">blog post showing how to generate fractals in R</a>.</p>
 </div>
 </div>

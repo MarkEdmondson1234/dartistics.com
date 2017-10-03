@@ -130,6 +130,8 @@ navbar:
         href: key-topics.html
       - text: "Google Analytics Examples"
         href: googleanalytics/index.html
+      - text: "Adobe Analytics Examples"
+        href: adobeanalytics/index.html
       - text: "GitHub"
         href: github.html
       - text: "Good Habits"
