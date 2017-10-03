@@ -314,17 +314,17 @@ head(ga_data)</code></pre>
 <tr class="odd">
 <td align="left">(none)</td>
 <td align="left">desktop</td>
-<td align="right">3527</td>
+<td align="right">3584</td>
 </tr>
 <tr class="even">
 <td align="left">(none)</td>
 <td align="left">mobile</td>
-<td align="right">603</td>
+<td align="right">600</td>
 </tr>
 <tr class="odd">
 <td align="left">(none)</td>
 <td align="left">tablet</td>
-<td align="right">170</td>
+<td align="right">167</td>
 </tr>
 <tr class="even">
 <td align="left">Community</td>
@@ -332,21 +332,21 @@ head(ga_data)</code></pre>
 <td align="right">6</td>
 </tr>
 <tr class="odd">
-<td align="left">email</td>
-<td align="left">desktop</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
 <td align="left">feed</td>
 <td align="left">desktop</td>
 <td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">feed</td>
+<td align="left">mobile</td>
+<td align="right">1</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div id="data-munging" class="section level1">
 <h1>Data Munging</h1>
-<p>We actually don’t need to do any data munging to prep for the data visualization, as the data is already in a nice, tidy format. But, if you want to pivot the data just to have it in a pivoted data frame, we can do that using the <code>spread()</code> function in <code>dplyr</code>.</p>
+<p>To pivot the data, we can use the <code>spread()</code> function in <code>dplyr</code>. This will give us pivoted data in a data frame.</p>
 <pre class="r"><code># Pivot the data
 ga_data_pivoted &lt;- ga_data %&gt;% 
   spread(deviceCategory, sessions)
@@ -365,9 +365,9 @@ head(ga_data_pivoted)</code></pre>
 <tbody>
 <tr class="odd">
 <td align="left">(none)</td>
-<td align="right">3527</td>
-<td align="right">603</td>
-<td align="right">170</td>
+<td align="right">3584</td>
+<td align="right">600</td>
+<td align="right">167</td>
 </tr>
 <tr class="even">
 <td align="left">Community</td>
@@ -376,37 +376,38 @@ head(ga_data_pivoted)</code></pre>
 <td align="right">NA</td>
 </tr>
 <tr class="odd">
-<td align="left">email</td>
-<td align="right">1</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-</tr>
-<tr class="even">
 <td align="left">feed</td>
 <td align="right">3</td>
 <td align="right">1</td>
 <td align="right">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">gplus</td>
 <td align="right">1</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">organic</td>
-<td align="right">22825</td>
-<td align="right">1539</td>
-<td align="right">408</td>
+<td align="right">22994</td>
+<td align="right">1542</td>
+<td align="right">414</td>
+</tr>
+<tr class="even">
+<td align="left">referral</td>
+<td align="right">908</td>
+<td align="right">238</td>
+<td align="right">25</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div id="data-visualization" class="section level1">
 <h1>Data Visualization</h1>
-<p>Let’s make a little heatmap of the data in a pivoted fashion with ggplot. This requires two “geoms” – <code>geom_tile()</code> to make the heatmap (the shaded grid), and then <code>geom_text()</code> to actually put the values in the heatmap. <strong>Note:</strong> this uses the <code>ga_data</code> data frame that was pulled initially – <em>not</em> the <code>ga_data_pivoted</code> data frame that we created above. This is a subtle illustration of the elegance of the tidyverse, including <code>ggplot2</code>. If you appreciate that elegance, you are well on your way to R mastery.</p>
+<p>If we wanted a pivoted “visualization” – not just a data frame – then we actually can just use <code>ggplot2</code> with the <em>unpivoted</em> data.</p>
+<p>To spice things up just a bit, let’s make a little heatmap of the data (in a “pivoted” layout). This requires two “geoms” – <code>geom_tile()</code> to make the heatmap (the shaded grid), and then <code>geom_text()</code> to actually put the values in the heatmap. <strong>Note:</strong> this uses the <code>ga_data</code> data frame that was pulled initially – <em>not</em> the <code>ga_data_pivoted</code> data frame that we created above. This is a subtle illustration of the elegance of the tidyverse, including <code>ggplot2</code>. If you appreciate that elegance, you are well on your way to R mastery.</p>
 <p>The use of the <code>format()</code> function in the <code>label</code> argument is a handy little way to get commas displayed in numbers as the 000s separator (which means it’s easy to swap out if you’re in a locale where that is not the convention).</p>
-<p>Note that there is not a logical/appropriate arrangement of the rows and columns, and the formatting is only minimally tweaked. This is one of the things addressed in the <a href="pivot-sparklines-heatmap.html">intermediate-level verison of this example</a>.</p>
+<p>Note that there is not a logical/appropriate arrangement of the rows and columns, and the formatting is only minimally tweaked. This is one of the things addressed in the <a href="pivot-sparklines-heatmap.html">intermediate-level version of this example</a>.</p>
 <pre class="r"><code># Create the plot
 gg &lt;- ggplot(ga_data, mapping=aes(x = deviceCategory, y = medium)) +
   geom_tile(aes(fill = sessions)) +
