@@ -190,7 +190,7 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="simple-trended-sessions-by-medium.html">Trended Sessions by Medium</a>
+      <a href="simple-trended-sessions-by-devicecategory.html">Trended Sessions by Device Category</a>
     </li>
     <li>
       <a href="simple-dim-filter.html">Simple Dimension Filter</a>
@@ -203,6 +203,9 @@ $(document).ready(function () {
     </li>
     <li>
       <a href="pivot-in-query.html">Pivot in a Query</a>
+    </li>
+    <li>
+      <a href="pivot-after-query.html">Pivot After a Query</a>
     </li>
   </ul>
 </li>
@@ -250,7 +253,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 
 
-<p>This example pulls the top 10 pages for the last thirty days, <em>for pages that have “adobe” in the page name</em>.* With the v4 API, filters are more powerful than v3, but (alas!) very basic filters can feel pretty convoluted.</p>
+<p>This example pulls the top 10 pages for the last thirty days, <em>for pages that have “excel” in the page name</em>.* With the v4 API, filters are more powerful than v3, but (alas!) very basic filters can feel pretty convoluted.</p>
 <div id="setupconfig" class="section level1">
 <h1>Setup/Config</h1>
 <p>Be sure you’ve completed the steps on the <a href="setup.html">Initial Setup</a> page before running this code.</p>
@@ -303,7 +306,7 @@ end_date &lt;- Sys.Date() - 1           # Yesterday</code></pre>
 # with it, the easier it will be to use when you have more complex needs. &lt;/soapbox&gt;
 my_dim_filter_object &lt;- dim_filter(&quot;pagePath&quot;, 
                                    operator = &quot;REGEXP&quot;,
-                                   expressions = &quot;.*adobe.*&quot;)
+                                   expressions = &quot;.*excel.*&quot;)
 
 # Now, put that filter object into a filter clause. If you had multiple filters, there
 # are two aspects of this that wouldn&#39;t seem so weird. With one... they do seem weird:
@@ -335,28 +338,28 @@ head(ga_data)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">/?vz_t=b&amp;mboxEdit=1&amp;mboxDisable=1&amp;vz_i=1&amp;vz_e=<a href="https://demystified.marketing.adobe.com/content/mac/default/target/proxyerror.html&amp;vz_url=http://analyticsdemystified.com/" class="uri">https://demystified.marketing.adobe.com/content/mac/default/target/proxyerror.html&amp;vz_url=http://analyticsdemystified.com/</a></td>
-<td align="right">3</td>
+<td align="left">/category/excel-tips/</td>
+<td align="right">53</td>
 </tr>
 <tr class="even">
-<td align="left">/2/library/index.asp?p=Adobe</td>
-<td align="right">5</td>
+<td align="left">/category/excel-tips/page/2/</td>
+<td align="right">21</td>
 </tr>
 <tr class="odd">
-<td align="left">/2013/03/07/conducting-cohort-analysis-with-adobe-sitecatalyst/</td>
+<td align="left">/category/excel-tips/page/3/</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">/digital-analytics-community/daa-awards-for-excellence-a-thank-you/</td>
 <td align="right">1</td>
 </tr>
-<tr class="even">
-<td align="left">/adobe-analytics-top-gun-training/</td>
-<td align="right">80</td>
-</tr>
 <tr class="odd">
-<td align="left">/adobe-analytics/</td>
+<td align="left">/excel-tips/</td>
 <td align="right">4</td>
 </tr>
 <tr class="even">
-<td align="left">/adobe-analytics/1000-success-events-really-mean/</td>
-<td align="right">16</td>
+<td align="left">/excel-tips/10-things-you-should-always-do-or-not-do-in-excel/</td>
+<td align="right">166</td>
 </tr>
 </tbody>
 </table>
@@ -384,28 +387,28 @@ head(ga_data_top_10)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">/adobe-analytics/using-utm-campaign-parameters-adobe-analytics/</td>
-<td align="right">877</td>
+<td align="left">/excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
+<td align="right">3625</td>
 </tr>
 <tr class="even">
-<td align="left">/adobe-analytics/advanced-click-rates-adobe-analytics-placement/</td>
-<td align="right">414</td>
+<td align="left">/excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
+<td align="right">3435</td>
 </tr>
 <tr class="odd">
-<td align="left">/adobe-analytics/adobes-new-marketing-cloud-visitor-id-how-does-it-work/</td>
-<td align="right">331</td>
+<td align="left">/excel-tips/excel-dropdowns-done-right/</td>
+<td align="right">3151</td>
 </tr>
 <tr class="even">
-<td align="left">/adobe-analytics/click-rates-adobe-analytics/</td>
-<td align="right">308</td>
+<td align="left">/excel-tips/converting-a-date-in-excel-to-week-bi-week-month-and-more/</td>
+<td align="right">2518</td>
 </tr>
 <tr class="odd">
-<td align="left">/adobe-analytics/merchandising-evars-omniture/</td>
-<td align="right">298</td>
+<td align="left">/excel-tips/excel-dynamic-named-ranges-with-tables-never-manually-updating-your-charts/</td>
+<td align="right">1990</td>
 </tr>
 <tr class="even">
-<td align="left">/adobe-analytics/content-freshness-adobe-analytics/</td>
-<td align="right">217</td>
+<td align="left">/excel-tips/10-tips-for-building-a-dashboard-in-excel/</td>
+<td align="right">525</td>
 </tr>
 </tbody>
 </table>

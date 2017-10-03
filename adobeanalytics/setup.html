@@ -11,7 +11,7 @@
 
 
 
-<title>Traffic by Medium</title>
+<title>Initial Setup</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -172,7 +172,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">GA & R</a>
+      <a class="navbar-brand" href="index.html">Adobe Analytics & R</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -190,7 +190,7 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="simple-trended-sessions-by-medium.html">Trended Sessions by Medium</a>
+      <a href="simple-trended-visits-by-devicetype.html">Trended Visits by Device Type</a>
     </li>
     <li>
       <a href="simple-dim-filter.html">Simple Dimension Filter</a>
@@ -245,119 +245,65 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-<h1 class="title toc-ignore">Traffic by Medium</h1>
+<h1 class="title toc-ignore">Initial Setup</h1>
 
 </div>
 
 
-<p>This example pulls <em>sessions</em> and by <em>medium</em> for the last 30 days and then plots the data on a line chart.</p>
-<div id="setupconfig" class="section level1">
-<h1>Setup/Config</h1>
-<p>Be sure you’ve completed the steps on the <a href="setup.html">Initial Setup</a> page before running this code.</p>
-<p>For the setup, we’re going to load a few libraries, load our specific Google Analytics credentials, and then authorize with Google.</p>
-<pre class="r"><code># Load the necessary libraries
-library(googleAnalyticsR)
-library(tidyverse)
-library(devtools)
-
-# Load the client ID, client secret, and GA view ID
-client_id &lt;- Sys.getenv(&quot;GA_CLIENT_ID&quot;)
-client_secret &lt;- Sys.getenv(&quot;GA_CLIENT_SECRET&quot;)
-
-# Set the client ID and client secret as options for googleAuthR
-options(googleAuthR.client_id = client_id)
-options(googleAuthR.client_secret = client_secret)
-
-# Reload the googleAnalyticsR package so those options get set in googleAuthR
-devtools::reload(pkg = devtools::inst(&quot;googleAnalyticsR&quot;))
-
-# Authorize GA. Depending on if you&#39;ve done this already and a .httr-oauth file has
-# been saved or not, this may pop you over to a browser to authenticate.
-ga_auth()
-
-# Set the view ID and the date range. If you want to, you can swap out the Sys.getenv()
-# call and just replace that with a hardcoded value for the view ID. And, the start 
-# and end date are currently set to choose the last 30 days, but those can be 
-# hardcoded as well.
-view_id &lt;- Sys.getenv(&quot;GA_VIEW_ID&quot;)
-start_date &lt;- Sys.Date() - 31        # 30 days back from yesterday
-end_date &lt;- Sys.Date() - 1           # Yesterday</code></pre>
-<p>If that all runs with just some messages but no errors, then you’re set for the next chunk of code: pulling the data.</p>
+<p>The steps below are a one-time setup, but they must be followed for the examples on this site to work.</p>
+<p><strong>Note:</strong> <em>There are two different ways to authenticate with Adobe Analytics: 1) simply by getting (and using) your username and API secrect, and 2) using OAuth2. In theory, the former is going to be deprecated at some point, and it is somewhat less secure of a mechanism. But, that’s what we’re going to use. To use the OAuth approach see the details on the <a href="http://www.dartistics.com/api-adobe-analytics.html#authentication_-_new">main dartistics.com site</a> on the subject.</em></p>
+<div id="retrieve-your-api-user-name-and-shared-secret" class="section level1">
+<h1>Retrieve Your API User Name and Shared Secret</h1>
+<p>You will have Web Services access to the report suite(s) you will be pulling data from, which can be granted by an administrator of the account. Once you have that access, retrieve your <strong>User Name</strong> and <strong>Shared Secret</strong> by clicking <strong>Edit Profile</strong> in the top right corner of Adobe Analytics:</p>
+<br>
+<div align="center">
+<img src="images/adobe_api_credentials.png" />
 </div>
-<div id="pull-the-data" class="section level1">
-<h1>Pull the Data</h1>
-<p>This is a simple query.</p>
-<pre class="r"><code># Pull the data. See ?google_analytics_4() for additional parameters. The anti_sample = TRUE
-# parameter will slow the query down a smidge and isn&#39;t strictly necessary, but it will
-# ensure you do not get sampled data.
-ga_data &lt;- google_analytics_4(viewId = view_id,
-                              date_range = c(start_date, end_date),
-                              metrics = &quot;sessions&quot;,
-                              dimensions = c(&quot;date&quot;,&quot;medium&quot;),
-                              anti_sample = TRUE)
-
-# Go ahead and do a quick inspection of the data that was returned. This isn&#39;t required,
-# but it&#39;s a good check along the way.
-head(ga_data)</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">date</th>
-<th align="left">medium</th>
-<th align="right">sessions</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">2017-08-31</td>
-<td align="left">(none)</td>
-<td align="right">178</td>
-</tr>
-<tr class="even">
-<td align="left">2017-08-31</td>
-<td align="left">Community</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="left">2017-08-31</td>
-<td align="left">organic</td>
-<td align="right">1122</td>
-</tr>
-<tr class="even">
-<td align="left">2017-08-31</td>
-<td align="left">referral</td>
-<td align="right">52</td>
-</tr>
-<tr class="odd">
-<td align="left">2017-08-31</td>
-<td align="left">social</td>
-<td align="right">18</td>
-</tr>
-<tr class="even">
-<td align="left">2017-09-01</td>
-<td align="left">(none)</td>
-<td align="right">124</td>
-</tr>
-</tbody>
-</table>
+<p><br></p>
+<p>We’re not going to enter the <strong>User Name</strong> and <strong>Shared Secret</strong> directly in any of these examples, but, rather, store them in the <code>.Renviron</code> file, which is detailed below.</p>
 </div>
-<div id="data-munging" class="section level1">
-<h1>Data Munging</h1>
-<p>We don’t actually need to do any data munging in this example (although, in practice, there may be some cleanup that you’d wind up wanting to do). The data as it comes out of GA is pretty much plottable as is.</p>
+<div id="create-a-.renviron-file" class="section level1">
+<h1>Create a .Renviron file</h1>
+<p>This is a file that loads when an R session gets initiated. There are various options for managing this exactly, but below describes an approach that is inarguably the <em>BEST</em> approach!*</p>
+<div id="create-a-.renviron-file-in-your-home-directory" class="section level2">
+<h2>1. Create a .Renviron file in your Home Directory</h2>
+<p>Find your <em>Home</em> directory by clicking on the <em>Home</em> button in the <em>Files</em> pane of RStudio. Then, simply create a new text file (<strong>File &gt; New File &gt; Text File</strong>) and save it as <em>.Renviron</em>. You might get a warning about how this will be a hidden file, but just ignore the warning. Live life on the edge!</p>
 </div>
-<div id="data-visualization" class="section level1">
-<h1>Data Visualization</h1>
-<p>This won’t be the prettiest plot, but this example isn’t diving into the details of ggplot2. If you want to read up on that, <a href="http://www.dartistics.com/ggplot2.html">this page on dartistics.com</a> is worth checking out.</p>
-<pre class="r"><code># Create the plot.
-gg &lt;- ggplot(ga_data, mapping = aes(x = date, y = sessions, colour = medium)) +
-  geom_line() +
-  theme_light()
-
-# Output the plot. You *could* just remove the &quot;gg &lt;-&quot; in the code above, but it&#39;s
-# generally a best practice to create a plot object and then output it, rather than
-# outputting it on the fly.
-gg</code></pre>
-<p><img src="simple-trended-sessions-by-medium_files/figure-html/visualize-1.png" width="672" /></p>
+<div id="populate-the-.renviron-file" class="section level2">
+<h2>2. Populate the .Renviron file</h2>
+<p>The examples expect three variables to be in the <em>.Renviron</em> file. You’re welcome to add other variables, and, over time, should have a quite robust file. But, we only need three. The file should look something like this:</p>
+<pre><code>
+ADOBE_API_USERNAME = &quot;XXXXXX:XXXXXXXXXXXX&quot;&quot;
+ADOBE_API_SECRET = &quot;XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&quot;
+ADOBE_RSID = &quot;XXXXXXXXXXXXX&quot;
+</code></pre>
+<p>No, silly, you don’t want a bunch of Xs there! You will need to update those with values that are unique to your environment:</p>
+<ul>
+<li><strong>ADOBE_API_USERNAME</strong> – this is just the <strong>User Name</strong> you retrieved in the first step on this page</li>
+<li><strong>ADOBE_API_SECRET</strong> – it’s not secret to you! This is just the <strong>Shared Secret</strong> you retrieved at the same time that you grabbed a username</li>
+<li><strong>ADOBE_RSID</strong> – this is the report suite ID for the main report suite you want to work with. This can be overridden directly within an example, but it’s easiest to start by having an RSID stored in your .Renviron file for now.</li>
+</ul>
+<p>Now, save the file.</p>
+</div>
+<div id="reload-the-.renviron-file" class="section level2">
+<h2>3. Reload the .Renviron file</h2>
+<p>This happens any time you start a new R session, so you won’t have to worry about this going forward unless you change a value (like the <strong>ADOBE_RSID</strong>). For this one time, though, select <strong>Session &gt; Restart R</strong> in RStudio.</p>
+</div>
+<div id="confirm-that-your-.renviron-file-is-working" class="section level2">
+<h2>4. Confirm that your .Renviron file is working</h2>
+<p>Run the following code in your console:</p>
+<pre><code>username &lt;- Sys.getenv(&quot;ADOBE_API_USERNAME&quot;)</code></pre>
+<p>Now, check the <strong>Environment</strong> pane in RStudio. You should see an object called <code>username</code> with your Adobe Web Services <strong>User Name</strong>. You can run this for the other two values, too, but let’s just assume that, if it worked for one, you’re all set.</p>
+</div>
+</div>
+<div id="install-the-primary-packages-well-use" class="section level1">
+<h1>Install the Primary Packages We’ll Use</h1>
+<p>Some examples will use other packages, but that will be called out in the example itself. Almost all of the examples use <code>RSiteCatalyst</code> and various packages in the Tidyverse, so run the code below in your console just to get those installed in the event that they are not:</p>
+<pre><code>packages &lt;- c(&quot;RSiteCatalyst&quot;, &quot;tidyverse&quot;, &quot;devtools&quot;)
+if (length(setdiff(packages, rownames(installed.packages()))) &gt; 0) {
+  install.packages(setdiff(packages, rownames(installed.packages())))  
+}</code></pre>
+<p>You should be all set! The examples should all work!</p>
 </div>
 
 <hr>

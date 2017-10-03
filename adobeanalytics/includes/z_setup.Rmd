@@ -1,0 +1,37 @@
+Be sure you've completed the steps on the [Initial Setup](setup.html) page before running this code.
+
+For the setup, we're going to load a few libraries, load our specific Adobe Analytics credentials, and then authorize with Adobe.
+
+```{r hidden-setup, echo=FALSE, message=FALSE, warnings=FALSE}
+
+# This snippet won't get rendered. It's purely for functionality that will make the web
+# pages render more cleanly.
+
+library(knitr)   # Mainly... so we can use kable()
+
+```
+
+```{r setup, message=FALSE, warnings=FALSE}
+# Load the necessary libraries
+library(RSiteCatalyst)
+library(tidyverse)
+library(devtools)
+
+# Load the username, shared secret, and report suite ID
+username <- Sys.getenv("ADOBE_API_USERNAME")
+secret <- Sys.getenv("ADOBE_API_SECRET")
+
+# Authorize Adobe Aalytics.
+SCAuth(username, secret)
+
+# Set the RSID and the date range. If you want to, you can swap out the Sys.getenv()
+# call and just replace that with a hardcoded value for the RSID. And, the start 
+# and end date are currently set to choose the last 30 days, but those can be 
+# hardcoded as well.
+rsid <- Sys.getenv("ADOBE_RSID")
+start_date <- Sys.Date() - 31        # 30 days back from yesterday
+end_date <- Sys.Date() - 1           # Yesterday
+
+```
+
+If that all runs with just some messages but no errors, then you're set for the next chunk of code: pulling the data.
