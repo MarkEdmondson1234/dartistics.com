@@ -24,6 +24,10 @@ navbar:
         href: example5.html
       - text: "Example: Forecasting"
         href: example6.html
+      - text: "Google Analytics Examples"
+        href: googleanalytics/index.html
+      - text: "Adobe Analytics Examples"
+        href: adobeanalytics/index.html
     - text: "R Programming"
       menu:
       - text: "THE BASICS"
@@ -128,10 +132,6 @@ navbar:
         href: resources.html
       - text: "Key topics"
         href: key-topics.html
-      - text: "Google Analytics Examples"
-        href: googleanalytics/index.html
-      - text: "Adobe Analytics Examples"
-        href: adobeanalytics/index.html
       - text: "GitHub"
         href: github.html
       - text: "Good Habits"

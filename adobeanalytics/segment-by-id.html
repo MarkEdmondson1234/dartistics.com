@@ -15,7 +15,7 @@
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/simplex.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -98,34 +98,34 @@ button.code-folding-btn:focus {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 41px;
+  padding-top: 60px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 46px;
-  margin-top: -46px;
+  padding-top: 65px;
+  margin-top: -65px;
 }
 
 .section h2 {
-  padding-top: 46px;
-  margin-top: -46px;
+  padding-top: 65px;
+  margin-top: -65px;
 }
 .section h3 {
-  padding-top: 46px;
-  margin-top: -46px;
+  padding-top: 65px;
+  margin-top: -65px;
 }
 .section h4 {
-  padding-top: 46px;
-  margin-top: -46px;
+  padding-top: 65px;
+  margin-top: -65px;
 }
 .section h5 {
-  padding-top: 46px;
-  margin-top: -46px;
+  padding-top: 65px;
+  margin-top: -65px;
 }
 .section h6 {
-  padding-top: 46px;
-  margin-top: -46px;
+  padding-top: 65px;
+  margin-top: -65px;
 }
 </style>
 
@@ -215,6 +215,9 @@ $(document).ready(function () {
     </li>
   </ul>
 </li>
+<li>
+  <a href="http://dartistics.com">dartistics.com</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -250,6 +253,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 library(RSiteCatalyst)
 library(tidyverse)
 library(devtools)
+library(jsonlite)    # Needed for unbox() in examples with inline segments
 
 # Load the username, shared secret, and report suite ID
 username &lt;- Sys.getenv(&quot;ADOBE_API_USERNAME&quot;)
@@ -298,42 +302,42 @@ head(aa_data)</code></pre>
 <tr class="odd">
 <td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
 <td align="left"><a href="http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges" class="uri">http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges</a></td>
-<td align="right">3549</td>
+<td align="right">3647</td>
 <td align="left">s300005730_59d38b213f1e920264d17ecd</td>
 <td align="left">(Visit) Include Entry Page contains “excel”</td>
 </tr>
 <tr class="even">
 <td align="left">excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
 <td align="left"><a href="http://analyticsdemystified.com/excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2" class="uri">http://analyticsdemystified.com/excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2</a></td>
-<td align="right">3412</td>
+<td align="right">3505</td>
 <td align="left">s300005730_59d38b213f1e920264d17ecd</td>
 <td align="left">(Visit) Include Entry Page contains “excel”</td>
 </tr>
 <tr class="odd">
 <td align="left">excel-tips/excel-dropdowns-done-right/</td>
 <td align="left"><a href="http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right" class="uri">http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right</a></td>
-<td align="right">3147</td>
+<td align="right">3253</td>
 <td align="left">s300005730_59d38b213f1e920264d17ecd</td>
 <td align="left">(Visit) Include Entry Page contains “excel”</td>
 </tr>
 <tr class="even">
 <td align="left">excel-tips/converting-a-date-in-excel-to-week-bi-week-month-and-more/</td>
 <td align="left"><a href="http://analyticsdemystified.com/excel-tips/converting-a-date-in-excel-to-week-bi-week-month-and-more" class="uri">http://analyticsdemystified.com/excel-tips/converting-a-date-in-excel-to-week-bi-week-month-and-more</a></td>
-<td align="right">2536</td>
+<td align="right">2620</td>
 <td align="left">s300005730_59d38b213f1e920264d17ecd</td>
 <td align="left">(Visit) Include Entry Page contains “excel”</td>
 </tr>
 <tr class="odd">
 <td align="left">excel-tips/excel-dynamic-named-ranges-with-tables-never-manually-updating-your-charts/</td>
 <td align="left"><a href="http://analyticsdemystified.com/excel-tips/excel-dynamic-named-ranges-with-tables-never-manually-updating-your-charts" class="uri">http://analyticsdemystified.com/excel-tips/excel-dynamic-named-ranges-with-tables-never-manually-updating-your-charts</a></td>
-<td align="right">1945</td>
+<td align="right">2012</td>
 <td align="left">s300005730_59d38b213f1e920264d17ecd</td>
 <td align="left">(Visit) Include Entry Page contains “excel”</td>
 </tr>
 <tr class="even">
 <td align="left">excel-tips/10-tips-for-building-a-dashboard-in-excel/</td>
 <td align="left"><a href="http://analyticsdemystified.com/excel-tips/10-tips-for-building-a-dashboard-in-excel" class="uri">http://analyticsdemystified.com/excel-tips/10-tips-for-building-a-dashboard-in-excel</a></td>
-<td align="right">507</td>
+<td align="right">523</td>
 <td align="left">s300005730_59d38b213f1e920264d17ecd</td>
 <td align="left">(Visit) Include Entry Page contains “excel”</td>
 </tr>

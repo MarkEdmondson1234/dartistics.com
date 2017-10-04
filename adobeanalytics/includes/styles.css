@@ -1,3 +1,24 @@
+/* Global nav background */
+.navbar-default {
+    background-color: #9f83fc;
+}
+
+.navbar-default .navbar-nav > .active > a {
+  background-color: #3A305C;
+}
+
+.navbar-default .navbar-nav > .active > a:hover {
+  background-color: #57488A;
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+  color: #57488A;
+}
+
+a {
+  color: #9f83fc;
+}
+
 h1 {font-size: 1.7em;
 }
 
@@ -8,14 +29,14 @@ h2 {font-size: 1.3em;
   margin-top: 1.5em;
 }
 
-h1.title {font-size: 2.2em;
+.title {font-size: 2.2em;
 }
 
 table {background-color: #F0F0F0;
   width: 75%;
 }
 
-th {background-color: #2c3e50;
+th {background-color: #57488A;
 color: #FFFFFF;
 border-bottom: 1.5px solid #FFFFFF;
 }

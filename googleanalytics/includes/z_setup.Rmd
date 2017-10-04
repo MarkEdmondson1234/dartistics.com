@@ -2,7 +2,7 @@ Be sure you've completed the steps on the [Initial Setup](setup.html) page befor
 
 For the setup, we're going to load a few libraries, load our specific Google Analytics credentials, and then authorize with Google.
 
-```{r hidden-setup, echo=FALSE, message=FALSE, warnings=FALSE}
+```{r hidden-setup, echo=FALSE, message=FALSE, warning=FALSE}
 
 # This snipped won't get rendered. It's purely for functionality that will make the web
 # pages render more cleanly.
@@ -11,7 +11,7 @@ library(knitr)   # Mainly... so we can use kable()
 
 ```
 
-```{r setup, message=FALSE, warnings=FALSE}
+```{r setup, message=FALSE, warning=FALSE}
 # Load the necessary libraries
 library(googleAnalyticsR)
 library(tidyverse)

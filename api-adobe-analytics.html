@@ -25,7 +25,7 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-1.1/highlight.js"></script>
-<script src="site_libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="site_libs/htmlwidgets-0.9/htmlwidgets.js"></script>
 <link href="site_libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
 <script src="site_libs/dygraphs-1.1.1/dygraph-combined.js"></script>
 <script src="site_libs/moment-2.8.4/moment.js"></script>
@@ -306,6 +306,12 @@ div.tocify {
     <li>
       <a href="example6.html">Example: Forecasting</a>
     </li>
+    <li>
+      <a href="googleanalytics/index.html">Google Analytics Examples</a>
+    </li>
+    <li>
+      <a href="adobeanalytics/index.html">Adobe Analytics Examples</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -496,12 +502,6 @@ div.tocify {
       <a href="key-topics.html">Key topics</a>
     </li>
     <li>
-      <a href="googleanalytics/index.html">Google Analytics Examples</a>
-    </li>
-    <li>
-      <a href="adobeanalytics/index.html">Adobe Analytics Examples</a>
-    </li>
-    <li>
       <a href="github.html">GitHub</a>
     </li>
     <li>
@@ -667,8 +667,10 @@ reportsuite.id &lt;- &quot;grecodemystified&quot;</code></pre>
 <pre class="r"><code>metrics &lt;- c(&quot;visits&quot;,&quot;uniquevisitors&quot;,&quot;pageviews&quot;)
 
 ## wrap in system.time to report how long it takes
-overtime.data &lt;- QueueOvertime(reportsuite.id, date.from, date.to, metrics)
-head(overtime.data)</code></pre>
+overtime.data &lt;- QueueOvertime(reportsuite.id, date.from, date.to, metrics)</code></pre>
+<pre><code>## Error in ApiRequest(body = report.description, func.name = &quot;Report.Validate&quot;): ERROR: Bad Request  -  Unable to validate authentication.</code></pre>
+<pre class="r"><code>head(overtime.data)</code></pre>
+<pre><code>## Error in head(overtime.data): object &#39;overtime.data&#39; not found</code></pre>
 <p>You may also wish to set any of the 5 optional named parameters.</p>
 <pre class="r"><code>metrics &lt;- c(&quot;visits&quot;,&quot;uniquevisitors&quot;,&quot;pageviews&quot;)
 date.granularity &lt;- &quot;hour&quot;
@@ -708,98 +710,98 @@ overtime.data &lt;- QueueOvertime(reportsuite.id,
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2017-03-01 00:00:00</td>
-<td align="left">Wed. 1 Mar. 2017</td>
-<td align="right">2017</td>
+<td align="left">2016-03-01 00:00:00</td>
+<td align="left">Tue. 1 Mar. 2016</td>
+<td align="right">2016</td>
 <td align="right">3</td>
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="left">Visit_Natural_Search</td>
 <td align="left">Visits from Natural Search</td>
-<td align="right">40</td>
-<td align="right">40</td>
-<td align="right">48</td>
+<td align="right">41</td>
+<td align="right">41</td>
+<td align="right">44</td>
 </tr>
 <tr class="even">
-<td align="left">2017-03-01 01:00:00</td>
-<td align="left">Wed. 1 Mar. 2017 (Hour 1)</td>
-<td align="right">2017</td>
+<td align="left">2016-03-01 01:00:00</td>
+<td align="left">Tue. 1 Mar. 2016 (Hour 1)</td>
+<td align="right">2016</td>
 <td align="right">3</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="left">Visit_Natural_Search</td>
 <td align="left">Visits from Natural Search</td>
-<td align="right">58</td>
-<td align="right">58</td>
-<td align="right">75</td>
+<td align="right">42</td>
+<td align="right">42</td>
+<td align="right">46</td>
 </tr>
 <tr class="odd">
-<td align="left">2017-03-01 02:00:00</td>
-<td align="left">Wed. 1 Mar. 2017 (Hour 2)</td>
-<td align="right">2017</td>
+<td align="left">2016-03-01 02:00:00</td>
+<td align="left">Tue. 1 Mar. 2016 (Hour 2)</td>
+<td align="right">2016</td>
 <td align="right">3</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="left">Visit_Natural_Search</td>
 <td align="left">Visits from Natural Search</td>
-<td align="right">44</td>
-<td align="right">43</td>
-<td align="right">62</td>
+<td align="right">59</td>
+<td align="right">59</td>
+<td align="right">79</td>
 </tr>
 <tr class="even">
-<td align="left">2017-03-01 03:00:00</td>
-<td align="left">Wed. 1 Mar. 2017 (Hour 3)</td>
-<td align="right">2017</td>
+<td align="left">2016-03-01 03:00:00</td>
+<td align="left">Tue. 1 Mar. 2016 (Hour 3)</td>
+<td align="right">2016</td>
 <td align="right">3</td>
 <td align="right">1</td>
 <td align="right">3</td>
 <td align="left">Visit_Natural_Search</td>
 <td align="left">Visits from Natural Search</td>
-<td align="right">65</td>
-<td align="right">65</td>
-<td align="right">84</td>
+<td align="right">62</td>
+<td align="right">62</td>
+<td align="right">72</td>
 </tr>
 <tr class="odd">
-<td align="left">2017-03-01 04:00:00</td>
-<td align="left">Wed. 1 Mar. 2017 (Hour 4)</td>
-<td align="right">2017</td>
+<td align="left">2016-03-01 04:00:00</td>
+<td align="left">Tue. 1 Mar. 2016 (Hour 4)</td>
+<td align="right">2016</td>
 <td align="right">3</td>
 <td align="right">1</td>
 <td align="right">4</td>
 <td align="left">Visit_Natural_Search</td>
 <td align="left">Visits from Natural Search</td>
-<td align="right">65</td>
-<td align="right">65</td>
-<td align="right">84</td>
+<td align="right">49</td>
+<td align="right">49</td>
+<td align="right">66</td>
 </tr>
 <tr class="even">
-<td align="left">2017-03-01 05:00:00</td>
-<td align="left">Wed. 1 Mar. 2017 (Hour 5)</td>
-<td align="right">2017</td>
+<td align="left">2016-03-01 05:00:00</td>
+<td align="left">Tue. 1 Mar. 2016 (Hour 5)</td>
+<td align="right">2016</td>
 <td align="right">3</td>
 <td align="right">1</td>
 <td align="right">5</td>
 <td align="left">Visit_Natural_Search</td>
 <td align="left">Visits from Natural Search</td>
-<td align="right">79</td>
-<td align="right">79</td>
-<td align="right">94</td>
+<td align="right">61</td>
+<td align="right">61</td>
+<td align="right">72</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>str(overtime.data)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    192 obs. of  11 variables:
-##  $ datetime      : POSIXct, format: &quot;2017-03-01 00:00:00&quot; &quot;2017-03-01 01:00:00&quot; ...
-##  $ name          : chr  &quot;Wed.  1 Mar. 2017&quot; &quot;Wed.  1 Mar. 2017 (Hour 1)&quot; &quot;Wed.  1 Mar. 2017 (Hour 2)&quot; &quot;Wed.  1 Mar. 2017 (Hour 3)&quot; ...
-##  $ year          : int  2017 2017 2017 2017 2017 2017 2017 2017 2017 2017 ...
+##  $ datetime      : POSIXct, format: &quot;2016-03-01 00:00:00&quot; &quot;2016-03-01 01:00:00&quot; ...
+##  $ name          : chr  &quot;Tue.  1 Mar. 2016&quot; &quot;Tue.  1 Mar. 2016 (Hour 1)&quot; &quot;Tue.  1 Mar. 2016 (Hour 2)&quot; &quot;Tue.  1 Mar. 2016 (Hour 3)&quot; ...
+##  $ year          : int  2016 2016 2016 2016 2016 2016 2016 2016 2016 2016 ...
 ##  $ month         : int  3 3 3 3 3 3 3 3 3 3 ...
 ##  $ day           : int  1 1 1 1 1 1 1 1 1 1 ...
 ##  $ hour          : int  0 1 2 3 4 5 6 7 8 9 ...
 ##  $ segment.id    : chr  &quot;Visit_Natural_Search&quot; &quot;Visit_Natural_Search&quot; &quot;Visit_Natural_Search&quot; &quot;Visit_Natural_Search&quot; ...
 ##  $ segment.name  : chr  &quot;Visits from Natural Search&quot; &quot;Visits from Natural Search&quot; &quot;Visits from Natural Search&quot; &quot;Visits from Natural Search&quot; ...
-##  $ visits        : num  40 58 44 65 65 79 86 109 117 73 ...
-##  $ uniquevisitors: num  40 58 43 65 65 79 86 107 117 73 ...
-##  $ pageviews     : num  48 75 62 84 84 94 113 130 204 107 ...</code></pre>
+##  $ visits        : num  41 42 59 62 49 61 80 91 96 62 ...
+##  $ uniquevisitors: num  41 42 59 62 49 61 80 91 95 61 ...
+##  $ pageviews     : num  44 46 79 72 66 72 105 108 116 72 ...</code></pre>
 </div>
 </div>
 <div id="ranked" class="section level2">
@@ -832,47 +834,47 @@ ranked.data &lt;- QueueRanked(reportsuite.id, date.from, date.to, metrics, eleme
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
+<td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
 <td align="left">United States</td>
 <td align="left">New York (New York, United States)</td>
-<td align="right">34</td>
-<td align="right">32</td>
-<td align="right">35</td>
+<td align="right">22</td>
+<td align="right">22</td>
+<td align="right">23</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
+<td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
 <td align="left">United States</td>
 <td align="left">Houston (Texas, United States)</td>
-<td align="right">21</td>
-<td align="right">21</td>
-<td align="right">22</td>
+<td align="right">12</td>
+<td align="right">12</td>
+<td align="right">12</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
+<td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
 <td align="left">United States</td>
 <td align="left">Los Angeles (California, United States)</td>
-<td align="right">16</td>
-<td align="right">14</td>
-<td align="right">19</td>
+<td align="right">12</td>
+<td align="right">11</td>
+<td align="right">13</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
+<td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
 <td align="left">United States</td>
-<td align="left">Minneapolis (Minnesota, United States)</td>
-<td align="right">12</td>
-<td align="right">8</td>
+<td align="left">San Diego (California, United States)</td>
+<td align="right">11</td>
+<td align="right">10</td>
 <td align="right">12</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -880,24 +882,24 @@ ranked.data &lt;- QueueRanked(reportsuite.id, date.from, date.to, metrics, eleme
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
+<td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
 <td align="left">United States</td>
-<td align="left">Dallas (Texas, United States)</td>
-<td align="right">11</td>
-<td align="right">11</td>
-<td align="right">12</td>
+<td align="left">Seattle (Washington, United States)</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">8</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
+<td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
 <td align="left">United States</td>
-<td align="left">St Paul (Minnesota, United States)</td>
-<td align="right">11</td>
-<td align="right">10</td>
-<td align="right">11</td>
+<td align="left">San Francisco (California, United States)</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">8</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="left"></td>
@@ -906,13 +908,13 @@ ranked.data &lt;- QueueRanked(reportsuite.id, date.from, date.to, metrics, eleme
 </tbody>
 </table>
 <pre class="r"><code>str(ranked.data)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    1649 obs. of  10 variables:
-##  $ page          : chr  &quot;excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/&quot; &quot;excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/&quot; &quot;excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/&quot; &quot;excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/&quot; ...
+<pre><code>## &#39;data.frame&#39;:    1775 obs. of  10 variables:
+##  $ page          : chr  &quot;excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/&quot; &quot;excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/&quot; &quot;excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/&quot; &quot;excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/&quot; ...
 ##  $ geoCountry    : chr  &quot;United States&quot; &quot;United States&quot; &quot;United States&quot; &quot;United States&quot; ...
-##  $ geoCity       : chr  &quot;New York (New York, United States)&quot; &quot;Houston (Texas, United States)&quot; &quot;Los Angeles (California, United States)&quot; &quot;Minneapolis (Minnesota, United States)&quot; ...
-##  $ visits        : num  34 21 16 12 11 11 10 10 9 9 ...
-##  $ uniquevisitors: num  32 21 14 8 11 10 10 10 9 9 ...
-##  $ pageviews     : num  35 22 19 12 12 11 11 10 10 9 ...
+##  $ geoCity       : chr  &quot;New York (New York, United States)&quot; &quot;Houston (Texas, United States)&quot; &quot;Los Angeles (California, United States)&quot; &quot;San Diego (California, United States)&quot; ...
+##  $ visits        : num  22 12 12 11 8 8 8 7 7 7 ...
+##  $ uniquevisitors: num  22 12 11 10 8 8 8 7 6 5 ...
+##  $ pageviews     : num  23 12 13 12 8 8 8 7 7 7 ...
 ##  $ event1        : num  0 0 0 0 0 0 0 0 0 0 ...
 ##  $ event2        : num  0 0 0 0 0 0 0 0 0 0 ...
 ##  $ segment.id    : Factor w/ 1 level &quot;&quot;: 1 1 1 1 1 1 1 1 1 1 ...
@@ -973,70 +975,70 @@ knitr::kable(head(trended.data))</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2017-03-01</td>
-<td align="left">excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
+<td align="left">2016-03-01</td>
+<td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
 <td align="left">United States</td>
 <td align="left">New York (New York, United States)</td>
-<td align="right">8</td>
-<td align="right">7</td>
-<td align="right">8</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">5</td>
 <td align="right">0</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">2017-03-01</td>
-<td align="left">excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
-<td align="left">United States</td>
-<td align="left">Dallas (Texas, United States)</td>
-<td align="right">4</td>
-<td align="right">4</td>
-<td align="right">4</td>
-<td align="right">0</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">2017-03-01</td>
-<td align="left">excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
-<td align="left">United States</td>
-<td align="left">Brooklyn (New York, United States)</td>
-<td align="right">3</td>
-<td align="right">3</td>
-<td align="right">4</td>
-<td align="right">0</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">2017-03-01</td>
-<td align="left">excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
-<td align="left">United States</td>
-<td align="left">Minneapolis (Minnesota, United States)</td>
-<td align="right">3</td>
-<td align="right">2</td>
-<td align="right">3</td>
-<td align="right">0</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">2017-03-01</td>
-<td align="left">excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
+<td align="left">2016-03-01</td>
+<td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
 <td align="left">United States</td>
 <td align="left">Charlotte (North Carolina, United States)</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">2016-03-01</td>
+<td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
+<td align="left">United States</td>
+<td align="left">Seattle (Washington, United States)</td>
 <td align="right">3</td>
-<td align="right">2</td>
+<td align="right">3</td>
 <td align="right">3</td>
 <td align="right">0</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">2017-03-01</td>
-<td align="left">excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
+<td align="left">2016-03-01</td>
+<td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
 <td align="left">United States</td>
-<td align="left">Fairfax (Virginia, United States)</td>
+<td align="left">Phoenix (Arizona, United States)</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">2016-03-01</td>
+<td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
+<td align="left">United States</td>
+<td align="left">Holmesville (Ohio, United States)</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">2016-03-01</td>
+<td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
+<td align="left">United States</td>
+<td align="left">Richmond (Virginia, United States)</td>
 <td align="right">2</td>
 <td align="right">2</td>
 <td align="right">2</td>
@@ -1047,14 +1049,14 @@ knitr::kable(head(trended.data))</code></pre>
 </tbody>
 </table>
 <pre class="r"><code>str(trended.data)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    2402 obs. of  10 variables:
-##  $ datetime      : Date, format: &quot;2017-03-01&quot; &quot;2017-03-01&quot; ...
-##  $ page          : chr  &quot;excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/&quot; &quot;excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/&quot; &quot;excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/&quot; &quot;excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/&quot; ...
+<pre><code>## &#39;data.frame&#39;:    2648 obs. of  10 variables:
+##  $ datetime      : Date, format: &quot;2016-03-01&quot; &quot;2016-03-01&quot; ...
+##  $ page          : chr  &quot;excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/&quot; &quot;excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/&quot; &quot;excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/&quot; &quot;excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/&quot; ...
 ##  $ geoCountry    : chr  &quot;United States&quot; &quot;United States&quot; &quot;United States&quot; &quot;United States&quot; ...
-##  $ geoCity       : chr  &quot;New York (New York, United States)&quot; &quot;Dallas (Texas, United States)&quot; &quot;Brooklyn (New York, United States)&quot; &quot;Minneapolis (Minnesota, United States)&quot; ...
-##  $ visits        : num  8 4 3 3 3 2 2 2 2 2 ...
-##  $ uniquevisitors: num  7 4 3 2 2 2 2 2 2 2 ...
-##  $ pageviews     : num  8 4 4 3 3 2 2 2 2 2 ...
+##  $ geoCity       : chr  &quot;New York (New York, United States)&quot; &quot;Charlotte (North Carolina, United States)&quot; &quot;Seattle (Washington, United States)&quot; &quot;Phoenix (Arizona, United States)&quot; ...
+##  $ visits        : num  5 4 3 3 2 2 2 2 2 2 ...
+##  $ uniquevisitors: num  5 4 3 1 2 2 2 2 2 1 ...
+##  $ pageviews     : num  5 4 3 3 2 2 2 2 2 4 ...
 ##  $ event1        : num  0 0 0 0 0 0 0 0 0 0 ...
 ##  $ segment.id    : Factor w/ 1 level &quot;&quot;: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ segment.name  : Factor w/ 1 level &quot;&quot;: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
@@ -1115,58 +1117,58 @@ pathing.data &lt;- QueuePathing(reportsuite.id,
 <td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
 <td align="left">excel-tips/excel-dropdowns-done-right/</td>
 <td align="left">Exited Site</td>
-<td align="right">148</td>
+<td align="right">171</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
-<td align="left">excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
-<td align="left">Exited Site</td>
-<td align="right">10</td>
+<td align="left">excel-tips/excel-dropdowns-done-right/</td>
+<td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
+<td align="right">12</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
-<td align="left">excel-tips/excel-dropdowns-done-right/</td>
-<td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
-<td align="right">10</td>
+<td align="left">excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
+<td align="left">Exited Site</td>
+<td align="right">11</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
-<td align="left">excel-tips/excel-dropdowns-done-right/</td>
-<td align="left">excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
+<td align="left">home</td>
+<td align="left">Exited Site</td>
 <td align="right">3</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
-<td align="left">home</td>
+<td align="left">conferencescommunity/demystified-days-has-been-postponed/</td>
 <td align="left">Exited Site</td>
-<td align="right">1</td>
+<td align="right">2</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
-<td align="left">category/excel-tips/</td>
-<td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
-<td align="right">1</td>
+<td align="left">excel-tips/excel-dropdowns-done-right/</td>
+<td align="left">home</td>
+<td align="right">2</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code>str(pathing.data)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    12 obs. of  6 variables:
+<pre><code>## &#39;data.frame&#39;:    18 obs. of  6 variables:
 ##  $ step.1      : chr  &quot;excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/&quot; &quot;excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/&quot; &quot;excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/&quot; &quot;excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/&quot; ...
-##  $ step.2      : chr  &quot;excel-tips/excel-dropdowns-done-right/&quot; &quot;excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/&quot; &quot;excel-tips/excel-dropdowns-done-right/&quot; &quot;excel-tips/excel-dropdowns-done-right/&quot; ...
-##  $ step.3      : chr  &quot;Exited Site&quot; &quot;Exited Site&quot; &quot;excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/&quot; &quot;excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/&quot; ...
-##  $ count       : num  148 10 10 3 1 1 1 1 1 1 ...
+##  $ step.2      : chr  &quot;excel-tips/excel-dropdowns-done-right/&quot; &quot;excel-tips/excel-dropdowns-done-right/&quot; &quot;excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/&quot; &quot;home&quot; ...
+##  $ step.3      : chr  &quot;Exited Site&quot; &quot;excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/&quot; &quot;Exited Site&quot; &quot;Exited Site&quot; ...
+##  $ count       : num  171 12 11 3 2 2 2 2 1 1 ...
 ##  $ segment.id  : Factor w/ 1 level &quot;&quot;: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ segment.name: Factor w/ 1 level &quot;&quot;: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
 </div>
@@ -1201,14 +1203,14 @@ fallout.data &lt;- QueueFallout(reportsuite.id, date.from, date.to, metrics, ele
 <tr class="odd">
 <td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
 <td align="left"><a href="http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges" class="uri">http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges</a></td>
-<td align="left">1309</td>
+<td align="left">1692</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">excel-tips/excel-dropdowns-done-right/</td>
 <td align="left"><a href="http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right" class="uri">http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right</a></td>
-<td align="left">161</td>
+<td align="left">190</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -1226,8 +1228,8 @@ fallout.data &lt;- QueueFallout(reportsuite.id, date.from, date.to, metrics, ele
 ##  $ name        : chr  &quot;excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/&quot; &quot;excel-tips/excel-dropdowns-done-right/&quot; &quot;excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/&quot;
 ##  $ url         : chr  &quot;http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges&quot; &quot;http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right&quot; &quot;http://analyticsdemystified.com/excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2&quot;
 ##  $ pageviews   :List of 3
-##   ..$ : chr &quot;1309&quot;
-##   ..$ : chr &quot;161&quot;
+##   ..$ : chr &quot;1692&quot;
+##   ..$ : chr &quot;190&quot;
 ##   ..$ : chr &quot;3&quot;
 ##  $ segment.id  : Factor w/ 1 level &quot;&quot;: 1 1 1
 ##  $ segment.name: Factor w/ 1 level &quot;&quot;: 1 1 1</code></pre>
@@ -1318,7 +1320,7 @@ post.period &lt;- as.Date(c(&quot;2016-07-11&quot;,&quot;2016-09-25&quot;))
 impact &lt;- CausalImpact(model_zoo, pre.period, post.period) </code></pre>
 <p>CausalImpact includes a verbal report and plot to show its findings:</p>
 <pre class="r"><code>impact$report</code></pre>
-<pre><code>## [1] &quot;\n\nDuring the post-intervention period, the response variable had an average value of approx. 959.71. In the absence of an intervention, we would have expected an average response of 846.75. The 95% interval of this counterfactual prediction is [724.13, 965.68]. Subtracting this prediction from the observed response yields an estimate of the causal effect the intervention had on the response variable. This effect is 112.97 with a 95% interval of [-5.96, 235.58]. For a discussion of the significance of this effect, see below.\n\nSumming up the individual data points during the post-intervention period (which can only sometimes be meaningfully interpreted), the response variable had an overall value of 73.90K. Had the intervention not taken place, we would have expected a sum of 65.20K. The 95% interval of this prediction is [55.76K, 74.36K].\n\nThe above results are given in terms of absolute numbers. In relative terms, the response variable showed an increase of +13%. The 95% interval of this percentage is [-1%, +28%].\n\nThis means that, although the intervention appears to have caused a positive effect, this effect is not statistically significant when considering the entire post-intervention period as a whole. Individual days or shorter stretches within the intervention period may of course still have had a significant effect, as indicated whenever the lower limit of the impact time series (lower plot) was above zero. The apparent effect could be the result of random fluctuations that are unrelated to the intervention. This is often the case when the intervention period is very long and includes much of the time when the effect has already worn off. It can also be the case when the intervention period is too short to distinguish the signal from the noise. Finally, failing to find a significant effect can happen when there are not enough control variables or when these variables do not correlate well with the response variable during the learning period.\n\nThe probability of obtaining this effect by chance is very small (Bayesian one-sided tail-area probability p = 0.032). This means the causal effect can be considered statistically significant.&quot;</code></pre>
+<pre><code>## [1] &quot;\n\nDuring the post-intervention period, the response variable had an average value of approx. 959.71. In the absence of an intervention, we would have expected an average response of 846.75. The 95% interval of this counterfactual prediction is [734.21, 966.85]. Subtracting this prediction from the observed response yields an estimate of the causal effect the intervention had on the response variable. This effect is 112.97 with a 95% interval of [-7.13, 225.50]. For a discussion of the significance of this effect, see below.\n\nSumming up the individual data points during the post-intervention period (which can only sometimes be meaningfully interpreted), the response variable had an overall value of 73.90K. Had the intervention not taken place, we would have expected a sum of 65.20K. The 95% interval of this prediction is [56.53K, 74.45K].\n\nThe above results are given in terms of absolute numbers. In relative terms, the response variable showed an increase of +13%. The 95% interval of this percentage is [-1%, +27%].\n\nThis means that, although the intervention appears to have caused a positive effect, this effect is not statistically significant when considering the entire post-intervention period as a whole. Individual days or shorter stretches within the intervention period may of course still have had a significant effect, as indicated whenever the lower limit of the impact time series (lower plot) was above zero. The apparent effect could be the result of random fluctuations that are unrelated to the intervention. This is often the case when the intervention period is very long and includes much of the time when the effect has already worn off. It can also be the case when the intervention period is too short to distinguish the signal from the noise. Finally, failing to find a significant effect can happen when there are not enough control variables or when these variables do not correlate well with the response variable during the learning period.\n\nThe probability of obtaining this effect by chance is very small (Bayesian one-sided tail-area probability p = 0.035). This means the causal effect can be considered statistically significant.&quot;</code></pre>
 <pre class="r"><code>plot(impact)</code></pre>
 <p><img src="api-adobe-analytics_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 </div>
@@ -1345,8 +1347,8 @@ dygraph(data=plot_data[,c(&#39;cum.effect&#39;, &#39;cum.effect.lower&#39;, &#39
   dyRangeSelector() %&gt;%
   dyEvent(x = as.Date(&quot;2016-03-10&quot;), &quot;TV Campaign&quot;) %&gt;%
   dySeries(c(&#39;cum.effect.lower&#39;, &#39;cum.effect&#39;, &#39;cum.effect.upper&#39;), label=&#39;Cumulative Effect&#39;)</code></pre>
-<div id="htmlwidget-c395b9a7f4401f9f6660" style="width:672px;height:480px;" class="dygraphs html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c395b9a7f4401f9f6660">{"x":{"attrs":{"title":"Cumulative Impact of Event (95% confidence level)","labels":["day","Cumulative Effect"],"legend":"auto","retainDateWindow":false,"axes":{"x":{"pixelsPerLabel":60}},"showRangeSelector":true,"rangeSelectorHeight":40,"rangeSelectorPlotFillColor":" #A7B1C4","rangeSelectorPlotStrokeColor":"#808FAB","interactionModel":"Dygraph.Interaction.defaultModel","customBars":true,"series":{"Cumulative Effect":{"axis":"y"}}},"scale":"daily","group":"ci","annotations":[],"shadings":[],"events":[{"pos":"2016-03-10T00:00:00.000Z","label":"TV Campaign","labelLoc":"top","color":"black","strokePattern":[7,3],"axis":"x"}],"format":"date","data":[["2016-01-01T00:00:00.000Z","2016-01-02T00:00:00.000Z","2016-01-03T00:00:00.000Z","2016-01-04T00:00:00.000Z","2016-01-05T00:00:00.000Z","2016-01-06T00:00:00.000Z","2016-01-07T00:00:00.000Z","2016-01-08T00:00:00.000Z","2016-01-09T00:00:00.000Z","2016-01-10T00:00:00.000Z","2016-01-11T00:00:00.000Z","2016-01-12T00:00:00.000Z","2016-01-13T00:00:00.000Z","2016-01-14T00:00:00.000Z","2016-01-15T00:00:00.000Z","2016-01-16T00:00:00.000Z","2016-01-17T00:00:00.000Z","2016-01-18T00:00:00.000Z","2016-01-19T00:00:00.000Z","2016-01-20T00:00:00.000Z","2016-01-21T00:00:00.000Z","2016-01-22T00:00:00.000Z","2016-01-23T00:00:00.000Z","2016-01-24T00:00:00.000Z","2016-01-25T00:00:00.000Z","2016-01-26T00:00:00.000Z","2016-01-27T00:00:00.000Z","2016-01-28T00:00:00.000Z","2016-01-29T00:00:00.000Z","2016-01-30T00:00:00.000Z","2016-01-31T00:00:00.000Z","2016-02-01T00:00:00.000Z","2016-02-02T00:00:00.000Z","2016-02-03T00:00:00.000Z","2016-02-04T00:00:00.000Z","2016-02-05T00:00:00.000Z","2016-02-06T00:00:00.000Z","2016-02-07T00:00:00.000Z","2016-02-08T00:00:00.000Z","2016-02-09T00:00:00.000Z","2016-02-10T00:00:00.000Z","2016-02-11T00:00:00.000Z","2016-02-12T00:00:00.000Z","2016-02-13T00:00:00.000Z","2016-02-14T00:00:00.000Z","2016-02-15T00:00:00.000Z","2016-02-16T00:00:00.000Z","2016-02-17T00:00:00.000Z","2016-02-18T00:00:00.000Z","2016-02-19T00:00:00.000Z","2016-02-20T00:00:00.000Z","2016-02-21T00:00:00.000Z","2016-02-22T00:00:00.000Z","2016-02-23T00:00:00.000Z","2016-02-24T00:00:00.000Z","2016-02-25T00:00:00.000Z","2016-02-26T00:00:00.000Z","2016-02-27T00:00:00.000Z","2016-02-28T00:00:00.000Z","2016-02-29T00:00:00.000Z","2016-03-01T00:00:00.000Z","2016-03-02T00:00:00.000Z","2016-03-03T00:00:00.000Z","2016-03-04T00:00:00.000Z","2016-03-05T00:00:00.000Z","2016-03-06T00:00:00.000Z","2016-03-07T00:00:00.000Z","2016-03-08T00:00:00.000Z","2016-03-09T00:00:00.000Z","2016-03-10T00:00:00.000Z","2016-03-11T00:00:00.000Z","2016-03-12T00:00:00.000Z","2016-03-13T00:00:00.000Z","2016-03-14T00:00:00.000Z","2016-03-15T00:00:00.000Z","2016-03-16T00:00:00.000Z","2016-03-17T00:00:00.000Z","2016-03-18T00:00:00.000Z","2016-03-19T00:00:00.000Z","2016-03-20T00:00:00.000Z","2016-03-21T00:00:00.000Z","2016-03-22T00:00:00.000Z","2016-03-23T00:00:00.000Z","2016-03-24T00:00:00.000Z","2016-03-25T00:00:00.000Z","2016-03-26T00:00:00.000Z","2016-03-27T00:00:00.000Z","2016-03-28T00:00:00.000Z","2016-03-29T00:00:00.000Z","2016-03-30T00:00:00.000Z","2016-03-31T00:00:00.000Z","2016-04-01T00:00:00.000Z","2016-04-02T00:00:00.000Z","2016-04-03T00:00:00.000Z","2016-04-04T00:00:00.000Z","2016-04-05T00:00:00.000Z","2016-04-06T00:00:00.000Z","2016-04-07T00:00:00.000Z","2016-04-08T00:00:00.000Z","2016-04-09T00:00:00.000Z","2016-04-10T00:00:00.000Z","2016-04-11T00:00:00.000Z","2016-04-12T00:00:00.000Z","2016-04-13T00:00:00.000Z","2016-04-14T00:00:00.000Z","2016-04-15T00:00:00.000Z","2016-04-16T00:00:00.000Z","2016-04-17T00:00:00.000Z","2016-04-18T00:00:00.000Z","2016-04-19T00:00:00.000Z","2016-04-20T00:00:00.000Z","2016-04-21T00:00:00.000Z","2016-04-22T00:00:00.000Z","2016-04-23T00:00:00.000Z","2016-04-24T00:00:00.000Z","2016-04-25T00:00:00.000Z","2016-04-26T00:00:00.000Z","2016-04-27T00:00:00.000Z","2016-04-28T00:00:00.000Z","2016-04-29T00:00:00.000Z","2016-04-30T00:00:00.000Z","2016-05-01T00:00:00.000Z","2016-05-02T00:00:00.000Z","2016-05-03T00:00:00.000Z","2016-05-04T00:00:00.000Z","2016-05-05T00:00:00.000Z","2016-05-06T00:00:00.000Z","2016-05-07T00:00:00.000Z","2016-05-08T00:00:00.000Z","2016-05-09T00:00:00.000Z","2016-05-10T00:00:00.000Z","2016-05-11T00:00:00.000Z","2016-05-12T00:00:00.000Z","2016-05-13T00:00:00.000Z","2016-05-14T00:00:00.000Z","2016-05-15T00:00:00.000Z","2016-05-16T00:00:00.000Z","2016-05-17T00:00:00.000Z","2016-05-18T00:00:00.000Z","2016-05-19T00:00:00.000Z","2016-05-20T00:00:00.000Z","2016-05-21T00:00:00.000Z","2016-05-22T00:00:00.000Z","2016-05-23T00:00:00.000Z","2016-05-24T00:00:00.000Z","2016-05-25T00:00:00.000Z","2016-05-26T00:00:00.000Z","2016-05-27T00:00:00.000Z","2016-05-28T00:00:00.000Z","2016-05-29T00:00:00.000Z","2016-05-30T00:00:00.000Z","2016-05-31T00:00:00.000Z","2016-06-01T00:00:00.000Z","2016-06-02T00:00:00.000Z","2016-06-03T00:00:00.000Z","2016-06-04T00:00:00.000Z","2016-06-05T00:00:00.000Z","2016-06-06T00:00:00.000Z","2016-06-07T00:00:00.000Z","2016-06-08T00:00:00.000Z","2016-06-09T00:00:00.000Z","2016-06-10T00:00:00.000Z","2016-06-11T00:00:00.000Z","2016-06-12T00:00:00.000Z","2016-06-13T00:00:00.000Z","2016-06-14T00:00:00.000Z","2016-06-15T00:00:00.000Z","2016-06-16T00:00:00.000Z","2016-06-17T00:00:00.000Z","2016-06-18T00:00:00.000Z","2016-06-19T00:00:00.000Z","2016-06-20T00:00:00.000Z","2016-06-21T00:00:00.000Z","2016-06-22T00:00:00.000Z","2016-06-23T00:00:00.000Z","2016-06-24T00:00:00.000Z","2016-06-25T00:00:00.000Z","2016-06-26T00:00:00.000Z","2016-06-27T00:00:00.000Z","2016-06-28T00:00:00.000Z","2016-06-29T00:00:00.000Z","2016-06-30T00:00:00.000Z","2016-07-01T00:00:00.000Z","2016-07-02T00:00:00.000Z","2016-07-03T00:00:00.000Z","2016-07-04T00:00:00.000Z","2016-07-05T00:00:00.000Z","2016-07-06T00:00:00.000Z","2016-07-07T00:00:00.000Z","2016-07-08T00:00:00.000Z","2016-07-09T00:00:00.000Z","2016-07-10T00:00:00.000Z","2016-07-11T00:00:00.000Z","2016-07-12T00:00:00.000Z","2016-07-13T00:00:00.000Z","2016-07-14T00:00:00.000Z","2016-07-15T00:00:00.000Z","2016-07-16T00:00:00.000Z","2016-07-17T00:00:00.000Z","2016-07-18T00:00:00.000Z","2016-07-19T00:00:00.000Z","2016-07-20T00:00:00.000Z","2016-07-21T00:00:00.000Z","2016-07-22T00:00:00.000Z","2016-07-23T00:00:00.000Z","2016-07-24T00:00:00.000Z","2016-07-25T00:00:00.000Z","2016-07-26T00:00:00.000Z","2016-07-27T00:00:00.000Z","2016-07-28T00:00:00.000Z","2016-07-29T00:00:00.000Z","2016-07-30T00:00:00.000Z","2016-07-31T00:00:00.000Z","2016-08-01T00:00:00.000Z","2016-08-02T00:00:00.000Z","2016-08-03T00:00:00.000Z","2016-08-04T00:00:00.000Z","2016-08-05T00:00:00.000Z","2016-08-06T00:00:00.000Z","2016-08-07T00:00:00.000Z","2016-08-08T00:00:00.000Z","2016-08-09T00:00:00.000Z","2016-08-10T00:00:00.000Z","2016-08-11T00:00:00.000Z","2016-08-12T00:00:00.000Z","2016-08-13T00:00:00.000Z","2016-08-14T00:00:00.000Z","2016-08-15T00:00:00.000Z","2016-08-16T00:00:00.000Z","2016-08-17T00:00:00.000Z","2016-08-18T00:00:00.000Z","2016-08-19T00:00:00.000Z","2016-08-20T00:00:00.000Z","2016-08-21T00:00:00.000Z","2016-08-22T00:00:00.000Z","2016-08-23T00:00:00.000Z","2016-08-24T00:00:00.000Z","2016-08-25T00:00:00.000Z","2016-08-26T00:00:00.000Z","2016-08-27T00:00:00.000Z","2016-08-28T00:00:00.000Z","2016-08-29T00:00:00.000Z","2016-08-30T00:00:00.000Z","2016-08-31T00:00:00.000Z","2016-09-01T00:00:00.000Z","2016-09-02T00:00:00.000Z","2016-09-03T00:00:00.000Z","2016-09-04T00:00:00.000Z","2016-09-05T00:00:00.000Z","2016-09-06T00:00:00.000Z","2016-09-07T00:00:00.000Z","2016-09-08T00:00:00.000Z","2016-09-09T00:00:00.000Z","2016-09-10T00:00:00.000Z","2016-09-11T00:00:00.000Z","2016-09-12T00:00:00.000Z","2016-09-13T00:00:00.000Z","2016-09-14T00:00:00.000Z","2016-09-15T00:00:00.000Z","2016-09-16T00:00:00.000Z","2016-09-17T00:00:00.000Z","2016-09-18T00:00:00.000Z","2016-09-19T00:00:00.000Z","2016-09-20T00:00:00.000Z","2016-09-21T00:00:00.000Z","2016-09-22T00:00:00.000Z","2016-09-23T00:00:00.000Z","2016-09-24T00:00:00.000Z","2016-09-25T00:00:00.000Z","2016-09-26T00:00:00.000Z","2016-09-27T00:00:00.000Z","2016-09-28T00:00:00.000Z","2016-09-29T00:00:00.000Z","2016-09-30T00:00:00.000Z"],[[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[-363.534599271778,460.611727017356,1220.83988856309],[-275.349746750871,887.220965508022,1932.77192949677],[16.1264813875314,1352.89181481139,2676.42046077974],[346.450064941077,1805.74684621065,3380.98969468963],[221.122809033666,1894.57293970419,3584.86665971273],[-662.738255858669,1329.328374317,3207.06335738808],[-1231.43081454418,917.989320074092,2830.58760460536],[-1012.82850071849,1356.7665457283,3476.04675421231],[-580.106484306161,1838.54254181265,4124.43834159769],[-261.748911404022,2310.30983402098,4726.63081572799],[123.567441845371,2743.08551019983,5412.86185413427],[-43.2047003680782,2814.81535069218,5560.18713243],[-635.012413776742,2215.40554507395,5129.78543512695],[-1219.21584014661,1766.81925433112,4707.82500328965],[-832.640217496431,2290.07549579733,5322.13328033582],[-511.264428466966,2801.29453791367,6116.69657976527],[-83.3962137054186,3310.67568009684,6673.35706827065],[279.824086555745,3718.23383820322,7131.36622436819],[89.7002563847054,3760.6332554954,7286.90848082525],[-519.301994567038,3174.93617370838,6951.83789013216],[-1121.59838437059,2707.27235396398,6536.05823575467],[-882.398184188933,3073.55011560654,7105.73635328385],[-483.166785103211,3565.98159413872,7626.27461793902],[-232.346585947147,4073.55382478953,8323.6497947645],[426.118500544166,4566.21393101371,8918.50079238921],[352.692269658786,4653.29253793898,9105.01380628868],[-271.37795312333,4077.43505070574,8557.05488637264],[-806.097808496794,3655.66620310739,8101.83670325886],[-547.806080095295,4090.77544566165,8691.52702385955],[-143.641417193605,4685.81041602572,9361.12836377459],[424.40571497698,5236.75987791159,9981.92716249873],[692.21656979018,5650.37764099796,10829.7627959114],[729.623003940709,5768.87302968357,10902.2741269923],[123.963569374464,5185.3100243939,10244.2533037461],[-366.488385225413,4737.77502830952,9915.0156283713],[-280.705524777062,4996.34312229027,10432.3882699733],[23.1821724976762,5448.92755919581,10832.567043826],[289.187650455366,5883.35990719113,11385.0850132902],[575.546666917071,6256.76534859277,11964.5220463008],[550.487090103852,6375.11357053596,12161.7496747646],[-135.877133721107,5791.45512258113,11813.2920560384],[-520.693219221139,5370.86079718958,11619.2678350047],[-164.030457025481,5741.18059555441,12047.137505864],[50.4959088767646,6206.47583478803,12639.8481671654],[598.509701686125,6740.8008054556,13205.663547072],[707.251560472767,7102.83897723851,13733.5384617484],[799.302283568832,7207.72632310563,13892.0755947683],[114.62740828676,6640.60571568526,13389.3888637347],[-409.690563732293,6217.54689992202,13265.0783376377],[-171.274878062424,6565.59570436302,13626.4266652633],[56.5082863983698,7002.57584888887,13809.4677964445],[479.849086419272,7431.45234691486,14442.362555597],[373.532468262012,7487.27538453194,14507.7377501562],[239.881364293251,7483.05033905088,14704.5227432114],[-415.494113800349,6881.91742069807,14061.8063336766],[-1257.29681216943,6388.69545265261,13682.3475390369],[-1430.12093988457,6244.32073011689,13623.9754859736],[-1022.77487082322,6586.02845610317,13991.760045962],[-792.402427001129,7024.45196729695,14597.4274953025],[-479.472934393852,7425.8805873284,14810.8798881081],[-265.318837136147,7535.12265353982,15108.6605674206],[-965.081286186585,6947.36485533422,14488.5316834805],[-1410.03800888351,6505.75574098006,14357.693135233],[-1144.95160986134,6861.0851376612,14760.920894298],[-673.850897304132,7289.49877648294,15349.6822637368],[-370.997535376402,7717.96326973138,15937.9433903973],[-110.605764146196,8161.62270527551,16392.5826545504],[156.192447762092,8304.22857201274,16790.2389196965],[-529.317196127085,7782.97309690033,16455.7797594656],[-969.008498190873,7364.90814701916,16080.917099409],[-679.700223672815,7847.01603822623,16723.6213558452],[-248.626442519075,8407.24935281349,17192.9409450053],[317.106477566471,8915.39955317121,17838.4058726657],[751.559183422069,9446.46432414913,18503.2122530645],[656.498036338657,9635.37219480838,18847.9519427258],[196.550625949516,9066.31672873787,18333.1533279252],[-459.15327239153,8698.37271266262,18139.6512243807],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null]]]},"evals":["attrs.interactionModel"],"jsHooks":[]}</script>
+<div id="htmlwidget-9593c3201a8d08b9fad7" style="width:672px;height:480px;" class="dygraphs html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9593c3201a8d08b9fad7">{"x":{"attrs":{"title":"Cumulative Impact of Event (95% confidence level)","labels":["day","Cumulative Effect"],"legend":"auto","retainDateWindow":false,"axes":{"x":{"pixelsPerLabel":60}},"showRangeSelector":true,"rangeSelectorHeight":40,"rangeSelectorPlotFillColor":" #A7B1C4","rangeSelectorPlotStrokeColor":"#808FAB","interactionModel":"Dygraph.Interaction.defaultModel","customBars":true,"series":{"Cumulative Effect":{"axis":"y"}}},"scale":"daily","group":"ci","annotations":[],"shadings":[],"events":[{"pos":"2016-03-10T00:00:00.000Z","label":"TV Campaign","labelLoc":"top","color":"black","strokePattern":[7,3],"axis":"x"}],"format":"date","data":[["2016-01-01T00:00:00.000Z","2016-01-02T00:00:00.000Z","2016-01-03T00:00:00.000Z","2016-01-04T00:00:00.000Z","2016-01-05T00:00:00.000Z","2016-01-06T00:00:00.000Z","2016-01-07T00:00:00.000Z","2016-01-08T00:00:00.000Z","2016-01-09T00:00:00.000Z","2016-01-10T00:00:00.000Z","2016-01-11T00:00:00.000Z","2016-01-12T00:00:00.000Z","2016-01-13T00:00:00.000Z","2016-01-14T00:00:00.000Z","2016-01-15T00:00:00.000Z","2016-01-16T00:00:00.000Z","2016-01-17T00:00:00.000Z","2016-01-18T00:00:00.000Z","2016-01-19T00:00:00.000Z","2016-01-20T00:00:00.000Z","2016-01-21T00:00:00.000Z","2016-01-22T00:00:00.000Z","2016-01-23T00:00:00.000Z","2016-01-24T00:00:00.000Z","2016-01-25T00:00:00.000Z","2016-01-26T00:00:00.000Z","2016-01-27T00:00:00.000Z","2016-01-28T00:00:00.000Z","2016-01-29T00:00:00.000Z","2016-01-30T00:00:00.000Z","2016-01-31T00:00:00.000Z","2016-02-01T00:00:00.000Z","2016-02-02T00:00:00.000Z","2016-02-03T00:00:00.000Z","2016-02-04T00:00:00.000Z","2016-02-05T00:00:00.000Z","2016-02-06T00:00:00.000Z","2016-02-07T00:00:00.000Z","2016-02-08T00:00:00.000Z","2016-02-09T00:00:00.000Z","2016-02-10T00:00:00.000Z","2016-02-11T00:00:00.000Z","2016-02-12T00:00:00.000Z","2016-02-13T00:00:00.000Z","2016-02-14T00:00:00.000Z","2016-02-15T00:00:00.000Z","2016-02-16T00:00:00.000Z","2016-02-17T00:00:00.000Z","2016-02-18T00:00:00.000Z","2016-02-19T00:00:00.000Z","2016-02-20T00:00:00.000Z","2016-02-21T00:00:00.000Z","2016-02-22T00:00:00.000Z","2016-02-23T00:00:00.000Z","2016-02-24T00:00:00.000Z","2016-02-25T00:00:00.000Z","2016-02-26T00:00:00.000Z","2016-02-27T00:00:00.000Z","2016-02-28T00:00:00.000Z","2016-02-29T00:00:00.000Z","2016-03-01T00:00:00.000Z","2016-03-02T00:00:00.000Z","2016-03-03T00:00:00.000Z","2016-03-04T00:00:00.000Z","2016-03-05T00:00:00.000Z","2016-03-06T00:00:00.000Z","2016-03-07T00:00:00.000Z","2016-03-08T00:00:00.000Z","2016-03-09T00:00:00.000Z","2016-03-10T00:00:00.000Z","2016-03-11T00:00:00.000Z","2016-03-12T00:00:00.000Z","2016-03-13T00:00:00.000Z","2016-03-14T00:00:00.000Z","2016-03-15T00:00:00.000Z","2016-03-16T00:00:00.000Z","2016-03-17T00:00:00.000Z","2016-03-18T00:00:00.000Z","2016-03-19T00:00:00.000Z","2016-03-20T00:00:00.000Z","2016-03-21T00:00:00.000Z","2016-03-22T00:00:00.000Z","2016-03-23T00:00:00.000Z","2016-03-24T00:00:00.000Z","2016-03-25T00:00:00.000Z","2016-03-26T00:00:00.000Z","2016-03-27T00:00:00.000Z","2016-03-28T00:00:00.000Z","2016-03-29T00:00:00.000Z","2016-03-30T00:00:00.000Z","2016-03-31T00:00:00.000Z","2016-04-01T00:00:00.000Z","2016-04-02T00:00:00.000Z","2016-04-03T00:00:00.000Z","2016-04-04T00:00:00.000Z","2016-04-05T00:00:00.000Z","2016-04-06T00:00:00.000Z","2016-04-07T00:00:00.000Z","2016-04-08T00:00:00.000Z","2016-04-09T00:00:00.000Z","2016-04-10T00:00:00.000Z","2016-04-11T00:00:00.000Z","2016-04-12T00:00:00.000Z","2016-04-13T00:00:00.000Z","2016-04-14T00:00:00.000Z","2016-04-15T00:00:00.000Z","2016-04-16T00:00:00.000Z","2016-04-17T00:00:00.000Z","2016-04-18T00:00:00.000Z","2016-04-19T00:00:00.000Z","2016-04-20T00:00:00.000Z","2016-04-21T00:00:00.000Z","2016-04-22T00:00:00.000Z","2016-04-23T00:00:00.000Z","2016-04-24T00:00:00.000Z","2016-04-25T00:00:00.000Z","2016-04-26T00:00:00.000Z","2016-04-27T00:00:00.000Z","2016-04-28T00:00:00.000Z","2016-04-29T00:00:00.000Z","2016-04-30T00:00:00.000Z","2016-05-01T00:00:00.000Z","2016-05-02T00:00:00.000Z","2016-05-03T00:00:00.000Z","2016-05-04T00:00:00.000Z","2016-05-05T00:00:00.000Z","2016-05-06T00:00:00.000Z","2016-05-07T00:00:00.000Z","2016-05-08T00:00:00.000Z","2016-05-09T00:00:00.000Z","2016-05-10T00:00:00.000Z","2016-05-11T00:00:00.000Z","2016-05-12T00:00:00.000Z","2016-05-13T00:00:00.000Z","2016-05-14T00:00:00.000Z","2016-05-15T00:00:00.000Z","2016-05-16T00:00:00.000Z","2016-05-17T00:00:00.000Z","2016-05-18T00:00:00.000Z","2016-05-19T00:00:00.000Z","2016-05-20T00:00:00.000Z","2016-05-21T00:00:00.000Z","2016-05-22T00:00:00.000Z","2016-05-23T00:00:00.000Z","2016-05-24T00:00:00.000Z","2016-05-25T00:00:00.000Z","2016-05-26T00:00:00.000Z","2016-05-27T00:00:00.000Z","2016-05-28T00:00:00.000Z","2016-05-29T00:00:00.000Z","2016-05-30T00:00:00.000Z","2016-05-31T00:00:00.000Z","2016-06-01T00:00:00.000Z","2016-06-02T00:00:00.000Z","2016-06-03T00:00:00.000Z","2016-06-04T00:00:00.000Z","2016-06-05T00:00:00.000Z","2016-06-06T00:00:00.000Z","2016-06-07T00:00:00.000Z","2016-06-08T00:00:00.000Z","2016-06-09T00:00:00.000Z","2016-06-10T00:00:00.000Z","2016-06-11T00:00:00.000Z","2016-06-12T00:00:00.000Z","2016-06-13T00:00:00.000Z","2016-06-14T00:00:00.000Z","2016-06-15T00:00:00.000Z","2016-06-16T00:00:00.000Z","2016-06-17T00:00:00.000Z","2016-06-18T00:00:00.000Z","2016-06-19T00:00:00.000Z","2016-06-20T00:00:00.000Z","2016-06-21T00:00:00.000Z","2016-06-22T00:00:00.000Z","2016-06-23T00:00:00.000Z","2016-06-24T00:00:00.000Z","2016-06-25T00:00:00.000Z","2016-06-26T00:00:00.000Z","2016-06-27T00:00:00.000Z","2016-06-28T00:00:00.000Z","2016-06-29T00:00:00.000Z","2016-06-30T00:00:00.000Z","2016-07-01T00:00:00.000Z","2016-07-02T00:00:00.000Z","2016-07-03T00:00:00.000Z","2016-07-04T00:00:00.000Z","2016-07-05T00:00:00.000Z","2016-07-06T00:00:00.000Z","2016-07-07T00:00:00.000Z","2016-07-08T00:00:00.000Z","2016-07-09T00:00:00.000Z","2016-07-10T00:00:00.000Z","2016-07-11T00:00:00.000Z","2016-07-12T00:00:00.000Z","2016-07-13T00:00:00.000Z","2016-07-14T00:00:00.000Z","2016-07-15T00:00:00.000Z","2016-07-16T00:00:00.000Z","2016-07-17T00:00:00.000Z","2016-07-18T00:00:00.000Z","2016-07-19T00:00:00.000Z","2016-07-20T00:00:00.000Z","2016-07-21T00:00:00.000Z","2016-07-22T00:00:00.000Z","2016-07-23T00:00:00.000Z","2016-07-24T00:00:00.000Z","2016-07-25T00:00:00.000Z","2016-07-26T00:00:00.000Z","2016-07-27T00:00:00.000Z","2016-07-28T00:00:00.000Z","2016-07-29T00:00:00.000Z","2016-07-30T00:00:00.000Z","2016-07-31T00:00:00.000Z","2016-08-01T00:00:00.000Z","2016-08-02T00:00:00.000Z","2016-08-03T00:00:00.000Z","2016-08-04T00:00:00.000Z","2016-08-05T00:00:00.000Z","2016-08-06T00:00:00.000Z","2016-08-07T00:00:00.000Z","2016-08-08T00:00:00.000Z","2016-08-09T00:00:00.000Z","2016-08-10T00:00:00.000Z","2016-08-11T00:00:00.000Z","2016-08-12T00:00:00.000Z","2016-08-13T00:00:00.000Z","2016-08-14T00:00:00.000Z","2016-08-15T00:00:00.000Z","2016-08-16T00:00:00.000Z","2016-08-17T00:00:00.000Z","2016-08-18T00:00:00.000Z","2016-08-19T00:00:00.000Z","2016-08-20T00:00:00.000Z","2016-08-21T00:00:00.000Z","2016-08-22T00:00:00.000Z","2016-08-23T00:00:00.000Z","2016-08-24T00:00:00.000Z","2016-08-25T00:00:00.000Z","2016-08-26T00:00:00.000Z","2016-08-27T00:00:00.000Z","2016-08-28T00:00:00.000Z","2016-08-29T00:00:00.000Z","2016-08-30T00:00:00.000Z","2016-08-31T00:00:00.000Z","2016-09-01T00:00:00.000Z","2016-09-02T00:00:00.000Z","2016-09-03T00:00:00.000Z","2016-09-04T00:00:00.000Z","2016-09-05T00:00:00.000Z","2016-09-06T00:00:00.000Z","2016-09-07T00:00:00.000Z","2016-09-08T00:00:00.000Z","2016-09-09T00:00:00.000Z","2016-09-10T00:00:00.000Z","2016-09-11T00:00:00.000Z","2016-09-12T00:00:00.000Z","2016-09-13T00:00:00.000Z","2016-09-14T00:00:00.000Z","2016-09-15T00:00:00.000Z","2016-09-16T00:00:00.000Z","2016-09-17T00:00:00.000Z","2016-09-18T00:00:00.000Z","2016-09-19T00:00:00.000Z","2016-09-20T00:00:00.000Z","2016-09-21T00:00:00.000Z","2016-09-22T00:00:00.000Z","2016-09-23T00:00:00.000Z","2016-09-24T00:00:00.000Z","2016-09-25T00:00:00.000Z","2016-09-26T00:00:00.000Z","2016-09-27T00:00:00.000Z","2016-09-28T00:00:00.000Z","2016-09-29T00:00:00.000Z","2016-09-30T00:00:00.000Z"],[[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[-279.101259787785,460.611727017356,1253.37725361914],[-277.971268124078,887.220965508022,1951.06249582954],[-69.0669614977087,1352.89181481139,2787.80468221326],[257.97873206067,1805.74684621065,3462.6698168288],[208.904110121803,1894.57293970419,3757.84726950174],[-530.575789371942,1329.328374317,3327.98508997128],[-1051.3049950995,917.989320074092,3147.52291458379],[-734.519182663207,1356.7665457283,3578.52318494002],[-353.692528044005,1838.54254181265,4299.19717470673],[-67.8423991381715,2310.30983402098,4873.87071652773],[176.127123112659,2743.08551019983,5351.59364816453],[280.010237228053,2814.81535069218,5629.08493582867],[-598.843213547982,2215.40554507395,5236.43538867672],[-1040.37094112387,1766.81925433112,4877.66164374622],[-549.117898137949,2290.07549579733,5569.24498387336],[-168.880668916914,2801.29453791367,6187.01311783397],[113.979543181835,3310.67568009684,6814.45224113524],[425.70332530298,3718.23383820322,7335.31862507752],[330.651846333931,3760.6332554954,7375.0015071067],[-334.674516146362,3174.93617370838,6960.33366530437],[-823.931562459096,2707.27235396398,6520.50027641845],[-602.142469836457,3073.55011560654,6866.76263573085],[-256.261326884473,3565.98159413872,7588.06535907503],[94.24649996683,4073.55382478953,8227.22164955328],[596.576925483387,4566.21393101371,8817.07187159377],[419.513622166531,4653.29253793898,8991.5354625312],[-296.433199654683,4077.43505070574,8490.85771574956],[-901.383247857855,3655.66620310739,8251.77552051403],[-278.420690191124,4090.77544566165,8794.47159286708],[182.506333724537,4685.81041602572,9486.00565712678],[492.647221962747,5236.75987791159,10093.0673115862],[807.785660098423,5650.37764099796,10445.4181028642],[962.947917625454,5768.87302968357,10837.9946583521],[293.717185698624,5185.3100243939,10308.8656204498],[-324.463640759554,4737.77502830952,9871.57917366244],[-99.6707975773897,4996.34312229027,10344.9512448355],[282.063815783302,5448.92755919581,10947.7234209493],[758.604736056412,5883.35990719113,11418.0108384303],[837.893982316047,6256.76534859277,11925.2500517116],[939.69723774062,6375.11357053596,12230.0680953301],[154.893468621565,5791.45512258113,11595.5292245913],[-229.966515222506,5370.86079718958,11221.4607235121],[22.7732882311102,5741.18059555441,11609.3991494574],[163.634951133397,6206.47583478803,12260.2536913533],[613.861823110667,6740.8008054556,12848.090793556],[857.221797842532,7102.83897723851,13317.7819847752],[830.671529817308,7207.72632310563,13495.7332422746],[46.0895301360579,6640.60571568526,12906.9360990089],[-370.809137403092,6217.54689992202,12521.5496408932],[-339.610814690182,6565.59570436302,13041.5152682163],[331.352212282043,7002.57584888887,13808.0389682688],[632.424417558854,7431.45234691486,14290.3367686866],[578.522772110067,7487.27538453194,14526.7356271204],[510.342120869231,7483.05033905088,14765.4556364396],[-395.929199059436,6881.91742069807,14159.1061081106],[-899.14258443311,6388.69545265261,13724.8209542176],[-1230.65997359736,6244.32073011689,13483.8058878971],[-1062.55138093658,6586.02845610317,13775.1748858663],[-571.200765557354,7024.45196729695,14333.9270647898],[-192.231274181278,7425.8805873284,14764.6767885186],[-240.198007159517,7535.12265353982,14903.1250525689],[-932.248592805408,6947.36485533422,14539.0281006446],[-1437.28474007946,6505.75574098006,14255.6205760845],[-1260.66679121583,6861.0851376612,14718.5769952572],[-895.872569869971,7289.49877648294,15309.9115383823],[-630.748518124106,7717.96326973138,15932.4837823253],[-241.218875689607,8161.62270527551,16465.4912225826],[-324.984643734468,8304.22857201274,16536.9596737955],[-764.341566770978,7782.97309690033,16012.1089399944],[-1118.81714398414,7364.90814701916,15564.7522016612],[-699.379085000866,7847.01603822623,15992.4487402453],[-366.505817664874,8407.24935281349,16865.0454120275],[222.208171882608,8915.39955317121,17247.8183331895],[506.018372252816,9446.46432414913,18015.4649830552],[652.885729344038,9635.37219480838,18123.5026855531],[-248.701305001858,9066.31672873787,17752.767610804],[-549.366672042961,8698.37271266262,17363.611345801],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null]]]},"evals":["attrs.interactionModel"],"jsHooks":[]}</script>
 </div>
 <div id="automate" class="section level2">
 <h2>Automate?</h2>
@@ -1373,6 +1375,7 @@ dygraph(data=plot_data[,c(&#39;cum.effect&#39;, &#39;cum.effect.lower&#39;, &#39
 <p>Throughout this site, examples and exercise use a data frame called <code>web_data</code>. That example data was initially built using Google Analytics data, and instructions for generating that data with your own Google Analytic data are on the <a href="http://www.dartistics.com/api-google-analytics.html">Google Analytics API</a> page.</p>
 <p>But, you’re reading about the Adobe Analytics API here, so we can assume you might want to do these same exercises with Adobe Analytics data. To do that, we can use <strong>Last Touch Channel</strong> (Adobe) in lieu of <strong>Default Channel Grouping</strong> (Google Analytics), as well as swap out some other values for comparable dimensions and metrics. If you are not using <strong>Marketing Channels</strong> in Adobe Analytics, then you will need to adjust the code below by replacing the <code>lasttouchchannel</code> dimension with the appropriate dimension.</p>
 <p>To do that, first follow the steps for one of the authentication options described earlier on this page. Once that is done, you can use the following overtime command to pull the base data.</p>
+<pre><code>## Error in SCAuth(key, secret): Authentication failed due to errors</code></pre>
 <pre class="r"><code>
 # reportsuite.id &lt;- [uncomment this line and insert your RSID]
 date.from &lt;- &quot;2016-01-01&quot;

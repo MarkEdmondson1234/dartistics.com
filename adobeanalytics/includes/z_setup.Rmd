@@ -16,6 +16,7 @@ library(knitr)   # Mainly... so we can use kable()
 library(RSiteCatalyst)
 library(tidyverse)
 library(devtools)
+library(jsonlite)    # Needed for unbox() in examples with inline segments
 
 # Load the username, shared secret, and report suite ID
 username <- Sys.getenv("ADOBE_API_USERNAME")

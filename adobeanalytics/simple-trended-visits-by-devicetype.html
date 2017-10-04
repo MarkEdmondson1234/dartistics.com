@@ -15,7 +15,7 @@
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/simplex.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -98,34 +98,34 @@ button.code-folding-btn:focus {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 41px;
+  padding-top: 60px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 46px;
-  margin-top: -46px;
+  padding-top: 65px;
+  margin-top: -65px;
 }
 
 .section h2 {
-  padding-top: 46px;
-  margin-top: -46px;
+  padding-top: 65px;
+  margin-top: -65px;
 }
 .section h3 {
-  padding-top: 46px;
-  margin-top: -46px;
+  padding-top: 65px;
+  margin-top: -65px;
 }
 .section h4 {
-  padding-top: 46px;
-  margin-top: -46px;
+  padding-top: 65px;
+  margin-top: -65px;
 }
 .section h5 {
-  padding-top: 46px;
-  margin-top: -46px;
+  padding-top: 65px;
+  margin-top: -65px;
 }
 .section h6 {
-  padding-top: 46px;
-  margin-top: -46px;
+  padding-top: 65px;
+  margin-top: -65px;
 }
 </style>
 
@@ -215,6 +215,9 @@ $(document).ready(function () {
     </li>
   </ul>
 </li>
+<li>
+  <a href="http://dartistics.com">dartistics.com</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -250,6 +253,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 library(RSiteCatalyst)
 library(tidyverse)
 library(devtools)
+library(jsonlite)    # Needed for unbox() in examples with inline segments
 
 # Load the username, shared secret, and report suite ID
 username &lt;- Sys.getenv(&quot;ADOBE_API_USERNAME&quot;)
@@ -294,38 +298,6 @@ head(aa_data)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2017-09-02</td>
-<td align="left">Other</td>
-<td align="left"></td>
-<td align="right">283</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">2017-09-02</td>
-<td align="left">Mobile Phone</td>
-<td align="left"></td>
-<td align="right">58</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">2017-09-02</td>
-<td align="left">Tablet</td>
-<td align="left"></td>
-<td align="right">12</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">2017-09-02</td>
-<td align="left">EReader</td>
-<td align="left"></td>
-<td align="right">0</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
 <td align="left">2017-09-03</td>
 <td align="left">Other</td>
 <td align="left"></td>
@@ -338,6 +310,38 @@ head(aa_data)</code></pre>
 <td align="left">Mobile Phone</td>
 <td align="left"></td>
 <td align="right">56</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">2017-09-03</td>
+<td align="left">Tablet</td>
+<td align="left"></td>
+<td align="right">15</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">2017-09-03</td>
+<td align="left">EReader</td>
+<td align="left"></td>
+<td align="right">0</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">2017-09-04</td>
+<td align="left">Other</td>
+<td align="left"></td>
+<td align="right">723</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">2017-09-04</td>
+<td align="left">Mobile Phone</td>
+<td align="left"></td>
+<td align="right">84</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -367,26 +371,6 @@ head(aa_data)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2017-09-02</td>
-<td align="left">Desktop/Tablet</td>
-<td align="right">283</td>
-</tr>
-<tr class="even">
-<td align="left">2017-09-02</td>
-<td align="left">Mobile Phone</td>
-<td align="right">58</td>
-</tr>
-<tr class="odd">
-<td align="left">2017-09-02</td>
-<td align="left">Tablet</td>
-<td align="right">12</td>
-</tr>
-<tr class="even">
-<td align="left">2017-09-02</td>
-<td align="left">EReader</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
 <td align="left">2017-09-03</td>
 <td align="left">Desktop/Tablet</td>
 <td align="right">372</td>
@@ -395,6 +379,26 @@ head(aa_data)</code></pre>
 <td align="left">2017-09-03</td>
 <td align="left">Mobile Phone</td>
 <td align="right">56</td>
+</tr>
+<tr class="odd">
+<td align="left">2017-09-03</td>
+<td align="left">Tablet</td>
+<td align="right">15</td>
+</tr>
+<tr class="even">
+<td align="left">2017-09-03</td>
+<td align="left">EReader</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">2017-09-04</td>
+<td align="left">Desktop/Tablet</td>
+<td align="right">723</td>
+</tr>
+<tr class="even">
+<td align="left">2017-09-04</td>
+<td align="left">Mobile Phone</td>
+<td align="right">84</td>
 </tr>
 </tbody>
 </table>
