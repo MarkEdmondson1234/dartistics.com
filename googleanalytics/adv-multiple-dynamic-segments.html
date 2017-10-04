@@ -11,7 +11,7 @@
 
 
 
-<title>Simple Dynamic Segment - v4</title>
+<title>Multiple Dynamic Segments (v4)</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -263,18 +263,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-<h1 class="title toc-ignore">Simple Dynamic Segment - v4</h1>
+<h1 class="title toc-ignore">Multiple Dynamic Segments (v4)</h1>
 
 </div>
 
 
-<p>This example pulls the top 10 pages for the last thirty days, <em>for visits that occurred on a mobile device</em>. For the sake of illustration, we’re going to build this segment <em>dynamically</em> rather than referencing a segment ID. Where this can come in handy is if you have a script where you want to work through a range of small little tweaks to one segment and re-pull the data. You don’t want to build each segment in the web interface and then hardcode all those IDs! We may add an example for doing that later, but we’re doing to keep this very simple for now.</p>
-<p>This returns the exact same results as these two examples, but through different means for defining/referencing the segment:</p>
-<ul>
-<li><strong><a href="simple-dynamic-segment-v3.html">Simple Dynamic Segment - v3</a></strong> – Ahhhhh! The days when dynamic segments were so much simpler (but also less powerful)</li>
-<li><strong><a href="segment-by-id.html">Apply Segment by Segment ID</a></strong> – simply using the ID of either a standard segment or a custom segment built in the Google Analytics web interface</li>
-</ul>
-<p>With the v4 API, dynamic segments are more powerful than v3, but (alas!) pretty basic segments can feel pretty convoluted.</p>
+<p>This example pulls three sets of data: the top 10 pages for the last thirty days on mobile, tablet, and desktop. This is, essentially, an extension of the <a href="simple-dynamic-segment.html">Simple Dynamic Segment - v4</a> example <em>except</em> it uses a function to pull the data so that a list of values (“Mobile,” “Tablet”, and “Desktop”) can be processed to dynamically change the segment used to pull the data.</p>
+<p>With the v4 API, dynamic segments are more powerful than v3, but (alas!) pretty basic segments can feel pretty convoluted. This example could also be built for v3, but we want to <em>go forward</em>! And, v4 is the future!</p>
 <div id="setupconfig" class="section level1">
 <h1>Setup/Config</h1>
 <p>Be sure you’ve completed the steps on the <a href="setup.html">Initial Setup</a> page before running this code.</p>
@@ -310,6 +305,14 @@ end_date &lt;- Sys.Date() - 1           # Yesterday</code></pre>
 </div>
 <div id="pull-the-data" class="section level1">
 <h1>Pull the Data</h1>
+<p>There are two main aspects of the data pulling:</p>
+<ul>
+<li>The setup of the segment and ultimate GA query <em>inside a function</em> that has a <code>deviceCategory</code> value as an argument and then constructs the segment accordingly</li>
+<li>The application of that function to a <em>list</em> using <code>map()</code></li>
+</ul>
+<p>Both of these aspects are embodied in the code below, but we’re going to do a bit of exposition before we get to that.</p>
+<div id="setting-up-the-segment" class="section level2">
+<h2>Setting up the Segment</h2>
 <p>This all gets built up in what can feel very cumbersome. Check out <code>?segment_ga4()</code> for the documentation of how the segment gets built. Correctly, it describes this as a “hierarchy.” In practical terms, though, we build from the bottom up:</p>
 <ol style="list-style-type: decimal">
 <li>Define a <strong>segment element</strong> using <code>segment_element()</code>. This is just a single conditional statement.</li>
@@ -319,159 +322,148 @@ end_date &lt;- Sys.Date() - 1           # Yesterday</code></pre>
 <li>Actually pull the data, passing in the <strong>segment object</strong> as an argument.</li>
 </ol>
 <p>In addition to the “hierarchy” messiness for a simple segment, there is also some <code>list()</code> messiness. Note, for instance, how <code>my_segment_vector</code> in the example code includes a list within a list. Use this example (and other examples on this site) as well as the <code>?segment_ga4()</code> documentation to troubleshoot.</p>
-<pre class="r"><code># Create a segment element object. See ?segment_element() for details.
-my_segment_element &lt;- segment_element(&quot;deviceCategory&quot;, 
-                                   operator = &quot;EXACT&quot;,
-                                   type = &quot;DIMENSION&quot;,
-                                   expressions = &quot;Mobile&quot;)
+</div>
+<div id="processing-the-list" class="section level2">
+<h2>Processing the List</h2>
+<p>As Mark Edmondson says, “If you’re going to use R effectively, you’re going to have to learn to love lists.” There are a couple of things to note about how we’re using lists in this code:</p>
+<ol style="list-style-type: decimal">
+<li>We set up a vector with the three different <code>deviceCategory</code> values. To get even more advanced, we could actually have one query that pulls all of the values for <code>deviceCategory</code> (or some other dimension) and then use the results of that category to get the list of values we actually want to process. Minds start to get blown at that point (but it’s a very practical application!).</li>
+<li>We use <code>map()</code> (which is from the <code>purrr</code> package in the Tidyverse) to call our function for each of those values. This will return a list of data frames – one data frame for each device category. We’ll then process that list for our data visualization(s)!</li>
+</ol>
+<p>Now…onto the code!</p>
+</div>
+<div id="the-data-pulling-code" class="section level2">
+<h2>The Data Pulling Code</h2>
+<pre class="r"><code>#############
+# Create a function that takes in a device category value, builds a dynamic segment using that
+# value, and then queries the data.
+#############
 
-# Create a segment vector that has just one element. See ?segment_vector_simple() for details. Note
-# that the element is wrapped in a list(). This is how you would include multiple elements in the
-# definition.
-my_segment_vector &lt;- segment_vector_simple(list(list(my_segment_element)))
+get_data &lt;- function(device_category){
+  
+  # Build the segment name
+  my_segment_name &lt;- paste(device_category,&quot;Sessions&quot;)
+  
+  # Create a segment element object. See ?segment_element() for details.
+  my_segment_element &lt;- segment_element(&quot;deviceCategory&quot;, 
+                                        operator = &quot;EXACT&quot;,
+                                        type = &quot;DIMENSION&quot;,
+                                        expressions = device_category) # The value passed to the function
+  
+  # Create a segment vector that has just one element. See ?segment_vector_simple() for details. Note
+  # that the element is wrapped in a list(). This is how you would include multiple elements in the
+  # definition.
+  my_segment_vector &lt;- segment_vector_simple(list(list(my_segment_element)))
+  
+  # Define the segment with just the one segment vector in it. See ?segment_define() for details.
+  my_segment_definition &lt;- segment_define(list(my_segment_vector))
+  
+  # Create the actual segment object that we&#39;re going to use in the query. See ?segment_ga4()
+  # for details.
+  my_segment &lt;- segment_ga4(my_segment_name,          # We built this at the beginning of the function
+                            session_segment = my_segment_definition)
 
-# Define the segment with just the one segment vector in it. See ?segment_define() for details.
-my_segment_definition &lt;- segment_define(list(my_segment_vector))
+  # &lt;whew&gt;!!!
+  
+  # We&#39;re only going to return the top 10 values, so we need to order the results in descending order.
+  # This *could* be defined outside the function, but, for readability, we&#39;re putting it here.
+  results_order &lt;- order_type(&quot;pageviews&quot;,
+                              sort_order = &quot;DESCENDING&quot;,
+                              orderType = &quot;VALUE&quot;)
+  
+  # Pull the data. See ?google_analytics_4() for additional parameters.
+  ga_data &lt;- google_analytics_4(viewId = view_id,
+                                date_range = c(start_date, end_date),
+                                metrics = &quot;pageviews&quot;,
+                                dimensions = &quot;pagePath&quot;,
+                                order = results_order,
+                                segments = my_segment,
+                                max = 10)
+  
+  # Go ahead and print to the console that this step has been completed. This is useful both
+  # for debugging, as well as to be able to track progress as the script is running.
+  cat(&quot;Completed pulling data for:&quot;, device_category, &quot;\n&quot;)
+  
+  # The function will return the last value set, so repeat ga_data to ensure that happens
+  ga_data
+  
+}
 
-# Create the actual segment object that we&#39;re going to use in the query. See ?segment_ga4()
-# for details.
-my_segment &lt;- segment_ga4(&quot;Mobile Sessions Only&quot;,
-                                 session_segment = my_segment_definition)
+#############
+# Put that function to use!
+#############
 
-# &lt;whew&gt;!!!
+# Define the list of values to be processed
+device_categories &lt;- c(&quot;Mobile&quot;, &quot;Tablet&quot;, &quot;Desktop&quot;) 
 
-# Pull the data. See ?google_analytics_4() for additional parameters. Depending on what
-# you&#39;re expecting back, you probably would want to use an &quot;order&quot; argument to get the
-# results in descending order. But, we&#39;re keeping this example simple. Note, though, that
-# we&#39;re still wrapping my_segment in a list() (of one element).
-ga_data &lt;- google_analytics_4(viewId = view_id,
-                              date_range = c(start_date, end_date),
-                              metrics = &quot;pageviews&quot;,
-                              dimensions = &quot;pagePath&quot;,
-                              segments = my_segment)
+# And then process it! It&#39;s an innocuous little line of code, but it&#39;s where the magic happens!
+page_data &lt;- map(device_categories, get_data) 
 
-# Go ahead and do a quick inspection of the data that was returned. This isn&#39;t required,
-# but it&#39;s a good check along the way. 
-head(ga_data)</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">pagePath</th>
-<th align="left">segment</th>
-<th align="right">pageviews</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">/</td>
-<td align="left">Mobile Sessions Only</td>
-<td align="right">174</td>
-</tr>
-<tr class="even">
-<td align="left">/?author_name=&amp;cat=</td>
-<td align="left">Mobile Sessions Only</td>
-<td align="right">11</td>
-</tr>
-<tr class="odd">
-<td align="left">/?author_name=&amp;cat=227</td>
-<td align="left">Mobile Sessions Only</td>
-<td align="right">2</td>
-</tr>
-<tr class="even">
-<td align="left">/?p=43</td>
-<td align="left">Mobile Sessions Only</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="left">/2/library/</td>
-<td align="left">Mobile Sessions Only</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="left">/2/library/index.asp?c=Technical</td>
-<td align="left">Mobile Sessions Only</td>
-<td align="right">1</td>
-</tr>
-</tbody>
-</table>
+# The above returns a list of three data frames -- one for each device category. For our data
+# check, we&#39;ll just peek at the Mobile values
+head(page_data$Mobile)</code></pre>
+</div>
 </div>
 <div id="data-munging" class="section level1">
 <h1>Data Munging</h1>
-<p>Since we didn’t sort the data when we queried it, let’s go ahead and sort it here <em>and</em> grab just the top 10 pages.</p>
-<pre class="r"><code># Using dplyr, sort descending and then grab the top 10 values. We also need to make the
-# page column a factor so that the order will be what we want when we chart the data.
-# This is a nuisance, but you get used to it. That&#39;s what the mutate functio is doing
-ga_data_top_10 &lt;- ga_data %&gt;%
-  arrange(-pageviews) %&gt;% 
-  top_n(10) %&gt;% 
-  mutate(pagePath = factor(pagePath,
-                           levels = rev(pagePath)))
-
-# Take a quick look at the result. 
-head(ga_data_top_10)</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">pagePath</th>
-<th align="left">segment</th>
-<th align="right">pageviews</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">/excel-tips/converting-a-date-in-excel-to-week-bi-week-month-and-more/</td>
-<td align="left">Mobile Sessions Only</td>
-<td align="right">182</td>
-</tr>
-<tr class="even">
-<td align="left">/</td>
-<td align="left">Mobile Sessions Only</td>
-<td align="right">174</td>
-</tr>
-<tr class="odd">
-<td align="left">/excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
-<td align="left">Mobile Sessions Only</td>
-<td align="right">160</td>
-</tr>
-<tr class="even">
-<td align="left">/excel-tips/excel-dropdowns-done-right/</td>
-<td align="left">Mobile Sessions Only</td>
-<td align="right">127</td>
-</tr>
-<tr class="odd">
-<td align="left">/analysis/kpi-move-enough-care/</td>
-<td align="left">Mobile Sessions Only</td>
-<td align="right">118</td>
-</tr>
-<tr class="even">
-<td align="left">/adobe-analytics/advanced-click-rates-adobe-analytics-placement/</td>
-<td align="left">Mobile Sessions Only</td>
-<td align="right">114</td>
-</tr>
-</tbody>
-</table>
+<p>We’re actually going to need to convert the <code>pagePath</code> values to factors so that each bar chart comes out in descending order. But, to save ourselves from too many list-processing functions, we’re going to do that at part of the data visualization.</p>
 </div>
 <div id="data-visualization" class="section level1">
 <h1>Data Visualization</h1>
-<p>This won’t be the prettiest bar chart, but let’s make a horizontal bar chart with the data. Remember, in <strong>ggplot2</strong>, a horizontal bar chart is just a normal bar chart with <code>coord_flip()</code>.</p>
-<pre class="r"><code># Create the plot. Note the stat=&quot;identity&quot;&quot; (because the data is already aggregated) and
-# the coord_flip(). And, I just can&#39;t stand it... added on the additional theme stuff to
-# clean up the plot a bit more.
-gg &lt;- ggplot(ga_data_top_10, mapping = aes(x = pagePath, y = pageviews)) +
-  geom_bar(stat = &quot;identity&quot;) +
-  coord_flip() +
-  theme_light() +
-  theme(panel.grid.major.y = element_blank(),
-        panel.grid.minor.y = element_blank(),
-        panel.border = element_blank(),
-        axis.title.y = element_blank(),
-        axis.ticks.y = element_blank())
+<p>This won’t be the prettiest bar chart, but let’s make three horizontal bar charts – one each for each of our three segments. We’re going to do some list work again. This time, we’ll write a function to perform the data visualization and then run that function for each element (data frame) in our our <code>page_data</code> list.</p>
+<pre class="r"><code>#########
+# The function to do some moderate data munging and generate a visualization
+#########
 
-# Output the plot. You *could* just remove the &quot;gg &lt;-&quot; in the code above, but it&#39;s
-# generally a best practice to create a plot object and then output it, rather than
-# outputting it on the fly.
-gg</code></pre>
-<p><img src="simple-dynamic-segment_files/figure-html/visualize-1.png" width="960" /></p>
+plot_data &lt;- function(df){
+  
+  # Convert the pagePath to be a factor so the bars will be ordered descending by pageviews
+  df$pagePath &lt;- factor(df$pagePath,
+                        levels = rev(df$pagePath))
+  
+  # Grab the segment name to use as the title. It&#39;s the same value for every row, so just
+  # use the first row.
+  chart_title &lt;- df$segment[1]
+  
+  # Create the plot. Note the stat=&quot;identity&quot;&quot; (because the data is already aggregated) and
+  # the coord_flip(). And, I just can&#39;t stand it... added on the additional theme stuff to
+  # clean up the plot a bit more.
+  gg &lt;- ggplot(df, mapping = aes(x = pagePath, y = pageviews)) +
+    geom_bar(stat = &quot;identity&quot;) +
+    ggtitle(chart_title) +
+    coord_flip() +
+    theme_light() +
+    theme(panel.grid.major.y = element_blank(),
+          panel.grid.minor.y = element_blank(),
+          panel.border = element_blank(),
+          axis.title.y = element_blank(),
+          axis.ticks.y = element_blank())
+  
+  # Output the plot. You *could* just remove the &quot;gg &lt;-&quot; in the code above, but it&#39;s
+  # generally a best practice to create a plot object and then output it, rather than
+  # outputting it on the fly.
+  gg
+}
+
+#########
+# Call the function for each element in page_data
+#########
+
+# The second round of magic!
+final_charts &lt;- map(page_data, plot_data)
+
+# And then output the results. We could jump through a few more hoops to not have the ## stuff
+# show up, but I think we&#39;ve done enough for now. Don&#39;t you?
+final_charts</code></pre>
+<pre><code>## [[1]]</code></pre>
+<p><img src="adv-multiple-dynamic-segments_files/figure-html/visualize-1.png" width="960" /></p>
+<pre><code>## 
+## [[2]]</code></pre>
+<p><img src="adv-multiple-dynamic-segments_files/figure-html/visualize-2.png" width="960" /></p>
+<pre><code>## 
+## [[3]]</code></pre>
+<p><img src="adv-multiple-dynamic-segments_files/figure-html/visualize-3.png" width="960" /></p>
+<p>There you have it! The magic of lists and functions applied to dynamic segments!</p>
 </div>
 
 <hr>

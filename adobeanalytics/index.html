@@ -244,27 +244,28 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 
 
-<p>This site is intended to provide a (hopefully growing) list of standalone examples of using Adobe Analytics with R. The target user is, primarily, analysts who are using Adobe Analytics and starting to dip their toe into the R waters and, along the way, are wishing they had some standalone examples that they can quickly get to work, after which they can then start tinkering with it.</p>
+<p>This site is intended to provide a (hopefully growing) list of standalone examples of using Adobe Analytics with R.</p>
+<p><strong>Target user:</strong> primarily, analysts who are using Adobe Analytics and starting to dip their toe into the R waters and, along the way, are wishing they had some standalone examples that they can quickly get to work, after which they can then start tinkering with them to meet their specific needs.</p>
 <p><strong>This site is not a tutorial on how to use R. There IS a great site for that, though – the <a href="http://dartistics.com">parent site</a> of this site!</strong></p>
 <div id="key-tenets-of-the-site" class="section level1">
 <h1>Key Tenets of the Site</h1>
 <p>These are partly to drive consistency (“Once I’ve gotten one example to work, I can <em>totally</em> get any of these examples to work.”), but also, admittedly, are also partly driven by the personal preferences of the site owner:</p>
 <ul>
-<li>All pulling of Adobe Analytics data uses Randy Zwitch’s <a href="http://randyzwitch.com/RSiteCatalyst/">RSiteCatalyst</a> package</li>
-<li>The examples expect that the steps on the <a href="setup.html">Initial Setup</a> page have been followed/completed</li>
-<li>Each example is <em>standalone</em> – all of the code needed is included in the example</li>
-<li>Each example follows the same basic structure (see below)</li>
-<li>All visualizations use <a href="http://ggplot2.tidyverse.org/reference/">ggplot2</a></li>
+<li>All pulling of Adobe Analytics data uses Randy Zwitch’s <a href="http://randyzwitch.com/RSiteCatalyst/">RSiteCatalyst</a> package.</li>
+<li>The examples expect that the steps on the <a href="setup.html">Initial Setup</a> page have been followed/completed.</li>
+<li>Each example is <em>standalone</em> – all of the code needed is included in the example.</li>
+<li>Each example follows the same basic structure (see below).</li>
+<li>All visualizations use <a href="http://ggplot2.tidyverse.org/reference/">ggplot2</a>.</li>
 </ul>
 </div>
 <div id="example-structure" class="section level1">
 <h1>Example Structure</h1>
 <p>Unless it just makes no sense, each example follows the same structure:</p>
 <ol style="list-style-type: decimal">
-<li><em>Setup/Config</em> – loading of packages, configurable variables, authorization of Google Analytics; this is pretty redundant across many of the examples, but it’s required to make each page a standalone example</li>
-<li><em>Data Pulling</em> – the actual call(s) to pull in Adobe Analytics data</li>
-<li><em>Data Munging</em> – manipulation of the data as warranted</li>
-<li><em>Data Visualization</em> – one visualization of the resulting data</li>
+<li><strong>Setup/Config</strong> – loading of packages, configurable variables, authorization of Google Analytics; this is pretty redundant across many of the examples, but it’s required to make each page a standalone example</li>
+<li><strong>Data Pulling</strong> – the actual call(s) to pull in Adobe Analytics data</li>
+<li><strong>Data Munging</strong> – manipulation of the data as warranted</li>
+<li><strong>Data Visualization</strong> – one visualization of the resulting data</li>
 </ol>
 </div>
 <div id="initial-setup" class="section level1">

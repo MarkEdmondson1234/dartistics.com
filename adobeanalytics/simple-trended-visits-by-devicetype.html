@@ -260,9 +260,9 @@ username &lt;- Sys.getenv(&quot;ADOBE_API_USERNAME&quot;)
 secret &lt;- Sys.getenv(&quot;ADOBE_API_SECRET&quot;)
 
 # Authorize Adobe Aalytics.
-SCAuth(username, secret)</code></pre>
-<pre><code>## [1] &quot;Credentials Saved in RSiteCatalyst Namespace.&quot;</code></pre>
-<pre class="r"><code># Set the RSID and the date range. If you want to, you can swap out the Sys.getenv()
+SCAuth(username, secret)
+
+# Set the RSID and the date range. If you want to, you can swap out the Sys.getenv()
 # call and just replace that with a hardcoded value for the RSID. And, the start 
 # and end date are currently set to choose the last 30 days, but those can be 
 # hardcoded as well.
@@ -415,7 +415,7 @@ gg &lt;- ggplot(aa_data, mapping = aes(x = datetime, y = visits, colour = device
 # generally a best practice to create a plot object and then output it, rather than
 # outputting it on the fly.
 gg</code></pre>
-<p><img src="simple-trended-visits-by-devicetype_files/figure-html/visualize-1.png" width="672" /></p>
+<p><img src="simple-trended-visits-by-devicetype_files/figure-html/visualize-1.png" width="960" /></p>
 </div>
 
 <hr>

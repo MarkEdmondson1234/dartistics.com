@@ -4,7 +4,7 @@ For the setup, we're going to load a few libraries, load our specific Google Ana
 
 ```{r hidden-setup, echo=FALSE, message=FALSE, warning=FALSE}
 
-# This snipped won't get rendered. It's purely for functionality that will make the web
+# This snippet won't get rendered. It's purely for functionality that will make the web
 # pages render more cleanly.
 
 library(knitr)   # Mainly... so we can use kable()

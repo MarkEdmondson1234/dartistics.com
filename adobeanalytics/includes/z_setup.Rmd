@@ -11,7 +11,7 @@ library(knitr)   # Mainly... so we can use kable()
 
 ```
 
-```{r setup, message=FALSE, warnings=FALSE}
+```{r setup, message=FALSE, warning=FALSE, results='hide'}
 # Load the necessary libraries
 library(RSiteCatalyst)
 library(tidyverse)
