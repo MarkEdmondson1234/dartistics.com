@@ -261,11 +261,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>This is a file that loads when an R session gets initiated. There are various options for managing this exactly, but below describes an approach that is inarguably the <em>BEST</em> approach!*</p>
 <div id="create-a-.renviron-file-in-your-home-directory" class="section level2">
 <h2>1. Create a .Renviron file in your Home Directory</h2>
-<p>Find your <em>Home</em> directory by clicking on the <em>Home</em> button in the <em>Files</em> pane of RStudio. Then, simply create a new text file (<strong>File &gt; New File &gt; Text File</strong>) and save it as <em>.Renviron</em>. You might get a warning about how this will be a hidden file, but just ignore the warning. Live life on the edge!</p>
+<p>Find your <strong>Home</strong> directory by clicking on the <strong>Home</strong> button in the <strong>Files</strong> pane of RStudio. Then, simply create a new text file (<strong>File &gt; New File &gt; Text File</strong>) and save it as <code>.Renviron</code>. You might get a warning about how this will be a hidden file, but just ignore the warning. Live life on the edge!</p>
 </div>
 <div id="populate-the-.renviron-file" class="section level2">
 <h2>2. Populate the .Renviron file</h2>
-<p>The examples expect three variables to be in the <em>.Renviron</em> file. You’re welcome to add other variables, and, over time, should have a quite robust file. But, we only need three. The file should look something like this:</p>
+<p>The examples expect three variables to be in the ‘.Renviron’ file. You’re welcome to add other variables, and, over time, should have a quite robust file. But, we only need three. The file should look something like this:</p>
 <pre><code>
 ADOBE_API_USERNAME = &quot;XXXXXX:XXXXXXXXXXXX&quot;&quot;
 ADOBE_API_SECRET = &quot;XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&quot;
@@ -281,7 +281,7 @@ ADOBE_RSID = &quot;XXXXXXXXXXXXX&quot;
 </div>
 <div id="reload-the-.renviron-file" class="section level2">
 <h2>3. Reload the .Renviron file</h2>
-<p>This happens any time you start a new R session, so you won’t have to worry about this going forward unless you change a value (like the <strong>ADOBE_RSID</strong>). For this one time, though, select <strong>Session &gt; Restart R</strong> in RStudio.</p>
+<p>This happens any time you start a new R session, so you won’t have to worry about this going forward unless you change a value (like <code>ADOBE_RSID</code>). For this one time, though, select <strong>Session &gt; Restart R</strong> in RStudio.</p>
 </div>
 <div id="confirm-that-your-.renviron-file-is-working" class="section level2">
 <h2>4. Confirm that your .Renviron file is working</h2>
@@ -298,6 +298,9 @@ if (length(setdiff(packages, rownames(installed.packages()))) &gt; 0) {
   install.packages(setdiff(packages, rownames(installed.packages())))  
 }</code></pre>
 <p>You should be all set! The examples should all work!</p>
+<ul>
+<li><em>Subjectively… but it’s what <span class="citation">[@HoloMarkeD]</span>(<a href="http://twitter.com/holomarked" class="uri">http://twitter.com/holomarked</a>) does, and you can come up with your own special way at your own risk.</em></li>
+</ul>
 </div>
 
 <hr>
