@@ -365,7 +365,7 @@ head(ga_data)</code></pre>
 <tr class="odd">
 <td align="left">/</td>
 <td align="left">Mobile Sessions Only</td>
-<td align="right">174</td>
+<td align="right">160</td>
 </tr>
 <tr class="even">
 <td align="left">/?author_name=&amp;cat=</td>
@@ -378,17 +378,17 @@ head(ga_data)</code></pre>
 <td align="right">2</td>
 </tr>
 <tr class="even">
+<td align="left">/?author_name=&amp;cat=658</td>
+<td align="left">Mobile Sessions Only</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
 <td align="left">/?p=43</td>
 <td align="left">Mobile Sessions Only</td>
 <td align="right">1</td>
 </tr>
-<tr class="odd">
-<td align="left">/2/library/</td>
-<td align="left">Mobile Sessions Only</td>
-<td align="right">1</td>
-</tr>
 <tr class="even">
-<td align="left">/2/library/index.asp?c=Technical</td>
+<td align="left">/2/library/index.asp</td>
 <td align="left">Mobile Sessions Only</td>
 <td align="right">1</td>
 </tr>
@@ -400,7 +400,7 @@ head(ga_data)</code></pre>
 <p>Since we didn’t sort the data when we queried it, let’s go ahead and sort it here <em>and</em> grab just the top 10 pages.</p>
 <pre class="r"><code># Using dplyr, sort descending and then grab the top 10 values. We also need to make the
 # page column a factor so that the order will be what we want when we chart the data.
-# This is a nuisance, but you get used to it. That&#39;s what the mutate functio is doing
+# This is a nuisance, but you get used to it. That&#39;s what the mutate function is doing.
 ga_data_top_10 &lt;- ga_data %&gt;%
   arrange(-pageviews) %&gt;% 
   top_n(10) %&gt;% 
@@ -421,32 +421,32 @@ head(ga_data_top_10)</code></pre>
 <tr class="odd">
 <td align="left">/excel-tips/converting-a-date-in-excel-to-week-bi-week-month-and-more/</td>
 <td align="left">Mobile Sessions Only</td>
-<td align="right">182</td>
+<td align="right">191</td>
 </tr>
 <tr class="even">
-<td align="left">/</td>
+<td align="left">/analysis/kpi-move-enough-care/</td>
 <td align="left">Mobile Sessions Only</td>
-<td align="right">174</td>
+<td align="right">182</td>
 </tr>
 <tr class="odd">
-<td align="left">/excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
+<td align="left">/</td>
 <td align="left">Mobile Sessions Only</td>
 <td align="right">160</td>
 </tr>
 <tr class="even">
 <td align="left">/excel-tips/excel-dropdowns-done-right/</td>
 <td align="left">Mobile Sessions Only</td>
-<td align="right">127</td>
+<td align="right">139</td>
 </tr>
 <tr class="odd">
-<td align="left">/analysis/kpi-move-enough-care/</td>
+<td align="left">/excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
 <td align="left">Mobile Sessions Only</td>
-<td align="right">118</td>
+<td align="right">138</td>
 </tr>
 <tr class="even">
-<td align="left">/adobe-analytics/advanced-click-rates-adobe-analytics-placement/</td>
+<td align="left">/excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
 <td align="left">Mobile Sessions Only</td>
-<td align="right">114</td>
+<td align="right">120</td>
 </tr>
 </tbody>
 </table>
