@@ -333,40 +333,40 @@ head(ga_data)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2017-09-03</td>
+<td align="left">2017-09-10</td>
 <td align="left">(none)</td>
 <td align="left">desktop</td>
-<td align="right">51</td>
+<td align="right">60</td>
 </tr>
 <tr class="even">
-<td align="left">2017-09-03</td>
+<td align="left">2017-09-10</td>
 <td align="left">(none)</td>
 <td align="left">mobile</td>
-<td align="right">18</td>
+<td align="right">16</td>
 </tr>
 <tr class="odd">
-<td align="left">2017-09-03</td>
+<td align="left">2017-09-10</td>
 <td align="left">(none)</td>
 <td align="left">tablet</td>
-<td align="right">4</td>
+<td align="right">7</td>
 </tr>
 <tr class="even">
-<td align="left">2017-09-03</td>
+<td align="left">2017-09-10</td>
+<td align="left">Community</td>
+<td align="left">mobile</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">2017-09-10</td>
 <td align="left">organic</td>
 <td align="left">desktop</td>
-<td align="right">296</td>
-</tr>
-<tr class="odd">
-<td align="left">2017-09-03</td>
-<td align="left">organic</td>
-<td align="left">mobile</td>
-<td align="right">30</td>
+<td align="right">309</td>
 </tr>
 <tr class="even">
-<td align="left">2017-09-03</td>
+<td align="left">2017-09-10</td>
 <td align="left">organic</td>
-<td align="left">tablet</td>
-<td align="right">12</td>
+<td align="left">mobile</td>
+<td align="right">37</td>
 </tr>
 </tbody>
 </table>
@@ -426,32 +426,32 @@ head(ga_data_totals)</code></pre>
 <tr class="odd">
 <td align="left">(none)</td>
 <td align="left">desktop</td>
-<td align="right">3709</td>
+<td align="right">3895</td>
 </tr>
 <tr class="even">
 <td align="left">(none)</td>
 <td align="left">mobile</td>
-<td align="right">609</td>
+<td align="right">599</td>
 </tr>
 <tr class="odd">
 <td align="left">(none)</td>
 <td align="left">tablet</td>
-<td align="right">161</td>
+<td align="right">155</td>
 </tr>
 <tr class="even">
 <td align="left">Community</td>
 <td align="left">mobile</td>
-<td align="right">6</td>
+<td align="right">3</td>
 </tr>
 <tr class="odd">
 <td align="left">email</td>
-<td align="left">mobile</td>
-<td align="right">1</td>
+<td align="left">desktop</td>
+<td align="right">9</td>
 </tr>
 <tr class="even">
-<td align="left">feed</td>
-<td align="left">desktop</td>
-<td align="right">3</td>
+<td align="left">email</td>
+<td align="left">mobile</td>
+<td align="right">1</td>
 </tr>
 </tbody>
 </table>
@@ -500,7 +500,7 @@ gg_sparklines &lt;- ggplot(ga_data, mapping=aes(x = date, y = sessions)) +
         panel.background = element_blank(),
         strip.background = element_blank(),
         strip.text = element_text(colour = &quot;black&quot;),
-        strip.text.y = element_text(angle = 0, hjust = 1),
+        strip.text.y = element_text(angle = 180, hjust = 1),
         axis.ticks = element_blank(),
         axis.text = element_blank(),
         axis.title.x = element_blank())
