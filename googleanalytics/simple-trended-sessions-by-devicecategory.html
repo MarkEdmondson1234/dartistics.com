@@ -237,6 +237,9 @@ $(document).ready(function () {
     <li>
       <a href="adv-multiple-dynamic-segments.html">Multiple Dynamic Segments</a>
     </li>
+    <li>
+      <a href="adv-sankey.html">Sankey Chart (Traffic Flows)</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -273,10 +276,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h1>Setup/Config</h1>
 <p>Be sure you’ve completed the steps on the <a href="setup.html">Initial Setup</a> page before running this code.</p>
 <p>For the setup, we’re going to load a few libraries, load our specific Google Analytics credentials, and then authorize with Google.</p>
-<pre class="r"><code># Load the necessary libraries
+<pre class="r"><code># Load the necessary libraries. These libraries aren&#39;t all necessarily required for every
+# example, but, for simplicity&#39;s sake, we&#39;re going ahead and including them in every example.
 library(googleAnalyticsR)
 library(tidyverse)
 library(devtools)
+library(googleVis)
 
 # Load the client ID, client secret, and GA view ID
 client_id &lt;- Sys.getenv(&quot;GA_CLIENT_ID&quot;)
@@ -327,34 +332,34 @@ head(ga_data)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2017-09-03</td>
+<td align="left">2017-09-20</td>
 <td align="left">desktop</td>
-<td align="right">360</td>
+<td align="right">1359</td>
 </tr>
 <tr class="even">
-<td align="left">2017-09-03</td>
+<td align="left">2017-09-20</td>
 <td align="left">mobile</td>
-<td align="right">54</td>
+<td align="right">112</td>
 </tr>
 <tr class="odd">
-<td align="left">2017-09-03</td>
+<td align="left">2017-09-20</td>
 <td align="left">tablet</td>
-<td align="right">18</td>
+<td align="right">26</td>
 </tr>
 <tr class="even">
-<td align="left">2017-09-04</td>
+<td align="left">2017-09-21</td>
 <td align="left">desktop</td>
-<td align="right">711</td>
+<td align="right">1206</td>
 </tr>
 <tr class="odd">
-<td align="left">2017-09-04</td>
+<td align="left">2017-09-21</td>
 <td align="left">mobile</td>
-<td align="right">85</td>
+<td align="right">91</td>
 </tr>
 <tr class="even">
-<td align="left">2017-09-04</td>
+<td align="left">2017-09-21</td>
 <td align="left">tablet</td>
-<td align="right">24</td>
+<td align="right">21</td>
 </tr>
 </tbody>
 </table>

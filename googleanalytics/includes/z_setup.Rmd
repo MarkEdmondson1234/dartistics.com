@@ -8,14 +8,15 @@ For the setup, we're going to load a few libraries, load our specific Google Ana
 # pages render more cleanly.
 
 library(knitr)   # Mainly... so we can use kable()
-
 ```
 
 ```{r setup, message=FALSE, warning=FALSE}
-# Load the necessary libraries
+# Load the necessary libraries. These libraries aren't all necessarily required for every
+# example, but, for simplicity's sake, we're going ahead and including them in every example.
 library(googleAnalyticsR)
 library(tidyverse)
 library(devtools)
+library(googleVis)
 
 # Load the client ID, client secret, and GA view ID
 client_id <- Sys.getenv("GA_CLIENT_ID")

@@ -237,6 +237,9 @@ $(document).ready(function () {
     <li>
       <a href="adv-multiple-dynamic-segments.html">Multiple Dynamic Segments</a>
     </li>
+    <li>
+      <a href="adv-sankey.html">Sankey Chart (Traffic Flows)</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -273,10 +276,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h1>Setup/Config</h1>
 <p>Be sure you’ve completed the steps on the <a href="setup.html">Initial Setup</a> page before running this code.</p>
 <p>For the setup, we’re going to load a few libraries, load our specific Google Analytics credentials, and then authorize with Google.</p>
-<pre class="r"><code># Load the necessary libraries
+<pre class="r"><code># Load the necessary libraries. These libraries aren&#39;t all necessarily required for every
+# example, but, for simplicity&#39;s sake, we&#39;re going ahead and including them in every example.
 library(googleAnalyticsR)
 library(tidyverse)
 library(devtools)
+library(googleVis)
 
 # Load the client ID, client secret, and GA view ID
 client_id &lt;- Sys.getenv(&quot;GA_CLIENT_ID&quot;)
@@ -354,15 +359,15 @@ head(ga_data)</code></pre>
 <tbody>
 <tr class="odd">
 <td align="left">/category/excel-tips/</td>
-<td align="right">56</td>
+<td align="right">57</td>
 </tr>
 <tr class="even">
 <td align="left">/category/excel-tips/page/2/</td>
-<td align="right">21</td>
+<td align="right">19</td>
 </tr>
 <tr class="odd">
 <td align="left">/category/excel-tips/page/3/</td>
-<td align="right">9</td>
+<td align="right">6</td>
 </tr>
 <tr class="even">
 <td align="left">/digital-analytics-community/daa-awards-for-excellence-a-thank-you/</td>
@@ -370,7 +375,7 @@ head(ga_data)</code></pre>
 </tr>
 <tr class="odd">
 <td align="left">/excel-tips/</td>
-<td align="right">3</td>
+<td align="right">2</td>
 </tr>
 <tr class="even">
 <td align="left">/excel-tips/10-things-you-should-always-do-or-not-do-in-excel/</td>
@@ -403,27 +408,27 @@ head(ga_data_top_10)</code></pre>
 <tbody>
 <tr class="odd">
 <td align="left">/excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
-<td align="right">3701</td>
+<td align="right">3523</td>
 </tr>
 <tr class="even">
-<td align="left">/excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
-<td align="right">3540</td>
+<td align="left">/excel-tips/excel-dropdowns-done-right/</td>
+<td align="right">3314</td>
 </tr>
 <tr class="odd">
-<td align="left">/excel-tips/excel-dropdowns-done-right/</td>
-<td align="right">3270</td>
+<td align="left">/excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
+<td align="right">3191</td>
 </tr>
 <tr class="even">
 <td align="left">/excel-tips/converting-a-date-in-excel-to-week-bi-week-month-and-more/</td>
-<td align="right">2647</td>
+<td align="right">2744</td>
 </tr>
 <tr class="odd">
 <td align="left">/excel-tips/excel-dynamic-named-ranges-with-tables-never-manually-updating-your-charts/</td>
-<td align="right">2042</td>
+<td align="right">1857</td>
 </tr>
 <tr class="even">
 <td align="left">/excel-tips/10-tips-for-building-a-dashboard-in-excel/</td>
-<td align="right">540</td>
+<td align="right">503</td>
 </tr>
 </tbody>
 </table>

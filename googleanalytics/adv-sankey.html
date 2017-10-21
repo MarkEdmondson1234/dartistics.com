@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Create Homepage Sankey Chart</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="includes/styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">GA & R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Overview</a>
+</li>
+<li>
+  <a href="setup.html">Initial Setup</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Basic Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="simple-trended-sessions-by-devicecategory.html">Trended Sessions by Device Category</a>
+    </li>
+    <li>
+      <a href="simple-dim-filter.html">Simple Dimension Filter</a>
+    </li>
+    <li>
+      <a href="simple-medium-ordered-by-sessions.html">Medium Ordered by Sessions</a>
+    </li>
+    <li>
+      <a href="segment-by-id.html">Apply Segment by Segment ID</a>
+    </li>
+    <li>
+      <a href="pivot-in-query.html">Pivot in a Query</a>
+    </li>
+    <li>
+      <a href="pivot-after-query.html">Pivot After a Query</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Intermediate Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="pivot-sparklines-heatmap.html">2D Sparklines/Heatmap</a>
+    </li>
+    <li>
+      <a href="simple-dynamic-segment.html">Simple Dynamic Segment - v4</a>
+    </li>
+    <li>
+      <a href="simple-dynamic-segment-v3.html">Simple Dynamic Segment - v3</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Advanced Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="adv-multiple-dynamic-segments.html">Multiple Dynamic Segments</a>
+    </li>
+    <li>
+      <a href="adv-sankey.html">Sankey Chart (Traffic Flows)</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="http://dartistics.com">dartistics.com</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-N4DF7T"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N4DF7T');</script>
+<!-- End Google Tag Manager -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Create Homepage Sankey Chart</h1>
+
+</div>
+
+
+<p>This example creates a Sankey chart to show how traffic flows from the homepage, split by device category.</p>
+<p>Steps to achieve this are:</p>
+<ol style="list-style-type: decimal">
+<li>Call <code>google_analytics_4</code> to get unique pageviews, split by the secondPagePath dimension. We apply a dimension filter to limit the results only to users landing on our website homepage.</li>
+<li>Filter our results to the top 20 pages only, to avoid creating an indecipherable diagram with too many possible paths.</li>
+<li>Build our plot with the resulting dataframe. We use the <code>googleVis</code> package library and build a <code>gvisSankey</code> plot. We set some options to colour traffic paths according to the referring <code>channelGrouping</code> for our visitors.</li>
+</ol>
+<p>These examples were built thanks to the excellent articles on r-bloggers.com by Tony Hirst. For more information, see:</p>
+<ul>
+<li><a href="https://www.r-bloggers.com/experimenting-with-sankey-diagrams-in-r-and-python/" class="uri">https://www.r-bloggers.com/experimenting-with-sankey-diagrams-in-r-and-python/</a></li>
+<li><a href="https://github.com/psychemedia/parlihacks/blob/master/Rmd/sankeyFlow.Rmd" class="uri">https://github.com/psychemedia/parlihacks/blob/master/Rmd/sankeyFlow.Rmd</a></li>
+</ul>
+<hr />
+<div id="setupconfig" class="section level1">
+<h1>Setup/Config</h1>
+<p>Be sure you’ve completed the steps on the <a href="setup.html">Initial Setup</a> page before running this code.</p>
+<p>For the setup, we’re going to load a few libraries, load our specific Google Analytics credentials, and then authorize with Google.</p>
+<pre class="r"><code># Load the necessary libraries. These libraries aren&#39;t all necessarily required for every
+# example, but, for simplicity&#39;s sake, we&#39;re going ahead and including them in every example.
+library(googleAnalyticsR)
+library(tidyverse)
+library(devtools)
+library(googleVis)
+
+# Load the client ID, client secret, and GA view ID
+client_id &lt;- Sys.getenv(&quot;GA_CLIENT_ID&quot;)
+client_secret &lt;- Sys.getenv(&quot;GA_CLIENT_SECRET&quot;)
+
+# Set the client ID and client secret as options for googleAuthR
+options(googleAuthR.client_id = client_id)
+options(googleAuthR.client_secret = client_secret)
+
+# Reload the googleAnalyticsR package so those options get set in googleAuthR
+devtools::reload(pkg = devtools::inst(&quot;googleAnalyticsR&quot;))
+
+# Authorize GA. Depending on if you&#39;ve done this already and a .httr-oauth file has
+# been saved or not, this may pop you over to a browser to authenticate.
+ga_auth()
+
+# Set the view ID and the date range. If you want to, you can swap out the Sys.getenv()
+# call and just replace that with a hardcoded value for the view ID. And, the start 
+# and end date are currently set to choose the last 30 days, but those can be 
+# hardcoded as well.
+view_id &lt;- Sys.getenv(&quot;GA_VIEW_ID&quot;)
+start_date &lt;- Sys.Date() - 31        # 30 days back from yesterday
+end_date &lt;- Sys.Date() - 1           # Yesterday</code></pre>
+<p>If that all runs with just some messages but no errors, then you’re set for the next chunk of code: pulling the data.</p>
+</div>
+<div id="pull-the-data" class="section level1">
+<h1>Pull the Data</h1>
+<p>Now we’re ready to make our call to the <code>google_analytics_4</code> function. We’ll pull the <code>uniquePageViews</code> metric, combined with the <code>channelGrouping</code> and <code>secondPagePath</code> (<a href="https://developers.google.com/analytics/devguides/reporting/core/dimsmets#view=detail&amp;group=page_tracking&amp;jump=ga_secondpagepath">read about this metric in the GA reporting documentation</a>).</p>
+<p>Before making the call, we need to build a <code>filter_clause_ga4</code> object, containing one <code>dim_filter</code> to get data <strong>only</strong> for sessions where our users landed on the homepage of our site. Mark Edmondson has written some very helpful documentation on the new filter clauses - <a href="http://code.markedmondson.me/googleAnalyticsR/v4.html#new-filter-syntax">read the documentation here</a>.</p>
+<p>The code below will build a list which can be passed as an argument to our <code>google_analytics_4</code> request. We use a <a href="https://www.rstudio.com/wp-content/uploads/2016/09/RegExCheatsheet.pdf">regular expression</a> to identify the homepage. The code below assumes the homepage shows up in your <strong>Pages</strong> report as simply “/”, but you can adjust the <code>expressions</code> argument if that’s not actually the case (or, of course, you can run this entire example for <em>any</em> landing page you choose by adjusting that argument. Or… create multiple Sankey charts for each of your <em>top</em> landing pages; oh…the possibilities!) .</p>
+<pre class="r"><code># Create page filter object
+page_filter &lt;- dim_filter(
+  dimension = &quot;landingPagePath&quot;,
+  operator = &quot;REGEXP&quot;,
+  expressions = &quot;^/$&quot;)
+homepage_filter &lt;- filter_clause_ga4(list(page_filter))
+
+# Now, we&#39;re ready to pull the data from the GA API. We build a `google_analytics_4` request, 
+# passing the `homepage_filter` to the `dim_filters` argument.
+home_next_pages &lt;- google_analytics_4(
+  viewId = view_id,
+  date_range = c(start_date, end_date),
+  dimensions = c(&quot;secondPagePath&quot;, &quot;channelGrouping&quot;),
+  metrics = &quot;uniquePageviews&quot;,
+  dim_filters = homepage_filter,
+  max = -1,
+  anti_sample = TRUE
+)
+
+# Go ahead and do a quick inspection of the data that was returned. This isn&#39;t required,
+# but it&#39;s a good check along the way.
+head(home_next_pages)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">secondPagePath</th>
+<th align="left">channelGrouping</th>
+<th align="right">uniquePageviews</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(not set)</td>
+<td align="left">Direct</td>
+<td align="right">365</td>
+</tr>
+<tr class="even">
+<td align="left">(not set)</td>
+<td align="left">Organic Search</td>
+<td align="right">174</td>
+</tr>
+<tr class="odd">
+<td align="left">(not set)</td>
+<td align="left">Referral</td>
+<td align="right">27</td>
+</tr>
+<tr class="even">
+<td align="left">(not set)</td>
+<td align="left">Social</td>
+<td align="right">19</td>
+</tr>
+<tr class="odd">
+<td align="left">/</td>
+<td align="left">Direct</td>
+<td align="right">82</td>
+</tr>
+<tr class="even">
+<td align="left">/</td>
+<td align="left">Organic Search</td>
+<td align="right">75</td>
+</tr>
+</tbody>
+</table>
+<p>What we have is a data frame containing unique pageviews per next page for visits which started on your homepage, split by traffic source. The data used here isn’t from a site with the world’s most diverse and interesting set of channels, but, with luck, your data will be!</p>
+</div>
+<div id="data-munging" class="section level1">
+<h1>Data Munging</h1>
+<p>We have a small problem in the number of possible next pages for our sessions (you don’t need to include this code – it’s just checking the number of unique values for the <code>secondPagePath</code> dimension in our data set).</p>
+<pre class="r"><code>length(unique(home_next_pages$secondPagePath))</code></pre>
+<pre><code>## [1] 57</code></pre>
+<p>We should thin this down to a number which can be easily visualised, which is a two-step process:</p>
+<ol style="list-style-type: decimal">
+<li>We’ll group the data by page path, arrange in order of pageviews and filter out the lower-volumes pages (or, put another way, only <em>keep</em> the top 10 pages overall).</li>
+<li>We’ll then go back to our original data set and keep <em>only</em> the values that include those top 10 pages.</li>
+</ol>
+<pre class="r"><code># Build the data frame of top 10 pages:
+top_10 &lt;- home_next_pages %&gt;% 
+  group_by(secondPagePath) %&gt;% 
+  summarise(upvs = sum(uniquePageviews)) %&gt;% 
+  top_n(10, upvs) %&gt;% 
+  arrange(desc(upvs))
+
+# Using this list of our top 10 pages, use the `semi_join` function from `dplyr` to restrict 
+# our data to pages &amp; channels that have one of these top 10 pages as the second page viewed.
+home_next_pages &lt;- home_next_pages %&gt;% 
+  semi_join(top_10, by = &quot;secondPagePath&quot;)
+
+# Check the data again. It&#39;s the same structure as it was originally, and the head() is likely
+# identical. But, we know that, deeper in the data, the lower-volume pages have been removed.
+head(home_next_pages)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">secondPagePath</th>
+<th align="left">channelGrouping</th>
+<th align="right">uniquePageviews</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(not set)</td>
+<td align="left">Direct</td>
+<td align="right">365</td>
+</tr>
+<tr class="even">
+<td align="left">(not set)</td>
+<td align="left">Organic Search</td>
+<td align="right">174</td>
+</tr>
+<tr class="odd">
+<td align="left">(not set)</td>
+<td align="left">Referral</td>
+<td align="right">27</td>
+</tr>
+<tr class="even">
+<td align="left">(not set)</td>
+<td align="left">Social</td>
+<td align="right">19</td>
+</tr>
+<tr class="odd">
+<td align="left">/</td>
+<td align="left">Direct</td>
+<td align="right">82</td>
+</tr>
+<tr class="even">
+<td align="left">/</td>
+<td align="left">Organic Search</td>
+<td align="right">75</td>
+</tr>
+</tbody>
+</table>
+<p>Now we have a data frame ready for plotting, using our top 10 pages. Again, you don’t need to include this code. We’re just showing that we’re now down to 10 unique values for <code>secondPagePath</code>.</p>
+<pre class="r"><code># Only 10 unique URLs are in our results, now
+length(unique(home_next_pages$secondPagePath))</code></pre>
+<pre><code>## [1] 10</code></pre>
+</div>
+<div id="data-visualization" class="section level1">
+<h1>Data Visualization</h1>
+<div id="a-basic-plot" class="section level2">
+<h2>A Basic Plot</h2>
+<p>We’ll make use of the <code>gvisSankey</code> function to build our plot ( <a href="https://www.rdocumentation.org/packages/googleVis/versions/0.6.0/topics/gvisSankey">read the function documentation</a> ).</p>
+<pre class="r"><code># Reordering colums: the gVisSankey function doesn&#39;t take kindly
+# if our df columns aren&#39;t strictly ordered as from:to:weight
+home_next_pages &lt;- home_next_pages %&gt;% 
+  select(channelGrouping, secondPagePath, uniquePageviews)
+
+# Build the plot
+s &lt;- gvisSankey(home_next_pages)
+                # chartid = chart_id)
+plot(s)</code></pre>
+<div align="center">
+<!-- Sankey generated in R 3.3.2 by googleVis 0.6.2 package -->
+<!-- Sat Oct 21 11:51:35 2017 -->
+<!-- jsHeader -->
+<script type="text/javascript">
+ 
+// jsData 
+function gvisDataSankeyID6ddb204cdf18 () {
+var data = new google.visualization.DataTable();
+var datajson =
+[
+ [
+"Direct",
+"(not set)",
+365
+],
+[
+"Organic Search",
+"(not set)",
+174
+],
+[
+"Referral",
+"(not set)",
+27
+],
+[
+"Social",
+"(not set)",
+19
+],
+[
+"Direct",
+"/",
+82
+],
+[
+"Organic Search",
+"/",
+75
+],
+[
+"Referral",
+"/",
+3
+],
+[
+"Direct",
+"/?author_name=&cat=",
+100
+],
+[
+"Organic Search",
+"/?author_name=&cat=",
+127
+],
+[
+"Direct",
+"/about-us/",
+82
+],
+[
+"Organic Search",
+"/about-us/",
+216
+],
+[
+"Referral",
+"/about-us/",
+2
+],
+[
+"Direct",
+"/analyst-resources/",
+16
+],
+[
+"Organic Search",
+"/analyst-resources/",
+65
+],
+[
+"Direct",
+"/blog/",
+132
+],
+[
+"Organic Search",
+"/blog/",
+313
+],
+[
+"Referral",
+"/blog/",
+16
+],
+[
+"Social",
+"/blog/",
+24
+],
+[
+"Direct",
+"/blog/adam-greco/",
+9
+],
+[
+"Organic Search",
+"/blog/adam-greco/",
+99
+],
+[
+"Referral",
+"/blog/adam-greco/",
+3
+],
+[
+"Direct",
+"/services/adobe-analytics-implementation/",
+19
+],
+[
+"Organic Search",
+"/services/adobe-analytics-implementation/",
+60
+],
+[
+"Direct",
+"/services/strategic-audit-and-transformation-roadmap/",
+25
+],
+[
+"Organic Search",
+"/services/strategic-audit-and-transformation-roadmap/",
+46
+],
+[
+"Referral",
+"/services/strategic-audit-and-transformation-roadmap/",
+13
+],
+[
+"Direct",
+"/services/training-and-educational-services/",
+41
+],
+[
+"Organic Search",
+"/services/training-and-educational-services/",
+39
+] 
+];
+data.addColumn('string','channelGrouping');
+data.addColumn('string','secondPagePath');
+data.addColumn('number','uniquePageviews');
+data.addRows(datajson);
+return(data);
+}
+ 
+// jsDrawChart
+function drawChartSankeyID6ddb204cdf18() {
+var data = gvisDataSankeyID6ddb204cdf18();
+var options = {};
+options["width"] = 400;
+options["height"] = 400;
+
+    var chart = new google.visualization.Sankey(
+    document.getElementById('SankeyID6ddb204cdf18')
+    );
+    chart.draw(data,options);
+    
+
+}
+  
+ 
+// jsDisplayChart
+(function() {
+var pkgs = window.__gvisPackages = window.__gvisPackages || [];
+var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
+var chartid = "sankey";
+  
+// Manually see if chartid is in pkgs (not all browsers support Array.indexOf)
+var i, newPackage = true;
+for (i = 0; newPackage && i < pkgs.length; i++) {
+if (pkgs[i] === chartid)
+newPackage = false;
+}
+if (newPackage)
+  pkgs.push(chartid);
+  
+// Add the drawChart function to the global list of callbacks
+callbacks.push(drawChartSankeyID6ddb204cdf18);
+})();
+function displayChartSankeyID6ddb204cdf18() {
+  var pkgs = window.__gvisPackages = window.__gvisPackages || [];
+  var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
+  window.clearTimeout(window.__gvisLoad);
+  // The timeout is set to 100 because otherwise the container div we are
+  // targeting might not be part of the document yet
+  window.__gvisLoad = setTimeout(function() {
+  var pkgCount = pkgs.length;
+  google.load("visualization", "1", { packages:pkgs, callback: function() {
+  if (pkgCount != pkgs.length) {
+  // Race condition where another setTimeout call snuck in after us; if
+  // that call added a package, we must not shift its callback
+  return;
+}
+while (callbacks.length > 0)
+callbacks.shift()();
+} });
+}, 100);
+}
+ 
+// jsFooter
+</script>
+<!-- jsChart -->
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID6ddb204cdf18"></script>
+<!-- divChart -->
+<div id="SankeyID6ddb204cdf18" style="width: 400; height: 400;">
+
+</div>
+</div>
+<p> <br>Note how you can actually mouse over the different values to see additional details.</p>
+</div>
+<div id="second-plot-colour-by-traffic-source" class="section level2">
+<h2>Second Plot: Colour by Traffic Source</h2>
+<p>Our first chart is a nice enough start, but pretty messy and hard to discriminate between traffic sources. We should try to colour node links according to the source (<code>channelGrouping</code>).</p>
+<p>You can control the appearance of your sankey chart, including link colours, by passing <code>options</code> values in using a json object or as part of a list. I find it easier to write the values as json, for readability.</p>
+<p>We have multiple possible channel groupings in our GA data. If we know how many we’ll include (which we could have addressed in our <strong>Data Munging</strong> by forcing just the top <em>X</em> channels), then we could define a list of colors that is exactly that long. For now, we’re going to define 8 colour values, even though that’s more than we actually need.</p>
+<p>We can generate these colour values as hex codes using the <a href="http://colorbrewer2.org/#type=qualitative&amp;scheme=Accent&amp;n=8">colorbrewer</a> website. Colorbrewer helps to ensure our colours can be differentiated and follow good practice for data visualisation.</p>
+<pre class="r"><code># 8 values from colorbrewer. Note the use of array notation
+# colour_opts &lt;- &#39;[&quot;#7fc97f&quot;, &quot;#beaed4&quot;,&quot;#fdc086&quot;,&quot;#ffff99&quot;,&quot;#386cb0&quot;,&quot;#f0027f&quot;,&quot;#bf5b17&quot;,&quot;#666666&quot;]&#39;
+colour_opts &lt;- &#39;[&quot;#7fc97f&quot;, &quot;#beaed4&quot;,&quot;#fdc086&quot;,&quot;#ffff99&quot;]&#39;
+
+# Set colorMode to &#39;source&#39; to colour by the chart&#39;s source
+opts &lt;- paste0(&quot;{
+        link: { colorMode: &#39;source&#39;,
+                colors: &quot;, colour_opts ,&quot; }
+      }&quot; )
+
+# This colour list can now be passed as an option to our `gvisSankey` call. We pass them to the 
+# `options` argument for our plot.
+s &lt;- gvisSankey(home_next_pages,
+                options = list(sankey = opts))
+plot(s)</code></pre>
+<div align="center">
+<!-- Sankey generated in R 3.3.2 by googleVis 0.6.2 package -->
+<!-- Sat Oct 21 11:51:35 2017 -->
+<!-- jsHeader -->
+<script type="text/javascript">
+ 
+// jsData 
+function gvisDataSankeyID6ddb199d3c2f () {
+var data = new google.visualization.DataTable();
+var datajson =
+[
+ [
+"Direct",
+"(not set)",
+365
+],
+[
+"Organic Search",
+"(not set)",
+174
+],
+[
+"Referral",
+"(not set)",
+27
+],
+[
+"Social",
+"(not set)",
+19
+],
+[
+"Direct",
+"/",
+82
+],
+[
+"Organic Search",
+"/",
+75
+],
+[
+"Referral",
+"/",
+3
+],
+[
+"Direct",
+"/?author_name=&cat=",
+100
+],
+[
+"Organic Search",
+"/?author_name=&cat=",
+127
+],
+[
+"Direct",
+"/about-us/",
+82
+],
+[
+"Organic Search",
+"/about-us/",
+216
+],
+[
+"Referral",
+"/about-us/",
+2
+],
+[
+"Direct",
+"/analyst-resources/",
+16
+],
+[
+"Organic Search",
+"/analyst-resources/",
+65
+],
+[
+"Direct",
+"/blog/",
+132
+],
+[
+"Organic Search",
+"/blog/",
+313
+],
+[
+"Referral",
+"/blog/",
+16
+],
+[
+"Social",
+"/blog/",
+24
+],
+[
+"Direct",
+"/blog/adam-greco/",
+9
+],
+[
+"Organic Search",
+"/blog/adam-greco/",
+99
+],
+[
+"Referral",
+"/blog/adam-greco/",
+3
+],
+[
+"Direct",
+"/services/adobe-analytics-implementation/",
+19
+],
+[
+"Organic Search",
+"/services/adobe-analytics-implementation/",
+60
+],
+[
+"Direct",
+"/services/strategic-audit-and-transformation-roadmap/",
+25
+],
+[
+"Organic Search",
+"/services/strategic-audit-and-transformation-roadmap/",
+46
+],
+[
+"Referral",
+"/services/strategic-audit-and-transformation-roadmap/",
+13
+],
+[
+"Direct",
+"/services/training-and-educational-services/",
+41
+],
+[
+"Organic Search",
+"/services/training-and-educational-services/",
+39
+] 
+];
+data.addColumn('string','channelGrouping');
+data.addColumn('string','secondPagePath');
+data.addColumn('number','uniquePageviews');
+data.addRows(datajson);
+return(data);
+}
+ 
+// jsDrawChart
+function drawChartSankeyID6ddb199d3c2f() {
+var data = gvisDataSankeyID6ddb199d3c2f();
+var options = {};
+options["width"] = 400;
+options["height"] = 400;
+options["sankey"] = {
+        link: { colorMode: 'source',
+                colors: ["#7fc97f", "#beaed4","#fdc086","#ffff99"] }
+      };
+
+    var chart = new google.visualization.Sankey(
+    document.getElementById('SankeyID6ddb199d3c2f')
+    );
+    chart.draw(data,options);
+    
+
+}
+  
+ 
+// jsDisplayChart
+(function() {
+var pkgs = window.__gvisPackages = window.__gvisPackages || [];
+var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
+var chartid = "sankey";
+  
+// Manually see if chartid is in pkgs (not all browsers support Array.indexOf)
+var i, newPackage = true;
+for (i = 0; newPackage && i < pkgs.length; i++) {
+if (pkgs[i] === chartid)
+newPackage = false;
+}
+if (newPackage)
+  pkgs.push(chartid);
+  
+// Add the drawChart function to the global list of callbacks
+callbacks.push(drawChartSankeyID6ddb199d3c2f);
+})();
+function displayChartSankeyID6ddb199d3c2f() {
+  var pkgs = window.__gvisPackages = window.__gvisPackages || [];
+  var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
+  window.clearTimeout(window.__gvisLoad);
+  // The timeout is set to 100 because otherwise the container div we are
+  // targeting might not be part of the document yet
+  window.__gvisLoad = setTimeout(function() {
+  var pkgCount = pkgs.length;
+  google.load("visualization", "1", { packages:pkgs, callback: function() {
+  if (pkgCount != pkgs.length) {
+  // Race condition where another setTimeout call snuck in after us; if
+  // that call added a package, we must not shift its callback
+  return;
+}
+while (callbacks.length > 0)
+callbacks.shift()();
+} });
+}, 100);
+}
+ 
+// jsFooter
+</script>
+<!-- jsChart -->
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID6ddb199d3c2f"></script>
+<!-- divChart -->
+<div id="SankeyID6ddb199d3c2f" style="width: 400; height: 400;">
+
+</div>
+</div>
+<p>This is a bit more useful. Still messy, but if you build your own plot, you’ll notice that when you hover over each node, tooltips will appear to give you information about the source, destination, and volume of pageviews.</p>
+</div>
+<div id="third-plot-highlight-a-specific-traffic-source" class="section level2">
+<h2>Third Plot: Highlight a Specific Traffic Source</h2>
+<p>We may find it useful to limit the use of colour and focus on a subset of the data. Let’s highlight the <em>second</em> channel and wash out the colour for all other traffic sources.</p>
+<pre class="r"><code># 25% gray for all sources except the second one.
+colour_opts &lt;- &#39;[&quot;#999999&quot;, &quot;#7fc97f&quot;,&quot;#999999&quot;,&quot;#999999&quot;,&quot;#999999&quot;,&quot;#999999&quot;,&quot;#999999&quot;,&quot;#999999&quot;]&#39;
+
+opts &lt;- paste0(&quot;{
+        link: { colorMode: &#39;source&#39;,
+                colors: &quot;, colour_opts ,&quot; },
+        node: { colors: &#39;#999999&#39; }
+      }&quot; )
+
+# This colour list can now be passed as an option to our `gvisSankey` call.
+s &lt;- gvisSankey(home_next_pages,
+                options = list(sankey = opts))
+plot(s)</code></pre>
+<div align="center">
+<!-- Sankey generated in R 3.3.2 by googleVis 0.6.2 package -->
+<!-- Sat Oct 21 11:51:35 2017 -->
+<!-- jsHeader -->
+<script type="text/javascript">
+ 
+// jsData 
+function gvisDataSankeyID6ddb13ab465d () {
+var data = new google.visualization.DataTable();
+var datajson =
+[
+ [
+"Direct",
+"(not set)",
+365
+],
+[
+"Organic Search",
+"(not set)",
+174
+],
+[
+"Referral",
+"(not set)",
+27
+],
+[
+"Social",
+"(not set)",
+19
+],
+[
+"Direct",
+"/",
+82
+],
+[
+"Organic Search",
+"/",
+75
+],
+[
+"Referral",
+"/",
+3
+],
+[
+"Direct",
+"/?author_name=&cat=",
+100
+],
+[
+"Organic Search",
+"/?author_name=&cat=",
+127
+],
+[
+"Direct",
+"/about-us/",
+82
+],
+[
+"Organic Search",
+"/about-us/",
+216
+],
+[
+"Referral",
+"/about-us/",
+2
+],
+[
+"Direct",
+"/analyst-resources/",
+16
+],
+[
+"Organic Search",
+"/analyst-resources/",
+65
+],
+[
+"Direct",
+"/blog/",
+132
+],
+[
+"Organic Search",
+"/blog/",
+313
+],
+[
+"Referral",
+"/blog/",
+16
+],
+[
+"Social",
+"/blog/",
+24
+],
+[
+"Direct",
+"/blog/adam-greco/",
+9
+],
+[
+"Organic Search",
+"/blog/adam-greco/",
+99
+],
+[
+"Referral",
+"/blog/adam-greco/",
+3
+],
+[
+"Direct",
+"/services/adobe-analytics-implementation/",
+19
+],
+[
+"Organic Search",
+"/services/adobe-analytics-implementation/",
+60
+],
+[
+"Direct",
+"/services/strategic-audit-and-transformation-roadmap/",
+25
+],
+[
+"Organic Search",
+"/services/strategic-audit-and-transformation-roadmap/",
+46
+],
+[
+"Referral",
+"/services/strategic-audit-and-transformation-roadmap/",
+13
+],
+[
+"Direct",
+"/services/training-and-educational-services/",
+41
+],
+[
+"Organic Search",
+"/services/training-and-educational-services/",
+39
+] 
+];
+data.addColumn('string','channelGrouping');
+data.addColumn('string','secondPagePath');
+data.addColumn('number','uniquePageviews');
+data.addRows(datajson);
+return(data);
+}
+ 
+// jsDrawChart
+function drawChartSankeyID6ddb13ab465d() {
+var data = gvisDataSankeyID6ddb13ab465d();
+var options = {};
+options["width"] = 400;
+options["height"] = 400;
+options["sankey"] = {
+        link: { colorMode: 'source',
+                colors: ["#999999", "#7fc97f","#999999","#999999","#999999","#999999","#999999","#999999"] },
+        node: { colors: '#999999' }
+      };
+
+    var chart = new google.visualization.Sankey(
+    document.getElementById('SankeyID6ddb13ab465d')
+    );
+    chart.draw(data,options);
+    
+
+}
+  
+ 
+// jsDisplayChart
+(function() {
+var pkgs = window.__gvisPackages = window.__gvisPackages || [];
+var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
+var chartid = "sankey";
+  
+// Manually see if chartid is in pkgs (not all browsers support Array.indexOf)
+var i, newPackage = true;
+for (i = 0; newPackage && i < pkgs.length; i++) {
+if (pkgs[i] === chartid)
+newPackage = false;
+}
+if (newPackage)
+  pkgs.push(chartid);
+  
+// Add the drawChart function to the global list of callbacks
+callbacks.push(drawChartSankeyID6ddb13ab465d);
+})();
+function displayChartSankeyID6ddb13ab465d() {
+  var pkgs = window.__gvisPackages = window.__gvisPackages || [];
+  var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
+  window.clearTimeout(window.__gvisLoad);
+  // The timeout is set to 100 because otherwise the container div we are
+  // targeting might not be part of the document yet
+  window.__gvisLoad = setTimeout(function() {
+  var pkgCount = pkgs.length;
+  google.load("visualization", "1", { packages:pkgs, callback: function() {
+  if (pkgCount != pkgs.length) {
+  // Race condition where another setTimeout call snuck in after us; if
+  // that call added a package, we must not shift its callback
+  return;
+}
+while (callbacks.length > 0)
+callbacks.shift()();
+} });
+}, 100);
+}
+ 
+// jsFooter
+</script>
+<!-- jsChart -->
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID6ddb13ab465d"></script>
+<!-- divChart -->
+<div id="SankeyID6ddb13ab465d" style="width: 400; height: 400;">
+
+</div>
+</div>
+<p>This is a bit easier to read. There is plenty more work that can be done, but hopefully this guide provides enough information to get you started.</p>
+<p>Remember that the number of next pages can be controlled to your preference. It could also be interesting to classify traffic by segment rather than <code>channelGrouping</code>, and use the segment types as your sources.</p>
+<p>Full documentation on <code>googleVis</code> sankey charts can be found at <a href="https://developers.google.com/chart/interactive/docs/gallery/sankey#controlling-colors" class="uri">https://developers.google.com/chart/interactive/docs/gallery/sankey#controlling-colors</a></p>
+</div>
+</div>
+
+<hr>
+<p align="center"><em></em>This site is a sub-site to <a href="http://dartistics.com" target="_blank">dartistics.com</em></p>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

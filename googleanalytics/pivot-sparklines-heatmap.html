@@ -237,6 +237,9 @@ $(document).ready(function () {
     <li>
       <a href="adv-multiple-dynamic-segments.html">Multiple Dynamic Segments</a>
     </li>
+    <li>
+      <a href="adv-sankey.html">Sankey Chart (Traffic Flows)</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -278,10 +281,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h1>Setup/Config</h1>
 <p>Be sure you’ve completed the steps on the <a href="setup.html">Initial Setup</a> page before running this code.</p>
 <p>For the setup, we’re going to load a few libraries, load our specific Google Analytics credentials, and then authorize with Google.</p>
-<pre class="r"><code># Load the necessary libraries
+<pre class="r"><code># Load the necessary libraries. These libraries aren&#39;t all necessarily required for every
+# example, but, for simplicity&#39;s sake, we&#39;re going ahead and including them in every example.
 library(googleAnalyticsR)
 library(tidyverse)
 library(devtools)
+library(googleVis)
 
 # Load the client ID, client secret, and GA view ID
 client_id &lt;- Sys.getenv(&quot;GA_CLIENT_ID&quot;)
@@ -333,40 +338,40 @@ head(ga_data)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2017-09-10</td>
+<td align="left">2017-09-20</td>
 <td align="left">(none)</td>
 <td align="left">desktop</td>
-<td align="right">60</td>
+<td align="right">213</td>
 </tr>
 <tr class="even">
-<td align="left">2017-09-10</td>
+<td align="left">2017-09-20</td>
 <td align="left">(none)</td>
 <td align="left">mobile</td>
-<td align="right">16</td>
+<td align="right">21</td>
 </tr>
 <tr class="odd">
-<td align="left">2017-09-10</td>
+<td align="left">2017-09-20</td>
 <td align="left">(none)</td>
 <td align="left">tablet</td>
 <td align="right">7</td>
 </tr>
 <tr class="even">
-<td align="left">2017-09-10</td>
-<td align="left">Community</td>
-<td align="left">mobile</td>
-<td align="right">2</td>
-</tr>
-<tr class="odd">
-<td align="left">2017-09-10</td>
+<td align="left">2017-09-20</td>
 <td align="left">organic</td>
 <td align="left">desktop</td>
-<td align="right">309</td>
+<td align="right">1088</td>
 </tr>
-<tr class="even">
-<td align="left">2017-09-10</td>
+<tr class="odd">
+<td align="left">2017-09-20</td>
 <td align="left">organic</td>
 <td align="left">mobile</td>
-<td align="right">37</td>
+<td align="right">68</td>
+</tr>
+<tr class="even">
+<td align="left">2017-09-20</td>
+<td align="left">organic</td>
+<td align="left">tablet</td>
+<td align="right">18</td>
 </tr>
 </tbody>
 </table>
@@ -426,31 +431,31 @@ head(ga_data_totals)</code></pre>
 <tr class="odd">
 <td align="left">(none)</td>
 <td align="left">desktop</td>
-<td align="right">3895</td>
+<td align="right">4051</td>
 </tr>
 <tr class="even">
 <td align="left">(none)</td>
 <td align="left">mobile</td>
-<td align="right">599</td>
+<td align="right">566</td>
 </tr>
 <tr class="odd">
 <td align="left">(none)</td>
 <td align="left">tablet</td>
-<td align="right">155</td>
+<td align="right">128</td>
 </tr>
 <tr class="even">
-<td align="left">Community</td>
-<td align="left">mobile</td>
-<td align="right">3</td>
+<td align="left">email</td>
+<td align="left">desktop</td>
+<td align="right">12</td>
 </tr>
 <tr class="odd">
 <td align="left">email</td>
-<td align="left">desktop</td>
-<td align="right">9</td>
+<td align="left">mobile</td>
+<td align="right">1</td>
 </tr>
 <tr class="even">
 <td align="left">email</td>
-<td align="left">mobile</td>
+<td align="left">tablet</td>
 <td align="right">1</td>
 </tr>
 </tbody>

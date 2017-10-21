@@ -237,6 +237,9 @@ $(document).ready(function () {
     <li>
       <a href="adv-multiple-dynamic-segments.html">Multiple Dynamic Segments</a>
     </li>
+    <li>
+      <a href="adv-sankey.html">Sankey Chart (Traffic Flows)</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -278,10 +281,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h1>Setup/Config</h1>
 <p>Be sure you’ve completed the steps on the <a href="setup.html">Initial Setup</a> page before running this code.</p>
 <p>For the setup, we’re going to load a few libraries, load our specific Google Analytics credentials, and then authorize with Google.</p>
-<pre class="r"><code># Load the necessary libraries
+<pre class="r"><code># Load the necessary libraries. These libraries aren&#39;t all necessarily required for every
+# example, but, for simplicity&#39;s sake, we&#39;re going ahead and including them in every example.
 library(googleAnalyticsR)
 library(tidyverse)
 library(devtools)
+library(googleVis)
 
 # Load the client ID, client secret, and GA view ID
 client_id &lt;- Sys.getenv(&quot;GA_CLIENT_ID&quot;)
@@ -344,12 +349,12 @@ head(ga_data)</code></pre>
 <tr class="odd">
 <td align="left">/</td>
 <td align="left">Dynamic Segment</td>
-<td align="right">174</td>
+<td align="right">145</td>
 </tr>
 <tr class="even">
 <td align="left">/?author_name=&amp;cat=</td>
 <td align="left">Dynamic Segment</td>
-<td align="right">11</td>
+<td align="right">9</td>
 </tr>
 <tr class="odd">
 <td align="left">/?author_name=&amp;cat=227</td>
@@ -357,19 +362,19 @@ head(ga_data)</code></pre>
 <td align="right">2</td>
 </tr>
 <tr class="even">
-<td align="left">/?p=43</td>
+<td align="left">/?author_name=&amp;cat=658</td>
 <td align="left">Dynamic Segment</td>
-<td align="right">1</td>
+<td align="right">4</td>
 </tr>
 <tr class="odd">
-<td align="left">/2/library/</td>
+<td align="left">/?author_name=&amp;cat=659</td>
 <td align="left">Dynamic Segment</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
-<td align="left">/2/library/index.asp?c=Technical</td>
+<td align="left">/?author_name=&amp;cat=86</td>
 <td align="left">Dynamic Segment</td>
-<td align="right">1</td>
+<td align="right">2</td>
 </tr>
 </tbody>
 </table>
@@ -398,34 +403,34 @@ head(ga_data_top_10)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">/excel-tips/converting-a-date-in-excel-to-week-bi-week-month-and-more/</td>
+<td align="left">/analysis/kpi-move-enough-care/</td>
 <td align="left">Dynamic Segment</td>
-<td align="right">182</td>
+<td align="right">224</td>
 </tr>
 <tr class="even">
-<td align="left">/</td>
+<td align="left">/excel-tips/converting-a-date-in-excel-to-week-bi-week-month-and-more/</td>
 <td align="left">Dynamic Segment</td>
-<td align="right">174</td>
+<td align="right">185</td>
 </tr>
 <tr class="odd">
-<td align="left">/excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
+<td align="left">/</td>
 <td align="left">Dynamic Segment</td>
-<td align="right">160</td>
+<td align="right">145</td>
 </tr>
 <tr class="even">
 <td align="left">/excel-tips/excel-dropdowns-done-right/</td>
 <td align="left">Dynamic Segment</td>
-<td align="right">127</td>
+<td align="right">138</td>
 </tr>
 <tr class="odd">
-<td align="left">/analysis/kpi-move-enough-care/</td>
-<td align="left">Dynamic Segment</td>
-<td align="right">118</td>
-</tr>
-<tr class="even">
-<td align="left">/adobe-analytics/advanced-click-rates-adobe-analytics-placement/</td>
+<td align="left">/excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
 <td align="left">Dynamic Segment</td>
 <td align="right">114</td>
+</tr>
+<tr class="even">
+<td align="left">/adobe-analytics/cart-persistence-purchases-adobe-analytics/</td>
+<td align="left">Dynamic Segment</td>
+<td align="right">112</td>
 </tr>
 </tbody>
 </table>

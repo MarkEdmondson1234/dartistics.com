@@ -237,6 +237,9 @@ $(document).ready(function () {
     <li>
       <a href="adv-multiple-dynamic-segments.html">Multiple Dynamic Segments</a>
     </li>
+    <li>
+      <a href="adv-sankey.html">Sankey Chart (Traffic Flows)</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -313,7 +316,7 @@ GA_EXAMPLE_VIEW_ID = &quot;ga:XXXXXXXXXX&quot;</code></pre>
 <div id="install-the-primary-packages-well-use" class="section level1">
 <h1>Install the Primary Packages We’ll Use</h1>
 <p>Some examples will use other packages, but that will be called out in the example itself. Almost all of the examples use <code>googleAnalyticsR</code> and various packages in the Tidyverse, so run the code below in your console just to get those installed in the event that they are not:</p>
-<pre><code>packages &lt;- c(&quot;googleAnalyticsR&quot;, &quot;tidyverse&quot;, &quot;devtools&quot;)
+<pre><code>packages &lt;- c(&quot;googleAnalyticsR&quot;, &quot;tidyverse&quot;, &quot;devtools&quot;, &quot;googleVis&quot;)
 if (length(setdiff(packages, rownames(installed.packages()))) &gt; 0) {
   install.packages(setdiff(packages, rownames(installed.packages())))  
 }</code></pre>

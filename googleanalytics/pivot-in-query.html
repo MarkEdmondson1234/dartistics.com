@@ -237,6 +237,9 @@ $(document).ready(function () {
     <li>
       <a href="adv-multiple-dynamic-segments.html">Multiple Dynamic Segments</a>
     </li>
+    <li>
+      <a href="adv-sankey.html">Sankey Chart (Traffic Flows)</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -280,10 +283,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h1>Setup/Config</h1>
 <p>Be sure you’ve completed the steps on the <a href="setup.html">Initial Setup</a> page before running this code.</p>
 <p>For the setup, we’re going to load a few libraries, load our specific Google Analytics credentials, and then authorize with Google.</p>
-<pre class="r"><code># Load the necessary libraries
+<pre class="r"><code># Load the necessary libraries. These libraries aren&#39;t all necessarily required for every
+# example, but, for simplicity&#39;s sake, we&#39;re going ahead and including them in every example.
 library(googleAnalyticsR)
 library(tidyverse)
 library(devtools)
+library(googleVis)
 
 # Load the client ID, client secret, and GA view ID
 client_id &lt;- Sys.getenv(&quot;GA_CLIENT_ID&quot;)
@@ -341,39 +346,39 @@ head(ga_data)</code></pre>
 <tbody>
 <tr class="odd">
 <td align="left">(none)</td>
-<td align="right">4479</td>
-<td align="right">609</td>
-<td align="right">161</td>
+<td align="right">4745</td>
+<td align="right">566</td>
+<td align="right">128</td>
 </tr>
 <tr class="even">
-<td align="left">Community</td>
-<td align="right">6</td>
-<td align="right">6</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
 <td align="left">email</td>
+<td align="right">14</td>
 <td align="right">1</td>
 <td align="right">1</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">feed</td>
-<td align="right">4</td>
-<td align="right">1</td>
-<td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">gplus</td>
+<td align="left">feed</td>
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">organic</td>
-<td align="right">25815</td>
-<td align="right">1552</td>
-<td align="right">422</td>
+<td align="right">25564</td>
+<td align="right">1526</td>
+<td align="right">408</td>
+</tr>
+<tr class="odd">
+<td align="left">referral</td>
+<td align="right">1296</td>
+<td align="right">323</td>
+<td align="right">37</td>
+</tr>
+<tr class="even">
+<td align="left">social</td>
+<td align="right">697</td>
+<td align="right">237</td>
+<td align="right">27</td>
 </tr>
 </tbody>
 </table>
@@ -401,33 +406,33 @@ head(ga_data)</code></pre>
 <tbody>
 <tr class="odd">
 <td align="left">(none)</td>
-<td align="right">609</td>
-<td align="right">161</td>
+<td align="right">566</td>
+<td align="right">128</td>
 </tr>
 <tr class="even">
-<td align="left">Community</td>
-<td align="right">6</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
 <td align="left">email</td>
 <td align="right">1</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">feed</td>
 <td align="right">1</td>
-<td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">gplus</td>
+<td align="left">feed</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">organic</td>
-<td align="right">1552</td>
-<td align="right">422</td>
+<td align="right">1526</td>
+<td align="right">408</td>
+</tr>
+<tr class="odd">
+<td align="left">referral</td>
+<td align="right">323</td>
+<td align="right">37</td>
+</tr>
+<tr class="even">
+<td align="left">social</td>
+<td align="right">237</td>
+<td align="right">27</td>
 </tr>
 </tbody>
 </table>
