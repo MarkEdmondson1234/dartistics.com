@@ -689,7 +689,7 @@ Once you have a <code>web_data</code> data frame to work with, the command <code
 <h2>4. Filter/Subset the Data</h2>
 <p>It’s generally more efficient to do as few API calls as possible. That means that, often, we’re pulling a master data set, even though we only want to work on pieces of it at once. In this example, what if we wanted to look at <em>just</em> the mobile data. And, as a small twist, let’s not only isolate the mobile data, but let’s put that data into its own data frame calle <code>mobile_data</code>:</p>
 <pre class="r"><code>mobile_data &lt;- web_data[web_data$deviceCategory==&quot;mobile&quot;,]</code></pre>
-<p>Double-click on the <strong>mobile_data* object in your </strong>Environment** to check out this data. (Or, perhaps, view the <code>head()</code> of this new object in your console!)</p>
+<p>Double-click on the <strong>mobile_data</strong> object in your <strong>Environment</strong> to check out this data. (Or, perhaps, view the <code>head()</code> of this new object in your console!)</p>
 <p>What if we wanted to quickly get a list of dates and channels where the channel’s sessions for the day were greater than 2.000 (or 2,000, depending on which continent you are on)? We can perform this on our new <code>mobile_data</code> object:</p>
 <pre class="r"><code>mobile_data[mobile_data$sessions&gt;2000,]</code></pre>
 <pre><code>##            date channelGrouping deviceCategory sessions pageviews

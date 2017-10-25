@@ -97,7 +97,7 @@ It's generally more efficient to do as few API calls as possible. That means tha
 ```{r}
 mobile_data <- web_data[web_data$deviceCategory=="mobile",]
 ```
-Double-click on the **mobile_data* object in your **Environment** to check out this data. (Or, perhaps, view the `head()` of this new object in your console!)
+Double-click on the **mobile_data** object in your **Environment** to check out this data. (Or, perhaps, view the `head()` of this new object in your console!)
 
 What if we wanted to quickly get a list of dates and channels where the channel's sessions for the day were greater than 2.000 (or 2,000, depending on which continent you are on)? We can perform this on our new `mobile_data` object:
 
