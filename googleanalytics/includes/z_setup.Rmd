@@ -18,17 +18,6 @@ library(tidyverse)
 library(devtools)
 library(googleVis)
 
-# Load the client ID, client secret, and GA view ID
-client_id <- Sys.getenv("GA_CLIENT_ID")
-client_secret <- Sys.getenv("GA_CLIENT_SECRET")
-
-# Set the client ID and client secret as options for googleAuthR
-options(googleAuthR.client_id = client_id)
-options(googleAuthR.client_secret = client_secret)
-
-# Reload the googleAnalyticsR package so those options get set in googleAuthR
-devtools::reload(pkg = devtools::inst("googleAnalyticsR"))
-
 # Authorize GA. Depending on if you've done this already and a .httr-oauth file has
 # been saved or not, this may pop you over to a browser to authenticate.
 ga_auth()

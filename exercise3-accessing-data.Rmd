@@ -41,7 +41,7 @@ web_data
 ```
 Whoa! We're not showing the results of that here, as it's 10,000 rows of material quickly flashing past your eyes. But, often, we just want to get a basic sense of the data structure, so just viewing the first few rows of the data will suffice. We can do that with the `head()` function (remember: `?head()` will give you documentation on the function):
 
-```{r}
+```{r, echo=FALSE}
 head(web_data)
 ```
 

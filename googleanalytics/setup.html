@@ -293,18 +293,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>The examples expect three variables to be in the ‘.Renviron’ file. You’re welcome to add other variables, and, over time, should have a quite robust file. But, we only need three. The file should look something like this:</p>
 <pre><code>GA_CLIENT_ID = &quot;XXXXXXXXXXXXX-XXXXXXXXXXXXX-XXXXXXXXXXX.apps.googleusercontent.com&quot;
 GA_CLIENT_SECRET = &quot;XXXXXXXXXXXXXXXXXXXXX&quot;
-GA_EXAMPLE_VIEW_ID = &quot;ga:XXXXXXXXXX&quot;</code></pre>
+GA_VIEW_ID = &quot;ga:XXXXXXXXXX&quot;</code></pre>
 <p>No, silly, you don’t want a bunch of Xs there! You will need to update those with values that are unique to your environment:</p>
 <ul>
 <li><strong>GA_CLIENT_ID</strong> – this is just the client ID from the Google Project you created following Donal’s instructions</li>
 <li><strong>GA_CLIENT_SECRET</strong> – it’s not secret to you! This is just the client secret you created at the same time you created the client ID</li>
-<li><strong>GA_EXAMPLE_VIEW_ID</strong> – this is the view ID that you want to use (at least initially) for exploring the examples. You can go to the <a href="https://ga-dev-tools.appspot.com/query-explorer/">Google Analytics Query Explorer</a>, select an account, property, and view, and then grab this value – it’s the <code>ids</code> value that is the first field under the <em>Query Parameters</em> section</li>
+<li><strong>GA_VIEW_ID</strong> – this is the view ID that you want to use (at least initially) for exploring the examples. You can go to the <a href="https://ga-dev-tools.appspot.com/query-explorer/">Google Analytics Query Explorer</a>, select an account, property, and view, and then grab this value – it’s the <code>ids</code> value that is the first field under the <em>Query Parameters</em> section</li>
 </ul>
 <p>Now, save the file.</p>
 </div>
 <div id="reload-the-.renviron-file" class="section level2">
 <h2>3. Reload the .Renviron file</h2>
-<p>This happens any time you start a new R session, so you won’t have to worry about this going forward unless you change a value (like <code>GA_EXAMPLE_VIEW_ID</code>). For this one time, though, select <strong>Session &gt; Restart R</strong> in RStudio.</p>
+<p>This happens any time you start a new R session, so you won’t have to worry about this going forward unless you change a value (like <code>GA_VIEW_ID</code>). For this one time, though, select <strong>Session &gt; Restart R</strong> in RStudio.</p>
 </div>
 <div id="confirm-that-your-.renviron-file-is-working" class="section level2">
 <h2>4. Confirm that your .Renviron file is working</h2>

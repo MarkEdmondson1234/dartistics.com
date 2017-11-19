@@ -295,17 +295,6 @@ library(tidyverse)
 library(devtools)
 library(googleVis)
 
-# Load the client ID, client secret, and GA view ID
-client_id &lt;- Sys.getenv(&quot;GA_CLIENT_ID&quot;)
-client_secret &lt;- Sys.getenv(&quot;GA_CLIENT_SECRET&quot;)
-
-# Set the client ID and client secret as options for googleAuthR
-options(googleAuthR.client_id = client_id)
-options(googleAuthR.client_secret = client_secret)
-
-# Reload the googleAnalyticsR package so those options get set in googleAuthR
-devtools::reload(pkg = devtools::inst(&quot;googleAnalyticsR&quot;))
-
 # Authorize GA. Depending on if you&#39;ve done this already and a .httr-oauth file has
 # been saved or not, this may pop you over to a browser to authenticate.
 ga_auth()
@@ -358,32 +347,32 @@ head(home_next_pages)</code></pre>
 <tr class="odd">
 <td align="left">(not set)</td>
 <td align="left">Direct</td>
-<td align="right">365</td>
+<td align="right">356</td>
 </tr>
 <tr class="even">
 <td align="left">(not set)</td>
 <td align="left">Organic Search</td>
-<td align="right">174</td>
+<td align="right">197</td>
 </tr>
 <tr class="odd">
 <td align="left">(not set)</td>
 <td align="left">Referral</td>
-<td align="right">27</td>
+<td align="right">20</td>
 </tr>
 <tr class="even">
 <td align="left">(not set)</td>
 <td align="left">Social</td>
-<td align="right">19</td>
+<td align="right">11</td>
 </tr>
 <tr class="odd">
 <td align="left">/</td>
 <td align="left">Direct</td>
-<td align="right">82</td>
+<td align="right">70</td>
 </tr>
 <tr class="even">
 <td align="left">/</td>
 <td align="left">Organic Search</td>
-<td align="right">75</td>
+<td align="right">86</td>
 </tr>
 </tbody>
 </table>
@@ -393,7 +382,7 @@ head(home_next_pages)</code></pre>
 <h1>Data Munging</h1>
 <p>We have a small problem in the number of possible next pages for our sessions (you don’t need to include this code – it’s just checking the number of unique values for the <code>secondPagePath</code> dimension in our data set).</p>
 <pre class="r"><code>length(unique(home_next_pages$secondPagePath))</code></pre>
-<pre><code>## [1] 57</code></pre>
+<pre><code>## [1] 59</code></pre>
 <p>We should thin this down to a number which can be easily visualised, which is a two-step process:</p>
 <ol style="list-style-type: decimal">
 <li>We’ll group the data by page path, arrange in order of pageviews and filter out the lower-volumes pages (or, put another way, only <em>keep</em> the top 10 pages overall).</li>
@@ -426,32 +415,32 @@ head(home_next_pages)</code></pre>
 <tr class="odd">
 <td align="left">(not set)</td>
 <td align="left">Direct</td>
-<td align="right">365</td>
+<td align="right">356</td>
 </tr>
 <tr class="even">
 <td align="left">(not set)</td>
 <td align="left">Organic Search</td>
-<td align="right">174</td>
+<td align="right">197</td>
 </tr>
 <tr class="odd">
 <td align="left">(not set)</td>
 <td align="left">Referral</td>
-<td align="right">27</td>
+<td align="right">20</td>
 </tr>
 <tr class="even">
 <td align="left">(not set)</td>
 <td align="left">Social</td>
-<td align="right">19</td>
+<td align="right">11</td>
 </tr>
 <tr class="odd">
 <td align="left">/</td>
 <td align="left">Direct</td>
-<td align="right">82</td>
+<td align="right">70</td>
 </tr>
 <tr class="even">
 <td align="left">/</td>
 <td align="left">Organic Search</td>
-<td align="right">75</td>
+<td align="right">86</td>
 </tr>
 </tbody>
 </table>
@@ -475,155 +464,175 @@ s &lt;- gvisSankey(home_next_pages)
                 # chartid = chart_id)
 plot(s)</code></pre>
 <div align="center">
-<!-- Sankey generated in R 3.3.2 by googleVis 0.6.2 package -->
-<!-- Sat Oct 21 11:51:35 2017 -->
+<!-- Sankey generated in R 3.3.3 by googleVis 0.6.2 package -->
+<!-- Sun Nov 19 11:17:33 2017 -->
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataSankeyID6ddb204cdf18 () {
+function gvisDataSankeyID26086f2eba88 () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
  [
 "Direct",
 "(not set)",
-365
+356
 ],
 [
 "Organic Search",
 "(not set)",
-174
+197
 ],
 [
 "Referral",
 "(not set)",
-27
+20
 ],
 [
 "Social",
 "(not set)",
+11
+],
+[
+"Direct",
+"/",
+70
+],
+[
+"Organic Search",
+"/",
+86
+],
+[
+"Referral",
+"/",
+15
+],
+[
+"Direct",
+"/?author_name=&cat=",
+131
+],
+[
+"Organic Search",
+"/?author_name=&cat=",
+93
+],
+[
+"Direct",
+"/about-us/",
+66
+],
+[
+"Organic Search",
+"/about-us/",
+128
+],
+[
+"Referral",
+"/about-us/",
 19
-],
-[
-"Direct",
-"/",
-82
-],
-[
-"Organic Search",
-"/",
-75
-],
-[
-"Referral",
-"/",
-3
-],
-[
-"Direct",
-"/?author_name=&cat=",
-100
-],
-[
-"Organic Search",
-"/?author_name=&cat=",
-127
-],
-[
-"Direct",
-"/about-us/",
-82
-],
-[
-"Organic Search",
-"/about-us/",
-216
-],
-[
-"Referral",
-"/about-us/",
-2
-],
-[
-"Direct",
-"/analyst-resources/",
-16
-],
-[
-"Organic Search",
-"/analyst-resources/",
-65
-],
-[
-"Direct",
-"/blog/",
-132
-],
-[
-"Organic Search",
-"/blog/",
-313
-],
-[
-"Referral",
-"/blog/",
-16
 ],
 [
 "Social",
-"/blog/",
-24
+"/about-us/",
+14
 ],
 [
 "Direct",
-"/blog/adam-greco/",
-9
-],
-[
-"Organic Search",
-"/blog/adam-greco/",
-99
-],
-[
-"Referral",
-"/blog/adam-greco/",
-3
-],
-[
-"Direct",
-"/services/adobe-analytics-implementation/",
-19
-],
-[
-"Organic Search",
-"/services/adobe-analytics-implementation/",
-60
-],
-[
-"Direct",
-"/services/strategic-audit-and-transformation-roadmap/",
-25
-],
-[
-"Organic Search",
-"/services/strategic-audit-and-transformation-roadmap/",
-46
-],
-[
-"Referral",
-"/services/strategic-audit-and-transformation-roadmap/",
+"/adobe-analytics/minneapolis-adobe-analytics-top-gun-class-12717/",
 13
 ],
 [
+"Organic Search",
+"/adobe-analytics/minneapolis-adobe-analytics-top-gun-class-12717/",
+47
+],
+[
+"Referral",
+"/adobe-analytics/minneapolis-adobe-analytics-top-gun-class-12717/",
+6
+],
+[
+"Direct",
+"/blog/",
+87
+],
+[
+"Organic Search",
+"/blog/",
+277
+],
+[
+"Referral",
+"/blog/",
+10
+],
+[
+"Social",
+"/blog/",
+11
+],
+[
+"Direct",
+"/blog/adam-greco/",
+24
+],
+[
+"Organic Search",
+"/blog/adam-greco/",
+81
+],
+[
+"Social",
+"/blog/adam-greco/",
+11
+],
+[
+"Direct",
+"/blog/eric-peterson/",
+22
+],
+[
+"Organic Search",
+"/blog/eric-peterson/",
+39
+],
+[
+"Referral",
+"/blog/eric-peterson/",
+3
+],
+[
+"Direct",
+"/services/adobe-analytics-implementation/",
+39
+],
+[
+"Organic Search",
+"/services/adobe-analytics-implementation/",
+29
+],
+[
+"Social",
+"/services/adobe-analytics-implementation/",
+5
+],
+[
 "Direct",
 "/services/training-and-educational-services/",
-41
+58
 ],
 [
 "Organic Search",
 "/services/training-and-educational-services/",
-39
+29
+],
+[
+"Referral",
+"/services/training-and-educational-services/",
+4
 ] 
 ];
 data.addColumn('string','channelGrouping');
@@ -634,14 +643,14 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartSankeyID6ddb204cdf18() {
-var data = gvisDataSankeyID6ddb204cdf18();
+function drawChartSankeyID26086f2eba88() {
+var data = gvisDataSankeyID26086f2eba88();
 var options = {};
 options["width"] = 400;
 options["height"] = 400;
 
     var chart = new google.visualization.Sankey(
-    document.getElementById('SankeyID6ddb204cdf18')
+    document.getElementById('SankeyID26086f2eba88')
     );
     chart.draw(data,options);
     
@@ -665,9 +674,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartSankeyID6ddb204cdf18);
+callbacks.push(drawChartSankeyID26086f2eba88);
 })();
-function displayChartSankeyID6ddb204cdf18() {
+function displayChartSankeyID26086f2eba88() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -690,9 +699,9 @@ callbacks.shift()();
 // jsFooter
 </script>
 <!-- jsChart -->
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID6ddb204cdf18"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID26086f2eba88"></script>
 <!-- divChart -->
-<div id="SankeyID6ddb204cdf18" style="width: 400; height: 400;">
+<div id="SankeyID26086f2eba88" style="width: 400; height: 400;">
 
 </div>
 </div>
@@ -720,155 +729,175 @@ s &lt;- gvisSankey(home_next_pages,
                 options = list(sankey = opts))
 plot(s)</code></pre>
 <div align="center">
-<!-- Sankey generated in R 3.3.2 by googleVis 0.6.2 package -->
-<!-- Sat Oct 21 11:51:35 2017 -->
+<!-- Sankey generated in R 3.3.3 by googleVis 0.6.2 package -->
+<!-- Sun Nov 19 11:17:33 2017 -->
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataSankeyID6ddb199d3c2f () {
+function gvisDataSankeyID26084f2a1420 () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
  [
 "Direct",
 "(not set)",
-365
+356
 ],
 [
 "Organic Search",
 "(not set)",
-174
+197
 ],
 [
 "Referral",
 "(not set)",
-27
+20
 ],
 [
 "Social",
 "(not set)",
+11
+],
+[
+"Direct",
+"/",
+70
+],
+[
+"Organic Search",
+"/",
+86
+],
+[
+"Referral",
+"/",
+15
+],
+[
+"Direct",
+"/?author_name=&cat=",
+131
+],
+[
+"Organic Search",
+"/?author_name=&cat=",
+93
+],
+[
+"Direct",
+"/about-us/",
+66
+],
+[
+"Organic Search",
+"/about-us/",
+128
+],
+[
+"Referral",
+"/about-us/",
 19
-],
-[
-"Direct",
-"/",
-82
-],
-[
-"Organic Search",
-"/",
-75
-],
-[
-"Referral",
-"/",
-3
-],
-[
-"Direct",
-"/?author_name=&cat=",
-100
-],
-[
-"Organic Search",
-"/?author_name=&cat=",
-127
-],
-[
-"Direct",
-"/about-us/",
-82
-],
-[
-"Organic Search",
-"/about-us/",
-216
-],
-[
-"Referral",
-"/about-us/",
-2
-],
-[
-"Direct",
-"/analyst-resources/",
-16
-],
-[
-"Organic Search",
-"/analyst-resources/",
-65
-],
-[
-"Direct",
-"/blog/",
-132
-],
-[
-"Organic Search",
-"/blog/",
-313
-],
-[
-"Referral",
-"/blog/",
-16
 ],
 [
 "Social",
-"/blog/",
-24
+"/about-us/",
+14
 ],
 [
 "Direct",
-"/blog/adam-greco/",
-9
-],
-[
-"Organic Search",
-"/blog/adam-greco/",
-99
-],
-[
-"Referral",
-"/blog/adam-greco/",
-3
-],
-[
-"Direct",
-"/services/adobe-analytics-implementation/",
-19
-],
-[
-"Organic Search",
-"/services/adobe-analytics-implementation/",
-60
-],
-[
-"Direct",
-"/services/strategic-audit-and-transformation-roadmap/",
-25
-],
-[
-"Organic Search",
-"/services/strategic-audit-and-transformation-roadmap/",
-46
-],
-[
-"Referral",
-"/services/strategic-audit-and-transformation-roadmap/",
+"/adobe-analytics/minneapolis-adobe-analytics-top-gun-class-12717/",
 13
 ],
 [
+"Organic Search",
+"/adobe-analytics/minneapolis-adobe-analytics-top-gun-class-12717/",
+47
+],
+[
+"Referral",
+"/adobe-analytics/minneapolis-adobe-analytics-top-gun-class-12717/",
+6
+],
+[
+"Direct",
+"/blog/",
+87
+],
+[
+"Organic Search",
+"/blog/",
+277
+],
+[
+"Referral",
+"/blog/",
+10
+],
+[
+"Social",
+"/blog/",
+11
+],
+[
+"Direct",
+"/blog/adam-greco/",
+24
+],
+[
+"Organic Search",
+"/blog/adam-greco/",
+81
+],
+[
+"Social",
+"/blog/adam-greco/",
+11
+],
+[
+"Direct",
+"/blog/eric-peterson/",
+22
+],
+[
+"Organic Search",
+"/blog/eric-peterson/",
+39
+],
+[
+"Referral",
+"/blog/eric-peterson/",
+3
+],
+[
+"Direct",
+"/services/adobe-analytics-implementation/",
+39
+],
+[
+"Organic Search",
+"/services/adobe-analytics-implementation/",
+29
+],
+[
+"Social",
+"/services/adobe-analytics-implementation/",
+5
+],
+[
 "Direct",
 "/services/training-and-educational-services/",
-41
+58
 ],
 [
 "Organic Search",
 "/services/training-and-educational-services/",
-39
+29
+],
+[
+"Referral",
+"/services/training-and-educational-services/",
+4
 ] 
 ];
 data.addColumn('string','channelGrouping');
@@ -879,8 +908,8 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartSankeyID6ddb199d3c2f() {
-var data = gvisDataSankeyID6ddb199d3c2f();
+function drawChartSankeyID26084f2a1420() {
+var data = gvisDataSankeyID26084f2a1420();
 var options = {};
 options["width"] = 400;
 options["height"] = 400;
@@ -890,7 +919,7 @@ options["sankey"] = {
       };
 
     var chart = new google.visualization.Sankey(
-    document.getElementById('SankeyID6ddb199d3c2f')
+    document.getElementById('SankeyID26084f2a1420')
     );
     chart.draw(data,options);
     
@@ -914,9 +943,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartSankeyID6ddb199d3c2f);
+callbacks.push(drawChartSankeyID26084f2a1420);
 })();
-function displayChartSankeyID6ddb199d3c2f() {
+function displayChartSankeyID26084f2a1420() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -939,9 +968,9 @@ callbacks.shift()();
 // jsFooter
 </script>
 <!-- jsChart -->
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID6ddb199d3c2f"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID26084f2a1420"></script>
 <!-- divChart -->
-<div id="SankeyID6ddb199d3c2f" style="width: 400; height: 400;">
+<div id="SankeyID26084f2a1420" style="width: 400; height: 400;">
 
 </div>
 </div>
@@ -964,155 +993,175 @@ s &lt;- gvisSankey(home_next_pages,
                 options = list(sankey = opts))
 plot(s)</code></pre>
 <div align="center">
-<!-- Sankey generated in R 3.3.2 by googleVis 0.6.2 package -->
-<!-- Sat Oct 21 11:51:35 2017 -->
+<!-- Sankey generated in R 3.3.3 by googleVis 0.6.2 package -->
+<!-- Sun Nov 19 11:17:33 2017 -->
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataSankeyID6ddb13ab465d () {
+function gvisDataSankeyID26087ee1b747 () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
  [
 "Direct",
 "(not set)",
-365
+356
 ],
 [
 "Organic Search",
 "(not set)",
-174
+197
 ],
 [
 "Referral",
 "(not set)",
-27
+20
 ],
 [
 "Social",
 "(not set)",
+11
+],
+[
+"Direct",
+"/",
+70
+],
+[
+"Organic Search",
+"/",
+86
+],
+[
+"Referral",
+"/",
+15
+],
+[
+"Direct",
+"/?author_name=&cat=",
+131
+],
+[
+"Organic Search",
+"/?author_name=&cat=",
+93
+],
+[
+"Direct",
+"/about-us/",
+66
+],
+[
+"Organic Search",
+"/about-us/",
+128
+],
+[
+"Referral",
+"/about-us/",
 19
-],
-[
-"Direct",
-"/",
-82
-],
-[
-"Organic Search",
-"/",
-75
-],
-[
-"Referral",
-"/",
-3
-],
-[
-"Direct",
-"/?author_name=&cat=",
-100
-],
-[
-"Organic Search",
-"/?author_name=&cat=",
-127
-],
-[
-"Direct",
-"/about-us/",
-82
-],
-[
-"Organic Search",
-"/about-us/",
-216
-],
-[
-"Referral",
-"/about-us/",
-2
-],
-[
-"Direct",
-"/analyst-resources/",
-16
-],
-[
-"Organic Search",
-"/analyst-resources/",
-65
-],
-[
-"Direct",
-"/blog/",
-132
-],
-[
-"Organic Search",
-"/blog/",
-313
-],
-[
-"Referral",
-"/blog/",
-16
 ],
 [
 "Social",
-"/blog/",
-24
+"/about-us/",
+14
 ],
 [
 "Direct",
-"/blog/adam-greco/",
-9
-],
-[
-"Organic Search",
-"/blog/adam-greco/",
-99
-],
-[
-"Referral",
-"/blog/adam-greco/",
-3
-],
-[
-"Direct",
-"/services/adobe-analytics-implementation/",
-19
-],
-[
-"Organic Search",
-"/services/adobe-analytics-implementation/",
-60
-],
-[
-"Direct",
-"/services/strategic-audit-and-transformation-roadmap/",
-25
-],
-[
-"Organic Search",
-"/services/strategic-audit-and-transformation-roadmap/",
-46
-],
-[
-"Referral",
-"/services/strategic-audit-and-transformation-roadmap/",
+"/adobe-analytics/minneapolis-adobe-analytics-top-gun-class-12717/",
 13
 ],
 [
+"Organic Search",
+"/adobe-analytics/minneapolis-adobe-analytics-top-gun-class-12717/",
+47
+],
+[
+"Referral",
+"/adobe-analytics/minneapolis-adobe-analytics-top-gun-class-12717/",
+6
+],
+[
+"Direct",
+"/blog/",
+87
+],
+[
+"Organic Search",
+"/blog/",
+277
+],
+[
+"Referral",
+"/blog/",
+10
+],
+[
+"Social",
+"/blog/",
+11
+],
+[
+"Direct",
+"/blog/adam-greco/",
+24
+],
+[
+"Organic Search",
+"/blog/adam-greco/",
+81
+],
+[
+"Social",
+"/blog/adam-greco/",
+11
+],
+[
+"Direct",
+"/blog/eric-peterson/",
+22
+],
+[
+"Organic Search",
+"/blog/eric-peterson/",
+39
+],
+[
+"Referral",
+"/blog/eric-peterson/",
+3
+],
+[
+"Direct",
+"/services/adobe-analytics-implementation/",
+39
+],
+[
+"Organic Search",
+"/services/adobe-analytics-implementation/",
+29
+],
+[
+"Social",
+"/services/adobe-analytics-implementation/",
+5
+],
+[
 "Direct",
 "/services/training-and-educational-services/",
-41
+58
 ],
 [
 "Organic Search",
 "/services/training-and-educational-services/",
-39
+29
+],
+[
+"Referral",
+"/services/training-and-educational-services/",
+4
 ] 
 ];
 data.addColumn('string','channelGrouping');
@@ -1123,8 +1172,8 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartSankeyID6ddb13ab465d() {
-var data = gvisDataSankeyID6ddb13ab465d();
+function drawChartSankeyID26087ee1b747() {
+var data = gvisDataSankeyID26087ee1b747();
 var options = {};
 options["width"] = 400;
 options["height"] = 400;
@@ -1135,7 +1184,7 @@ options["sankey"] = {
       };
 
     var chart = new google.visualization.Sankey(
-    document.getElementById('SankeyID6ddb13ab465d')
+    document.getElementById('SankeyID26087ee1b747')
     );
     chart.draw(data,options);
     
@@ -1159,9 +1208,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartSankeyID6ddb13ab465d);
+callbacks.push(drawChartSankeyID26087ee1b747);
 })();
-function displayChartSankeyID6ddb13ab465d() {
+function displayChartSankeyID26087ee1b747() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -1184,9 +1233,9 @@ callbacks.shift()();
 // jsFooter
 </script>
 <!-- jsChart -->
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID6ddb13ab465d"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID26087ee1b747"></script>
 <!-- divChart -->
-<div id="SankeyID6ddb13ab465d" style="width: 400; height: 400;">
+<div id="SankeyID26087ee1b747" style="width: 400; height: 400;">
 
 </div>
 </div>
