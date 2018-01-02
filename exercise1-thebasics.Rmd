@@ -107,7 +107,7 @@ _We're going to do a few things here that wouldn't exactly be how you would work
 * _You may be working in a web-based environment rather than your local machine, which makes things a little different._
 
 ### Get Our Sample Data
-Download the .csv file at [http://bit.ly/rSampleGA](http://bit.ly/rSampleGA). Pay attention to to where this file -- td.csv -- gets stored.
+Download the .csv file [here](data/td.csv). Pay attention to to where this file -- td.csv -- gets stored.
 
 **If you are running RStudio from a web browser**, then go to the **Files** tab in the lower right pane, click **Upload File**, and upload td.csv. You should now see it in the **Files** tab.
 

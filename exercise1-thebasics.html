@@ -23,8 +23,8 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -33,10 +33,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -608,7 +610,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </ul>
 <div id="get-our-sample-data" class="section level3">
 <h3>Get Our Sample Data</h3>
-<p>Download the .csv file at <a href="http://bit.ly/rSampleGA" class="uri">http://bit.ly/rSampleGA</a>. Pay attention to to where this file – td.csv – gets stored.</p>
+<p>Download the .csv file <a href="data/td.csv">here</a>. Pay attention to to where this file – td.csv – gets stored.</p>
 <p><strong>If you are running RStudio from a web browser</strong>, then go to the <strong>Files</strong> tab in the lower right pane, click <strong>Upload File</strong>, and upload td.csv. You should now see it in the <strong>Files</strong> tab.</p>
 <p><strong>If you are running RStudio locally</strong>, then type <code>getwd()</code> in the console, make note of the file path that it returns, and then use Finder / Windows Explorer to move <code>td.csv</code> to that location.</p>
 </div>
@@ -656,6 +658,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>We will come back to visualizations later in the day, but let’s at least add a simple line chart of sessions by adding two lines of code to our script.</p>
 <p>The first line converts the <strong>date</strong> values to, well, actual <em>date</em> values. Dates can be tricky, but there are a lot of tips and tools (and even a package called <code>lubridate()</code> to help with that):</p>
 <pre class="r"><code>ga_data$date &lt;- as.Date(ga_data$date)</code></pre>
+<pre><code>## Warning in strptime(xx, f &lt;- &quot;%Y-%m-%d&quot;, tz = &quot;GMT&quot;): unknown timezone
+## &#39;zone/tz/2017c.1.0/zoneinfo/America/New_York&#39;</code></pre>
 <p>The second line we’ll add will actually plot the data. There are shorter ways to write this out, but let’s go with this:</p>
 <pre class="r"><code>plot(x = ga_data$date, y = ga_data$sessions, type = &quot;l&quot;)</code></pre>
 <p>Now, you can either highlight just the two new rows and click <strong>Run</strong>, or you can click <strong>Source</strong> to run the entire script. The end result will be a barely-formatted, ugly label line chart:</p>
