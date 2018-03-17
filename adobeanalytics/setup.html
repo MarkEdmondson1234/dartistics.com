@@ -290,17 +290,9 @@ ADOBE_RSID = &quot;XXXXXXXXXXXXX&quot;
 <p>Run the following code in your console:</p>
 <pre><code>username &lt;- Sys.getenv(&quot;ADOBE_API_USERNAME&quot;)</code></pre>
 <p>Now, check the <strong>Environment</strong> pane in RStudio. You should see an object called <code>username</code> with your Adobe Web Services <strong>User Name</strong>. You can run this for the other two values, too, but let’s just assume that, if it worked for one, you’re all set.</p>
-</div>
-</div>
-<div id="install-the-primary-packages-well-use" class="section level1">
-<h1>Install the Primary Packages We’ll Use</h1>
-<p>Some examples will use other packages, but that will be called out in the example itself. Almost all of the examples use <code>RSiteCatalyst</code> and various packages in the Tidyverse, so run the code below in your console just to get those installed in the event that they are not:</p>
-<pre><code>packages &lt;- c(&quot;RSiteCatalyst&quot;, &quot;tidyverse&quot;, &quot;devtools&quot;)
-if (length(setdiff(packages, rownames(installed.packages()))) &gt; 0) {
-  install.packages(setdiff(packages, rownames(installed.packages())))  
-}</code></pre>
 <p>You should be all set! The examples should all work!</p>
 <p>* <em>Subjectively… but it’s what <a href="http://twitter.com/holomarked">@HoloMarkeD</a> does, and you can come up with your own special way at your own risk.</em></p>
+</div>
 </div>
 
 <hr>
