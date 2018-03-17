@@ -12,11 +12,13 @@ library(knitr)   # Mainly... so we can use kable()
 ```
 
 ```{r setup, message=FALSE, warning=FALSE, results='hide'}
-# Load the necessary libraries
-library(RSiteCatalyst)
-library(tidyverse)
-library(devtools)
-library(jsonlite)    # Needed for unbox() in examples with inline segments
+# Load the necessary libraries. The 'typical' way to do this is with a series of
+# 'library([library name])' calls. The use of the pacman package, though, adds a
+# check that will install any missing packages before then loading them.
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(RSiteCatalyst,
+               tidyverse, 
+               jsonlite)    # Needed for unbox() in examples with inline segments
 
 # Load the username, shared secret, and report suite ID
 username <- Sys.getenv("ADOBE_API_USERNAME")

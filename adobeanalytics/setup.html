@@ -20,8 +20,8 @@
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -30,10 +30,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -298,9 +300,7 @@ if (length(setdiff(packages, rownames(installed.packages()))) &gt; 0) {
   install.packages(setdiff(packages, rownames(installed.packages())))  
 }</code></pre>
 <p>You should be all set! The examples should all work!</p>
-<ul>
-<li><em>Subjectively… but it’s what <span class="citation">[@HoloMarkeD]</span>(<a href="http://twitter.com/holomarked" class="uri">http://twitter.com/holomarked</a>) does, and you can come up with your own special way at your own risk.</em></li>
-</ul>
+<p>* <em>Subjectively… but it’s what <a href="http://twitter.com/holomarked">@HoloMarkeD</a> does, and you can come up with your own special way at your own risk.</em></p>
 </div>
 
 <hr>

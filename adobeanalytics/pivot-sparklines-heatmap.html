@@ -20,8 +20,8 @@
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -30,10 +30,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -253,11 +255,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h1>Setup/Config</h1>
 <p>Be sure you’ve completed the steps on the <a href="setup.html">Initial Setup</a> page before running this code.</p>
 <p>For the setup, we’re going to load a few libraries, load our specific Adobe Analytics credentials, and then authorize with Adobe.</p>
-<pre class="r"><code># Load the necessary libraries
-library(RSiteCatalyst)
-library(tidyverse)
-library(devtools)
-library(jsonlite)    # Needed for unbox() in examples with inline segments
+<pre class="r"><code># Load the necessary libraries. The &#39;typical&#39; way to do this is with a series of
+# &#39;library([library name])&#39; calls. The use of the pacman package, though, adds a
+# check that will install any missing packages before then loading them.
+if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)
+pacman::p_load(RSiteCatalyst,
+               tidyverse, 
+               jsonlite)    # Needed for unbox() in examples with inline segments
 
 # Load the username, shared secret, and report suite ID
 username &lt;- Sys.getenv(&quot;ADOBE_API_USERNAME&quot;)
@@ -302,50 +306,50 @@ head(aa_data)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2017-09-03</td>
+<td align="left">2018-02-14</td>
 <td align="left">Other</td>
 <td align="left">blog</td>
-<td align="right">421</td>
+<td align="right">141</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">2017-09-03</td>
+<td align="left">2018-02-14</td>
 <td align="left">Other</td>
-<td align="left">services</td>
-<td align="right">12</td>
+<td align="left">home</td>
+<td align="right">108</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">2017-09-03</td>
+<td align="left">2018-02-14</td>
 <td align="left">Other</td>
-<td align="left">community</td>
-<td align="right">9</td>
+<td align="left">about</td>
+<td align="right">56</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">2017-09-03</td>
+<td align="left">2018-02-14</td>
 <td align="left">Other</td>
-<td align="left">2</td>
-<td align="right">3</td>
+<td align="left">open-positions</td>
+<td align="right">51</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">2017-09-03</td>
+<td align="left">2018-02-14</td>
 <td align="left">Other</td>
-<td align="left">terms</td>
-<td align="right">1</td>
+<td align="left">solutions</td>
+<td align="right">16</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">2017-09-03</td>
+<td align="left">2018-02-14</td>
 <td align="left">Other</td>
-<td align="left">contact</td>
-<td align="right">1</td>
+<td align="left">work</td>
+<td align="right">16</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -446,32 +450,32 @@ head(aa_data_totals)</code></pre>
 <tr class="odd">
 <td align="left">Desktop/Tablet</td>
 <td align="left">blog</td>
-<td align="right">35837</td>
+<td align="right">3664</td>
 </tr>
 <tr class="even">
 <td align="left">Desktop/Tablet</td>
-<td align="left">services</td>
-<td align="right">798</td>
+<td align="left">home</td>
+<td align="right">2846</td>
 </tr>
 <tr class="odd">
+<td align="left">Desktop/Tablet</td>
+<td align="left">solutions</td>
+<td align="right">2007</td>
+</tr>
+<tr class="even">
+<td align="left">Desktop/Tablet</td>
+<td align="left">about</td>
+<td align="right">1506</td>
+</tr>
+<tr class="odd">
+<td align="left">Desktop/Tablet</td>
+<td align="left">open-positions</td>
+<td align="right">1203</td>
+</tr>
+<tr class="even">
 <td align="left">Desktop/Tablet</td>
 <td align="left">(Other)</td>
-<td align="right">568</td>
-</tr>
-<tr class="even">
-<td align="left">Desktop/Tablet</td>
-<td align="left">community</td>
-<td align="right">504</td>
-</tr>
-<tr class="odd">
-<td align="left">Desktop/Tablet</td>
-<td align="left">about-us</td>
-<td align="right">312</td>
-</tr>
-<tr class="even">
-<td align="left">Desktop/Tablet</td>
-<td align="left">partner</td>
-<td align="right">222</td>
+<td align="right">937</td>
 </tr>
 </tbody>
 </table>

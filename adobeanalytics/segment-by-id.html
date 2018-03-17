@@ -20,8 +20,8 @@
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -30,10 +30,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -244,16 +246,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 
 
-<p>This example pulls the top 10 pages for the last thirty days, <em>for visits where the entry page included the word “excel”</em>.* We’ll do this by referencing a segment that was built in the Adobe Analytics web UI.</p>
+<p>This example pulls the top 10 pages for the last thirty days, <em>for visits where the entry page included the word “Intelligence”</em>. We’ll do this by referencing a segment that was built in the Adobe Analytics web UI.</p>
 <div id="setupconfig" class="section level1">
 <h1>Setup/Config</h1>
 <p>Be sure you’ve completed the steps on the <a href="setup.html">Initial Setup</a> page before running this code.</p>
 <p>For the setup, we’re going to load a few libraries, load our specific Adobe Analytics credentials, and then authorize with Adobe.</p>
-<pre class="r"><code># Load the necessary libraries
-library(RSiteCatalyst)
-library(tidyverse)
-library(devtools)
-library(jsonlite)    # Needed for unbox() in examples with inline segments
+<pre class="r"><code># Load the necessary libraries. The &#39;typical&#39; way to do this is with a series of
+# &#39;library([library name])&#39; calls. The use of the pacman package, though, adds a
+# check that will install any missing packages before then loading them.
+if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)
+pacman::p_load(RSiteCatalyst,
+               tidyverse, 
+               jsonlite)    # Needed for unbox() in examples with inline segments
 
 # Load the username, shared secret, and report suite ID
 username &lt;- Sys.getenv(&quot;ADOBE_API_USERNAME&quot;)
@@ -283,7 +287,7 @@ aa_data &lt;- QueueRanked(rsid,
                        metrics = &quot;pageviews&quot;,
                        elements = &quot;page&quot;,
                        top = 10,
-                       segment.id = &quot;s300005730_59d38b213f1e920264d17ecd&quot;)
+                       segment.id = &quot;s300003965_5aad9f5c22fa9942088629ea&quot;)
   
 # Go ahead and do a quick inspection of the data that was returned. This isn&#39;t required,
 # but it&#39;s a good check along the way.
@@ -300,46 +304,46 @@ head(aa_data)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges/</td>
-<td align="left"><a href="http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges" class="uri">http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right-data-validation-and-named-ranges</a></td>
-<td align="right">3647</td>
-<td align="left">s300005730_59d38b213f1e920264d17ecd</td>
-<td align="left">(Visit) Include Entry Page contains “excel”</td>
+<td align="left">Search Discovery, Inc. - A Digital Intelligence Company</td>
+<td align="left"><a href="https://www.searchdiscovery.com" class="uri">https://www.searchdiscovery.com</a></td>
+<td align="right">1983</td>
+<td align="left">s300003965_5aad9f5c22fa9942088629ea</td>
+<td align="left">[Hit] Page contains “Intelligence”</td>
 </tr>
 <tr class="even">
-<td align="left">excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2/</td>
-<td align="left"><a href="http://analyticsdemystified.com/excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2" class="uri">http://analyticsdemystified.com/excel-tips/excel-dynamic-named-ranges-never-manually-updating-your-charts-2</a></td>
-<td align="right">3505</td>
-<td align="left">s300005730_59d38b213f1e920264d17ecd</td>
-<td align="left">(Visit) Include Entry Page contains “excel”</td>
+<td align="left">About Our Digital Intelligence Company | Search Discovery</td>
+<td align="left"><a href="https://www.searchdiscovery.com/about" class="uri">https://www.searchdiscovery.com/about</a></td>
+<td align="right">709</td>
+<td align="left">s300003965_5aad9f5c22fa9942088629ea</td>
+<td align="left">[Hit] Page contains “Intelligence”</td>
 </tr>
 <tr class="odd">
-<td align="left">excel-tips/excel-dropdowns-done-right/</td>
-<td align="left"><a href="http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right" class="uri">http://analyticsdemystified.com/excel-tips/excel-dropdowns-done-right</a></td>
-<td align="right">3253</td>
-<td align="left">s300005730_59d38b213f1e920264d17ecd</td>
-<td align="left">(Visit) Include Entry Page contains “excel”</td>
+<td align="left">Digital Marketing, Analytics and Business Intelligence Jobs at Search Discovery</td>
+<td align="left"><a href="https://www.searchdiscovery.com/about/careers" class="uri">https://www.searchdiscovery.com/about/careers</a></td>
+<td align="right">702</td>
+<td align="left">s300003965_5aad9f5c22fa9942088629ea</td>
+<td align="left">[Hit] Page contains “Intelligence”</td>
 </tr>
 <tr class="even">
-<td align="left">excel-tips/converting-a-date-in-excel-to-week-bi-week-month-and-more/</td>
-<td align="left"><a href="http://analyticsdemystified.com/excel-tips/converting-a-date-in-excel-to-week-bi-week-month-and-more" class="uri">http://analyticsdemystified.com/excel-tips/converting-a-date-in-excel-to-week-bi-week-month-and-more</a></td>
-<td align="right">2620</td>
-<td align="left">s300005730_59d38b213f1e920264d17ecd</td>
-<td align="left">(Visit) Include Entry Page contains “excel”</td>
+<td align="left">Search Discovery, Inc. - A Business Intelligence and Analytics Company</td>
+<td align="left"><a href="http://searchdiscover.staging.wpengine.com" class="uri">http://searchdiscover.staging.wpengine.com</a></td>
+<td align="right">661</td>
+<td align="left">s300003965_5aad9f5c22fa9942088629ea</td>
+<td align="left">[Hit] Page contains “Intelligence”</td>
 </tr>
 <tr class="odd">
-<td align="left">excel-tips/excel-dynamic-named-ranges-with-tables-never-manually-updating-your-charts/</td>
-<td align="left"><a href="http://analyticsdemystified.com/excel-tips/excel-dynamic-named-ranges-with-tables-never-manually-updating-your-charts" class="uri">http://analyticsdemystified.com/excel-tips/excel-dynamic-named-ranges-with-tables-never-manually-updating-your-charts</a></td>
-<td align="right">2012</td>
-<td align="left">s300005730_59d38b213f1e920264d17ecd</td>
-<td align="left">(Visit) Include Entry Page contains “excel”</td>
+<td align="left">Digital Intelligence Solutions | Search Discovery</td>
+<td align="left"><a href="https://www.searchdiscovery.com/solutions" class="uri">https://www.searchdiscovery.com/solutions</a></td>
+<td align="right">415</td>
+<td align="left">s300003965_5aad9f5c22fa9942088629ea</td>
+<td align="left">[Hit] Page contains “Intelligence”</td>
 </tr>
 <tr class="even">
-<td align="left">excel-tips/10-tips-for-building-a-dashboard-in-excel/</td>
-<td align="left"><a href="http://analyticsdemystified.com/excel-tips/10-tips-for-building-a-dashboard-in-excel" class="uri">http://analyticsdemystified.com/excel-tips/10-tips-for-building-a-dashboard-in-excel</a></td>
-<td align="right">523</td>
-<td align="left">s300005730_59d38b213f1e920264d17ecd</td>
-<td align="left">(Visit) Include Entry Page contains “excel”</td>
+<td align="left">Business Intelligence and Analytics Solutions | Search Discovery</td>
+<td align="left"><a href="http://searchdiscover.staging.wpengine.com/solutions" class="uri">http://searchdiscover.staging.wpengine.com/solutions</a></td>
+<td align="right">214</td>
+<td align="left">s300003965_5aad9f5c22fa9942088629ea</td>
+<td align="left">[Hit] Page contains “Intelligence”</td>
 </tr>
 </tbody>
 </table>
@@ -372,7 +376,6 @@ gg &lt;- ggplot(aa_data, mapping = aes(x = name, y = pageviews)) +
 # outputting it on the fly.
 gg</code></pre>
 <p><img src="segment-by-id_files/figure-html/visualize-1.png" width="960" /></p>
-<p><em>* Yes. This is intentionally ironic.</em></p>
 </div>
 
 <hr>
