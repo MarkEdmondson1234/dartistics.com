@@ -11,7 +11,7 @@
 
 
 
-<title>Traffic by Device Type</title>
+<title>Page Views by Visits Scatterplot (by Device Type)</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -244,12 +244,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-<h1 class="title toc-ignore">Traffic by Device Type</h1>
+<h1 class="title toc-ignore">Page Views by Visits Scatterplot (by Device Type)</h1>
 
 </div>
 
 
-<p>This example pulls <strong>visits</strong> by <strong>device type</strong> for the last 30 days and then plots the data on a line chart.</p>
+<p>This example pulls <strong>visits</strong> and <strong>pageviews</strong> by <strong>device type</strong> for the last 30 days and then plots the data as a scatterplot. Like a lot of these examples, it’s not super useful. But, it’s got to be a pretty generic example to work in a straight copy/paste world. Scatterplots can <em>definitely</em> be useful!</p>
 <div id="setupconfig" class="section level1">
 <h1>Setup/Config</h1>
 <p>Be sure you’ve completed the steps on the <a href="setup.html">Initial Setup</a> page before running this code.</p>
@@ -285,7 +285,7 @@ end_date &lt;- Sys.Date() - 1           # Yesterday</code></pre>
 aa_data &lt;- QueueTrended(rsid,
                         date.from = start_date,
                         date.to = end_date,
-                        metrics = &quot;visits&quot;,
+                        metrics = c(&quot;pageviews&quot;, &quot;visits&quot;),
                         elements = &quot;mobiledevicetype&quot;,
                         date.granularity = &quot;day&quot;)
   
@@ -298,6 +298,7 @@ head(aa_data)</code></pre>
 <th align="left">datetime</th>
 <th align="left">name</th>
 <th align="left">url</th>
+<th align="right">pageviews</th>
 <th align="right">visits</th>
 <th align="left">segment.id</th>
 <th align="left">segment.name</th>
@@ -308,6 +309,7 @@ head(aa_data)</code></pre>
 <td align="left">2018-02-14</td>
 <td align="left">Other</td>
 <td align="left"></td>
+<td align="right">404</td>
 <td align="right">229</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -316,6 +318,7 @@ head(aa_data)</code></pre>
 <td align="left">2018-02-14</td>
 <td align="left">Mobile Phone</td>
 <td align="left"></td>
+<td align="right">94</td>
 <td align="right">63</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -324,6 +327,7 @@ head(aa_data)</code></pre>
 <td align="left">2018-02-14</td>
 <td align="left">Tablet</td>
 <td align="left"></td>
+<td align="right">6</td>
 <td align="right">3</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -332,6 +336,7 @@ head(aa_data)</code></pre>
 <td align="left">2018-02-15</td>
 <td align="left">Other</td>
 <td align="left"></td>
+<td align="right">367</td>
 <td align="right">194</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -340,6 +345,7 @@ head(aa_data)</code></pre>
 <td align="left">2018-02-15</td>
 <td align="left">Mobile Phone</td>
 <td align="left"></td>
+<td align="right">67</td>
 <td align="right">47</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -348,6 +354,7 @@ head(aa_data)</code></pre>
 <td align="left">2018-02-15</td>
 <td align="left">Tablet</td>
 <td align="left"></td>
+<td align="right">1</td>
 <td align="right">1</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -364,7 +371,7 @@ aa_data$datetime &lt;- as.Date(aa_data$datetime)
 # Clean up the table a bit
 aa_data &lt;- aa_data %&gt;% 
   mutate(Device = ifelse(name==&quot;Other&quot;, &quot;Desktop/Tablet&quot;, name)) %&gt;% 
-  select(datetime, Device, visits) 
+  select(datetime, Device, visits, pageviews) 
 
 # Check what it looks like now
 head(aa_data)</code></pre>
@@ -374,6 +381,7 @@ head(aa_data)</code></pre>
 <th align="left">datetime</th>
 <th align="left">Device</th>
 <th align="right">visits</th>
+<th align="right">pageviews</th>
 </tr>
 </thead>
 <tbody>
@@ -381,30 +389,36 @@ head(aa_data)</code></pre>
 <td align="left">2018-02-14</td>
 <td align="left">Desktop/Tablet</td>
 <td align="right">229</td>
+<td align="right">404</td>
 </tr>
 <tr class="even">
 <td align="left">2018-02-14</td>
 <td align="left">Mobile Phone</td>
 <td align="right">63</td>
+<td align="right">94</td>
 </tr>
 <tr class="odd">
 <td align="left">2018-02-14</td>
 <td align="left">Tablet</td>
 <td align="right">3</td>
+<td align="right">6</td>
 </tr>
 <tr class="even">
 <td align="left">2018-02-15</td>
 <td align="left">Desktop/Tablet</td>
 <td align="right">194</td>
+<td align="right">367</td>
 </tr>
 <tr class="odd">
 <td align="left">2018-02-15</td>
 <td align="left">Mobile Phone</td>
 <td align="right">47</td>
+<td align="right">67</td>
 </tr>
 <tr class="even">
 <td align="left">2018-02-15</td>
 <td align="left">Tablet</td>
+<td align="right">1</td>
 <td align="right">1</td>
 </tr>
 </tbody>
@@ -414,15 +428,15 @@ head(aa_data)</code></pre>
 <h1>Data Visualization</h1>
 <p>This won’t be the prettiest plot, but this example isn’t diving into the details of ggplot2. If you want to read up on that, <a href="http://www.dartistics.com/ggplot2.html">this page on dartistics.com</a> is worth checking out.</p>
 <pre class="r"><code># Create the plot.
-gg &lt;- ggplot(aa_data, mapping = aes(x = datetime, y = visits, colour = Device)) +
-  geom_line() +
+gg &lt;- ggplot(aa_data, mapping = aes(x = visits, y = pageviews, colour = Device)) +
+  geom_point() +
   theme_light()
 
 # Output the plot. You *could* just remove the &quot;gg &lt;-&quot; in the code above, but it&#39;s
 # generally a best practice to create a plot object and then output it, rather than
 # outputting it on the fly.
 gg</code></pre>
-<p><img src="simple-trended-visits-by-devicetype_files/figure-html/visualize-1.png" width="960" /></p>
+<p><img src="simple-scatterplot_files/figure-html/visualize-1.png" width="960" /></p>
 </div>
 
 <hr>
