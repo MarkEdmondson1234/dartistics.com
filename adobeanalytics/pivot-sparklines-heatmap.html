@@ -218,6 +218,9 @@ $(document).ready(function () {
     <li>
       <a href="simple-inline-segment.html">Simple Inline Segment</a>
     </li>
+    <li>
+      <a href="int-heatmap.html">Day/Hour Heatmap</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -309,50 +312,50 @@ head(aa_data)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2018-02-14</td>
+<td align="left">2018-02-17</td>
 <td align="left">Other</td>
 <td align="left">blog</td>
-<td align="right">141</td>
+<td align="right">38</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">2018-02-14</td>
-<td align="left">Other</td>
-<td align="left">home</td>
-<td align="right">108</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">2018-02-14</td>
-<td align="left">Other</td>
-<td align="left">about</td>
-<td align="right">56</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">2018-02-14</td>
+<td align="left">2018-02-17</td>
 <td align="left">Other</td>
 <td align="left">open-positions</td>
-<td align="right">51</td>
+<td align="right">31</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">2018-02-14</td>
+<td align="left">2018-02-17</td>
 <td align="left">Other</td>
-<td align="left">solutions</td>
-<td align="right">16</td>
+<td align="left">home</td>
+<td align="right">19</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">2018-02-14</td>
+<td align="left">2018-02-17</td>
+<td align="left">Other</td>
+<td align="left">about</td>
+<td align="right">18</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">2018-02-17</td>
+<td align="left">Other</td>
+<td align="left">solutions</td>
+<td align="right">7</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">2018-02-17</td>
 <td align="left">Other</td>
 <td align="left">work</td>
-<td align="right">16</td>
+<td align="right">2</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -453,32 +456,32 @@ head(aa_data_totals)</code></pre>
 <tr class="odd">
 <td align="left">Desktop/Tablet</td>
 <td align="left">blog</td>
-<td align="right">3664</td>
+<td align="right">3355</td>
 </tr>
 <tr class="even">
 <td align="left">Desktop/Tablet</td>
 <td align="left">home</td>
-<td align="right">2846</td>
+<td align="right">2771</td>
 </tr>
 <tr class="odd">
 <td align="left">Desktop/Tablet</td>
 <td align="left">solutions</td>
-<td align="right">2007</td>
+<td align="right">2092</td>
 </tr>
 <tr class="even">
 <td align="left">Desktop/Tablet</td>
 <td align="left">about</td>
-<td align="right">1506</td>
+<td align="right">1479</td>
 </tr>
 <tr class="odd">
 <td align="left">Desktop/Tablet</td>
 <td align="left">open-positions</td>
-<td align="right">1203</td>
+<td align="right">1199</td>
 </tr>
 <tr class="even">
 <td align="left">Desktop/Tablet</td>
 <td align="left">(Other)</td>
-<td align="right">937</td>
+<td align="right">898</td>
 </tr>
 </tbody>
 </table>
@@ -510,7 +513,7 @@ gg &lt;- ggplot(aa_data_totals, mapping=aes(x = device, y = sitesection)) +
 # Output the plot. You *could* just remove the &quot;gg &lt;-&quot; in the code above, but it&#39;s
 # generally a best practice to create a plot object and then output it, rather than
 # outputting it on the fly.
-gg</code></pre>
+print(gg)</code></pre>
 <p><img src="pivot-sparklines-heatmap_files/figure-html/visualization-1.png" width="960" /></p>
 </div>
 <div id="a-grid-of-sparklines" class="section level2">
@@ -535,7 +538,7 @@ gg_sparklines &lt;- ggplot(aa_data_new, mapping=aes(x = datetime, y = pageviews)
 # Output the plot. You *could* just remove the &quot;gg &lt;-&quot; in the code above, but it&#39;s
 # generally a best practice to create a plot object and then output it, rather than
 # outputting it on the fly.
-gg_sparklines</code></pre>
+print(gg_sparklines)</code></pre>
 <p><img src="pivot-sparklines-heatmap_files/figure-html/visualization-sparklines-1.png" width="960" /></p>
 </div>
 </div>

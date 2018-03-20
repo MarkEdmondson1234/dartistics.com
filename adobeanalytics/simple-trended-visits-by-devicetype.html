@@ -218,6 +218,9 @@ $(document).ready(function () {
     <li>
       <a href="simple-inline-segment.html">Simple Inline Segment</a>
     </li>
+    <li>
+      <a href="int-heatmap.html">Day/Hour Heatmap</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -305,50 +308,50 @@ head(aa_data)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2018-02-14</td>
+<td align="left">2018-02-17</td>
 <td align="left">Other</td>
 <td align="left"></td>
-<td align="right">229</td>
+<td align="right">67</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">2018-02-14</td>
+<td align="left">2018-02-17</td>
 <td align="left">Mobile Phone</td>
 <td align="left"></td>
-<td align="right">63</td>
+<td align="right">53</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">2018-02-14</td>
+<td align="left">2018-02-17</td>
+<td align="left">Tablet</td>
+<td align="left"></td>
+<td align="right">2</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">2018-02-18</td>
+<td align="left">Other</td>
+<td align="left"></td>
+<td align="right">59</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">2018-02-18</td>
+<td align="left">Mobile Phone</td>
+<td align="left"></td>
+<td align="right">22</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">2018-02-18</td>
 <td align="left">Tablet</td>
 <td align="left"></td>
 <td align="right">3</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">2018-02-15</td>
-<td align="left">Other</td>
-<td align="left"></td>
-<td align="right">194</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">2018-02-15</td>
-<td align="left">Mobile Phone</td>
-<td align="left"></td>
-<td align="right">47</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">2018-02-15</td>
-<td align="left">Tablet</td>
-<td align="left"></td>
-<td align="right">1</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -378,34 +381,34 @@ head(aa_data)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2018-02-14</td>
+<td align="left">2018-02-17</td>
 <td align="left">Desktop/Tablet</td>
-<td align="right">229</td>
+<td align="right">67</td>
 </tr>
 <tr class="even">
-<td align="left">2018-02-14</td>
+<td align="left">2018-02-17</td>
 <td align="left">Mobile Phone</td>
-<td align="right">63</td>
+<td align="right">53</td>
 </tr>
 <tr class="odd">
-<td align="left">2018-02-14</td>
+<td align="left">2018-02-17</td>
+<td align="left">Tablet</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">2018-02-18</td>
+<td align="left">Desktop/Tablet</td>
+<td align="right">59</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-02-18</td>
+<td align="left">Mobile Phone</td>
+<td align="right">22</td>
+</tr>
+<tr class="even">
+<td align="left">2018-02-18</td>
 <td align="left">Tablet</td>
 <td align="right">3</td>
-</tr>
-<tr class="even">
-<td align="left">2018-02-15</td>
-<td align="left">Desktop/Tablet</td>
-<td align="right">194</td>
-</tr>
-<tr class="odd">
-<td align="left">2018-02-15</td>
-<td align="left">Mobile Phone</td>
-<td align="right">47</td>
-</tr>
-<tr class="even">
-<td align="left">2018-02-15</td>
-<td align="left">Tablet</td>
-<td align="right">1</td>
 </tr>
 </tbody>
 </table>
@@ -421,7 +424,7 @@ gg &lt;- ggplot(aa_data, mapping = aes(x = datetime, y = visits, colour = Device
 # Output the plot. You *could* just remove the &quot;gg &lt;-&quot; in the code above, but it&#39;s
 # generally a best practice to create a plot object and then output it, rather than
 # outputting it on the fly.
-gg</code></pre>
+print(gg)</code></pre>
 <p><img src="simple-trended-visits-by-devicetype_files/figure-html/visualize-1.png" width="960" /></p>
 </div>
 

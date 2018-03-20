@@ -218,6 +218,9 @@ $(document).ready(function () {
     <li>
       <a href="simple-inline-segment.html">Simple Inline Segment</a>
     </li>
+    <li>
+      <a href="int-heatmap.html">Day/Hour Heatmap</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -309,14 +312,14 @@ head(aa_data)</code></pre>
 <tr class="odd">
 <td align="left">Search Discovery, Inc. - A Digital Intelligence Company</td>
 <td align="left"><a href="https://www.searchdiscovery.com" class="uri">https://www.searchdiscovery.com</a></td>
-<td align="right">1983</td>
+<td align="right">1694</td>
 <td align="left">s300003965_5aad9f5c22fa9942088629ea</td>
 <td align="left">[Hit] Page contains “Intelligence”</td>
 </tr>
 <tr class="even">
 <td align="left">About Our Digital Intelligence Company | Search Discovery</td>
 <td align="left"><a href="https://www.searchdiscovery.com/about" class="uri">https://www.searchdiscovery.com/about</a></td>
-<td align="right">709</td>
+<td align="right">719</td>
 <td align="left">s300003965_5aad9f5c22fa9942088629ea</td>
 <td align="left">[Hit] Page contains “Intelligence”</td>
 </tr>
@@ -337,14 +340,14 @@ head(aa_data)</code></pre>
 <tr class="odd">
 <td align="left">Digital Intelligence Solutions | Search Discovery</td>
 <td align="left"><a href="https://www.searchdiscovery.com/solutions" class="uri">https://www.searchdiscovery.com/solutions</a></td>
-<td align="right">415</td>
+<td align="right">369</td>
 <td align="left">s300003965_5aad9f5c22fa9942088629ea</td>
 <td align="left">[Hit] Page contains “Intelligence”</td>
 </tr>
 <tr class="even">
 <td align="left">Business Intelligence and Analytics Solutions | Search Discovery</td>
 <td align="left"><a href="http://searchdiscover.staging.wpengine.com/solutions" class="uri">http://searchdiscover.staging.wpengine.com/solutions</a></td>
-<td align="right">214</td>
+<td align="right">236</td>
 <td align="left">s300003965_5aad9f5c22fa9942088629ea</td>
 <td align="left">[Hit] Page contains “Intelligence”</td>
 </tr>
@@ -377,7 +380,7 @@ gg &lt;- ggplot(aa_data, mapping = aes(x = name, y = pageviews)) +
 # Output the plot. You *could* just remove the &quot;gg &lt;-&quot; in the code above, but it&#39;s
 # generally a best practice to create a plot object and then output it, rather than
 # outputting it on the fly.
-gg</code></pre>
+print(gg)</code></pre>
 <p><img src="segment-by-id_files/figure-html/visualize-1.png" width="960" /></p>
 </div>
 

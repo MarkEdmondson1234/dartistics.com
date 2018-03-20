@@ -218,6 +218,9 @@ $(document).ready(function () {
     <li>
       <a href="simple-inline-segment.html">Simple Inline Segment</a>
     </li>
+    <li>
+      <a href="int-heatmap.html">Day/Hour Heatmap</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -319,42 +322,42 @@ head(aa_data)</code></pre>
 <tr class="odd">
 <td align="left">Search Discovery, Inc. - A Digital Intelligence Company</td>
 <td align="left"><a href="https://www.searchdiscovery.com" class="uri">https://www.searchdiscovery.com</a></td>
-<td align="right">1862</td>
+<td align="right">1589</td>
 <td align="left">segment1</td>
 <td align="left">inline segment</td>
 </tr>
 <tr class="even">
-<td align="left">Open Positions - Search Discovery</td>
-<td align="left"><a href="https://www.searchdiscovery.com/open-positions" class="uri">https://www.searchdiscovery.com/open-positions</a></td>
-<td align="right">585</td>
-<td align="left">segment1</td>
-<td align="left">inline segment</td>
-</tr>
-<tr class="odd">
 <td align="left">Search Discovery, Inc. - A Business Intelligence and Analytics Company</td>
 <td align="left"><a href="http://searchdiscover.staging.wpengine.com" class="uri">http://searchdiscover.staging.wpengine.com</a></td>
 <td align="right">581</td>
 <td align="left">segment1</td>
 <td align="left">inline segment</td>
 </tr>
+<tr class="odd">
+<td align="left">Open Positions - Search Discovery</td>
+<td align="left"><a href="https://www.searchdiscovery.com/open-positions" class="uri">https://www.searchdiscovery.com/open-positions</a></td>
+<td align="right">527</td>
+<td align="left">segment1</td>
+<td align="left">inline segment</td>
+</tr>
 <tr class="even">
 <td align="left">Digital Marketing, Analytics and Business Intelligence Jobs at Search Discovery</td>
 <td align="left"><a href="https://www.searchdiscovery.com/about/careers" class="uri">https://www.searchdiscovery.com/about/careers</a></td>
-<td align="right">518</td>
+<td align="right">495</td>
 <td align="left">segment1</td>
 <td align="left">inline segment</td>
 </tr>
 <tr class="odd">
 <td align="left">About Our Digital Intelligence Company | Search Discovery</td>
 <td align="left"><a href="https://www.searchdiscovery.com/about" class="uri">https://www.searchdiscovery.com/about</a></td>
-<td align="right">462</td>
+<td align="right">430</td>
 <td align="left">segment1</td>
 <td align="left">inline segment</td>
 </tr>
 <tr class="even">
 <td align="left">Digital Intelligence Solutions | Search Discovery</td>
 <td align="left"><a href="https://www.searchdiscovery.com/solutions" class="uri">https://www.searchdiscovery.com/solutions</a></td>
-<td align="right">362</td>
+<td align="right">323</td>
 <td align="left">segment1</td>
 <td align="left">inline segment</td>
 </tr>
@@ -387,7 +390,7 @@ gg &lt;- ggplot(aa_data, mapping = aes(x = name, y = pageviews)) +
 # Output the plot. You *could* just remove the &quot;gg &lt;-&quot; in the code above, but it&#39;s
 # generally a best practice to create a plot object and then output it, rather than
 # outputting it on the fly.
-gg</code></pre>
+print(gg)</code></pre>
 <p><img src="simple-inline-segment_files/figure-html/visualize-1.png" width="960" /></p>
 </div>
 
