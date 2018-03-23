@@ -308,50 +308,50 @@ head(aa_data)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2018-02-17</td>
+<td align="left">2018-02-19</td>
 <td align="left">Other</td>
 <td align="left"></td>
-<td align="right">67</td>
+<td align="right">148</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">2018-02-17</td>
+<td align="left">2018-02-19</td>
 <td align="left">Mobile Phone</td>
 <td align="left"></td>
-<td align="right">53</td>
+<td align="right">17</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">2018-02-17</td>
+<td align="left">2018-02-19</td>
 <td align="left">Tablet</td>
 <td align="left"></td>
-<td align="right">2</td>
+<td align="right">0</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">2018-02-18</td>
+<td align="left">2018-02-20</td>
 <td align="left">Other</td>
 <td align="left"></td>
-<td align="right">59</td>
+<td align="right">228</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">2018-02-18</td>
+<td align="left">2018-02-20</td>
 <td align="left">Mobile Phone</td>
 <td align="left"></td>
-<td align="right">22</td>
+<td align="right">76</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">2018-02-18</td>
+<td align="left">2018-02-20</td>
 <td align="left">Tablet</td>
 <td align="left"></td>
-<td align="right">3</td>
+<td align="right">0</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -360,13 +360,13 @@ head(aa_data)</code></pre>
 </div>
 <div id="data-munging" class="section level1">
 <h1>Data Munging</h1>
-<p>There’s not a ton of data munging to be done here. We’ll change the date to be <code>Date</code> instead of <code>POSIXlt</code> to play nice with the plotting, and we’ll grab just the columns we need to do the data visualization. And, for giggles, we’ll change “Other” to be “Desktop/Notebook.”</p>
+<p>There’s not a ton of data munging to be done here. We’ll change the date to be <code>Date</code> instead of <code>POSIXlt</code> to play nice with the plotting, and we’ll grab just the columns we need to do the data visualization. And, for giggles, we’ll change “Other” to be “Desktop/Laptop.”</p>
 <pre class="r"><code># Convert the datetime from POSIXlt to Date
 aa_data$datetime &lt;- as.Date(aa_data$datetime)
 
 # Clean up the table a bit
 aa_data &lt;- aa_data %&gt;% 
-  mutate(Device = ifelse(name==&quot;Other&quot;, &quot;Desktop/Tablet&quot;, name)) %&gt;% 
+  mutate(Device = ifelse(name==&quot;Other&quot;, &quot;Desktop/Laptop&quot;, name)) %&gt;% 
   select(datetime, Device, visits) 
 
 # Check what it looks like now
@@ -381,34 +381,34 @@ head(aa_data)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2018-02-17</td>
-<td align="left">Desktop/Tablet</td>
-<td align="right">67</td>
+<td align="left">2018-02-19</td>
+<td align="left">Desktop/Laptop</td>
+<td align="right">148</td>
 </tr>
 <tr class="even">
-<td align="left">2018-02-17</td>
+<td align="left">2018-02-19</td>
 <td align="left">Mobile Phone</td>
-<td align="right">53</td>
+<td align="right">17</td>
 </tr>
 <tr class="odd">
-<td align="left">2018-02-17</td>
+<td align="left">2018-02-19</td>
 <td align="left">Tablet</td>
-<td align="right">2</td>
+<td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">2018-02-18</td>
-<td align="left">Desktop/Tablet</td>
-<td align="right">59</td>
+<td align="left">2018-02-20</td>
+<td align="left">Desktop/Laptop</td>
+<td align="right">228</td>
 </tr>
 <tr class="odd">
-<td align="left">2018-02-18</td>
+<td align="left">2018-02-20</td>
 <td align="left">Mobile Phone</td>
-<td align="right">22</td>
+<td align="right">76</td>
 </tr>
 <tr class="even">
-<td align="left">2018-02-18</td>
+<td align="left">2018-02-20</td>
 <td align="left">Tablet</td>
-<td align="right">3</td>
+<td align="right">0</td>
 </tr>
 </tbody>
 </table>

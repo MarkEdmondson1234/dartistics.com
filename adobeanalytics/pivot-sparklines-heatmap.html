@@ -312,50 +312,50 @@ head(aa_data)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2018-02-17</td>
+<td align="left">2018-02-19</td>
 <td align="left">Other</td>
 <td align="left">blog</td>
-<td align="right">38</td>
+<td align="right">102</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">2018-02-17</td>
-<td align="left">Other</td>
-<td align="left">open-positions</td>
-<td align="right">31</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">2018-02-17</td>
+<td align="left">2018-02-19</td>
 <td align="left">Other</td>
 <td align="left">home</td>
-<td align="right">19</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">2018-02-17</td>
-<td align="left">Other</td>
-<td align="left">about</td>
-<td align="right">18</td>
+<td align="right">60</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">2018-02-17</td>
+<td align="left">2018-02-19</td>
 <td align="left">Other</td>
-<td align="left">solutions</td>
-<td align="right">7</td>
+<td align="left">open-positions</td>
+<td align="right">44</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">2018-02-17</td>
+<td align="left">2018-02-19</td>
 <td align="left">Other</td>
-<td align="left">work</td>
-<td align="right">2</td>
+<td align="left">about</td>
+<td align="right">33</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">2018-02-19</td>
+<td align="left">Other</td>
+<td align="left">solutions</td>
+<td align="right">10</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">2018-02-19</td>
+<td align="left">Other</td>
+<td align="left">contact</td>
+<td align="right">7</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -376,7 +376,7 @@ aa_data$datetime &lt;- as.Date(aa_data$datetime)
 
 # Clean up the table a bit
 aa_data &lt;- aa_data %&gt;% 
-  mutate(device = ifelse(mobiledevicetype==&quot;Other&quot;, &quot;Desktop/Tablet&quot;, mobiledevicetype)) %&gt;% 
+  mutate(device = ifelse(mobiledevicetype==&quot;Other&quot;, &quot;Desktop/Laptop&quot;, mobiledevicetype)) %&gt;% 
   select(datetime, device, sitesection, pageviews) 
 
 # Roll up to just be site section tables and then arrange the values for use in both grabbing the
@@ -454,34 +454,34 @@ head(aa_data_totals)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">Desktop/Tablet</td>
+<td align="left">Desktop/Laptop</td>
 <td align="left">blog</td>
-<td align="right">3355</td>
+<td align="right">3566</td>
 </tr>
 <tr class="even">
-<td align="left">Desktop/Tablet</td>
+<td align="left">Desktop/Laptop</td>
 <td align="left">home</td>
-<td align="right">2771</td>
+<td align="right">2973</td>
 </tr>
 <tr class="odd">
-<td align="left">Desktop/Tablet</td>
+<td align="left">Desktop/Laptop</td>
 <td align="left">solutions</td>
-<td align="right">2092</td>
+<td align="right">2335</td>
 </tr>
 <tr class="even">
-<td align="left">Desktop/Tablet</td>
+<td align="left">Desktop/Laptop</td>
 <td align="left">about</td>
-<td align="right">1479</td>
+<td align="right">1586</td>
 </tr>
 <tr class="odd">
-<td align="left">Desktop/Tablet</td>
+<td align="left">Desktop/Laptop</td>
 <td align="left">open-positions</td>
-<td align="right">1199</td>
+<td align="right">1236</td>
 </tr>
 <tr class="even">
-<td align="left">Desktop/Tablet</td>
+<td align="left">Desktop/Laptop</td>
 <td align="left">(Other)</td>
-<td align="right">898</td>
+<td align="right">929</td>
 </tr>
 </tbody>
 </table>
