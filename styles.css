@@ -14,6 +14,34 @@ color: #FFFFFF;
 border-bottom: 1.5px solid #FFFFFF;
 }
 
-
-
 td {border-bottom: 1.5px solid #FFFFFF;}
+
+/* 98fa65eecd83b83048e17ac192262514:
+   Hiding and showing the heatmap on the basis of screen width */
+.heatwide {
+	display: block;
+}
+.heatnarr {
+	display: none;
+}
+
+/* width > 768px */
+@media screen and (min-width: 768px){ 
+	.heatwide {
+		display: block;
+	}
+	.heatnarr {
+		display: none;
+	}
+}
+
+/* width < 768px */
+@media screen and (max-width: 767px){ 
+	.heatwide {
+		display: none;
+	}
+	.heatnarr {
+		display: block;
+	}
+}
+/* 98fa65eecd83b83048e17ac192262514 */
