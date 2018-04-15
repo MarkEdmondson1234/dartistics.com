@@ -514,13 +514,13 @@ head(totals_and_churn_df)</code></pre>
 </div>
 <div id="prep-the-data-to-be-a-ready-for-plotting" class="section level2">
 <h2>Prep the Data to Be a Ready for Plotting</h2>
-<p>Unfortunately, waterfall charts are kind of tricky to do in <code>ggplot2</code>. But, we can use ‘geom_rect()’ to draw this, which means we need to define the <code>min</code> and <code>max</code> for <code>x</code> and <code>y</code> for each box on the chart. We’ll go ahead and introduce some redundancy in the plotting for the sake of clarity by defining three types of bars that, for each week, will appear in this order:</p>
+<p>Unfortunately, waterfall charts are kind of tricky to do in <code>ggplot2</code>. But, we can use <code>geom_rect()</code> to draw this, which means we need to define the <code>min</code> and <code>max</code> for <code>x</code> and <code>y</code> for each box on the chart. We’ll go ahead and introduce some redundancy in the plotting for the sake of clarity by defining three types of bars that, for each week, will appear in this order:</p>
 <ul>
 <li><em>newUsers</em> – these are the new users for each week; we’ll plot these as green</li>
 <li><em>churned_users</em> – these are the churned users each week; we’ll plot these as red</li>
 <li><em>users</em> – these are the actual users for each week; we’ll plot these as gray</li>
 </ul>
-<p>The <code>xmin</code> and <code>xmax</code> for each of these will differ: <em>newUsers</em> will be offset to the left of the week, and <em>users</em> will be offset to the right. Yeesh. This is confusing. Ultimately, this is what the data looks like:</p>
+<p>The <code>xmin</code> and <code>xmax</code> for each of these will differ: <em>newUsers</em> will be offset to the left of the week, and <em>users</em> will be offset to the right. Yeesh. This is confusing. And it takes a bit of code to get that all worked out:</p>
 <pre class="r"><code># Add a few intermediate values that we&#39;ll use after we convert to a long forma
 waterfall_df &lt;- totals_and_churn_df %&gt;% 
   mutate(week_max = users + churned_users,
