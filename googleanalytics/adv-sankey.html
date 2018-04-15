@@ -20,8 +20,8 @@
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -30,10 +30,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -240,6 +242,9 @@ $(document).ready(function () {
     <li>
       <a href="adv-sankey.html">Sankey Chart (Traffic Flows)</a>
     </li>
+    <li>
+      <a href="churn-waterfall.html">Waterfall Chart (Churn Rate)</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -290,14 +295,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>For the setup, we’re going to load a few libraries, load our specific Google Analytics credentials, and then authorize with Google.</p>
 <pre class="r"><code># Load the necessary libraries. These libraries aren&#39;t all necessarily required for every
 # example, but, for simplicity&#39;s sake, we&#39;re going ahead and including them in every example.
-library(googleAnalyticsR)
-library(tidyverse)
-library(devtools)
-library(googleVis)
+# The &quot;typical&quot; way to load these is simply with &quot;library([package name]).&quot; But, the handy
+# thing about using the approach below -- which uses the pacman package -- is that it will
+# check that each package exists and actually install any that are missing before loading
+# the package.
+if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)
+pacman::p_load(googleAnalyticsR,  # How we actually get the Google Analytics data
+               tidyverse,         # Includes dplyr, ggplot2, and others; very key!
+               devtools,          # Generally handy
+               googleVis,         # Useful for some of the visualizations
+               scales)            # Useful for some number formatting in the visualizations
 
-# Authorize GA. Depending on if you&#39;ve done this already and a .httr-oauth file has
+# Authorize GA. Depending on if you&#39;ve done this already and a .ga-httr-oauth file has
 # been saved or not, this may pop you over to a browser to authenticate.
-ga_auth()
+ga_auth(token = &quot;.ga-httr-oauth&quot;)
 
 # Set the view ID and the date range. If you want to, you can swap out the Sys.getenv()
 # call and just replace that with a hardcoded value for the view ID. And, the start 
@@ -322,7 +333,7 @@ homepage_filter &lt;- filter_clause_ga4(list(page_filter))
 
 # Now, we&#39;re ready to pull the data from the GA API. We build a `google_analytics_4` request, 
 # passing the `homepage_filter` to the `dim_filters` argument.
-home_next_pages &lt;- google_analytics_4(
+home_next_pages &lt;- google_analytics(
   viewId = view_id,
   date_range = c(start_date, end_date),
   dimensions = c(&quot;secondPagePath&quot;, &quot;channelGrouping&quot;),
@@ -347,32 +358,32 @@ head(home_next_pages)</code></pre>
 <tr class="odd">
 <td align="left">(not set)</td>
 <td align="left">Direct</td>
-<td align="right">356</td>
+<td align="right">359</td>
 </tr>
 <tr class="even">
+<td align="left">(not set)</td>
+<td align="left">Email</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
 <td align="left">(not set)</td>
 <td align="left">Organic Search</td>
-<td align="right">197</td>
-</tr>
-<tr class="odd">
-<td align="left">(not set)</td>
-<td align="left">Referral</td>
-<td align="right">20</td>
+<td align="right">358</td>
 </tr>
 <tr class="even">
 <td align="left">(not set)</td>
-<td align="left">Social</td>
-<td align="right">11</td>
+<td align="left">Referral</td>
+<td align="right">299</td>
 </tr>
 <tr class="odd">
+<td align="left">(not set)</td>
+<td align="left">Social</td>
+<td align="right">40</td>
+</tr>
+<tr class="even">
 <td align="left">/</td>
 <td align="left">Direct</td>
 <td align="right">70</td>
-</tr>
-<tr class="even">
-<td align="left">/</td>
-<td align="left">Organic Search</td>
-<td align="right">86</td>
 </tr>
 </tbody>
 </table>
@@ -382,7 +393,7 @@ head(home_next_pages)</code></pre>
 <h1>Data Munging</h1>
 <p>We have a small problem in the number of possible next pages for our sessions (you don’t need to include this code – it’s just checking the number of unique values for the <code>secondPagePath</code> dimension in our data set).</p>
 <pre class="r"><code>length(unique(home_next_pages$secondPagePath))</code></pre>
-<pre><code>## [1] 59</code></pre>
+<pre><code>## [1] 32</code></pre>
 <p>We should thin this down to a number which can be easily visualised, which is a two-step process:</p>
 <ol style="list-style-type: decimal">
 <li>We’ll group the data by page path, arrange in order of pageviews and filter out the lower-volumes pages (or, put another way, only <em>keep</em> the top 10 pages overall).</li>
@@ -393,9 +404,9 @@ top_10 &lt;- home_next_pages %&gt;%
   group_by(secondPagePath) %&gt;% 
   summarise(upvs = sum(uniquePageviews)) %&gt;% 
   top_n(10, upvs) %&gt;% 
-  arrange(desc(upvs))
-
-# Using this list of our top 10 pages, use the `semi_join` function from `dplyr` to restrict 
+  arrange(desc(upvs))</code></pre>
+<pre><code>## Warning: package &#39;bindrcpp&#39; was built under R version 3.4.4</code></pre>
+<pre class="r"><code># Using this list of our top 10 pages, use the `semi_join` function from `dplyr` to restrict 
 # our data to pages &amp; channels that have one of these top 10 pages as the second page viewed.
 home_next_pages &lt;- home_next_pages %&gt;% 
   semi_join(top_10, by = &quot;secondPagePath&quot;)
@@ -415,32 +426,32 @@ head(home_next_pages)</code></pre>
 <tr class="odd">
 <td align="left">(not set)</td>
 <td align="left">Direct</td>
-<td align="right">356</td>
+<td align="right">359</td>
 </tr>
 <tr class="even">
+<td align="left">(not set)</td>
+<td align="left">Email</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
 <td align="left">(not set)</td>
 <td align="left">Organic Search</td>
-<td align="right">197</td>
-</tr>
-<tr class="odd">
-<td align="left">(not set)</td>
-<td align="left">Referral</td>
-<td align="right">20</td>
+<td align="right">358</td>
 </tr>
 <tr class="even">
 <td align="left">(not set)</td>
-<td align="left">Social</td>
-<td align="right">11</td>
+<td align="left">Referral</td>
+<td align="right">299</td>
 </tr>
 <tr class="odd">
+<td align="left">(not set)</td>
+<td align="left">Social</td>
+<td align="right">40</td>
+</tr>
+<tr class="even">
 <td align="left">/</td>
 <td align="left">Direct</td>
 <td align="right">70</td>
-</tr>
-<tr class="even">
-<td align="left">/</td>
-<td align="left">Organic Search</td>
-<td align="right">86</td>
 </tr>
 </tbody>
 </table>
@@ -464,35 +475,40 @@ s &lt;- gvisSankey(home_next_pages)
                 # chartid = chart_id)
 plot(s)</code></pre>
 <div align="center">
-<!-- Sankey generated in R 3.3.3 by googleVis 0.6.2 package -->
-<!-- Sun Nov 19 11:17:33 2017 -->
+<!-- Sankey generated in R 3.4.3 by googleVis 0.6.2 package -->
+<!-- Sun Apr 15 14:59:34 2018 -->
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataSankeyID26086f2eba88 () {
+function gvisDataSankeyID298c2498685e () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
  [
 "Direct",
 "(not set)",
-356
+359
+],
+[
+"Email",
+"(not set)",
+2
 ],
 [
 "Organic Search",
 "(not set)",
-197
+358
 ],
 [
 "Referral",
 "(not set)",
-20
+299
 ],
 [
 "Social",
 "(not set)",
-11
+40
 ],
 [
 "Direct",
@@ -502,137 +518,187 @@ var datajson =
 [
 "Organic Search",
 "/",
-86
+83
 ],
 [
 "Referral",
 "/",
-15
-],
-[
-"Direct",
-"/?author_name=&cat=",
-131
-],
-[
-"Organic Search",
-"/?author_name=&cat=",
-93
-],
-[
-"Direct",
-"/about-us/",
-66
-],
-[
-"Organic Search",
-"/about-us/",
-128
-],
-[
-"Referral",
-"/about-us/",
-19
+53
 ],
 [
 "Social",
-"/about-us/",
-14
+"/",
+18
 ],
 [
 "Direct",
-"/adobe-analytics/minneapolis-adobe-analytics-top-gun-class-12717/",
-13
+"/about/",
+231
+],
+[
+"Email",
+"/about/",
+3
 ],
 [
 "Organic Search",
-"/adobe-analytics/minneapolis-adobe-analytics-top-gun-class-12717/",
-47
+"/about/",
+524
 ],
 [
 "Referral",
-"/adobe-analytics/minneapolis-adobe-analytics-top-gun-class-12717/",
+"/about/",
+107
+],
+[
+"Social",
+"/about/",
+39
+],
+[
+"Direct",
+"/about/careers/",
+157
+],
+[
+"Organic Search",
+"/about/careers/",
+259
+],
+[
+"Referral",
+"/about/careers/",
+135
+],
+[
+"Social",
+"/about/careers/",
+40
+],
+[
+"Direct",
+"/blog/",
+49
+],
+[
+"Organic Search",
+"/blog/",
+82
+],
+[
+"Referral",
+"/blog/",
+56
+],
+[
+"Social",
+"/blog/",
+18
+],
+[
+"Direct",
+"/contact/",
+58
+],
+[
+"Email",
+"/contact/",
+6
+],
+[
+"Organic Search",
+"/contact/",
+111
+],
+[
+"Referral",
+"/contact/",
+38
+],
+[
+"Social",
+"/contact/",
+8
+],
+[
+"Direct",
+"/solutions/",
+61
+],
+[
+"Organic Search",
+"/solutions/",
+86
+],
+[
+"Referral",
+"/solutions/",
+22
+],
+[
+"Social",
+"/solutions/",
 6
 ],
 [
 "Direct",
-"/blog/",
-87
+"/solutions/industries/",
+70
 ],
 [
 "Organic Search",
-"/blog/",
-277
+"/solutions/industries/",
+223
 ],
 [
 "Referral",
-"/blog/",
-10
+"/solutions/industries/",
+32
 ],
 [
 "Social",
-"/blog/",
-11
+"/solutions/industries/",
+19
 ],
 [
 "Direct",
-"/blog/adam-greco/",
-24
+"/solutions/roles/",
+65
 ],
 [
 "Organic Search",
-"/blog/adam-greco/",
-81
-],
-[
-"Social",
-"/blog/adam-greco/",
-11
-],
-[
-"Direct",
-"/blog/eric-peterson/",
-22
-],
-[
-"Organic Search",
-"/blog/eric-peterson/",
-39
+"/solutions/roles/",
+164
 ],
 [
 "Referral",
-"/blog/eric-peterson/",
-3
-],
-[
-"Direct",
-"/services/adobe-analytics-implementation/",
-39
-],
-[
-"Organic Search",
-"/services/adobe-analytics-implementation/",
-29
+"/solutions/roles/",
+52
 ],
 [
 "Social",
-"/services/adobe-analytics-implementation/",
-5
+"/solutions/roles/",
+6
 ],
 [
 "Direct",
-"/services/training-and-educational-services/",
-58
+"/solutions/services/",
+96
 ],
 [
 "Organic Search",
-"/services/training-and-educational-services/",
-29
+"/solutions/services/",
+247
 ],
 [
 "Referral",
-"/services/training-and-educational-services/",
-4
+"/solutions/services/",
+57
+],
+[
+"Social",
+"/solutions/services/",
+36
 ] 
 ];
 data.addColumn('string','channelGrouping');
@@ -643,14 +709,14 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartSankeyID26086f2eba88() {
-var data = gvisDataSankeyID26086f2eba88();
+function drawChartSankeyID298c2498685e() {
+var data = gvisDataSankeyID298c2498685e();
 var options = {};
 options["width"] = 400;
 options["height"] = 400;
 
     var chart = new google.visualization.Sankey(
-    document.getElementById('SankeyID26086f2eba88')
+    document.getElementById('SankeyID298c2498685e')
     );
     chart.draw(data,options);
     
@@ -674,9 +740,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartSankeyID26086f2eba88);
+callbacks.push(drawChartSankeyID298c2498685e);
 })();
-function displayChartSankeyID26086f2eba88() {
+function displayChartSankeyID298c2498685e() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -699,9 +765,9 @@ callbacks.shift()();
 // jsFooter
 </script>
 <!-- jsChart -->
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID26086f2eba88"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID298c2498685e"></script>
 <!-- divChart -->
-<div id="SankeyID26086f2eba88" style="width: 400; height: 400;">
+<div id="SankeyID298c2498685e" style="width: 400; height: 400;">
 
 </div>
 </div>
@@ -729,35 +795,40 @@ s &lt;- gvisSankey(home_next_pages,
                 options = list(sankey = opts))
 plot(s)</code></pre>
 <div align="center">
-<!-- Sankey generated in R 3.3.3 by googleVis 0.6.2 package -->
-<!-- Sun Nov 19 11:17:33 2017 -->
+<!-- Sankey generated in R 3.4.3 by googleVis 0.6.2 package -->
+<!-- Sun Apr 15 14:59:35 2018 -->
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataSankeyID26084f2a1420 () {
+function gvisDataSankeyID298c62287144 () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
  [
 "Direct",
 "(not set)",
-356
+359
+],
+[
+"Email",
+"(not set)",
+2
 ],
 [
 "Organic Search",
 "(not set)",
-197
+358
 ],
 [
 "Referral",
 "(not set)",
-20
+299
 ],
 [
 "Social",
 "(not set)",
-11
+40
 ],
 [
 "Direct",
@@ -767,137 +838,187 @@ var datajson =
 [
 "Organic Search",
 "/",
-86
+83
 ],
 [
 "Referral",
 "/",
-15
-],
-[
-"Direct",
-"/?author_name=&cat=",
-131
-],
-[
-"Organic Search",
-"/?author_name=&cat=",
-93
-],
-[
-"Direct",
-"/about-us/",
-66
-],
-[
-"Organic Search",
-"/about-us/",
-128
-],
-[
-"Referral",
-"/about-us/",
-19
+53
 ],
 [
 "Social",
-"/about-us/",
-14
+"/",
+18
 ],
 [
 "Direct",
-"/adobe-analytics/minneapolis-adobe-analytics-top-gun-class-12717/",
-13
+"/about/",
+231
+],
+[
+"Email",
+"/about/",
+3
 ],
 [
 "Organic Search",
-"/adobe-analytics/minneapolis-adobe-analytics-top-gun-class-12717/",
-47
+"/about/",
+524
 ],
 [
 "Referral",
-"/adobe-analytics/minneapolis-adobe-analytics-top-gun-class-12717/",
+"/about/",
+107
+],
+[
+"Social",
+"/about/",
+39
+],
+[
+"Direct",
+"/about/careers/",
+157
+],
+[
+"Organic Search",
+"/about/careers/",
+259
+],
+[
+"Referral",
+"/about/careers/",
+135
+],
+[
+"Social",
+"/about/careers/",
+40
+],
+[
+"Direct",
+"/blog/",
+49
+],
+[
+"Organic Search",
+"/blog/",
+82
+],
+[
+"Referral",
+"/blog/",
+56
+],
+[
+"Social",
+"/blog/",
+18
+],
+[
+"Direct",
+"/contact/",
+58
+],
+[
+"Email",
+"/contact/",
+6
+],
+[
+"Organic Search",
+"/contact/",
+111
+],
+[
+"Referral",
+"/contact/",
+38
+],
+[
+"Social",
+"/contact/",
+8
+],
+[
+"Direct",
+"/solutions/",
+61
+],
+[
+"Organic Search",
+"/solutions/",
+86
+],
+[
+"Referral",
+"/solutions/",
+22
+],
+[
+"Social",
+"/solutions/",
 6
 ],
 [
 "Direct",
-"/blog/",
-87
+"/solutions/industries/",
+70
 ],
 [
 "Organic Search",
-"/blog/",
-277
+"/solutions/industries/",
+223
 ],
 [
 "Referral",
-"/blog/",
-10
+"/solutions/industries/",
+32
 ],
 [
 "Social",
-"/blog/",
-11
+"/solutions/industries/",
+19
 ],
 [
 "Direct",
-"/blog/adam-greco/",
-24
+"/solutions/roles/",
+65
 ],
 [
 "Organic Search",
-"/blog/adam-greco/",
-81
-],
-[
-"Social",
-"/blog/adam-greco/",
-11
-],
-[
-"Direct",
-"/blog/eric-peterson/",
-22
-],
-[
-"Organic Search",
-"/blog/eric-peterson/",
-39
+"/solutions/roles/",
+164
 ],
 [
 "Referral",
-"/blog/eric-peterson/",
-3
-],
-[
-"Direct",
-"/services/adobe-analytics-implementation/",
-39
-],
-[
-"Organic Search",
-"/services/adobe-analytics-implementation/",
-29
+"/solutions/roles/",
+52
 ],
 [
 "Social",
-"/services/adobe-analytics-implementation/",
-5
+"/solutions/roles/",
+6
 ],
 [
 "Direct",
-"/services/training-and-educational-services/",
-58
+"/solutions/services/",
+96
 ],
 [
 "Organic Search",
-"/services/training-and-educational-services/",
-29
+"/solutions/services/",
+247
 ],
 [
 "Referral",
-"/services/training-and-educational-services/",
-4
+"/solutions/services/",
+57
+],
+[
+"Social",
+"/solutions/services/",
+36
 ] 
 ];
 data.addColumn('string','channelGrouping');
@@ -908,8 +1029,8 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartSankeyID26084f2a1420() {
-var data = gvisDataSankeyID26084f2a1420();
+function drawChartSankeyID298c62287144() {
+var data = gvisDataSankeyID298c62287144();
 var options = {};
 options["width"] = 400;
 options["height"] = 400;
@@ -919,7 +1040,7 @@ options["sankey"] = {
       };
 
     var chart = new google.visualization.Sankey(
-    document.getElementById('SankeyID26084f2a1420')
+    document.getElementById('SankeyID298c62287144')
     );
     chart.draw(data,options);
     
@@ -943,9 +1064,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartSankeyID26084f2a1420);
+callbacks.push(drawChartSankeyID298c62287144);
 })();
-function displayChartSankeyID26084f2a1420() {
+function displayChartSankeyID298c62287144() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -968,9 +1089,9 @@ callbacks.shift()();
 // jsFooter
 </script>
 <!-- jsChart -->
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID26084f2a1420"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID298c62287144"></script>
 <!-- divChart -->
-<div id="SankeyID26084f2a1420" style="width: 400; height: 400;">
+<div id="SankeyID298c62287144" style="width: 400; height: 400;">
 
 </div>
 </div>
@@ -993,35 +1114,40 @@ s &lt;- gvisSankey(home_next_pages,
                 options = list(sankey = opts))
 plot(s)</code></pre>
 <div align="center">
-<!-- Sankey generated in R 3.3.3 by googleVis 0.6.2 package -->
-<!-- Sun Nov 19 11:17:33 2017 -->
+<!-- Sankey generated in R 3.4.3 by googleVis 0.6.2 package -->
+<!-- Sun Apr 15 14:59:35 2018 -->
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataSankeyID26087ee1b747 () {
+function gvisDataSankeyID298c2228e1f6 () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
  [
 "Direct",
 "(not set)",
-356
+359
+],
+[
+"Email",
+"(not set)",
+2
 ],
 [
 "Organic Search",
 "(not set)",
-197
+358
 ],
 [
 "Referral",
 "(not set)",
-20
+299
 ],
 [
 "Social",
 "(not set)",
-11
+40
 ],
 [
 "Direct",
@@ -1031,137 +1157,187 @@ var datajson =
 [
 "Organic Search",
 "/",
-86
+83
 ],
 [
 "Referral",
 "/",
-15
-],
-[
-"Direct",
-"/?author_name=&cat=",
-131
-],
-[
-"Organic Search",
-"/?author_name=&cat=",
-93
-],
-[
-"Direct",
-"/about-us/",
-66
-],
-[
-"Organic Search",
-"/about-us/",
-128
-],
-[
-"Referral",
-"/about-us/",
-19
+53
 ],
 [
 "Social",
-"/about-us/",
-14
+"/",
+18
 ],
 [
 "Direct",
-"/adobe-analytics/minneapolis-adobe-analytics-top-gun-class-12717/",
-13
+"/about/",
+231
+],
+[
+"Email",
+"/about/",
+3
 ],
 [
 "Organic Search",
-"/adobe-analytics/minneapolis-adobe-analytics-top-gun-class-12717/",
-47
+"/about/",
+524
 ],
 [
 "Referral",
-"/adobe-analytics/minneapolis-adobe-analytics-top-gun-class-12717/",
+"/about/",
+107
+],
+[
+"Social",
+"/about/",
+39
+],
+[
+"Direct",
+"/about/careers/",
+157
+],
+[
+"Organic Search",
+"/about/careers/",
+259
+],
+[
+"Referral",
+"/about/careers/",
+135
+],
+[
+"Social",
+"/about/careers/",
+40
+],
+[
+"Direct",
+"/blog/",
+49
+],
+[
+"Organic Search",
+"/blog/",
+82
+],
+[
+"Referral",
+"/blog/",
+56
+],
+[
+"Social",
+"/blog/",
+18
+],
+[
+"Direct",
+"/contact/",
+58
+],
+[
+"Email",
+"/contact/",
+6
+],
+[
+"Organic Search",
+"/contact/",
+111
+],
+[
+"Referral",
+"/contact/",
+38
+],
+[
+"Social",
+"/contact/",
+8
+],
+[
+"Direct",
+"/solutions/",
+61
+],
+[
+"Organic Search",
+"/solutions/",
+86
+],
+[
+"Referral",
+"/solutions/",
+22
+],
+[
+"Social",
+"/solutions/",
 6
 ],
 [
 "Direct",
-"/blog/",
-87
+"/solutions/industries/",
+70
 ],
 [
 "Organic Search",
-"/blog/",
-277
+"/solutions/industries/",
+223
 ],
 [
 "Referral",
-"/blog/",
-10
+"/solutions/industries/",
+32
 ],
 [
 "Social",
-"/blog/",
-11
+"/solutions/industries/",
+19
 ],
 [
 "Direct",
-"/blog/adam-greco/",
-24
+"/solutions/roles/",
+65
 ],
 [
 "Organic Search",
-"/blog/adam-greco/",
-81
-],
-[
-"Social",
-"/blog/adam-greco/",
-11
-],
-[
-"Direct",
-"/blog/eric-peterson/",
-22
-],
-[
-"Organic Search",
-"/blog/eric-peterson/",
-39
+"/solutions/roles/",
+164
 ],
 [
 "Referral",
-"/blog/eric-peterson/",
-3
-],
-[
-"Direct",
-"/services/adobe-analytics-implementation/",
-39
-],
-[
-"Organic Search",
-"/services/adobe-analytics-implementation/",
-29
+"/solutions/roles/",
+52
 ],
 [
 "Social",
-"/services/adobe-analytics-implementation/",
-5
+"/solutions/roles/",
+6
 ],
 [
 "Direct",
-"/services/training-and-educational-services/",
-58
+"/solutions/services/",
+96
 ],
 [
 "Organic Search",
-"/services/training-and-educational-services/",
-29
+"/solutions/services/",
+247
 ],
 [
 "Referral",
-"/services/training-and-educational-services/",
-4
+"/solutions/services/",
+57
+],
+[
+"Social",
+"/solutions/services/",
+36
 ] 
 ];
 data.addColumn('string','channelGrouping');
@@ -1172,8 +1348,8 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartSankeyID26087ee1b747() {
-var data = gvisDataSankeyID26087ee1b747();
+function drawChartSankeyID298c2228e1f6() {
+var data = gvisDataSankeyID298c2228e1f6();
 var options = {};
 options["width"] = 400;
 options["height"] = 400;
@@ -1184,7 +1360,7 @@ options["sankey"] = {
       };
 
     var chart = new google.visualization.Sankey(
-    document.getElementById('SankeyID26087ee1b747')
+    document.getElementById('SankeyID298c2228e1f6')
     );
     chart.draw(data,options);
     
@@ -1208,9 +1384,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartSankeyID26087ee1b747);
+callbacks.push(drawChartSankeyID298c2228e1f6);
 })();
-function displayChartSankeyID26087ee1b747() {
+function displayChartSankeyID298c2228e1f6() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -1233,9 +1409,9 @@ callbacks.shift()();
 // jsFooter
 </script>
 <!-- jsChart -->
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID26087ee1b747"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID298c2228e1f6"></script>
 <!-- divChart -->
-<div id="SankeyID26087ee1b747" style="width: 400; height: 400;">
+<div id="SankeyID298c2228e1f6" style="width: 400; height: 400;">
 
 </div>
 </div>

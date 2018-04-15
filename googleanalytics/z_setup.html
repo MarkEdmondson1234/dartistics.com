@@ -11,7 +11,7 @@
 
 
 
-<title>Pivoting Data within a Query</title>
+<title></title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -271,21 +271,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-<h1 class="title toc-ignore">Pivoting Data within a Query</h1>
 
 </div>
 
 
-<p><strong>IMPORTANT NOTE: There is a bug in the Google Analytics v4 API that actually makes this example only partially functional (and not partially enough to make it work). Be sure to read the full intro here for an explanation!</strong></p>
-<p>This example pulls sessions by <strong>device category</strong> and <strong>medium</strong>, but uses pivoting <em>within the call to Google Analytics</em> so that the <strong>device category</strong> values are across the columns, while the <strong>medium</strong> values are in the rows. Generally, this is a bit of an odd thing to do for a couple of reasons:</p>
-<ul>
-<li>This may be personal preference, but it’s awfully easy to do the pivoting with the <code>spread()</code> function in <code>dplyr</code> after it’s been pulled as a flat/simple query.</li>
-<li>Generally, tidy data is, well, tidier. And, tidy data means pull the data…unpivoted.</li>
-</ul>
-<p>But, it IS doable…except there is a bug in the API when it comes to pulling pivoted data – a column can get dropped! Check out the <a href="https://github.com/MarkEdmondson1234/googleAnalyticsR/issues/107">issue on Github</a> for an update.</p>
-<p>Even without the bug, I consider this approach vastly inferior to the approach used in <a href="pivot-after-query.html">Pivoting the Data (after Querying) example</a>.</p>
-<div id="setupconfig" class="section level1">
-<h1>Setup/Config</h1>
 <p>Be sure you’ve completed the steps on the <a href="setup.html">Initial Setup</a> page before running this code.</p>
 <p>For the setup, we’re going to load a few libraries, load our specific Google Analytics credentials, and then authorize with Google.</p>
 <pre class="r"><code># Load the necessary libraries. These libraries aren&#39;t all necessarily required for every
@@ -313,134 +302,6 @@ view_id &lt;- Sys.getenv(&quot;GA_VIEW_ID&quot;)
 start_date &lt;- Sys.Date() - 31        # 30 days back from yesterday
 end_date &lt;- Sys.Date() - 1           # Yesterday</code></pre>
 <p>If that all runs with just some messages but no errors, then you’re set for the next chunk of code: pulling the data.</p>
-</div>
-<div id="pull-the-data" class="section level1">
-<h1>Pull the Data</h1>
-<p>We have to, first, define what we’re going to pivot. After that, it’s a pretty straightforward query.</p>
-<pre class="r"><code># Start by defining the pivot object. See ?pivot_ga4() for details.
-my_pivot_object &lt;- pivot_ga4(&quot;deviceCategory&quot;,
-                             metrics = &quot;sessions&quot;)
-
-# Pull the data. See ?google_analytics_4() for additional parameters. The anti_sample = TRUE
-# parameter will slow the query down a smidge and isn&#39;t strictly necessary, but it will
-# ensure you do not get sampled data.
-ga_data &lt;- google_analytics(viewId = view_id,
-                              date_range = c(start_date, end_date),
-                              metrics = &quot;sessions&quot;,
-                              dimensions = &quot;medium&quot;,
-                              pivots = list(my_pivot_object),
-                              anti_sample = TRUE)
-
-# Go ahead and do a quick inspection of the data that was returned. This isn&#39;t required,
-# but it&#39;s a good check along the way.
-head(ga_data)</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">medium</th>
-<th align="right">sessions</th>
-<th align="right">deviceCategory.mobile.sessions</th>
-<th align="right">deviceCategory.tablet.sessions</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">(none)</td>
-<td align="right">1657</td>
-<td align="right">328</td>
-<td align="right">38</td>
-</tr>
-<tr class="even">
-<td align="left">cpc</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">display</td>
-<td align="right">230</td>
-<td align="right">146</td>
-<td align="right">11</td>
-</tr>
-<tr class="even">
-<td align="left">email</td>
-<td align="right">4</td>
-<td align="right">0</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">feed</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">organic</td>
-<td align="right">3468</td>
-<td align="right">458</td>
-<td align="right">51</td>
-</tr>
-</tbody>
-</table>
-<p>This is the apparent/possible bug noted in the intro – we seem to be missing a column! Check out the <a href="https://github.com/MarkEdmondson1234/googleAnalyticsR/issues/107">issue on Github</a> for an update.</p>
-</div>
-<div id="data-munging" class="section level1">
-<h1>Data Munging</h1>
-<p>The column headings are pretty ugly and redundant, and the <strong>sessions</strong> column isn’t necessarily one we’d want to keep, so let’s do a little cleanup.</p>
-<pre class="r"><code># Remove the &#39;sessions&#39; column
-ga_data &lt;- select(ga_data, -sessions)
-
-# Use a little regEx to strip out &quot;deviceCategory&quot; and &quot;sessions&quot; from the column names
-names(ga_data) &lt;- gsub(&quot;deviceCategory\\.(.*)\\.sessions&quot;,&quot;\\1&quot;, names(ga_data))
-
-# Check out the result of our handiwork
-head(ga_data)</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">medium</th>
-<th align="right">mobile</th>
-<th align="right">tablet</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">(none)</td>
-<td align="right">328</td>
-<td align="right">38</td>
-</tr>
-<tr class="even">
-<td align="left">cpc</td>
-<td align="right">1</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">display</td>
-<td align="right">146</td>
-<td align="right">11</td>
-</tr>
-<tr class="even">
-<td align="left">email</td>
-<td align="right">0</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">feed</td>
-<td align="right">0</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">organic</td>
-<td align="right">458</td>
-<td align="right">51</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="data-visualization" class="section level1">
-<h1>Data Visualization</h1>
-<p>This could be a nice little heatmap, but to do that with ggplot2, we’d have to gather it up into a tidy format. Basically…unpivot it! That seems silly – better to have pulled it unpivoted! I’m taking a moral stance and not jumping through that particular set of hoops for this example. So, no visualization on this one!</p>
-</div>
 
 <hr>
 <p align="center"><em></em>This site is a sub-site to <a href="http://dartistics.com" target="_blank">dartistics.com</em></p>

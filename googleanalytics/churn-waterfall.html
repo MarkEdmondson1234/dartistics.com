@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Waterfall Chart / Aggregated Churn</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="includes/styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">GA & R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Overview</a>
+</li>
+<li>
+  <a href="setup.html">Initial Setup</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Basic Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="simple-trended-sessions-by-devicecategory.html">Trended Sessions by Device Category</a>
+    </li>
+    <li>
+      <a href="simple-dim-filter.html">Simple Dimension Filter</a>
+    </li>
+    <li>
+      <a href="simple-medium-ordered-by-sessions.html">Medium Ordered by Sessions</a>
+    </li>
+    <li>
+      <a href="segment-by-id.html">Apply Segment by Segment ID</a>
+    </li>
+    <li>
+      <a href="pivot-in-query.html">Pivot in a Query</a>
+    </li>
+    <li>
+      <a href="pivot-after-query.html">Pivot After a Query</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Intermediate Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="pivot-sparklines-heatmap.html">2D Sparklines/Heatmap</a>
+    </li>
+    <li>
+      <a href="simple-dynamic-segment.html">Simple Dynamic Segment - v4</a>
+    </li>
+    <li>
+      <a href="simple-dynamic-segment-v3.html">Simple Dynamic Segment - v3</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Advanced Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="adv-multiple-dynamic-segments.html">Multiple Dynamic Segments</a>
+    </li>
+    <li>
+      <a href="adv-sankey.html">Sankey Chart (Traffic Flows)</a>
+    </li>
+    <li>
+      <a href="churn-waterfall.html">Waterfall Chart (Churn Rate)</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="http://dartistics.com">dartistics.com</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-N4DF7T"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N4DF7T');</script>
+<!-- End Google Tag Manager -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Waterfall Chart / Aggregated Churn</h1>
+
+</div>
+
+
+<p>Credit to <a href="https://www.linkedin.com/in/jamarius-taylor/">Jamarius Taylor</a> for thinking up this one. The idea is that visitors that are new have the opportunity to return to the site (just like customers who buy once have an opportunity to buy more). Obviously, not every site can reasonably expect all visitors to return, and, even those that do will have differing timeframes within which they would <em>expect</em> visitors to return.</p>
+<p>Nonetheless, this seems to be an illustrative example. We’re going to use a waterfall chart for the visualization. The <a href="https://cran.r-project.org/web/packages/waterfalls/index.html">waterfalls package</a> offers one option for doing this, but that doesn’t exactly seem to be a mainstream package, so this example simply relies on plain ol’ <code>ggplot2</code> and the various machinations required therein.</p>
+<div id="website-churn" class="section level1">
+<h1>Website Churn</h1>
+<p>If a website has <em>zero</em> churn, then we would expect each week’s users to be the number of users from the _previous week plus the number of <em>new</em> users from the <em>current</em> week. This assumes that active users return at least once per week (which is fair, if, clearly, an ideal that is unachievable):</p>
+<p><span class="math display">\[[\#\ of\ Users\ Current\ Week] = [\#\ of\ Users\ Previous\ Week] + [\#\ of\ New\ Users\ Current\ Week]\]</span></p>
+<p>Therefore, one way to calculate the <em>churn</em> is to take that theoretical ideal and subtract the actual number of users from it. That would be the number of non-returning users:</p>
+<p><span class="math display">\[[Churned\ Visitors] = [\#\ of\ Users\ Previous\ Week] + [\#\ of\ New\ Users\ Current\ Week] - [\#\ of\ Users\ Current\ Week]\]</span></p>
+<p>The churn <em>rate</em> would then be:</p>
+<p><span class="math display">\[[Churn\ Rate] = \frac{[Churned\ Visitors]}{[\#\ of\ Users\ Previous\ Week]}\]</span></p>
+<p>We’re not actually going to calculate <em>Churn Rate</em> in this example…but we could.</p>
+</div>
+<div id="setupconfig" class="section level1">
+<h1>Setup/Config</h1>
+<p>Be sure you’ve completed the steps on the <a href="setup.html">Initial Setup</a> page before running this code.</p>
+<p>For the setup, we’re going to load a few libraries, load our specific Google Analytics credentials, and then authorize with Google.</p>
+<pre class="r"><code># Load the necessary libraries. These libraries aren&#39;t all necessarily required for every
+# example, but, for simplicity&#39;s sake, we&#39;re going ahead and including them in every example.
+# The &quot;typical&quot; way to load these is simply with &quot;library([package name]).&quot; But, the handy
+# thing about using the approach below -- which uses the pacman package -- is that it will
+# check that each package exists and actually install any that are missing before loading
+# the package.
+if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)
+pacman::p_load(googleAnalyticsR,  # How we actually get the Google Analytics data
+               tidyverse,         # Includes dplyr, ggplot2, and others; very key!
+               devtools,          # Generally handy
+               googleVis,         # Useful for some of the visualizations
+               scales)            # Useful for some number formatting in the visualizations
+
+# Authorize GA. Depending on if you&#39;ve done this already and a .ga-httr-oauth file has
+# been saved or not, this may pop you over to a browser to authenticate.
+
+ga_auth(token = &quot;.ga-httr-oauth&quot;)
+
+# Set the view ID and the date range. If you want to, you can swap out the Sys.getenv()
+# call and just replace that with a hardcoded value for the view ID. And, the start 
+# and end date are currently set to choose the last 30 days, but those can be 
+# hardcoded as well.
+view_id &lt;- Sys.getenv(&quot;GA_VIEW_ID&quot;)
+end_date &lt;- Sys.Date() - as.POSIXlt(Sys.Date())$wday - 1   # The most recent Saturday
+start_date &lt;- end_date - 55                                # 8 weeks earlier</code></pre>
+<p>If that all runs with just some messages but no errors, then you’re set for the next chunk of code: pulling the data.</p>
+</div>
+<div id="pull-the-data" class="section level1">
+<h1>Pull the Data</h1>
+<p>This is pretty straightforward. We just need to pull users and new users by week (this could also be done by week):</p>
+<pre class="r"><code># Pull the data. See ?google_analytics_4() for additional parameters.
+ga_data &lt;- google_analytics(viewId = view_id,
+                              date_range = c(start_date, end_date),
+                              metrics = c(&quot;users&quot;, &quot;newUsers&quot;),
+                              dimensions = c(&quot;week&quot;,&quot;year&quot;))
+
+# Go ahead and do a quick inspection of the data that was returned. This isn&#39;t required,
+# but it&#39;s a good check along the way.
+head(ga_data)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">week</th>
+<th align="left">year</th>
+<th align="right">users</th>
+<th align="right">newUsers</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">08</td>
+<td align="left">2018</td>
+<td align="right">1174</td>
+<td align="right">951</td>
+</tr>
+<tr class="even">
+<td align="left">09</td>
+<td align="left">2018</td>
+<td align="right">1265</td>
+<td align="right">1013</td>
+</tr>
+<tr class="odd">
+<td align="left">10</td>
+<td align="left">2018</td>
+<td align="right">1368</td>
+<td align="right">1126</td>
+</tr>
+<tr class="even">
+<td align="left">11</td>
+<td align="left">2018</td>
+<td align="right">1469</td>
+<td align="right">1242</td>
+</tr>
+<tr class="odd">
+<td align="left">12</td>
+<td align="left">2018</td>
+<td align="right">1506</td>
+<td align="right">1250</td>
+</tr>
+<tr class="even">
+<td align="left">13</td>
+<td align="left">2018</td>
+<td align="right">1616</td>
+<td align="right">1337</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="data-munging" class="section level1">
+<h1>Data Munging</h1>
+<div id="start-by-ordering-the-data" class="section level2">
+<h2>Start by Ordering the Data</h2>
+<p>This just ensures the data is easy enough to look at and interpret.</p>
+<pre class="r"><code># Using dplyr, sort by year and week.
+ga_data &lt;- ga_data %&gt;%
+  arrange(year, week)
+
+# Take a quick look at the result.
+head(ga_data)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">week</th>
+<th align="left">year</th>
+<th align="right">users</th>
+<th align="right">newUsers</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">08</td>
+<td align="left">2018</td>
+<td align="right">1174</td>
+<td align="right">951</td>
+</tr>
+<tr class="even">
+<td align="left">09</td>
+<td align="left">2018</td>
+<td align="right">1265</td>
+<td align="right">1013</td>
+</tr>
+<tr class="odd">
+<td align="left">10</td>
+<td align="left">2018</td>
+<td align="right">1368</td>
+<td align="right">1126</td>
+</tr>
+<tr class="even">
+<td align="left">11</td>
+<td align="left">2018</td>
+<td align="right">1469</td>
+<td align="right">1242</td>
+</tr>
+<tr class="odd">
+<td align="left">12</td>
+<td align="left">2018</td>
+<td align="right">1506</td>
+<td align="right">1250</td>
+</tr>
+<tr class="even">
+<td align="left">13</td>
+<td align="left">2018</td>
+<td align="right">1616</td>
+<td align="right">1337</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="calculate-the-churned-visitors" class="section level2">
+<h2>Calculate the Churned Visitors</h2>
+<pre class="r"><code># Calculate the churn and add some date levels
+totals_and_churn_df &lt;- ga_data %&gt;%
+  mutate(previous_week_users = lag(users, 1, default = 0)) %&gt;%         # Get previous week users
+  mutate(churned_users = previous_week_users + newUsers - users) %&gt;%   # Calculate churned users
+  mutate(date = paste(year,week, sep=&quot;-&quot;)) %&gt;%                         # Calculate a &quot;week&quot; as YYYY-WW
+  mutate(date = factor(date, levels = date)) %&gt;%                       # Make date a factor
+  select(date, users, newUsers, previous_week_users, churned_users)
+
+# NA the churned users and new users for the first row
+totals_and_churn_df$churned_users[1] &lt;- NA
+totals_and_churn_df$newUsers[1] &lt;- NA
+
+# Display the results
+head(totals_and_churn_df)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">date</th>
+<th align="right">users</th>
+<th align="right">newUsers</th>
+<th align="right">previous_week_users</th>
+<th align="right">churned_users</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2018-08</td>
+<td align="right">1174</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">2018-09</td>
+<td align="right">1265</td>
+<td align="right">1013</td>
+<td align="right">1174</td>
+<td align="right">922</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-10</td>
+<td align="right">1368</td>
+<td align="right">1126</td>
+<td align="right">1265</td>
+<td align="right">1023</td>
+</tr>
+<tr class="even">
+<td align="left">2018-11</td>
+<td align="right">1469</td>
+<td align="right">1242</td>
+<td align="right">1368</td>
+<td align="right">1141</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-12</td>
+<td align="right">1506</td>
+<td align="right">1250</td>
+<td align="right">1469</td>
+<td align="right">1213</td>
+</tr>
+<tr class="even">
+<td align="left">2018-13</td>
+<td align="right">1616</td>
+<td align="right">1337</td>
+<td align="right">1506</td>
+<td align="right">1227</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="prep-the-data-to-be-a-ready-for-plotting" class="section level2">
+<h2>Prep the Data to Be a Ready for Plotting</h2>
+<p>Unfortunately, waterfall charts are kind of tricky to do in <code>ggplot2</code>. But, we can use ‘geom_rect()’ to draw this, which means we need to define the <code>min</code> and <code>max</code> for <code>x</code> and <code>y</code> for each box on the chart. We’ll go ahead and introduce some redundancy in the plotting for the sake of clarity by defining three types of bars that, for each week, will appear in this order:</p>
+<ul>
+<li><em>newUsers</em> – these are the new users for each week; we’ll plot these as green</li>
+<li><em>churned_users</em> – these are the churned users each week; we’ll plot these as red</li>
+<li><em>users</em> – these are the actual users for each week; we’ll plot these as gray</li>
+</ul>
+<p>The <code>xmin</code> and <code>xmax</code> for each of these will differ: <em>newUsers</em> will be offset to the left of the week, and <em>users</em> will be offset to the right. Yeesh. This is confusing. Ultimately, this is what the data looks like:</p>
+<pre class="r"><code># Add a few intermediate values that we&#39;ll use after we convert to a long forma
+waterfall_df &lt;- totals_and_churn_df %&gt;% 
+  mutate(week_max = users + churned_users,
+         week_current_users = users)
+
+# Convert to long format
+waterfall_df &lt;- waterfall_df %&gt;% 
+  gather(key = &quot;user_type&quot;, value = &quot;number_of_users&quot;, 
+         -date, -previous_week_users, -week_max, -week_current_users,
+         na.rm = TRUE)
+
+# Function to calculate xmin, xmax, ymin, and ymax when passed a row from the
+# data set.
+calc_rect_coords &lt;- function(date, previous_week_users, week_max,
+                             week_current_users, user_type, number_of_users){
+  
+  x_offset &lt;-  0.25   # Base offset for x for rects
+  bar_half_width &lt;- 0.1  # Define the bar width
+
+  if(user_type == &quot;users&quot;){
+    xmin &lt;- as.numeric(date) + x_offset - bar_half_width - 0.02  # Make it a little wider
+    xmax &lt;- as.numeric(date) + x_offset + bar_half_width + 0.02
+    ymin &lt;- 0
+    ymax &lt;- number_of_users
+    user_type = &quot;Users&quot;
+  } else if(user_type == &quot;churned_users&quot;){
+    xmin &lt;- as.numeric(date) - bar_half_width
+    xmax &lt;- as.numeric(date) + bar_half_width
+    ymin &lt;- week_current_users
+    ymax &lt;- week_current_users + number_of_users
+    user_type = &quot;Churned Users&quot;
+  } else 
+    # New Users
+    {
+    xmin &lt;- as.numeric(date) - x_offset - bar_half_width
+    xmax &lt;- as.numeric(date) - x_offset + bar_half_width
+    ymin &lt;- previous_week_users
+    ymax &lt;- previous_week_users + number_of_users
+    user_type = &quot;New Users&quot;
+  } 
+  
+  result = data.frame(date = date,
+                      user_type = user_type,
+                      xmin = xmin,
+                      xmax = xmax,
+                      ymin = ymin,
+                      ymax = ymax)
+}
+
+# Build out all of our rectangles. 
+plot_data &lt;- pmap_dfr(waterfall_df, calc_rect_coords)
+
+# This trashes our nice date factor, so drop the one that came back
+# and add on our original
+plot_data &lt;- select(plot_data, -date)
+plot_data &lt;- cbind(plot_data, waterfall_df$date)
+plot_data &lt;- plot_data %&gt;% 
+  select(date = `waterfall_df$date`,
+         user_type,
+         xmin, xmax, ymin, ymax)
+
+# Display the head
+head(plot_data, 20)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">date</th>
+<th align="left">user_type</th>
+<th align="right">xmin</th>
+<th align="right">xmax</th>
+<th align="right">ymin</th>
+<th align="right">ymax</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2018-08</td>
+<td align="left">Users</td>
+<td align="right">1.13</td>
+<td align="right">1.37</td>
+<td align="right">0</td>
+<td align="right">1174</td>
+</tr>
+<tr class="even">
+<td align="left">2018-09</td>
+<td align="left">Users</td>
+<td align="right">2.13</td>
+<td align="right">2.37</td>
+<td align="right">0</td>
+<td align="right">1265</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-10</td>
+<td align="left">Users</td>
+<td align="right">3.13</td>
+<td align="right">3.37</td>
+<td align="right">0</td>
+<td align="right">1368</td>
+</tr>
+<tr class="even">
+<td align="left">2018-11</td>
+<td align="left">Users</td>
+<td align="right">4.13</td>
+<td align="right">4.37</td>
+<td align="right">0</td>
+<td align="right">1469</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-12</td>
+<td align="left">Users</td>
+<td align="right">5.13</td>
+<td align="right">5.37</td>
+<td align="right">0</td>
+<td align="right">1506</td>
+</tr>
+<tr class="even">
+<td align="left">2018-13</td>
+<td align="left">Users</td>
+<td align="right">6.13</td>
+<td align="right">6.37</td>
+<td align="right">0</td>
+<td align="right">1616</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-14</td>
+<td align="left">Users</td>
+<td align="right">7.13</td>
+<td align="right">7.37</td>
+<td align="right">0</td>
+<td align="right">1364</td>
+</tr>
+<tr class="even">
+<td align="left">2018-15</td>
+<td align="left">Users</td>
+<td align="right">8.13</td>
+<td align="right">8.37</td>
+<td align="right">0</td>
+<td align="right">1200</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-09</td>
+<td align="left">New Users</td>
+<td align="right">1.65</td>
+<td align="right">1.85</td>
+<td align="right">1174</td>
+<td align="right">2187</td>
+</tr>
+<tr class="even">
+<td align="left">2018-10</td>
+<td align="left">New Users</td>
+<td align="right">2.65</td>
+<td align="right">2.85</td>
+<td align="right">1265</td>
+<td align="right">2391</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-11</td>
+<td align="left">New Users</td>
+<td align="right">3.65</td>
+<td align="right">3.85</td>
+<td align="right">1368</td>
+<td align="right">2610</td>
+</tr>
+<tr class="even">
+<td align="left">2018-12</td>
+<td align="left">New Users</td>
+<td align="right">4.65</td>
+<td align="right">4.85</td>
+<td align="right">1469</td>
+<td align="right">2719</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-13</td>
+<td align="left">New Users</td>
+<td align="right">5.65</td>
+<td align="right">5.85</td>
+<td align="right">1506</td>
+<td align="right">2843</td>
+</tr>
+<tr class="even">
+<td align="left">2018-14</td>
+<td align="left">New Users</td>
+<td align="right">6.65</td>
+<td align="right">6.85</td>
+<td align="right">1616</td>
+<td align="right">2703</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-15</td>
+<td align="left">New Users</td>
+<td align="right">7.65</td>
+<td align="right">7.85</td>
+<td align="right">1364</td>
+<td align="right">2362</td>
+</tr>
+<tr class="even">
+<td align="left">2018-09</td>
+<td align="left">Churned Users</td>
+<td align="right">1.90</td>
+<td align="right">2.10</td>
+<td align="right">1265</td>
+<td align="right">2187</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-10</td>
+<td align="left">Churned Users</td>
+<td align="right">2.90</td>
+<td align="right">3.10</td>
+<td align="right">1368</td>
+<td align="right">2391</td>
+</tr>
+<tr class="even">
+<td align="left">2018-11</td>
+<td align="left">Churned Users</td>
+<td align="right">3.90</td>
+<td align="right">4.10</td>
+<td align="right">1469</td>
+<td align="right">2610</td>
+</tr>
+<tr class="odd">
+<td align="left">2018-12</td>
+<td align="left">Churned Users</td>
+<td align="right">4.90</td>
+<td align="right">5.10</td>
+<td align="right">1506</td>
+<td align="right">2719</td>
+</tr>
+<tr class="even">
+<td align="left">2018-13</td>
+<td align="left">Churned Users</td>
+<td align="right">5.90</td>
+<td align="right">6.10</td>
+<td align="right">1616</td>
+<td align="right">2843</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="data-visualization" class="section level1">
+<h1>Data Visualization</h1>
+<p>With all that data prep, we can now plot the results. The way to read this is that, each week, there is a number of users. Then, for the next week, in order, we:</p>
+<ul>
+<li>Add the new users gained (new users for the week) – green</li>
+<li>Then, subtract the (calculated) churned users – red</li>
+<li>So we wind up with the total users for that week – gray</li>
+</ul>
+<p>The thing that may be a little misleading here is that we’re making an assumption that “non-churned users” actually return to the site each subsequent week. But, that may not be too bad, especially if we’re looking to illustrate that it’s a constant battle to get new traffic to the site!</p>
+<p><em>As one note, ideally, this chart would also include horizontal lines connecting the top of each <em>Users</em> bar to the bottom of each <em>New Users</em> bar, from the top of each <em>New Users</em> bar to the top of each <em>Churned Users</em> bar, and from the bottom of each <em>Churned Users</em> bar to the top of each <em>Users</em> bar. But, that’s an even bigger hassle, so it’s not included here.</em></p>
+<pre class="r"><code># Define the theme
+theme_waterfall &lt;- theme_light() +
+  theme(legend.position = &quot;top&quot;,
+        legend.title = element_blank(),
+        plot.title = element_text(hjust=0.5),
+        panel.grid.major.x = element_blank(),
+        panel.border = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title = element_blank())
+
+# Build the actual plot. What we&#39;re actually doing here is drawing each bar as a
+# separate rectangle.
+gg_results &lt;- ggplot(plot_data, aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax,
+                                    fill = user_type, x=date)) +
+  geom_rect() +
+  scale_fill_manual(values = c(&quot;#f98e8e&quot;,&quot;#8ee26a&quot;,&quot;gray60&quot;)) +
+  scale_y_continuous(label = comma, expand = c(0,0)) +
+  labs(title = &quot;Waterfall of Users Over Time&quot;, y=&quot;Users&quot;) +
+  theme_waterfall
+
+# Output the plot
+gg_results</code></pre>
+<p><img src="churn-waterfall_files/figure-html/plot_results-1.png" width="768" /></p>
+</div>
+
+<hr>
+<p align="center"><em></em>This site is a sub-site to <a href="http://dartistics.com" target="_blank">dartistics.com</em></p>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

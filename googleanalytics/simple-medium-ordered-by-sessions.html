@@ -20,8 +20,8 @@
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -30,10 +30,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -240,6 +242,9 @@ $(document).ready(function () {
     <li>
       <a href="adv-sankey.html">Sankey Chart (Traffic Flows)</a>
     </li>
+    <li>
+      <a href="churn-waterfall.html">Waterfall Chart (Churn Rate)</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -278,14 +283,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>For the setup, we’re going to load a few libraries, load our specific Google Analytics credentials, and then authorize with Google.</p>
 <pre class="r"><code># Load the necessary libraries. These libraries aren&#39;t all necessarily required for every
 # example, but, for simplicity&#39;s sake, we&#39;re going ahead and including them in every example.
-library(googleAnalyticsR)
-library(tidyverse)
-library(devtools)
-library(googleVis)
+# The &quot;typical&quot; way to load these is simply with &quot;library([package name]).&quot; But, the handy
+# thing about using the approach below -- which uses the pacman package -- is that it will
+# check that each package exists and actually install any that are missing before loading
+# the package.
+if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)
+pacman::p_load(googleAnalyticsR,  # How we actually get the Google Analytics data
+               tidyverse,         # Includes dplyr, ggplot2, and others; very key!
+               devtools,          # Generally handy
+               googleVis,         # Useful for some of the visualizations
+               scales)            # Useful for some number formatting in the visualizations
 
-# Authorize GA. Depending on if you&#39;ve done this already and a .httr-oauth file has
+# Authorize GA. Depending on if you&#39;ve done this already and a .ga-httr-oauth file has
 # been saved or not, this may pop you over to a browser to authenticate.
-ga_auth()
+ga_auth(token = &quot;.ga-httr-oauth&quot;)
 
 # Set the view ID and the date range. If you want to, you can swap out the Sys.getenv()
 # call and just replace that with a hardcoded value for the view ID. And, the start 
@@ -307,7 +318,7 @@ order_sessions_desc &lt;- order_type(&quot;sessions&quot;,
 # Pull the data. See ?google_analytics_4() for additional parameters. Note that we are
 # NOT using anti_sample = TRUE. This is because we are setting max = 5, and the max
 # argument has no impact when anti_sample = TRUE.
-ga_data &lt;- google_analytics_4(viewId = view_id,
+ga_data &lt;- google_analytics(viewId = view_id,
                               date_range = c(start_date, end_date),
                               metrics = &quot;sessions&quot;,
                               dimensions = &quot;medium&quot;,
@@ -327,23 +338,23 @@ head(ga_data)</code></pre>
 <tbody>
 <tr class="odd">
 <td align="left">organic</td>
-<td align="right">23659</td>
+<td align="right">3468</td>
 </tr>
 <tr class="even">
-<td align="left">(none)</td>
-<td align="right">4693</td>
-</tr>
-<tr class="odd">
 <td align="left">referral</td>
-<td align="right">1329</td>
-</tr>
-<tr class="even">
-<td align="left">social</td>
-<td align="right">809</td>
+<td align="right">2565</td>
 </tr>
 <tr class="odd">
-<td align="left">email</td>
-<td align="right">18</td>
+<td align="left">(none)</td>
+<td align="right">1657</td>
+</tr>
+<tr class="even">
+<td align="left">display</td>
+<td align="right">230</td>
+</tr>
+<tr class="odd">
+<td align="left">social</td>
+<td align="right">8</td>
 </tr>
 </tbody>
 </table>
