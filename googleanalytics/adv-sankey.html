@@ -91,6 +91,9 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
 }
@@ -240,6 +243,12 @@ $(document).ready(function () {
       <a href="adv-multiple-dynamic-segments.html">Multiple Dynamic Segments</a>
     </li>
     <li>
+      <a href="adv-dynamic-segments-ganalytics.html">Dynamic Segments (ganalytics)</a>
+    </li>
+    <li>
+      <a href="adv-filters.html">Filters (ganalytics)</a>
+    </li>
+    <li>
       <a href="adv-sankey.html">Sankey Chart (Traffic Flows)</a>
     </li>
     <li>
@@ -357,33 +366,33 @@ head(home_next_pages)</code></pre>
 <tbody>
 <tr class="odd">
 <td align="left">(not set)</td>
+<td align="left">(Other)</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">(not set)</td>
 <td align="left">Direct</td>
-<td align="right">359</td>
+<td align="right">317</td>
+</tr>
+<tr class="odd">
+<td align="left">(not set)</td>
+<td align="left">Display</td>
+<td align="right">2</td>
 </tr>
 <tr class="even">
 <td align="left">(not set)</td>
 <td align="left">Email</td>
-<td align="right">2</td>
+<td align="right">6</td>
 </tr>
 <tr class="odd">
 <td align="left">(not set)</td>
 <td align="left">Organic Search</td>
-<td align="right">358</td>
+<td align="right">281</td>
 </tr>
 <tr class="even">
 <td align="left">(not set)</td>
 <td align="left">Referral</td>
-<td align="right">299</td>
-</tr>
-<tr class="odd">
-<td align="left">(not set)</td>
-<td align="left">Social</td>
-<td align="right">40</td>
-</tr>
-<tr class="even">
-<td align="left">/</td>
-<td align="left">Direct</td>
-<td align="right">70</td>
+<td align="right">188</td>
 </tr>
 </tbody>
 </table>
@@ -393,7 +402,7 @@ head(home_next_pages)</code></pre>
 <h1>Data Munging</h1>
 <p>We have a small problem in the number of possible next pages for our sessions (you don’t need to include this code – it’s just checking the number of unique values for the <code>secondPagePath</code> dimension in our data set).</p>
 <pre class="r"><code>length(unique(home_next_pages$secondPagePath))</code></pre>
-<pre><code>## [1] 32</code></pre>
+<pre><code>## [1] 30</code></pre>
 <p>We should thin this down to a number which can be easily visualised, which is a two-step process:</p>
 <ol style="list-style-type: decimal">
 <li>We’ll group the data by page path, arrange in order of pageviews and filter out the lower-volumes pages (or, put another way, only <em>keep</em> the top 10 pages overall).</li>
@@ -404,9 +413,9 @@ top_10 &lt;- home_next_pages %&gt;%
   group_by(secondPagePath) %&gt;% 
   summarise(upvs = sum(uniquePageviews)) %&gt;% 
   top_n(10, upvs) %&gt;% 
-  arrange(desc(upvs))</code></pre>
-<pre><code>## Warning: package &#39;bindrcpp&#39; was built under R version 3.4.4</code></pre>
-<pre class="r"><code># Using this list of our top 10 pages, use the `semi_join` function from `dplyr` to restrict 
+  arrange(desc(upvs))
+
+# Using this list of our top 10 pages, use the `semi_join` function from `dplyr` to restrict 
 # our data to pages &amp; channels that have one of these top 10 pages as the second page viewed.
 home_next_pages &lt;- home_next_pages %&gt;% 
   semi_join(top_10, by = &quot;secondPagePath&quot;)
@@ -425,33 +434,33 @@ head(home_next_pages)</code></pre>
 <tbody>
 <tr class="odd">
 <td align="left">(not set)</td>
+<td align="left">(Other)</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">(not set)</td>
 <td align="left">Direct</td>
-<td align="right">359</td>
+<td align="right">317</td>
+</tr>
+<tr class="odd">
+<td align="left">(not set)</td>
+<td align="left">Display</td>
+<td align="right">2</td>
 </tr>
 <tr class="even">
 <td align="left">(not set)</td>
 <td align="left">Email</td>
-<td align="right">2</td>
+<td align="right">6</td>
 </tr>
 <tr class="odd">
 <td align="left">(not set)</td>
 <td align="left">Organic Search</td>
-<td align="right">358</td>
+<td align="right">281</td>
 </tr>
 <tr class="even">
 <td align="left">(not set)</td>
 <td align="left">Referral</td>
-<td align="right">299</td>
-</tr>
-<tr class="odd">
-<td align="left">(not set)</td>
-<td align="left">Social</td>
-<td align="right">40</td>
-</tr>
-<tr class="even">
-<td align="left">/</td>
-<td align="left">Direct</td>
-<td align="right">70</td>
+<td align="right">188</td>
 </tr>
 </tbody>
 </table>
@@ -475,65 +484,80 @@ s &lt;- gvisSankey(home_next_pages)
                 # chartid = chart_id)
 plot(s)</code></pre>
 <div align="center">
-<!-- Sankey generated in R 3.4.3 by googleVis 0.6.2 package -->
-<!-- Sun Apr 15 14:59:34 2018 -->
+<!-- Sankey generated in R 3.5.1 by googleVis 0.6.2 package -->
+<!-- Sat Sep  8 18:18:37 2018 -->
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataSankeyID298c2498685e () {
+function gvisDataSankeyID848a4a982689 () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
  [
-"Direct",
+"(Other)",
 "(not set)",
-359
+7
 ],
 [
-"Email",
+"Direct",
+"(not set)",
+317
+],
+[
+"Display",
 "(not set)",
 2
 ],
 [
+"Email",
+"(not set)",
+6
+],
+[
 "Organic Search",
 "(not set)",
-358
+281
 ],
 [
 "Referral",
 "(not set)",
-299
+188
 ],
 [
 "Social",
 "(not set)",
-40
+35
 ],
 [
 "Direct",
 "/",
-70
+42
 ],
 [
 "Organic Search",
 "/",
-83
+90
 ],
 [
 "Referral",
 "/",
-53
+55
 ],
 [
 "Social",
 "/",
-18
+5
+],
+[
+"(Other)",
+"/about/",
+2
 ],
 [
 "Direct",
 "/about/",
-231
+156
 ],
 [
 "Email",
@@ -543,162 +567,182 @@ var datajson =
 [
 "Organic Search",
 "/about/",
-524
+418
 ],
 [
 "Referral",
 "/about/",
-107
+55
 ],
 [
 "Social",
 "/about/",
-39
+69
+],
+[
+"(Other)",
+"/about/careers/",
+3
 ],
 [
 "Direct",
 "/about/careers/",
-157
+124
+],
+[
+"Display",
+"/about/careers/",
+3
 ],
 [
 "Organic Search",
 "/about/careers/",
-259
+244
 ],
 [
 "Referral",
 "/about/careers/",
-135
+141
 ],
 [
 "Social",
 "/about/careers/",
-40
+63
 ],
 [
 "Direct",
 "/blog/",
-49
-],
-[
-"Organic Search",
-"/blog/",
-82
-],
-[
-"Referral",
-"/blog/",
-56
-],
-[
-"Social",
-"/blog/",
-18
-],
-[
-"Direct",
-"/contact/",
-58
+17
 ],
 [
 "Email",
-"/contact/",
+"/blog/",
 6
 ],
 [
 "Organic Search",
-"/contact/",
-111
+"/blog/",
+59
 ],
 [
 "Referral",
-"/contact/",
-38
+"/blog/",
+23
 ],
 [
 "Social",
+"/blog/",
+5
+],
+[
+"Direct",
+"/contact/",
+85
+],
+[
+"Organic Search",
+"/contact/",
+115
+],
+[
+"Referral",
 "/contact/",
 8
 ],
 [
+"Social",
+"/contact/",
+14
+],
+[
 "Direct",
 "/solutions/",
-61
+38
 ],
 [
 "Organic Search",
 "/solutions/",
-86
+48
 ],
 [
 "Referral",
-"/solutions/",
-22
-],
-[
-"Social",
 "/solutions/",
 6
 ],
 [
-"Direct",
-"/solutions/industries/",
-70
-],
-[
-"Organic Search",
-"/solutions/industries/",
-223
-],
-[
-"Referral",
-"/solutions/industries/",
-32
-],
-[
 "Social",
-"/solutions/industries/",
-19
+"/solutions/",
+7
 ],
 [
 "Direct",
-"/solutions/roles/",
-65
+"/solutions/industries/",
+95
 ],
 [
-"Organic Search",
-"/solutions/roles/",
-164
-],
-[
-"Referral",
-"/solutions/roles/",
-52
-],
-[
-"Social",
-"/solutions/roles/",
+"Email",
+"/solutions/industries/",
 6
 ],
 [
+"Organic Search",
+"/solutions/industries/",
+71
+],
+[
+"Referral",
+"/solutions/industries/",
+13
+],
+[
+"Social",
+"/solutions/industries/",
+23
+],
+[
+"Direct",
+"/solutions/roles/",
+48
+],
+[
+"Display",
+"/solutions/roles/",
+4
+],
+[
+"Organic Search",
+"/solutions/roles/",
+79
+],
+[
+"Referral",
+"/solutions/roles/",
+5
+],
+[
+"Social",
+"/solutions/roles/",
+15
+],
+[
 "Direct",
 "/solutions/services/",
-96
+113
 ],
 [
 "Organic Search",
 "/solutions/services/",
-247
+165
 ],
 [
 "Referral",
 "/solutions/services/",
-57
+34
 ],
 [
 "Social",
 "/solutions/services/",
-36
+23
 ] 
 ];
 data.addColumn('string','channelGrouping');
@@ -709,14 +753,14 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartSankeyID298c2498685e() {
-var data = gvisDataSankeyID298c2498685e();
+function drawChartSankeyID848a4a982689() {
+var data = gvisDataSankeyID848a4a982689();
 var options = {};
 options["width"] = 400;
 options["height"] = 400;
 
     var chart = new google.visualization.Sankey(
-    document.getElementById('SankeyID298c2498685e')
+    document.getElementById('SankeyID848a4a982689')
     );
     chart.draw(data,options);
     
@@ -740,9 +784,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartSankeyID298c2498685e);
+callbacks.push(drawChartSankeyID848a4a982689);
 })();
-function displayChartSankeyID298c2498685e() {
+function displayChartSankeyID848a4a982689() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -765,9 +809,9 @@ callbacks.shift()();
 // jsFooter
 </script>
 <!-- jsChart -->
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID298c2498685e"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID848a4a982689"></script>
 <!-- divChart -->
-<div id="SankeyID298c2498685e" style="width: 400; height: 400;">
+<div id="SankeyID848a4a982689" style="width: 400; height: 400;">
 
 </div>
 </div>
@@ -795,65 +839,80 @@ s &lt;- gvisSankey(home_next_pages,
                 options = list(sankey = opts))
 plot(s)</code></pre>
 <div align="center">
-<!-- Sankey generated in R 3.4.3 by googleVis 0.6.2 package -->
-<!-- Sun Apr 15 14:59:35 2018 -->
+<!-- Sankey generated in R 3.5.1 by googleVis 0.6.2 package -->
+<!-- Sat Sep  8 18:18:37 2018 -->
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataSankeyID298c62287144 () {
+function gvisDataSankeyID848a1928dd4a () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
  [
-"Direct",
+"(Other)",
 "(not set)",
-359
+7
 ],
 [
-"Email",
+"Direct",
+"(not set)",
+317
+],
+[
+"Display",
 "(not set)",
 2
 ],
 [
+"Email",
+"(not set)",
+6
+],
+[
 "Organic Search",
 "(not set)",
-358
+281
 ],
 [
 "Referral",
 "(not set)",
-299
+188
 ],
 [
 "Social",
 "(not set)",
-40
+35
 ],
 [
 "Direct",
 "/",
-70
+42
 ],
 [
 "Organic Search",
 "/",
-83
+90
 ],
 [
 "Referral",
 "/",
-53
+55
 ],
 [
 "Social",
 "/",
-18
+5
+],
+[
+"(Other)",
+"/about/",
+2
 ],
 [
 "Direct",
 "/about/",
-231
+156
 ],
 [
 "Email",
@@ -863,162 +922,182 @@ var datajson =
 [
 "Organic Search",
 "/about/",
-524
+418
 ],
 [
 "Referral",
 "/about/",
-107
+55
 ],
 [
 "Social",
 "/about/",
-39
+69
+],
+[
+"(Other)",
+"/about/careers/",
+3
 ],
 [
 "Direct",
 "/about/careers/",
-157
+124
+],
+[
+"Display",
+"/about/careers/",
+3
 ],
 [
 "Organic Search",
 "/about/careers/",
-259
+244
 ],
 [
 "Referral",
 "/about/careers/",
-135
+141
 ],
 [
 "Social",
 "/about/careers/",
-40
+63
 ],
 [
 "Direct",
 "/blog/",
-49
-],
-[
-"Organic Search",
-"/blog/",
-82
-],
-[
-"Referral",
-"/blog/",
-56
-],
-[
-"Social",
-"/blog/",
-18
-],
-[
-"Direct",
-"/contact/",
-58
+17
 ],
 [
 "Email",
-"/contact/",
+"/blog/",
 6
 ],
 [
 "Organic Search",
-"/contact/",
-111
+"/blog/",
+59
 ],
 [
 "Referral",
-"/contact/",
-38
+"/blog/",
+23
 ],
 [
 "Social",
+"/blog/",
+5
+],
+[
+"Direct",
+"/contact/",
+85
+],
+[
+"Organic Search",
+"/contact/",
+115
+],
+[
+"Referral",
 "/contact/",
 8
 ],
 [
+"Social",
+"/contact/",
+14
+],
+[
 "Direct",
 "/solutions/",
-61
+38
 ],
 [
 "Organic Search",
 "/solutions/",
-86
+48
 ],
 [
 "Referral",
-"/solutions/",
-22
-],
-[
-"Social",
 "/solutions/",
 6
 ],
 [
-"Direct",
-"/solutions/industries/",
-70
-],
-[
-"Organic Search",
-"/solutions/industries/",
-223
-],
-[
-"Referral",
-"/solutions/industries/",
-32
-],
-[
 "Social",
-"/solutions/industries/",
-19
+"/solutions/",
+7
 ],
 [
 "Direct",
-"/solutions/roles/",
-65
+"/solutions/industries/",
+95
 ],
 [
-"Organic Search",
-"/solutions/roles/",
-164
-],
-[
-"Referral",
-"/solutions/roles/",
-52
-],
-[
-"Social",
-"/solutions/roles/",
+"Email",
+"/solutions/industries/",
 6
 ],
 [
+"Organic Search",
+"/solutions/industries/",
+71
+],
+[
+"Referral",
+"/solutions/industries/",
+13
+],
+[
+"Social",
+"/solutions/industries/",
+23
+],
+[
+"Direct",
+"/solutions/roles/",
+48
+],
+[
+"Display",
+"/solutions/roles/",
+4
+],
+[
+"Organic Search",
+"/solutions/roles/",
+79
+],
+[
+"Referral",
+"/solutions/roles/",
+5
+],
+[
+"Social",
+"/solutions/roles/",
+15
+],
+[
 "Direct",
 "/solutions/services/",
-96
+113
 ],
 [
 "Organic Search",
 "/solutions/services/",
-247
+165
 ],
 [
 "Referral",
 "/solutions/services/",
-57
+34
 ],
 [
 "Social",
 "/solutions/services/",
-36
+23
 ] 
 ];
 data.addColumn('string','channelGrouping');
@@ -1029,8 +1108,8 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartSankeyID298c62287144() {
-var data = gvisDataSankeyID298c62287144();
+function drawChartSankeyID848a1928dd4a() {
+var data = gvisDataSankeyID848a1928dd4a();
 var options = {};
 options["width"] = 400;
 options["height"] = 400;
@@ -1040,7 +1119,7 @@ options["sankey"] = {
       };
 
     var chart = new google.visualization.Sankey(
-    document.getElementById('SankeyID298c62287144')
+    document.getElementById('SankeyID848a1928dd4a')
     );
     chart.draw(data,options);
     
@@ -1064,9 +1143,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartSankeyID298c62287144);
+callbacks.push(drawChartSankeyID848a1928dd4a);
 })();
-function displayChartSankeyID298c62287144() {
+function displayChartSankeyID848a1928dd4a() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -1089,9 +1168,9 @@ callbacks.shift()();
 // jsFooter
 </script>
 <!-- jsChart -->
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID298c62287144"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID848a1928dd4a"></script>
 <!-- divChart -->
-<div id="SankeyID298c62287144" style="width: 400; height: 400;">
+<div id="SankeyID848a1928dd4a" style="width: 400; height: 400;">
 
 </div>
 </div>
@@ -1114,65 +1193,80 @@ s &lt;- gvisSankey(home_next_pages,
                 options = list(sankey = opts))
 plot(s)</code></pre>
 <div align="center">
-<!-- Sankey generated in R 3.4.3 by googleVis 0.6.2 package -->
-<!-- Sun Apr 15 14:59:35 2018 -->
+<!-- Sankey generated in R 3.5.1 by googleVis 0.6.2 package -->
+<!-- Sat Sep  8 18:18:37 2018 -->
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataSankeyID298c2228e1f6 () {
+function gvisDataSankeyID848a4b3a0c17 () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
  [
-"Direct",
+"(Other)",
 "(not set)",
-359
+7
 ],
 [
-"Email",
+"Direct",
+"(not set)",
+317
+],
+[
+"Display",
 "(not set)",
 2
 ],
 [
+"Email",
+"(not set)",
+6
+],
+[
 "Organic Search",
 "(not set)",
-358
+281
 ],
 [
 "Referral",
 "(not set)",
-299
+188
 ],
 [
 "Social",
 "(not set)",
-40
+35
 ],
 [
 "Direct",
 "/",
-70
+42
 ],
 [
 "Organic Search",
 "/",
-83
+90
 ],
 [
 "Referral",
 "/",
-53
+55
 ],
 [
 "Social",
 "/",
-18
+5
+],
+[
+"(Other)",
+"/about/",
+2
 ],
 [
 "Direct",
 "/about/",
-231
+156
 ],
 [
 "Email",
@@ -1182,162 +1276,182 @@ var datajson =
 [
 "Organic Search",
 "/about/",
-524
+418
 ],
 [
 "Referral",
 "/about/",
-107
+55
 ],
 [
 "Social",
 "/about/",
-39
+69
+],
+[
+"(Other)",
+"/about/careers/",
+3
 ],
 [
 "Direct",
 "/about/careers/",
-157
+124
+],
+[
+"Display",
+"/about/careers/",
+3
 ],
 [
 "Organic Search",
 "/about/careers/",
-259
+244
 ],
 [
 "Referral",
 "/about/careers/",
-135
+141
 ],
 [
 "Social",
 "/about/careers/",
-40
+63
 ],
 [
 "Direct",
 "/blog/",
-49
-],
-[
-"Organic Search",
-"/blog/",
-82
-],
-[
-"Referral",
-"/blog/",
-56
-],
-[
-"Social",
-"/blog/",
-18
-],
-[
-"Direct",
-"/contact/",
-58
+17
 ],
 [
 "Email",
-"/contact/",
+"/blog/",
 6
 ],
 [
 "Organic Search",
-"/contact/",
-111
+"/blog/",
+59
 ],
 [
 "Referral",
-"/contact/",
-38
+"/blog/",
+23
 ],
 [
 "Social",
+"/blog/",
+5
+],
+[
+"Direct",
+"/contact/",
+85
+],
+[
+"Organic Search",
+"/contact/",
+115
+],
+[
+"Referral",
 "/contact/",
 8
 ],
 [
+"Social",
+"/contact/",
+14
+],
+[
 "Direct",
 "/solutions/",
-61
+38
 ],
 [
 "Organic Search",
 "/solutions/",
-86
+48
 ],
 [
 "Referral",
-"/solutions/",
-22
-],
-[
-"Social",
 "/solutions/",
 6
 ],
 [
-"Direct",
-"/solutions/industries/",
-70
-],
-[
-"Organic Search",
-"/solutions/industries/",
-223
-],
-[
-"Referral",
-"/solutions/industries/",
-32
-],
-[
 "Social",
-"/solutions/industries/",
-19
+"/solutions/",
+7
 ],
 [
 "Direct",
-"/solutions/roles/",
-65
+"/solutions/industries/",
+95
 ],
 [
-"Organic Search",
-"/solutions/roles/",
-164
-],
-[
-"Referral",
-"/solutions/roles/",
-52
-],
-[
-"Social",
-"/solutions/roles/",
+"Email",
+"/solutions/industries/",
 6
 ],
 [
+"Organic Search",
+"/solutions/industries/",
+71
+],
+[
+"Referral",
+"/solutions/industries/",
+13
+],
+[
+"Social",
+"/solutions/industries/",
+23
+],
+[
+"Direct",
+"/solutions/roles/",
+48
+],
+[
+"Display",
+"/solutions/roles/",
+4
+],
+[
+"Organic Search",
+"/solutions/roles/",
+79
+],
+[
+"Referral",
+"/solutions/roles/",
+5
+],
+[
+"Social",
+"/solutions/roles/",
+15
+],
+[
 "Direct",
 "/solutions/services/",
-96
+113
 ],
 [
 "Organic Search",
 "/solutions/services/",
-247
+165
 ],
 [
 "Referral",
 "/solutions/services/",
-57
+34
 ],
 [
 "Social",
 "/solutions/services/",
-36
+23
 ] 
 ];
 data.addColumn('string','channelGrouping');
@@ -1348,8 +1462,8 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartSankeyID298c2228e1f6() {
-var data = gvisDataSankeyID298c2228e1f6();
+function drawChartSankeyID848a4b3a0c17() {
+var data = gvisDataSankeyID848a4b3a0c17();
 var options = {};
 options["width"] = 400;
 options["height"] = 400;
@@ -1360,7 +1474,7 @@ options["sankey"] = {
       };
 
     var chart = new google.visualization.Sankey(
-    document.getElementById('SankeyID298c2228e1f6')
+    document.getElementById('SankeyID848a4b3a0c17')
     );
     chart.draw(data,options);
     
@@ -1384,9 +1498,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartSankeyID298c2228e1f6);
+callbacks.push(drawChartSankeyID848a4b3a0c17);
 })();
-function displayChartSankeyID298c2228e1f6() {
+function displayChartSankeyID848a4b3a0c17() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -1409,9 +1523,9 @@ callbacks.shift()();
 // jsFooter
 </script>
 <!-- jsChart -->
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID298c2228e1f6"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyID848a4b3a0c17"></script>
 <!-- divChart -->
-<div id="SankeyID298c2228e1f6" style="width: 400; height: 400;">
+<div id="SankeyID848a4b3a0c17" style="width: 400; height: 400;">
 
 </div>
 </div>

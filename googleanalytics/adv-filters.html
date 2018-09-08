@@ -11,7 +11,7 @@
 
 
 
-<title>Apply Segment by Segment ID</title>
+<title>Advanced Filters</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -280,19 +280,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-<h1 class="title toc-ignore">Apply Segment by Segment ID</h1>
+<h1 class="title toc-ignore">Advanced Filters</h1>
 
 </div>
 
 
-<p>This example pulls the top 10 pages for the last thirty days, <em>for visits that occurred on a mobile device</em>. We’ll doing this by referencing the standard <strong>Mobile Segment</strong> in Google Analytics, but the process is exactly the same for referencing a custom segment that you built. The example explains that in the comments in the code. This returns the exact same results as these two examples, but through different means for defining/referencing the segment:</p>
+<p>This example shows an alternative way of defining dimension or metric filters by using functions from the <code>ganalytics</code> package. The current development version of <code>googleAnalyticsR</code> supports filters defined with <code>ganalytics</code>. <code>ganalytics</code> provides functions that makes it easy to define filters using natural R language operators. As of the most recent update to this site, this requires a “dev” (development) version of two packages:</p>
 <ul>
-<li><strong><a href="simple-dynamic-segment.html">Simple Dynamic Segment - v4</a></strong> – defining the segment using the v4 API syntax (which is super-cumbersome for a super simple segment like this one, but illustrative nonetheless)</li>
-<li><strong><a href="simple-dynamic-segment-v3.html">Simple Dynamic Segment - v3</a></strong> – Ahhhhh! The days when dynamic segments were so much simpler (but also less powerful)</li>
+<li><code>googleAnalyticsR</code> – which exists on CRAN, but has more current versions posted on Github</li>
+<li><code>ganalytics</code> – which does not yet exist on CRAN, but may at some point</li>
 </ul>
-<p>All three approaches are perfectly acceptable. This example, though, relies on the segment being available through the Google Analytics web interface – as a standard segment or a custom segment.</p>
+<p>This actually means this example has the incidental educational value of showing how to use packages from GitHub! You can read up on the purpose of <code>ganalytics</code> – developed by <a href="https://twitter.com/johannux">Johann de Boer</a> – <a href="https://github.com/jdeboer/ganalytics">on GitHub</a>. But, in short, it’s intended to “support R users in defining reporting queries using natural R expressions instead of being concerned about API technical intricacies like query syntax, character code escaping and API limitations.”</p>
 <div id="setupconfig" class="section level1">
 <h1>Setup/Config</h1>
+<p>This example requires development versions of the <code>googleAnalyticsR</code> (&gt;=0.5.0.9000) and <code>ganalytics</code> (&gt;=0.10.4.9000) R packages available on GitHub, so the setup code below is a bit different (it has some additional code for loading a couple of packages from GitHub).</p>
 <p>Be sure you’ve completed the steps on the <a href="setup.html">Initial Setup</a> page before running this code.</p>
 <p>For the setup, we’re going to load a few libraries, load our specific Google Analytics credentials, and then authorize with Google.</p>
 <pre class="r"><code># Load the necessary libraries. These libraries aren&#39;t all necessarily required for every
@@ -302,11 +303,31 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 # check that each package exists and actually install any that are missing before loading
 # the package.
 if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)
-pacman::p_load(googleAnalyticsR,  # How we actually get the Google Analytics data
-               tidyverse,         # Includes dplyr, ggplot2, and others; very key!
+pacman::p_load(tidyverse,         # Includes dplyr, ggplot2, and others; very key!
                devtools,          # Generally handy
                googleVis,         # Useful for some of the visualizations
                scales)            # Useful for some number formatting in the visualizations
+
+# If googleAnalyticsR is NOT installed OR if it is not a sufficiently current version, 
+# install it from GitHub
+
+# Check if ANY version of googleAnalyticsR is installed. This is clunky, but p_load_current_gh
+# wasn&#39;t playing nice (and this does need some conditional checking.)
+if(&quot;googleAnalyticsR&quot; %in% rownames(installed.packages())){
+  # Check the *version* of that package to make sure it&#39;s current enough. If it&#39;s
+  # not, then re-install from GitHub
+  if(packageVersion(&quot;googleAnalyticsR&quot;) &lt; &quot;0.5.0.9001&quot;) {
+    devtools::install_github(&quot;MarkEdmondson1234/googleAnalyticsR&quot;)
+  }
+} else {
+  devtools::install_github(&quot;MarkEdmondson1234/googleAnalyticsR&quot;)
+}
+
+# Load the googleAnalyticsR package
+library(googleAnalyticsR)
+
+# Load the GitHub version of ganalytics if it&#39;s not already loaded
+pacman::p_load_gh(&quot;jdeboer/ganalytics&quot;)
 
 # Authorize GA. Depending on if you&#39;ve done this already and a .ga-httr-oauth file has
 # been saved or not, this may pop you over to a browser to authenticate.
@@ -323,149 +344,51 @@ end_date &lt;- Sys.Date() - 1           # Yesterday</code></pre>
 </div>
 <div id="pull-the-data" class="section level1">
 <h1>Pull the Data</h1>
-<p>The key step here is figuring out the ID of the segment that you want to use. One option – once you’ve loaded <code>googleAnalyticsR</code> and <code>tidyverse</code> and run <code>ga_auth()</code> – is to create a data frame with <em>all</em> your segments in it. Simply dropping this command in the console will create a <code>segs</code> data frame that will list all of them. That can be a mighty long list:</p>
-<p><code>segs &lt;- as.data.frame(ga_segment_list()) %&gt;% select(items.segmentId, items.name, items.type)</code></p>
-<p>Alternatively, you can just hop over to the <a href="https://ga-dev-tools.appspot.com/query-explorer/">Google Analytics Query Explorer</a>, choose a segment in the <strong>segment</strong> field, and then copy the value (you have to have the <strong>Show segment definitions instead of IDs</strong> checkbox <em>unchecked</em> to get the ID).</p>
-<pre class="r"><code># Create the segment object. See ?segment_ga4() for details. Note that the name -- the first
-# argument -- is actually moot here. When you use the segment_id argument, what will actually
-# get used as the name of the segment is, well, the name of the segment in the web interface.
-# To illustrate, even though I&#39;ve put &quot;Mobile Sessions Only&quot; in the name argument for this
-# function, the output below actually uses the name &quot;Mobile Traffic.&quot;
-my_segment &lt;- segment_ga4(&quot;Mobile Sessions Only&quot;,
-                                 segment_id = &quot;gaid::-14&quot;)
+<p>In this example, we’ll define the following filters: * Device category is desktop or tablet - a dimension filter using an OR condition. * New visitors using either a desktop or tablet device - a dimension filter involving both an AND and an OR condition. * At least one goal completion or transaction - a metric filter using an OR condition.</p>
+<p>The above list of filters will be defined using <code>ganalytics</code> expressions as follows:</p>
+<pre class="r"><code># Device category is desktop or tablet - a dimension filter using an OR condition.
+desktop_or_tablet &lt;- Expr(~deviceCategory == &quot;desktop&quot;) | Expr(~deviceCategory == &quot;tablet&quot;)
 
-# Pull the data. See ?google_analytics_4() for additional parameters. Depending on what
-# you&#39;re expecting back, you probably would want to use an &quot;order&quot; argument to get the
-# results in descending order. But, we&#39;re keeping this example simple. Note, though, that
-# we&#39;re still wrapping my_segment in a list() (of one element).
-ga_data &lt;- google_analytics(viewId = view_id,
-                              date_range = c(start_date, end_date),
-                              metrics = &quot;pageviews&quot;,
-                              dimensions = &quot;pagePath&quot;,
-                              segments = my_segment)
+# New visitors using either a desktop or tablet device - a dimension filter involving both an AND and an OR condition.
+new_desktop_and_tablet_visitors &lt;- Expr(~userType == &quot;new&quot;) &amp; desktop_or_tablet
 
-# Go ahead and do a quick inspection of the data that was returned. This isn&#39;t required,
-# but it&#39;s a good check along the way.
-head(ga_data)</code></pre>
+# At least one goal completion or transaction - a metric filter using an OR condition.
+at_least_one_conversion &lt;- Expr(~goalCompletionsAll &gt; 0) | Expr(~transactions &gt; 0)</code></pre>
+<p>We can now use <code>googleAnalyticsR</code> to pull the data. Chances are, the table below will <em>only</em> show a desktop row. That’s because the site we use for this doesn’t have a ton of traffic, and it rarely gets tablet conversions! But, trust us, this would return multiple rows on a site with more traffic and conversions.</p>
+<pre class="r"><code># Pull the data
+results &lt;- google_analytics(
+  viewId = view_id,
+  date_range = c(start_date, end_date),
+  metrics = c(&quot;users&quot;, &quot;sessions&quot;, &quot;goalCompletionsAll&quot;, &quot;transactions&quot;),
+  dimensions = c(&quot;deviceCategory&quot;, &quot;userType&quot;),
+  dim_filters = new_desktop_and_tablet_visitors,
+  met_filters = at_least_one_conversion
+)
+
+# Display the results
+results</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="left">pagePath</th>
-<th align="left">segment</th>
-<th align="right">pageviews</th>
+<th align="left">deviceCategory</th>
+<th align="left">userType</th>
+<th align="right">users</th>
+<th align="right">sessions</th>
+<th align="right">goalCompletionsAll</th>
+<th align="right">transactions</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">/</td>
-<td align="left">Mobile Traffic</td>
-<td align="right">248</td>
-</tr>
-<tr class="even">
-<td align="left">/?__hstc=205162639.9515b78f8cccda177378d2123079b0b6.1536077779646.1536077779646.1536077779646.1&amp;__hssc=205162639.1.1536084854575&amp;__hsfp=482177120&amp;hsCtaTracking=8bc9e3c4-0d81-453f-9aa0-e7ee2d150e86|4361a058-c61b-4634-98be-95a3d7d9cb0c</td>
-<td align="left">Mobile Traffic</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="left">/?et_pb_searchform_submit=et_search_proccess&amp;et_pb_include_posts=yes&amp;et_pb_include_pages=yes</td>
-<td align="left">Mobile Traffic</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="left">/about/</td>
-<td align="left">Mobile Traffic</td>
-<td align="right">33</td>
-</tr>
-<tr class="odd">
-<td align="left">/about/careers/</td>
-<td align="left">Mobile Traffic</td>
-<td align="right">84</td>
-</tr>
-<tr class="even">
-<td align="left">/about/executives/</td>
-<td align="left">Mobile Traffic</td>
-<td align="right">29</td>
+<td align="left">desktop</td>
+<td align="left">New Visitor</td>
+<td align="right">3432</td>
+<td align="right">3425</td>
+<td align="right">10</td>
+<td align="right">0</td>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="data-munging" class="section level1">
-<h1>Data Munging</h1>
-<p>Since we didn’t sort the data when we queried it, let’s go ahead and sort it here <em>and</em> grab just the top 10 pages.</p>
-<pre class="r"><code># Using dplyr, sort descending and then grab the top 10 values. We also need to make the
-# page column a factor so that the order will be what we want when we chart the data.
-# This is a nuisance, but you get used to it. That&#39;s what the mutate function is doing
-ga_data_top_10 &lt;- ga_data %&gt;%
-  arrange(-pageviews) %&gt;% 
-  top_n(10) %&gt;% 
-  mutate(pagePath = factor(pagePath,
-                           levels = rev(pagePath)))
-
-# Take a quick look at the result.
-head(ga_data_top_10)</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">pagePath</th>
-<th align="left">segment</th>
-<th align="right">pageviews</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">/</td>
-<td align="left">Mobile Traffic</td>
-<td align="right">248</td>
-</tr>
-<tr class="even">
-<td align="left">/open-positions/</td>
-<td align="left">Mobile Traffic</td>
-<td align="right">131</td>
-</tr>
-<tr class="odd">
-<td align="left">/about/careers/</td>
-<td align="left">Mobile Traffic</td>
-<td align="right">84</td>
-</tr>
-<tr class="even">
-<td align="left">/solutions/services/data-strategy/questionnaire/</td>
-<td align="left">Mobile Traffic</td>
-<td align="right">63</td>
-</tr>
-<tr class="odd">
-<td align="left">/open-positions/?gh_jid=1314754&amp;gh_src=6682de2e1</td>
-<td align="left">Mobile Traffic</td>
-<td align="right">61</td>
-</tr>
-<tr class="even">
-<td align="left">/blog/multivariate-testing-101/</td>
-<td align="left">Mobile Traffic</td>
-<td align="right">36</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="data-visualization" class="section level1">
-<h1>Data Visualization</h1>
-<p>This won’t be the prettiest bar chart, but let’s make a horizontal bar chart with the data. Remember, in <strong>ggplot2</strong>, a horizontal bar chart is just a normal bar chart with <code>coord_flip()</code>.</p>
-<pre class="r"><code># Create the plot. Note the stat=&quot;identity&quot;&quot; (because the data is already aggregated) and
-# the coord_flip(). And, I just can&#39;t stand it... added on the additional theme stuff to
-# clean up the plot a bit more.
-gg &lt;- ggplot(ga_data_top_10, mapping = aes(x = pagePath, y = pageviews)) +
-  geom_bar(stat = &quot;identity&quot;) +
-  coord_flip() +
-  theme_light() +
-  theme(panel.grid.major.y = element_blank(),
-        panel.grid.minor.y = element_blank(),
-        panel.border = element_blank(),
-        axis.title.y = element_blank(),
-        axis.ticks.y = element_blank())
-
-# Output the plot. You *could* just remove the &quot;gg &lt;-&quot; in the code above, but it&#39;s
-# generally a best practice to create a plot object and then output it, rather than
-# outputting it on the fly.
-gg</code></pre>
-<p><img src="segment-by-id_files/figure-html/visualize-1.png" width="960" /></p>
 </div>
 
 <hr>

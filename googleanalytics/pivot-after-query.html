@@ -91,6 +91,9 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
 }
@@ -240,6 +243,12 @@ $(document).ready(function () {
       <a href="adv-multiple-dynamic-segments.html">Multiple Dynamic Segments</a>
     </li>
     <li>
+      <a href="adv-dynamic-segments-ganalytics.html">Dynamic Segments (ganalytics)</a>
+    </li>
+    <li>
+      <a href="adv-filters.html">Filters (ganalytics)</a>
+    </li>
+    <li>
       <a href="adv-sankey.html">Sankey Chart (Traffic Flows)</a>
     </li>
     <li>
@@ -334,32 +343,32 @@ head(ga_data)</code></pre>
 <tr class="odd">
 <td align="left">(none)</td>
 <td align="left">desktop</td>
-<td align="right">1291</td>
+<td align="right">1117</td>
 </tr>
 <tr class="even">
 <td align="left">(none)</td>
 <td align="left">mobile</td>
-<td align="right">328</td>
+<td align="right">206</td>
 </tr>
 <tr class="odd">
 <td align="left">(none)</td>
 <td align="left">tablet</td>
-<td align="right">38</td>
+<td align="right">17</td>
 </tr>
 <tr class="even">
-<td align="left">cpc</td>
-<td align="left">mobile</td>
-<td align="right">1</td>
+<td align="left">(not set)</td>
+<td align="left">desktop</td>
+<td align="right">11</td>
 </tr>
 <tr class="odd">
-<td align="left">display</td>
-<td align="left">desktop</td>
-<td align="right">73</td>
+<td align="left">(not set)</td>
+<td align="left">mobile</td>
+<td align="right">2</td>
 </tr>
 <tr class="even">
 <td align="left">display</td>
-<td align="left">mobile</td>
-<td align="right">146</td>
+<td align="left">desktop</td>
+<td align="right">76</td>
 </tr>
 </tbody>
 </table>
@@ -385,39 +394,39 @@ head(ga_data_pivoted)</code></pre>
 <tbody>
 <tr class="odd">
 <td align="left">(none)</td>
-<td align="right">1291</td>
-<td align="right">328</td>
-<td align="right">38</td>
+<td align="right">1117</td>
+<td align="right">206</td>
+<td align="right">17</td>
 </tr>
 <tr class="even">
-<td align="left">cpc</td>
-<td align="right">NA</td>
-<td align="right">1</td>
+<td align="left">(not set)</td>
+<td align="right">11</td>
+<td align="right">2</td>
 <td align="right">NA</td>
 </tr>
 <tr class="odd">
 <td align="left">display</td>
-<td align="right">73</td>
-<td align="right">146</td>
-<td align="right">11</td>
+<td align="right">76</td>
+<td align="right">24</td>
+<td align="right">2</td>
 </tr>
 <tr class="even">
 <td align="left">email</td>
-<td align="right">4</td>
-<td align="right">NA</td>
+<td align="right">122</td>
+<td align="right">3</td>
 <td align="right">NA</td>
 </tr>
 <tr class="odd">
-<td align="left">feed</td>
+<td align="left">organic</td>
+<td align="right">2476</td>
+<td align="right">273</td>
+<td align="right">47</td>
+</tr>
+<tr class="even">
+<td align="left">partner</td>
 <td align="right">1</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
-</tr>
-<tr class="even">
-<td align="left">organic</td>
-<td align="right">2959</td>
-<td align="right">458</td>
-<td align="right">51</td>
 </tr>
 </tbody>
 </table>

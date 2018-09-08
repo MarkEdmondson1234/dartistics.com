@@ -91,6 +91,9 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
 }
@@ -240,6 +243,12 @@ $(document).ready(function () {
       <a href="adv-multiple-dynamic-segments.html">Multiple Dynamic Segments</a>
     </li>
     <li>
+      <a href="adv-dynamic-segments-ganalytics.html">Dynamic Segments (ganalytics)</a>
+    </li>
+    <li>
+      <a href="adv-filters.html">Filters (ganalytics)</a>
+    </li>
+    <li>
       <a href="adv-sankey.html">Sankey Chart (Traffic Flows)</a>
     </li>
     <li>
@@ -277,7 +286,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 <p>This example pulls three sets of data: the top 10 pages for the last thirty days on mobile, tablet, and desktop. This is, essentially, an extension of the <a href="simple-dynamic-segment.html">Simple Dynamic Segment - v4</a> example <em>except</em> it uses a function to pull the data so that a list of values (“Mobile,” “Tablet”, and “Desktop”) can be processed to dynamically change the segment used to pull the data.</p>
-<p>With the v4 API, dynamic segments are more powerful than v3, but (alas!) pretty basic segments can feel pretty convoluted. This example could also be built for v3, but we want to <em>go forward</em>! And, v4 is the future!</p>
+<p>With the v4 API, dynamic segments are more powerful than v3, but (alas!) pretty basic segments can feel pretty convoluted. This example could also be built for v3, but we want to <em>go forward</em>! And, v4 is the future! Or, as an alternative, you can use the <code>ganalytics</code> package, which aims to simplify this sort of work. See the <a href="adv-dynamic-segments-ganalytics.html">Advanced Dynamic Segments with ganalytics</a> example for an example of using <code>ganalytics</code> to create dynamic segments.</p>
 <div id="setupconfig" class="section level1">
 <h1>Setup/Config</h1>
 <p>Be sure you’ve completed the steps on the <a href="setup.html">Initial Setup</a> page before running this code.</p>
