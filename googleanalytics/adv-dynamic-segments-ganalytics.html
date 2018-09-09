@@ -285,10 +285,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 
 
-<p>This example demonstrates another way of defining dynamic segments by using functions from the <code>ganalytics</code> package. As of the most recent update to this site, this requires a “dev” (development) version of two packages:</p>
+<p>This example demonstrates another way of defining dynamic segments by using functions from the <code>ganalytics</code> package. As of the most recent update to this site, this requires a “dev” (development) version of two packages (both packages exist on CRAN, but they require the dev versions to use the examples here):</p>
 <ul>
-<li><code>googleAnalyticsR</code> – which exists on CRAN, but has more current versions posted on Github</li>
-<li><code>ganalytics</code> – which does not yet exist on CRAN, but may at some point</li>
+<li><code>googleAnalyticsR</code></li>
+<li><code>ganalytics</code></li>
 </ul>
 <p>This actually means this example has the incidental educational value of showing how to use packages from GitHub! You can read up on the purpose of <code>ganalytics</code> – developed by <a href="https://twitter.com/johannux">Johann de Boer</a> – <a href="https://github.com/jdeboer/ganalytics">on GitHub</a>. But, in short, it’s intended to “support R users in defining reporting queries using natural R expressions instead of being concerned about API technical intricacies like query syntax, character code escaping and API limitations.”</p>
 <div id="setupconfig" class="section level1">
@@ -308,26 +308,27 @@ pacman::p_load(tidyverse,         # Includes dplyr, ggplot2, and others; very ke
                googleVis,         # Useful for some of the visualizations
                scales)            # Useful for some number formatting in the visualizations
 
-# If googleAnalyticsR is NOT installed OR if it is not a sufficiently current version, 
-# install it from GitHub
-
-# Check if ANY version of googleAnalyticsR is installed. This is clunky, but p_load_current_gh
-# wasn&#39;t playing nice (and this does need some conditional checking.)
-if(&quot;googleAnalyticsR&quot; %in% rownames(installed.packages())){
-  # Check the *version* of that package to make sure it&#39;s current enough. If it&#39;s
-  # not, then re-install from GitHub
-  if(packageVersion(&quot;googleAnalyticsR&quot;) &lt; &quot;0.5.0.9001&quot;) {
-    devtools::install_github(&quot;MarkEdmondson1234/googleAnalyticsR&quot;)
+# A function to check that a sufficiently current version of a specific package is 
+# installed and loaded. This isn&#39;t particularly elegant, but it works.
+package_check &lt;- function(package, min_version, github_location){
+  # Check if ANY version of the package is installed. This is clunky, but p_load_current_gh
+  # wasn&#39;t playing nice (and this does need some conditional checking.)
+  if(package %in% rownames(installed.packages())){
+    # IF a version of the package is already installed, then check the *version* of that
+    # package to make sure it&#39;s current enough. If it&#39;snot, then re-install from GitHub
+    if(packageVersion(package) &lt; min_version) {
+      devtools::install_github(github_location)
+    }
+  } else {
+    devtools::install_github(github_location)
   }
-} else {
-  devtools::install_github(&quot;MarkEdmondson1234/googleAnalyticsR&quot;)
+  # Load the package
+  library(package, character.only = TRUE)
 }
 
-# Load the googleAnalyticsR package
-library(googleAnalyticsR)
-
-# Load the GitHub version of ganalytics if it&#39;s not already loaded
-pacman::p_load_gh(&quot;jdeboer/ganalytics&quot;)
+# As needed, install and load googleAnalyticsR and ganalytics from GitHub
+package_check(&quot;googleAnalyticsR&quot;, &quot;0.5.0.9001&quot;, &quot;MarkEdmondson1234/googleAnalyticsR&quot;)
+package_check(&quot;ganalytics&quot;, &quot;0.10.4.9000&quot;, &quot;jdeboer/ganalytics&quot;)
 
 # Authorize GA. Depending on if you&#39;ve done this already and a .ga-httr-oauth file has
 # been saved or not, this may pop you over to a browser to authenticate.
