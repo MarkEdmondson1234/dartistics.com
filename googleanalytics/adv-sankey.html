@@ -225,6 +225,9 @@ $(document).ready(function () {
       <a href="pivot-sparklines-heatmap.html">2D Sparklines/Heatmap</a>
     </li>
     <li>
+      <a href="int-time-normalized.html">Time-Normalized Traffic</a>
+    </li>
+    <li>
       <a href="simple-dynamic-segment.html">Simple Dynamic Segment - v4</a>
     </li>
     <li>
@@ -367,32 +370,32 @@ head(home_next_pages)</code></pre>
 <tr class="odd">
 <td align="left">(not set)</td>
 <td align="left">(Other)</td>
-<td align="right">7</td>
+<td align="right">4</td>
 </tr>
 <tr class="even">
 <td align="left">(not set)</td>
 <td align="left">Direct</td>
-<td align="right">317</td>
+<td align="right">354</td>
 </tr>
 <tr class="odd">
 <td align="left">(not set)</td>
 <td align="left">Display</td>
-<td align="right">2</td>
+<td align="right">3</td>
 </tr>
 <tr class="even">
 <td align="left">(not set)</td>
 <td align="left">Email</td>
-<td align="right">6</td>
+<td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">(not set)</td>
 <td align="left">Organic Search</td>
-<td align="right">281</td>
+<td align="right">337</td>
 </tr>
 <tr class="even">
 <td align="left">(not set)</td>
 <td align="left">Referral</td>
-<td align="right">188</td>
+<td align="right">213</td>
 </tr>
 </tbody>
 </table>
@@ -402,7 +405,7 @@ head(home_next_pages)</code></pre>
 <h1>Data Munging</h1>
 <p>We have a small problem in the number of possible next pages for our sessions (you don’t need to include this code – it’s just checking the number of unique values for the <code>secondPagePath</code> dimension in our data set).</p>
 <pre class="r"><code>length(unique(home_next_pages$secondPagePath))</code></pre>
-<pre><code>## [1] 30</code></pre>
+<pre><code>## [1] 25</code></pre>
 <p>We should thin this down to a number which can be easily visualised, which is a two-step process:</p>
 <ol style="list-style-type: decimal">
 <li>We’ll group the data by page path, arrange in order of pageviews and filter out the lower-volumes pages (or, put another way, only <em>keep</em> the top 10 pages overall).</li>
@@ -435,32 +438,32 @@ head(home_next_pages)</code></pre>
 <tr class="odd">
 <td align="left">(not set)</td>
 <td align="left">(Other)</td>
-<td align="right">7</td>
+<td align="right">4</td>
 </tr>
 <tr class="even">
 <td align="left">(not set)</td>
 <td align="left">Direct</td>
-<td align="right">317</td>
+<td align="right">354</td>
 </tr>
 <tr class="odd">
 <td align="left">(not set)</td>
 <td align="left">Display</td>
-<td align="right">2</td>
+<td align="right">3</td>
 </tr>
 <tr class="even">
 <td align="left">(not set)</td>
 <td align="left">Email</td>
-<td align="right">6</td>
+<td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">(not set)</td>
 <td align="left">Organic Search</td>
-<td align="right">281</td>
+<td align="right">337</td>
 </tr>
 <tr class="even">
 <td align="left">(not set)</td>
 <td align="left">Referral</td>
-<td align="right">188</td>
+<td align="right">213</td>
 </tr>
 </tbody>
 </table>
@@ -485,264 +488,234 @@ s &lt;- gvisSankey(home_next_pages)
 plot(s)</code></pre>
 <div align="center">
 <!-- Sankey generated in R 3.5.1 by googleVis 0.6.2 package -->
-<!-- Sat Sep  8 21:29:36 2018 -->
+<!-- Thu Oct 11 11:07:43 2018 -->
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataSankeyIDa8631ad942ea () {
+function gvisDataSankeyIDaff617504df6 () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
  [
 "(Other)",
 "(not set)",
-7
-],
-[
-"Direct",
-"(not set)",
-317
-],
-[
-"Display",
-"(not set)",
-2
-],
-[
-"Email",
-"(not set)",
-6
-],
-[
-"Organic Search",
-"(not set)",
-281
-],
-[
-"Referral",
-"(not set)",
-188
-],
-[
-"Social",
-"(not set)",
-35
-],
-[
-"Direct",
-"/",
-42
-],
-[
-"Organic Search",
-"/",
-90
-],
-[
-"Referral",
-"/",
-55
-],
-[
-"Social",
-"/",
-5
-],
-[
-"(Other)",
-"/about/",
-2
-],
-[
-"Direct",
-"/about/",
-156
-],
-[
-"Email",
-"/about/",
-3
-],
-[
-"Organic Search",
-"/about/",
-418
-],
-[
-"Referral",
-"/about/",
-55
-],
-[
-"Social",
-"/about/",
-69
-],
-[
-"(Other)",
-"/about/careers/",
-3
-],
-[
-"Direct",
-"/about/careers/",
-124
-],
-[
-"Display",
-"/about/careers/",
-3
-],
-[
-"Organic Search",
-"/about/careers/",
-244
-],
-[
-"Referral",
-"/about/careers/",
-141
-],
-[
-"Social",
-"/about/careers/",
-63
-],
-[
-"Direct",
-"/blog/",
-17
-],
-[
-"Email",
-"/blog/",
-6
-],
-[
-"Organic Search",
-"/blog/",
-59
-],
-[
-"Referral",
-"/blog/",
-23
-],
-[
-"Social",
-"/blog/",
-5
-],
-[
-"Direct",
-"/contact/",
-85
-],
-[
-"Organic Search",
-"/contact/",
-115
-],
-[
-"Referral",
-"/contact/",
-8
-],
-[
-"Social",
-"/contact/",
-14
-],
-[
-"Direct",
-"/solutions/",
-38
-],
-[
-"Organic Search",
-"/solutions/",
-48
-],
-[
-"Referral",
-"/solutions/",
-6
-],
-[
-"Social",
-"/solutions/",
-7
-],
-[
-"Direct",
-"/solutions/industries/",
-95
-],
-[
-"Email",
-"/solutions/industries/",
-6
-],
-[
-"Organic Search",
-"/solutions/industries/",
-71
-],
-[
-"Referral",
-"/solutions/industries/",
-13
-],
-[
-"Social",
-"/solutions/industries/",
-23
-],
-[
-"Direct",
-"/solutions/roles/",
-48
-],
-[
-"Display",
-"/solutions/roles/",
 4
 ],
 [
+"Direct",
+"(not set)",
+354
+],
+[
+"Display",
+"(not set)",
+3
+],
+[
+"Email",
+"(not set)",
+1
+],
+[
 "Organic Search",
-"/solutions/roles/",
-79
+"(not set)",
+337
 ],
 [
 "Referral",
-"/solutions/roles/",
-5
+"(not set)",
+213
 ],
 [
 "Social",
-"/solutions/roles/",
-15
+"(not set)",
+20
 ],
 [
 "Direct",
-"/solutions/services/",
-113
+"/",
+68
+],
+[
+"Email",
+"/",
+6
 ],
 [
 "Organic Search",
-"/solutions/services/",
-165
+"/",
+65
 ],
 [
 "Referral",
-"/solutions/services/",
+"/",
 34
 ],
 [
 "Social",
-"/solutions/services/",
+"/",
+6
+],
+[
+"Direct",
+"/about/",
+206
+],
+[
+"Display",
+"/about/",
+2
+],
+[
+"Organic Search",
+"/about/",
+270
+],
+[
+"Referral",
+"/about/",
+39
+],
+[
+"Social",
+"/about/",
+18
+],
+[
+"Direct",
+"/about/careers/",
+85
+],
+[
+"Organic Search",
+"/about/careers/",
+172
+],
+[
+"Referral",
+"/about/careers/",
+75
+],
+[
+"Social",
+"/about/careers/",
+46
+],
+[
+"Direct",
+"/contact/",
+68
+],
+[
+"Organic Search",
+"/contact/",
+103
+],
+[
+"Referral",
+"/contact/",
+14
+],
+[
+"Social",
+"/contact/",
+16
+],
+[
+"Direct",
+"/solutions/",
+17
+],
+[
+"Organic Search",
+"/solutions/",
+57
+],
+[
+"Referral",
+"/solutions/",
+15
+],
+[
+"Social",
+"/solutions/",
+10
+],
+[
+"Direct",
+"/solutions/industries/",
+38
+],
+[
+"Organic Search",
+"/solutions/industries/",
+96
+],
+[
+"Referral",
+"/solutions/industries/",
 23
+],
+[
+"Social",
+"/solutions/industries/",
+15
+],
+[
+"Direct",
+"/solutions/partners/adobe/adobe-launch/",
+21
+],
+[
+"Organic Search",
+"/solutions/partners/adobe/adobe-launch/",
+22
+],
+[
+"Referral",
+"/solutions/partners/adobe/adobe-launch/",
+9
+],
+[
+"Direct",
+"/solutions/roles/",
+22
+],
+[
+"Organic Search",
+"/solutions/roles/",
+51
+],
+[
+"Referral",
+"/solutions/roles/",
+20
+],
+[
+"Social",
+"/solutions/roles/",
+21
+],
+[
+"Direct",
+"/solutions/services/",
+42
+],
+[
+"Organic Search",
+"/solutions/services/",
+138
+],
+[
+"Referral",
+"/solutions/services/",
+52
+],
+[
+"Social",
+"/solutions/services/",
+6
 ] 
 ];
 data.addColumn('string','channelGrouping');
@@ -753,14 +726,14 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartSankeyIDa8631ad942ea() {
-var data = gvisDataSankeyIDa8631ad942ea();
+function drawChartSankeyIDaff617504df6() {
+var data = gvisDataSankeyIDaff617504df6();
 var options = {};
 options["width"] = 400;
 options["height"] = 400;
 
     var chart = new google.visualization.Sankey(
-    document.getElementById('SankeyIDa8631ad942ea')
+    document.getElementById('SankeyIDaff617504df6')
     );
     chart.draw(data,options);
     
@@ -784,9 +757,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartSankeyIDa8631ad942ea);
+callbacks.push(drawChartSankeyIDaff617504df6);
 })();
-function displayChartSankeyIDa8631ad942ea() {
+function displayChartSankeyIDaff617504df6() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -809,9 +782,9 @@ callbacks.shift()();
 // jsFooter
 </script>
 <!-- jsChart -->
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyIDa8631ad942ea"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyIDaff617504df6"></script>
 <!-- divChart -->
-<div id="SankeyIDa8631ad942ea" style="width: 400; height: 400;">
+<div id="SankeyIDaff617504df6" style="width: 400; height: 400;">
 
 </div>
 </div>
@@ -840,264 +813,234 @@ s &lt;- gvisSankey(home_next_pages,
 plot(s)</code></pre>
 <div align="center">
 <!-- Sankey generated in R 3.5.1 by googleVis 0.6.2 package -->
-<!-- Sat Sep  8 21:29:36 2018 -->
+<!-- Thu Oct 11 11:07:43 2018 -->
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataSankeyIDa86364ae6968 () {
+function gvisDataSankeyIDaff643eb0c49 () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
  [
 "(Other)",
 "(not set)",
-7
-],
-[
-"Direct",
-"(not set)",
-317
-],
-[
-"Display",
-"(not set)",
-2
-],
-[
-"Email",
-"(not set)",
-6
-],
-[
-"Organic Search",
-"(not set)",
-281
-],
-[
-"Referral",
-"(not set)",
-188
-],
-[
-"Social",
-"(not set)",
-35
-],
-[
-"Direct",
-"/",
-42
-],
-[
-"Organic Search",
-"/",
-90
-],
-[
-"Referral",
-"/",
-55
-],
-[
-"Social",
-"/",
-5
-],
-[
-"(Other)",
-"/about/",
-2
-],
-[
-"Direct",
-"/about/",
-156
-],
-[
-"Email",
-"/about/",
-3
-],
-[
-"Organic Search",
-"/about/",
-418
-],
-[
-"Referral",
-"/about/",
-55
-],
-[
-"Social",
-"/about/",
-69
-],
-[
-"(Other)",
-"/about/careers/",
-3
-],
-[
-"Direct",
-"/about/careers/",
-124
-],
-[
-"Display",
-"/about/careers/",
-3
-],
-[
-"Organic Search",
-"/about/careers/",
-244
-],
-[
-"Referral",
-"/about/careers/",
-141
-],
-[
-"Social",
-"/about/careers/",
-63
-],
-[
-"Direct",
-"/blog/",
-17
-],
-[
-"Email",
-"/blog/",
-6
-],
-[
-"Organic Search",
-"/blog/",
-59
-],
-[
-"Referral",
-"/blog/",
-23
-],
-[
-"Social",
-"/blog/",
-5
-],
-[
-"Direct",
-"/contact/",
-85
-],
-[
-"Organic Search",
-"/contact/",
-115
-],
-[
-"Referral",
-"/contact/",
-8
-],
-[
-"Social",
-"/contact/",
-14
-],
-[
-"Direct",
-"/solutions/",
-38
-],
-[
-"Organic Search",
-"/solutions/",
-48
-],
-[
-"Referral",
-"/solutions/",
-6
-],
-[
-"Social",
-"/solutions/",
-7
-],
-[
-"Direct",
-"/solutions/industries/",
-95
-],
-[
-"Email",
-"/solutions/industries/",
-6
-],
-[
-"Organic Search",
-"/solutions/industries/",
-71
-],
-[
-"Referral",
-"/solutions/industries/",
-13
-],
-[
-"Social",
-"/solutions/industries/",
-23
-],
-[
-"Direct",
-"/solutions/roles/",
-48
-],
-[
-"Display",
-"/solutions/roles/",
 4
 ],
 [
+"Direct",
+"(not set)",
+354
+],
+[
+"Display",
+"(not set)",
+3
+],
+[
+"Email",
+"(not set)",
+1
+],
+[
 "Organic Search",
-"/solutions/roles/",
-79
+"(not set)",
+337
 ],
 [
 "Referral",
-"/solutions/roles/",
-5
+"(not set)",
+213
 ],
 [
 "Social",
-"/solutions/roles/",
-15
+"(not set)",
+20
 ],
 [
 "Direct",
-"/solutions/services/",
-113
+"/",
+68
+],
+[
+"Email",
+"/",
+6
 ],
 [
 "Organic Search",
-"/solutions/services/",
-165
+"/",
+65
 ],
 [
 "Referral",
-"/solutions/services/",
+"/",
 34
 ],
 [
 "Social",
-"/solutions/services/",
+"/",
+6
+],
+[
+"Direct",
+"/about/",
+206
+],
+[
+"Display",
+"/about/",
+2
+],
+[
+"Organic Search",
+"/about/",
+270
+],
+[
+"Referral",
+"/about/",
+39
+],
+[
+"Social",
+"/about/",
+18
+],
+[
+"Direct",
+"/about/careers/",
+85
+],
+[
+"Organic Search",
+"/about/careers/",
+172
+],
+[
+"Referral",
+"/about/careers/",
+75
+],
+[
+"Social",
+"/about/careers/",
+46
+],
+[
+"Direct",
+"/contact/",
+68
+],
+[
+"Organic Search",
+"/contact/",
+103
+],
+[
+"Referral",
+"/contact/",
+14
+],
+[
+"Social",
+"/contact/",
+16
+],
+[
+"Direct",
+"/solutions/",
+17
+],
+[
+"Organic Search",
+"/solutions/",
+57
+],
+[
+"Referral",
+"/solutions/",
+15
+],
+[
+"Social",
+"/solutions/",
+10
+],
+[
+"Direct",
+"/solutions/industries/",
+38
+],
+[
+"Organic Search",
+"/solutions/industries/",
+96
+],
+[
+"Referral",
+"/solutions/industries/",
 23
+],
+[
+"Social",
+"/solutions/industries/",
+15
+],
+[
+"Direct",
+"/solutions/partners/adobe/adobe-launch/",
+21
+],
+[
+"Organic Search",
+"/solutions/partners/adobe/adobe-launch/",
+22
+],
+[
+"Referral",
+"/solutions/partners/adobe/adobe-launch/",
+9
+],
+[
+"Direct",
+"/solutions/roles/",
+22
+],
+[
+"Organic Search",
+"/solutions/roles/",
+51
+],
+[
+"Referral",
+"/solutions/roles/",
+20
+],
+[
+"Social",
+"/solutions/roles/",
+21
+],
+[
+"Direct",
+"/solutions/services/",
+42
+],
+[
+"Organic Search",
+"/solutions/services/",
+138
+],
+[
+"Referral",
+"/solutions/services/",
+52
+],
+[
+"Social",
+"/solutions/services/",
+6
 ] 
 ];
 data.addColumn('string','channelGrouping');
@@ -1108,8 +1051,8 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartSankeyIDa86364ae6968() {
-var data = gvisDataSankeyIDa86364ae6968();
+function drawChartSankeyIDaff643eb0c49() {
+var data = gvisDataSankeyIDaff643eb0c49();
 var options = {};
 options["width"] = 400;
 options["height"] = 400;
@@ -1119,7 +1062,7 @@ options["sankey"] = {
       };
 
     var chart = new google.visualization.Sankey(
-    document.getElementById('SankeyIDa86364ae6968')
+    document.getElementById('SankeyIDaff643eb0c49')
     );
     chart.draw(data,options);
     
@@ -1143,9 +1086,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartSankeyIDa86364ae6968);
+callbacks.push(drawChartSankeyIDaff643eb0c49);
 })();
-function displayChartSankeyIDa86364ae6968() {
+function displayChartSankeyIDaff643eb0c49() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -1168,9 +1111,9 @@ callbacks.shift()();
 // jsFooter
 </script>
 <!-- jsChart -->
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyIDa86364ae6968"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyIDaff643eb0c49"></script>
 <!-- divChart -->
-<div id="SankeyIDa86364ae6968" style="width: 400; height: 400;">
+<div id="SankeyIDaff643eb0c49" style="width: 400; height: 400;">
 
 </div>
 </div>
@@ -1194,264 +1137,234 @@ s &lt;- gvisSankey(home_next_pages,
 plot(s)</code></pre>
 <div align="center">
 <!-- Sankey generated in R 3.5.1 by googleVis 0.6.2 package -->
-<!-- Sat Sep  8 21:29:36 2018 -->
+<!-- Thu Oct 11 11:07:43 2018 -->
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataSankeyIDa8632c148186 () {
+function gvisDataSankeyIDaff659ff34da () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
  [
 "(Other)",
 "(not set)",
-7
-],
-[
-"Direct",
-"(not set)",
-317
-],
-[
-"Display",
-"(not set)",
-2
-],
-[
-"Email",
-"(not set)",
-6
-],
-[
-"Organic Search",
-"(not set)",
-281
-],
-[
-"Referral",
-"(not set)",
-188
-],
-[
-"Social",
-"(not set)",
-35
-],
-[
-"Direct",
-"/",
-42
-],
-[
-"Organic Search",
-"/",
-90
-],
-[
-"Referral",
-"/",
-55
-],
-[
-"Social",
-"/",
-5
-],
-[
-"(Other)",
-"/about/",
-2
-],
-[
-"Direct",
-"/about/",
-156
-],
-[
-"Email",
-"/about/",
-3
-],
-[
-"Organic Search",
-"/about/",
-418
-],
-[
-"Referral",
-"/about/",
-55
-],
-[
-"Social",
-"/about/",
-69
-],
-[
-"(Other)",
-"/about/careers/",
-3
-],
-[
-"Direct",
-"/about/careers/",
-124
-],
-[
-"Display",
-"/about/careers/",
-3
-],
-[
-"Organic Search",
-"/about/careers/",
-244
-],
-[
-"Referral",
-"/about/careers/",
-141
-],
-[
-"Social",
-"/about/careers/",
-63
-],
-[
-"Direct",
-"/blog/",
-17
-],
-[
-"Email",
-"/blog/",
-6
-],
-[
-"Organic Search",
-"/blog/",
-59
-],
-[
-"Referral",
-"/blog/",
-23
-],
-[
-"Social",
-"/blog/",
-5
-],
-[
-"Direct",
-"/contact/",
-85
-],
-[
-"Organic Search",
-"/contact/",
-115
-],
-[
-"Referral",
-"/contact/",
-8
-],
-[
-"Social",
-"/contact/",
-14
-],
-[
-"Direct",
-"/solutions/",
-38
-],
-[
-"Organic Search",
-"/solutions/",
-48
-],
-[
-"Referral",
-"/solutions/",
-6
-],
-[
-"Social",
-"/solutions/",
-7
-],
-[
-"Direct",
-"/solutions/industries/",
-95
-],
-[
-"Email",
-"/solutions/industries/",
-6
-],
-[
-"Organic Search",
-"/solutions/industries/",
-71
-],
-[
-"Referral",
-"/solutions/industries/",
-13
-],
-[
-"Social",
-"/solutions/industries/",
-23
-],
-[
-"Direct",
-"/solutions/roles/",
-48
-],
-[
-"Display",
-"/solutions/roles/",
 4
 ],
 [
+"Direct",
+"(not set)",
+354
+],
+[
+"Display",
+"(not set)",
+3
+],
+[
+"Email",
+"(not set)",
+1
+],
+[
 "Organic Search",
-"/solutions/roles/",
-79
+"(not set)",
+337
 ],
 [
 "Referral",
-"/solutions/roles/",
-5
+"(not set)",
+213
 ],
 [
 "Social",
-"/solutions/roles/",
-15
+"(not set)",
+20
 ],
 [
 "Direct",
-"/solutions/services/",
-113
+"/",
+68
+],
+[
+"Email",
+"/",
+6
 ],
 [
 "Organic Search",
-"/solutions/services/",
-165
+"/",
+65
 ],
 [
 "Referral",
-"/solutions/services/",
+"/",
 34
 ],
 [
 "Social",
-"/solutions/services/",
+"/",
+6
+],
+[
+"Direct",
+"/about/",
+206
+],
+[
+"Display",
+"/about/",
+2
+],
+[
+"Organic Search",
+"/about/",
+270
+],
+[
+"Referral",
+"/about/",
+39
+],
+[
+"Social",
+"/about/",
+18
+],
+[
+"Direct",
+"/about/careers/",
+85
+],
+[
+"Organic Search",
+"/about/careers/",
+172
+],
+[
+"Referral",
+"/about/careers/",
+75
+],
+[
+"Social",
+"/about/careers/",
+46
+],
+[
+"Direct",
+"/contact/",
+68
+],
+[
+"Organic Search",
+"/contact/",
+103
+],
+[
+"Referral",
+"/contact/",
+14
+],
+[
+"Social",
+"/contact/",
+16
+],
+[
+"Direct",
+"/solutions/",
+17
+],
+[
+"Organic Search",
+"/solutions/",
+57
+],
+[
+"Referral",
+"/solutions/",
+15
+],
+[
+"Social",
+"/solutions/",
+10
+],
+[
+"Direct",
+"/solutions/industries/",
+38
+],
+[
+"Organic Search",
+"/solutions/industries/",
+96
+],
+[
+"Referral",
+"/solutions/industries/",
 23
+],
+[
+"Social",
+"/solutions/industries/",
+15
+],
+[
+"Direct",
+"/solutions/partners/adobe/adobe-launch/",
+21
+],
+[
+"Organic Search",
+"/solutions/partners/adobe/adobe-launch/",
+22
+],
+[
+"Referral",
+"/solutions/partners/adobe/adobe-launch/",
+9
+],
+[
+"Direct",
+"/solutions/roles/",
+22
+],
+[
+"Organic Search",
+"/solutions/roles/",
+51
+],
+[
+"Referral",
+"/solutions/roles/",
+20
+],
+[
+"Social",
+"/solutions/roles/",
+21
+],
+[
+"Direct",
+"/solutions/services/",
+42
+],
+[
+"Organic Search",
+"/solutions/services/",
+138
+],
+[
+"Referral",
+"/solutions/services/",
+52
+],
+[
+"Social",
+"/solutions/services/",
+6
 ] 
 ];
 data.addColumn('string','channelGrouping');
@@ -1462,8 +1375,8 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartSankeyIDa8632c148186() {
-var data = gvisDataSankeyIDa8632c148186();
+function drawChartSankeyIDaff659ff34da() {
+var data = gvisDataSankeyIDaff659ff34da();
 var options = {};
 options["width"] = 400;
 options["height"] = 400;
@@ -1474,7 +1387,7 @@ options["sankey"] = {
       };
 
     var chart = new google.visualization.Sankey(
-    document.getElementById('SankeyIDa8632c148186')
+    document.getElementById('SankeyIDaff659ff34da')
     );
     chart.draw(data,options);
     
@@ -1498,9 +1411,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartSankeyIDa8632c148186);
+callbacks.push(drawChartSankeyIDaff659ff34da);
 })();
-function displayChartSankeyIDa8632c148186() {
+function displayChartSankeyIDaff659ff34da() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -1523,9 +1436,9 @@ callbacks.shift()();
 // jsFooter
 </script>
 <!-- jsChart -->
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyIDa8632c148186"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartSankeyIDaff659ff34da"></script>
 <!-- divChart -->
-<div id="SankeyIDa8632c148186" style="width: 400; height: 400;">
+<div id="SankeyIDaff659ff34da" style="width: 400; height: 400;">
 
 </div>
 </div>
