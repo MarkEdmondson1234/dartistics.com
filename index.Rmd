@@ -58,16 +58,29 @@ if(file.exists("./data/index_gadata.RData")){
 heatmap_data <- gadata[, c("weekday","hour","sessions")]
 
 heatmap_recast <- dcast(heatmap_data, weekday ~ hour, sum)
+heatmap_recastv <- dcast(heatmap_data, hour ~ weekday, sum)
 
 heatmap_matrix <- as.matrix(heatmap_recast[-1])
+heatmap_matrixv <- as.matrix(heatmap_recastv[-1])
 
 row.names(heatmap_matrix) <- c("Monday","Tuesday","Wednesday",
                                "Thursday","Friday","Saturday","Sunday")
+colnames(heatmap_matrixv) <- c("Mo","Tu","We","Th","Fr","Sa","Su")
+```
 
+<div class="heatwide">
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
 ## heatmap of weekdays per hour
 hchart(heatmap_matrix, type = "heatmap")
-
 ```
+</div>
+
+<div class="heatnarr">
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+## heatmap of weekdays per hour
+hchart(heatmap_matrixv, type = "heatmap")
+```
+</div>
 
 ### Forecasting with Holt-Winters
 This example uses the Holt-Winters method to apply some smoothing and seasonality to the base data to build a forecast that includes the likely range of values.
