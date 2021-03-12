@@ -53,9 +53,9 @@ my_var <- 12^2*10
 ## Vectors and c()
 In the first part of this exercise we assigned a single **numeric** value to an **object**. We can also (and often will) want to work with multiple values. We don't need a 1:1 relationship for each value and an object. We can use a **vector** to store multiple values in a single object.
 
-Two key concepts here (we'll dive deeper into these [classes.html#multi-classes](in a bit):
+Two key concepts here (we'll [dive deeper into these](classes.html#multi-classes) in a bit):
 
-* **Vectors** get used quite a bit, but, with much of the data we work with, we actually work with **data frames**, which will look much more familiar, in that they are, essentially like Excel sheets on steroids. Wrapping your head around the differences between **vectors**, **data frames**, and a few other types of objects (**lists** and *matrices**) is both critical...and confusing.
+* **Vectors** get used quite a bit, but, with much of the data we work with, we actually work with **data frames**, which will look much more familiar, in that they are, essentially like Excel sheets on steroids. Wrapping your head around the differences between **vectors**, **data frames** (and their more modern, sexier cousin: **tibbles**), and a few other types of objects (**lists** and **matrices**) is both critical...and confusing.
 
 * Vectors get created using the `c()` function. The "c" is for "combine," because we're combining multiple values into a single vector.
 
@@ -97,7 +97,7 @@ length(my_var)
 length(my_vector)
 ```
 
-We've now worked with `c()`, `typeof()`, and `length()`. That's just the beginning!
+We've now worked with `c()`, `typeof()`, and `length()`. These are all examples of...? Functions! That's just the beginning!
 
 ## Our First Real Script
 
@@ -107,17 +107,17 @@ _We're going to do a few things here that wouldn't exactly be how you would work
 * _You may be working in a web-based environment rather than your local machine, which makes things a little different._
 
 ### Get Our Sample Data
-Download the .csv file [here](data/td.csv). Pay attention to to where this file -- td.csv -- gets stored.
+Download the `.csv` file [here](data/td.csv). Pay attention to to where this file -- **td.csv** -- gets stored.
 
-**If you are running RStudio from a web browser**, then go to the **Files** tab in the lower right pane, click **Upload File**, and upload td.csv. You should now see it in the **Files** tab.
+**If you are running RStudio from a web browser**, then go to the **Files** tab in the lower right pane, click **Upload File**, and upload **td.csv**. You should now see it in the **Files** tab.
 
-**If you are running RStudio locally**, then type `getwd()` in the console, make note of the file path that it returns, and then use Finder / Windows Explorer to move `td.csv` to that location.
+**If you are running RStudio locally**, then type `getwd()` in the console, make note of the file path that it returns, and then use Finder / Windows Explorer to move **td.csv** to that location.
 
 ### Set Up an Empty Script
 We're going to create an actual script now, so either just delete everything in the script you originally created or select **File>>New File>>R Script**. Either way, then select **File>>Save** and name the file **myFirstScript**. The script is being saved in your _working directory_ and now appears -- along with **td.csv** in the **Files** tab. Now, let's start writing some script!
 
 ### Load up a Data Frame
-The first thing we want to do is load our data into a **data frame**. A data frame is, essentially, just a table. Let's call our data frame **ga_data** and load the data from **td.csv** into it. We use the `read.csv()` function for this, so add the following line of code to your script (loading data is something else we will [get into in more detail later](import-csv-excel.html):
+The first thing we want to do is load our data into a **data frame**. A data frame is, essentially, just a table. Let's call our data frame **ga_data** and load the data from **td.csv** into it. We use the `read.csv()` function (another function!) for this, so add the following line of code to your script (loading data is something else we will [get into in more detail later](import-csv-excel.html):
 
 ```{r echo=TRUE, eval=FALSE}
 ga_data <- read.csv("td.csv", stringsAsFactors = FALSE)
@@ -136,7 +136,7 @@ We can go ahead and run this script. Go ahead and click **Source**. It doesn't l
 ## Explore the Data
 We're going to hop back down to the console to explore some of the most common ways we can access data in a data frame. 
 
-Type in `ga_data` in the console. This will simply quickly scroll all of the contents of the data frame.
+Type in `ga_data` in the console. This will simply quickly scroll through all of the contents of the data frame.
 
 Sometimes, we just want to see the basic structure of an object -- we don't need to see _all_ of the data. For that, try `head(ga_data)`. This shows just the first few rows (and `head()` is a function; type `?head()` to read the help for it!).
 
@@ -168,7 +168,7 @@ Now, can you:
 
 ## A Basic Visualization
 
-We will come back to visualizations later in the day, but let's at least add a simple line chart of sessions by adding two lines of code to our script.
+We will come back to visualizations later, but let's at least add a simple line chart of sessions by adding two lines of code to our script.
 
 The first line converts the **date** values to, well, actual _date_ values. Dates can be tricky, but there are a lot of tips and tools (and even a package called `lubridate()` to help with that):
 
@@ -178,7 +178,7 @@ ga_data$date <- as.Date(ga_data$date)
 
 The second line we'll add will actually plot the data. There are shorter ways to write this out, but let's go with this:
 
-```{r echo=TRUE, eval=FALSE}
+```
 plot(x = ga_data$date, y = ga_data$sessions, type = "l")
 ```
 
@@ -188,4 +188,4 @@ Now, you can either highlight just the two new rows and click **Run**, or you ca
 plot(x = ga_data$date, y = ga_data$sessions, type = "l")
 ```
 
-Don't judge a platform by your first visualisation. Even with the basics of `plot()`, this chart can be a lot better, but we're actually going to primarily focus on `ggplot2()` when it comes to visualisations. So, let's call this initial exercise a wrap! Congratulations! You've loaded, manipulated, and plotted data with R!
+Don't judge a platform by your first visualisation. Even with the basics of `plot()`, this chart can be a lot better, but we're actually going to primarily focus on **ggplot** when it comes to visualisations. So, let's call this initial exercise a wrap! Congratulations! You've loaded, manipulated, and plotted data with R!

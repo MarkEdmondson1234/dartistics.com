@@ -1,76 +1,65 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
 <title>Package Ecosystem</title>
 
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -78,58 +67,68 @@ h6 {
   margin-left: auto;
   margin-right: auto;
 }
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
 }
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 60px;
-  padding-bottom: 40px;
+.dropdown-submenu {
+  position: relative;
 }
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
 }
-
-.section h2 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
 }
-.section h3 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
 }
-.section h4 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
 }
-.section h5 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu.pull-left {
+  float: none;
 }
-.section h6 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -140,26 +139,93 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
-
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -270,9 +336,6 @@ $(document).ready(function () {
     <li class="dropdown-header">WORKING WITH APIs</li>
     <li>
       <a href="api-google-analytics.html">Google Analytics</a>
-    </li>
-    <li>
-      <a href="api-adobe-analytics.html">Adobe Analytics</a>
     </li>
     <li>
       <a href="api-other.html">Other APIs</a>
@@ -424,7 +487,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-N4DF7T');</script>
 <!-- End Google Tag Manager -->
 
-<div class="fluid-row" id="header">
+
+<div id="header">
 
 
 
@@ -443,7 +507,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h2>Using a Package</h2>
 <p>This will become absolutely second nature, but it’s one of those things that is not 100% intuitive at first. When you’re using a package (which, really, means you’re using one or more of the functions <em>in</em> a package), there are two things that have to happen:</p>
 <ol style="list-style-type: decimal">
-<li><p><strong>The package has to be installed.</strong> This is what is described above. The first time you use a package, you will need to type <code>install.packages(&quot;[the package name]&quot;)</code> (note that the name of the package is inside quotation marks) in the console and press <code>&lt;Enter&gt;</code>. That will pull the package (and any packages the package depends on – few packages are built entirely from scratch!) from CRAN. And…it will show up in the <strong>Packages</strong> tab in the bottom right of your RStudio environment. This is a one-time step, although there is no harm in installing the same package multiple times, and, occasionally, you will find that a package has been updated and needs to be re-installed.</p></li>
+<li><p><strong>The package has to be installed.</strong> This is what is described above. The first time you use a package, you will need to type <code>install.packages("[the package name]")</code> (note that the name of the package is inside quotation marks) in the console and press <code>&lt;Enter&gt;</code>. That will pull the package (and any packages the package depends on – few packages are built entirely from scratch!) from CRAN. And…it will show up in the <strong>Packages</strong> tab in the bottom right of your RStudio environment. This is a one-time step, although there is no harm in installing the same package multiple times, and, occasionally, you will find that a package has been updated and needs to be re-installed.</p></li>
 <li><p><strong>The package has to be loaded.</strong> In your script (or in the console), enter <code>library([the package name])</code> (unlike <code>install.packages()</code>, the name of the package is <em>not</em> placed in quotation marks when using <code>library()</code>). Typically, you will have a list of these at the beginning of your scripts (although there are other techniques for centralizing a list of packages you commonly use…we’re not going to go there for now). Once a package is loaded, it will show with a checkbox next to it in the <strong>Packages</strong> list in your RStudio environment.</p></li>
 </ol>
 <p><em>When you get a “function not found” error when running a script, 9 times out of 10 that’s because the function you’re calling is in a package that isn’t loaded.</em></p>
@@ -451,7 +515,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <div id="dynamically-installing-packages" class="section level2">
 <h2>Dynamically Installing Packages</h2>
 <p>Throughout this site, as well as in examples across the interwebs, you will see code examples that look something like this:</p>
-<pre class="r"><code># This installs googleAnalyticsR if you haven&#39;t got it installed already
+<pre><code># This installs googleAnalyticsR if you haven&#39;t got it installed already
 if(!require(googleAnalyticsR)) install.packages(&quot;googleAnalyticsR&quot;)
 
 # This then loads the library
@@ -468,20 +532,24 @@ library(googleAnalyticsR)</code></pre>
 </div>
 <div id="some-other-packages-you-will-get-familiar-with" class="section level3">
 <h3>Some Other Packages You Will Get Familiar With</h3>
-<p>You <em>will</em> learn to know the name “Hadley Wickham,” as he is quite possibly the most influential R user (and package and content creator) of the modern era. He also now works for RStudio. All of the packages below are part of what has been dubbed “the Hadleyverse,” because Wickham was key in their creation. He’s actually been working to rebrand this “the tidyverse” because, well, that’s how he rolls.</p>
-<p>For a more comprehensive list of packages in the Hadley-tidyverse, you can check out <a href="http://adolfoalvarez.cl/the-hitchhikers-guide-to-the-hadleyverse/">The Hitchhiker’s Guide to the Hadleyverse</a>. But, here, we’re just going to list a small handful of those packages that are practically core to using R:</p>
+<p>You <em>will</em> learn to know the name “Hadley Wickham,” as he is quite possibly the most influential R user (and package and content creator) of the modern era. He also has now worked for RStudio for a number of years. Most of the packages below are part of what used to be called “the Hadleyverse,” because Wickham was key in their creation. But, Wickham was successful at rebranding these as “the Tidyverse” because, at their core, they’re focused on working with data that is in a “tidy” format (which we’ll get to later).</p>
+<p>The creators of this site recommend working in the tidyverse world, which means almost every one of their scripts installs the <strong>tidyverse</strong> package (<code>library(tidyverse)</code>), which is a quick way to install all (or…most?) of the packages in the tidyverse (there are some Tidyverse-adjacent packages that are part of the Tidyverse, but that aren’t part of the <em>core</em> Tidyverse, so they have to be installed separately if they are being used). There is a <a href="https://www.tidyverse.org/packages/">whole website</a> that goes into great detail as to the tidyverse packages. Some of the key packages in the Tidyverse are:</p>
 <ul>
-<li><strong><a href="http://ggplot2.org/">ggplot2</a></strong> – It’s a package with its own web site! ggplot2 is a <em>very</em> powerful data visualization package. It is also <em>extremely confusing</em> to learn, as you have to throw how you think about the construction of charts and graphs out the window. We’ll be using ggplot2 in this course a bit, but know that it takes a while to fully learn. You can check out <a href="http://www.r-graph-gallery.com/portfolio/ggplot2-package/">this site</a> for some examples of visualizations with ggplot2.</li>
-<li><strong><a href="https://www.r-bloggers.com/data-manipulation-with-dplyr/">dplyr</a></strong> – in some respects, this is a non-essential package, in that there are “base R” ways to do everything that its handful of functions do. On the other hand…those handful of functions, as well as the <code>%&gt;%</code> operator (which is available once you’ve loaded dplyr…but actually comes from another package that dplyr uses) can streamline the heck out of your code!</li>
-<li><strong><a href="https://rpubs.com/davoodastaraky/lubridate">lubridate</a></strong> – it’s a play on words: you’re “lubricating the process of working with dates” (I think). Dates come in all sorts of formats and structures, and this package makes short work of working with them.</li>
-<li><strong><a href="https://blog.rstudio.org/2014/07/22/introducing-tidyr/">tidyr</a></strong> – this is a package for getting your data into a “tidy” format…which, put in Excel terms, means a bunch of rows and a limited number of columns so that you could pivot the data very easily (because data that can be easily pivoted can be easily subsetted, plotted, summarized, and aggregated).</li>
+<li><strong><a href="https://ggplot2.tidyverse.org/">ggplot2</a></strong> – It’s a package with its own web site! ggplot2 is a <em>very</em> powerful data visualization package. It is also <em>extremely confusing</em> to learn, as you have to throw how you think about the construction of charts and graphs out the window. We’ll be using ggplot2 in this course a bit, but know that it takes a while to fully learn. You can check out <a href="http://www.r-graph-gallery.com/portfolio/ggplot2-package/">this site</a> for some examples of visualizations with ggplot2.</li>
+<li><strong><a href="https://dplyr.tidyverse.org/">dplyr</a></strong> – in some respects, this is a non-essential package, in that there are “base R” ways to do everything that its handful of functions do. On the other hand…those handful of functions, as well as the <code>%&gt;%</code> operator (which is available once you’ve loaded dplyr…but actually comes from another package that dplyr uses called <strong>magrittr</strong>) can streamline the heck out of your code!</li>
+<li><strong><a href="https://tidyr.tidyverse.org/">tidyr</a></strong> – this is a package for getting your data into a “tidy” format…which, put in Excel terms, means a bunch of rows and a limited number of columns so that you could pivot the data very easily (because data that can be easily pivoted can be easily subsetted, plotted, summarized, and aggregated).</li>
+<li><strong><a href="https://purrr.tidyverse.org/">purrr</a></strong> – as you dive into R, you will hear that, <em>in general</em>, you should avoid “loops” in your code. This is a somewhat unique aspect of R and its “vector operations” ability. This will all become clearer (and downright magical) later, but, suffice it to say that this package provides some really slick functions for working with functions and vectors.</li>
 </ul>
-<p>If you’re not worried about cluttering up your system with too much stuff, ther is actually a <a href="http://tidyverse.org/">tidyverse package</a> that is just a collection of all of the packages in the tidyverse. So, you get all of the above (and a lot, lot more) with just <code>install.packages(&quot;tidyverse&quot;)</code>, which you can then load and use with <code>library(tidyverse)</code>.</p>
+<p>There are other packages in the core Tidyverse, but we don’t want to overwhelm you (yet). There are a few other packages that are <em>super</em> common, so it’s good to know about them:</p>
+<ul>
+<li><strong><a href="https://lubridate.tidyverse.org/">lubridate</a></strong> – it’s a play on words: you’re “lubricating the process of working with dates”. Dates come in all sorts of formats and structures, and this package makes short work of working with them. This package is considered part of the Tidyverse, but it’s not part of the <em>core</em> Tidyverse.</li>
+<li><strong><a href="https://scales.r-lib.org/">scales</a></strong> – this package is great when working with how “guides” (legends and axes) get displayed and formatted, so it is often handy to have when working with <strong>ggplot2</strong>. Seriously. If you want to have a comma included in your large numbers, <strong>scales</strong> is the way to go.</li>
+</ul>
 </div>
 </div>
 <div id="github" class="section level2">
 <h2>Github</h2>
-<p>There are also thousands of more experimental packages that are only available through Github. These packages have become much easier to work with since the introduction of the package <code>devtools</code>, which via its function <code>install_github</code> provides access to this universe of packages through scriptable commands.</p>
+<p>There are also thousands of more experimental packages that are only available through Github. These packages have become much easier to work with since the introduction of the package <strong>devtools</strong>, which via its function <code>install_github</code>, provides access to this universe of packages through scriptable commands.</p>
 <p>Beware, though, that the packages on Github are, by their nature, more experimental, so exercise due care to ensure they are trustworthy!</p>
 </div>
 
@@ -494,7 +562,7 @@ library(googleAnalyticsR)</code></pre>
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -502,6 +570,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

@@ -1,79 +1,68 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
 <title>Base R</title>
 
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -81,58 +70,68 @@ h6 {
   margin-left: auto;
   margin-right: auto;
 }
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
 }
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 60px;
-  padding-bottom: 40px;
+.dropdown-submenu {
+  position: relative;
 }
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
 }
-
-.section h2 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
 }
-.section h3 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
 }
-.section h4 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
 }
-.section h5 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu.pull-left {
+  float: none;
 }
-.section h6 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -143,54 +142,85 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
-
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -204,6 +234,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -239,8 +275,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -250,14 +284,24 @@ div.tocify {
 
 </style>
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
 
 
 
@@ -368,9 +412,6 @@ div.tocify {
     <li class="dropdown-header">WORKING WITH APIs</li>
     <li>
       <a href="api-google-analytics.html">Google Analytics</a>
-    </li>
-    <li>
-      <a href="api-adobe-analytics.html">Adobe Analytics</a>
     </li>
     <li>
       <a href="api-other.html">Other APIs</a>
@@ -522,7 +563,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-N4DF7T');</script>
 <!-- End Google Tag Manager -->
 
-<div class="fluid-row" id="header">
+
+<div id="header">
 
 
 
@@ -553,7 +595,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>So, we have an object <code>x</code>, and we can perform operations on that object from the script editor or, for now, from the console:</p>
 <pre class="r"><code>x * 1000</code></pre>
 <pre><code>## [1] 5000</code></pre>
-<p>Or, we can use x in an expression that creates another object:</p>
+<p>Or, we can use <code>x</code> in an expression that creates another object:</p>
 <pre class="r"><code>y &lt;- x^3</code></pre>
 <p>Now, if we check out the <strong>Environment</strong> pane, we’ll see <em>two</em> objects in it:</p>
 <div align="center">
@@ -587,7 +629,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <div id="defined-in-packages" class="section level3">
 <h3>Defined in Packages</h3>
 <p>When you install a package, what you’re really doing is adding more functions to the universe in which you are working. These work <em>exactly</em> like the Base R functions described above. Although, as described in the <a href="packages.html">packages</a> section, you have to have the package installed (using the Base R function <code>install.packages()</code> to install the package and then the <code>library()</code> function – within your script – to load it).</p>
-<p><em>Annoying aside</em>: Are you wondering what happens if you have two packages installed and loaded that have an identically named function? It happens! By default, if you call a function that exists in two different packages that are both loaded, then the version of the function from the <em>last</em> package loaded will be used. But, you can also specify which package you want to use the function from using a <code>::</code>. For instance, if you have both the <code>plyr</code> and <code>dplyr</code> packages loaded, and you want to ensure that you use the <code>summarise</code> function from the <code>dplyr</code> package, you can call the function using <code>dplr::summarise</code>.</p>
+<p><em>Annoying aside</em>: Are you wondering what happens if you have two packages installed and loaded that have an identically named function? It happens! By default, if you call a function that exists in two different packages that are both loaded, then the version of the function from the <em>last</em> package loaded will be used. But, you can also specify which package you want to use the function from using a <code>::</code>. For instance, if you have both the <code>plyr</code> and <code>dplyr</code> packages loaded, and you want to ensure that you use the <code>summarise</code> function from the <code>dplyr</code> package, you can call the function using <code>dplr::summarise()</code>.</p>
 </div>
 <div id="defined-in-your-script" class="section level3">
 <h3>Defined in Your Script</h3>
@@ -607,7 +649,7 @@ for (i in 1:3){
 <p>The example above should look very familiar if you’ve worked in almost any programming language:</p>
 <ul>
 <li>We defined a function named <code>cubeValue</code> (using the <code>&lt;-</code> assignment operator)</li>
-<li>That function was set up to take in a single value (functions can take multiple parameters, and those parameters can be assigned names, but we’re keeping it simple here), and that value is then used in the function as <code>x</code>.</li>
+<li>That function was set up to take in a single value (functions can take multiple “arguments,” and those arguments can be assigned names, but we’re keeping it simple here), and that value is then used in the function as <code>x</code>.</li>
 <li>A loop goes through and successfully calls the function with the values <code>1</code>, <code>2</code>, and then <code>3</code>.</li>
 </ul>
 <p>One thing that is fairly unique to R is that, in general, <em>loops should be avoided</em>. R has the ability to “apply” a function to an entire list of values at once. Consider the code below:</p>
@@ -617,10 +659,14 @@ cubeValue &lt;- function(x){
   cat(&quot;The cube of &quot;,x,&quot; is &quot;,x^3,&quot;.\n&quot;,sep=&quot;&quot;)
 }
 
-# Apply the function to a list of values: 1 through 3. This actually returns a list,
-# which we&#39;ll cover later, and we&#39;re assigning that to an object called &#39;foo&#39; that
-# we&#39;re not actually doing anything with.
-foo &lt;- sapply(c(1:3), cubeValue)</code></pre>
+# Apply the function to a &quot;vector&quot; of values--1 through 3--using the `map` function from the
+# `purrr` package. This actually returns a list, which we&#39;ll cover later, and we&#39;re assigning 
+# that to an object called &#39;foo&#39; that we&#39;re not actually doing anything with. But, as the 
+# function is running, it&#39;s still printing out the results as it goes. This same result could
+# have been achieved with the `sapply` function from &quot;base R` rather than `map` from the 
+# Tidyverse, but getting into the `map` family is just a good habit if you&#39;re working in the
+# Tidyverse.
+foo &lt;- map(c(1:3), cubeValue)</code></pre>
 <pre><code>## The cube of 1 is 1.
 ## The cube of 2 is 8.
 ## The cube of 3 is 27.</code></pre>
@@ -641,7 +687,7 @@ foo &lt;- sapply(c(1:3), cubeValue)</code></pre>
 <p>Scripts are actually “programs” that get saved as text files so they can be used over time. New scripts are created by selecting <strong>File&gt;&gt;New File&gt;&gt;R Script</strong> (we’ll cover projects in a bit).</p>
 </div>
 <div id="run-vs.-source" class="section level2">
-<h2>‘Run’ vs. ‘Source’</h2>
+<h2>‘Run’ vs. ‘Source’</h2>
 <p>There are two main ways to <em>execute</em> scripts. You will use both of them:</p>
 <ul>
 <li><strong>Source</strong> – when you click <strong>Source</strong>, the <em>entire</em> script runs.</li>
@@ -674,13 +720,56 @@ foo &lt;- sapply(c(1:3), cubeValue)</code></pre>
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

@@ -28,7 +28,7 @@ _When you get a "function not found" error when running a script, 9 times out of
 
 Throughout this site, as well as in examples across the interwebs, you will see code examples that look something like this:
 
-```{r message=FALSE}
+```
 # This installs googleAnalyticsR if you haven't got it installed already
 if(!require(googleAnalyticsR)) install.packages("googleAnalyticsR")
 
@@ -49,20 +49,24 @@ This list simply cannot be comprehensive, but, to give you a sense of the breadt
 Many of the platforms that digital analysts work with already have one or more packages developed for accessing their data quickly and easily. See the pages under **WORKING WITH APIs** in the **I/O** section of this site for a list of packages that are particularly useful to digital analysts.
 
 ### Some Other Packages You Will Get Familiar With
-You _will_ learn to know the name "Hadley Wickham," as he is quite possibly the most influential R user (and package and content creator) of the modern era. He also now works for RStudio. All of the packages below are part of what has been dubbed "the Hadleyverse," because Wickham was key in their creation. He's actually been working to rebrand this "the tidyverse" because, well, that's how he rolls.
+You _will_ learn to know the name "Hadley Wickham," as he is quite possibly the most influential R user (and package and content creator) of the modern era. He also has now worked for RStudio for a number of years. Most of the packages below are part of what used to be called "the Hadleyverse," because Wickham was key in their creation. But, Wickham was successful at rebranding these as "the Tidyverse" because, at their core, they're focused on working with data that is in a "tidy" format (which we'll get to later).
 
-For a more comprehensive list of packages in the Hadley-tidyverse, you can check out [The Hitchhiker's Guide to the Hadleyverse](http://adolfoalvarez.cl/the-hitchhikers-guide-to-the-hadleyverse/). But, here, we're just going to list a small handful of those packages that are practically core to using R:
+The creators of this site recommend working in the tidyverse world, which means almost every one of their scripts installs the **tidyverse** package (`library(tidyverse)`), which is a quick way to install all (or...most?) of the packages in the tidyverse (there are some Tidyverse-adjacent packages that are part of the Tidyverse, but that aren't part of the _core_ Tidyverse, so they have to be installed separately if they are being used). There is a [whole website](https://www.tidyverse.org/packages/) that goes into great detail as to the tidyverse packages. Some of the key packages in the Tidyverse are:
 
-* **[ggplot2](http://ggplot2.org/)** -- It's a package with its own web site! ggplot2 is a _very_ powerful data visualization package. It is also _extremely confusing_ to learn, as you have to throw how you think about the construction of charts and graphs out the window. We'll be using ggplot2 in this course a bit, but know that it takes a while to fully learn. You can check out [this site](http://www.r-graph-gallery.com/portfolio/ggplot2-package/) for some examples of visualizations with ggplot2.
-* **[dplyr](https://www.r-bloggers.com/data-manipulation-with-dplyr/)** -- in some respects, this is a non-essential package, in that there are "base R" ways to do everything that its handful of functions do. On the other hand...those handful of functions, as well as the `%>%` operator (which is available once you've loaded dplyr...but actually comes from another package that dplyr uses) can streamline the heck out of your code!
-* **[lubridate](https://rpubs.com/davoodastaraky/lubridate)** -- it's a play on words:  you're "lubricating the process of working with dates" (I think). Dates come in all sorts of formats and structures, and this package makes short work of working with them.
-* **[tidyr](https://blog.rstudio.org/2014/07/22/introducing-tidyr/)** -- this is a package for getting your data into a "tidy" format...which, put in Excel terms, means a bunch of rows and a limited number of columns so that you could pivot the data very easily (because data that can be easily pivoted can be easily subsetted, plotted, summarized, and aggregated).
+* **[ggplot2](https://ggplot2.tidyverse.org/)** -- It's a package with its own web site! ggplot2 is a _very_ powerful data visualization package. It is also _extremely confusing_ to learn, as you have to throw how you think about the construction of charts and graphs out the window. We'll be using ggplot2 in this course a bit, but know that it takes a while to fully learn. You can check out [this site](http://www.r-graph-gallery.com/portfolio/ggplot2-package/) for some examples of visualizations with ggplot2.
+* **[dplyr](https://dplyr.tidyverse.org/)** -- in some respects, this is a non-essential package, in that there are "base R" ways to do everything that its handful of functions do. On the other hand...those handful of functions, as well as the `%>%` operator (which is available once you've loaded dplyr...but actually comes from another package that dplyr uses called **magrittr**) can streamline the heck out of your code!
+* **[tidyr](https://tidyr.tidyverse.org/)** -- this is a package for getting your data into a "tidy" format...which, put in Excel terms, means a bunch of rows and a limited number of columns so that you could pivot the data very easily (because data that can be easily pivoted can be easily subsetted, plotted, summarized, and aggregated).
+* **[purrr](https://purrr.tidyverse.org/)** -- as you dive into R, you will hear that, _in general_, you should avoid "loops" in your code. This is a somewhat unique aspect of R and its "vector operations" ability. This will all become clearer (and downright magical) later, but, suffice it to say that this package provides some really slick functions for working with functions and vectors.
 
-If you're not worried about cluttering up your system with too much stuff, ther is actually a [tidyverse package](http://tidyverse.org/) that is just a collection of all of the packages in the tidyverse. So, you get all of the above (and a lot, lot more) with just `install.packages("tidyverse")`, which you can then load and use with `library(tidyverse)`.
+There are other packages in the core Tidyverse, but we don't want to overwhelm you (yet). There are a few other packages that are _super_ common, so it's good to know about them:
+
+* **[lubridate](https://lubridate.tidyverse.org/)** -- it's a play on words:  you're "lubricating the process of working with dates". Dates come in all sorts of formats and structures, and this package makes short work of working with them. This package is considered part of the Tidyverse, but it's not part of the _core_ Tidyverse.
+* **[scales](https://scales.r-lib.org/)** -- this package is great when working with how "guides" (legends and axes) get displayed and formatted, so it is often handy to have when working with **ggplot2**. Seriously. If you want to have a comma included in your large numbers, **scales** is the way to go.
+
 
 ## Github
 
-There are also thousands of more experimental packages that are only available through Github. These packages have become much easier to work with since the introduction of the package `devtools`, which via its function `install_github` provides access to this universe of packages through scriptable commands.
+There are also thousands of more experimental packages that are only available through Github. These packages have become much easier to work with since the introduction of the package **devtools**, which via its function `install_github`, provides access to this universe of packages through scriptable commands.
 
 Beware, though, that the packages on Github are, by their nature, more experimental, so exercise due care to ensure they are trustworthy!
 

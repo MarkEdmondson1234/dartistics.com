@@ -14,7 +14,7 @@ An "IDE" is an "integrated development environment." Essentially, it's an interf
 
 ## Install R
 
-Installing R is pretty straightforward. Just go to the home page of [The Comprehensive R Archive Network[(https://cran.r-project.org/)] (henceforth and forthwith referred to as "CRAN" -- that's where many/most of the packages you will use will be housed for download and installation), select the link for your operating system, and download and install it.
+Installing R is pretty straightforward. Just go to the home page of [The Comprehensive R Archive Network](https://cran.r-project.org/)] (henceforth and forthwith referred to as "CRAN" -- that's where many/most of the packages you will use will be housed for download and installation), select the link for your operating system, and download and install it.
 
 That's it. Periodically, new releases will come out and you may need to download newer versions.
 
@@ -25,6 +25,8 @@ R itself comes with its own R Console, where you can write R commands and run pr
 _Note: RStudio is by no means the **only** R IDE out there. However, it is one that is widely available, is available across different operating systems, and is well-maintained._
 
 For now, just download and install RStudio Desktop from the [RStudio download page](https://www.rstudio.com/products/rstudio/download/). 
+
+If you're not able to install applications on your local computer due to IT restrictions in your organization, you can use RStudio in a cloud environment for free at [RStudio Cloud](https://rstudio.cloud/).
 
 ## The RStudio Interface
 

@@ -1,24 +1,34 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
 <title>Exercise: The Basic Basics</title>
 
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -26,12 +36,16 @@
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -44,38 +58,11 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -83,58 +70,68 @@ h6 {
   margin-left: auto;
   margin-right: auto;
 }
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
 }
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 60px;
-  padding-bottom: 40px;
+.dropdown-submenu {
+  position: relative;
 }
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
 }
-
-.section h2 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
 }
-.section h3 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
 }
-.section h4 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
 }
-.section h5 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu.pull-left {
+  float: none;
 }
-.section h6 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -145,54 +142,85 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
-
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -206,6 +234,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -241,8 +275,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -252,14 +284,24 @@ div.tocify {
 
 </style>
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
 
 
 
@@ -370,9 +412,6 @@ div.tocify {
     <li class="dropdown-header">WORKING WITH APIs</li>
     <li>
       <a href="api-google-analytics.html">Google Analytics</a>
-    </li>
-    <li>
-      <a href="api-adobe-analytics.html">Adobe Analytics</a>
     </li>
     <li>
       <a href="api-other.html">Other APIs</a>
@@ -524,7 +563,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-N4DF7T');</script>
 <!-- End Google Tag Manager -->
 
-<div class="fluid-row" id="header">
+
+<div id="header">
 
 
 
@@ -551,10 +591,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p><em>In R, assignment of values uses <code>&lt;-</code>.</em></p>
 <p>Look in the <strong>Environment</strong> tab in the top right pane, you should now see your variable:</p>
 <div style="text-align:center" markdown="1">
-<div class="figure">
-<img src="images/exercise1_myvar_2.png" />
-
-</div>
+<p><img src="images/exercise1_myvar_2.png" /></p>
 </div>
 <p>You’ve just created a variable and stored it in your working space…even though you haven’t actually created a script! So, let’s do some work with our script.</p>
 </div>
@@ -562,10 +599,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h3>Basic Script</h3>
 <p>In the top left pane, enter <code>my_var &lt;- my_var * 10</code>. Nothing will happen, because this is just a script. It hasn’t been executed yet. Click <strong>Source</strong> to run the script. Now, check out the <strong>Environment</strong> tab:</p>
 <div style="text-align:center" markdown="1">
-<div class="figure">
-<img src="images/exercise1_myvar_2.png" />
-
-</div>
+<p><img src="images/exercise1_myvar_2.png" /></p>
 </div>
 <p>This is a simple illustration of working in both the console <em>and</em> the script to work on the same environment.</p>
 </div>
@@ -573,9 +607,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <div id="vectors-and-c" class="section level2">
 <h2>Vectors and c()</h2>
 <p>In the first part of this exercise we assigned a single <strong>numeric</strong> value to an <strong>object</strong>. We can also (and often will) want to work with multiple values. We don’t need a 1:1 relationship for each value and an object. We can use a <strong>vector</strong> to store multiple values in a single object.</p>
-<p>Two key concepts here (we’ll dive deeper into these <a href="in%20a%20bit">classes.html#multi-classes</a>:</p>
+<p>Two key concepts here (we’ll <a href="classes.html#multi-classes">dive deeper into these</a> in a bit):</p>
 <ul>
-<li><p><strong>Vectors</strong> get used quite a bit, but, with much of the data we work with, we actually work with <strong>data frames</strong>, which will look much more familiar, in that they are, essentially like Excel sheets on steroids. Wrapping your head around the differences between <strong>vectors</strong>, <strong>data frames</strong>, and a few other types of objects (<strong>lists</strong> and *matrices**) is both critical…and confusing.</p></li>
+<li><p><strong>Vectors</strong> get used quite a bit, but, with much of the data we work with, we actually work with <strong>data frames</strong>, which will look much more familiar, in that they are, essentially like Excel sheets on steroids. Wrapping your head around the differences between <strong>vectors</strong>, <strong>data frames</strong> (and their more modern, sexier cousin: <strong>tibbles</strong>), and a few other types of objects (<strong>lists</strong> and <strong>matrices</strong>) is both critical…and confusing.</p></li>
 <li><p>Vectors get created using the <code>c()</code> function. The “c” is for “combine,” because we’re combining multiple values into a single vector.</p></li>
 </ul>
 <p>So, let’s do a little work with vectors:</p>
@@ -599,7 +633,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <pre><code>## [1] 1</code></pre>
 <pre class="r"><code>length(my_vector)</code></pre>
 <pre><code>## [1] 4</code></pre>
-<p>We’ve now worked with <code>c()</code>, <code>typeof()</code>, and <code>length()</code>. That’s just the beginning!</p>
+<p>We’ve now worked with <code>c()</code>, <code>typeof()</code>, and <code>length()</code>. These are all examples of…? Functions! That’s just the beginning!</p>
 </div>
 <div id="our-first-real-script" class="section level2">
 <h2>Our First Real Script</h2>
@@ -610,9 +644,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </ul>
 <div id="get-our-sample-data" class="section level3">
 <h3>Get Our Sample Data</h3>
-<p>Download the .csv file <a href="data/td.csv">here</a>. Pay attention to to where this file – td.csv – gets stored.</p>
-<p><strong>If you are running RStudio from a web browser</strong>, then go to the <strong>Files</strong> tab in the lower right pane, click <strong>Upload File</strong>, and upload td.csv. You should now see it in the <strong>Files</strong> tab.</p>
-<p><strong>If you are running RStudio locally</strong>, then type <code>getwd()</code> in the console, make note of the file path that it returns, and then use Finder / Windows Explorer to move <code>td.csv</code> to that location.</p>
+<p>Download the <code>.csv</code> file <a href="data/td.csv">here</a>. Pay attention to to where this file – <strong>td.csv</strong> – gets stored.</p>
+<p><strong>If you are running RStudio from a web browser</strong>, then go to the <strong>Files</strong> tab in the lower right pane, click <strong>Upload File</strong>, and upload <strong>td.csv</strong>. You should now see it in the <strong>Files</strong> tab.</p>
+<p><strong>If you are running RStudio locally</strong>, then type <code>getwd()</code> in the console, make note of the file path that it returns, and then use Finder / Windows Explorer to move <strong>td.csv</strong> to that location.</p>
 </div>
 <div id="set-up-an-empty-script" class="section level3">
 <h3>Set Up an Empty Script</h3>
@@ -620,7 +654,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 <div id="load-up-a-data-frame" class="section level3">
 <h3>Load up a Data Frame</h3>
-<p>The first thing we want to do is load our data into a <strong>data frame</strong>. A data frame is, essentially, just a table. Let’s call our data frame <strong>ga_data</strong> and load the data from <strong>td.csv</strong> into it. We use the <code>read.csv()</code> function for this, so add the following line of code to your script (loading data is something else we will <a href="import-csv-excel.html">get into in more detail later</a>:</p>
+<p>The first thing we want to do is load our data into a <strong>data frame</strong>. A data frame is, essentially, just a table. Let’s call our data frame <strong>ga_data</strong> and load the data from <strong>td.csv</strong> into it. We use the <code>read.csv()</code> function (another function!) for this, so add the following line of code to your script (loading data is something else we will <a href="import-csv-excel.html">get into in more detail later</a>:</p>
 <pre class="r"><code>ga_data &lt;- read.csv(&quot;td.csv&quot;, stringsAsFactors = FALSE)</code></pre>
 <p>That <code>stringsAsFactors = FALSE</code> is something you will run into quite a bit in various functions. Let’s just ignore it for now.</p>
 </div>
@@ -632,7 +666,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <div id="explore-the-data" class="section level2">
 <h2>Explore the Data</h2>
 <p>We’re going to hop back down to the console to explore some of the most common ways we can access data in a data frame.</p>
-<p>Type in <code>ga_data</code> in the console. This will simply quickly scroll all of the contents of the data frame.</p>
+<p>Type in <code>ga_data</code> in the console. This will simply quickly scroll through all of the contents of the data frame.</p>
 <p>Sometimes, we just want to see the basic structure of an object – we don’t need to see <em>all</em> of the data. For that, try <code>head(ga_data)</code>. This shows just the first few rows (and <code>head()</code> is a function; type <code>?head()</code> to read the help for it!).</p>
 <p>We will get into the many different ways to access this data <a href="later">accessing.html</a>, but it’s worth a quick exploration of some of the most common ways.</p>
 <p>Let’s look at just the <strong>sessions</strong> column. We do that using <strong>$</strong> notation: try <code>ga_data$sessions</code>.</p>
@@ -655,16 +689,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 <div id="a-basic-visualization" class="section level2">
 <h2>A Basic Visualization</h2>
-<p>We will come back to visualizations later in the day, but let’s at least add a simple line chart of sessions by adding two lines of code to our script.</p>
+<p>We will come back to visualizations later, but let’s at least add a simple line chart of sessions by adding two lines of code to our script.</p>
 <p>The first line converts the <strong>date</strong> values to, well, actual <em>date</em> values. Dates can be tricky, but there are a lot of tips and tools (and even a package called <code>lubridate()</code> to help with that):</p>
 <pre class="r"><code>ga_data$date &lt;- as.Date(ga_data$date)</code></pre>
-<pre><code>## Warning in strptime(xx, f &lt;- &quot;%Y-%m-%d&quot;, tz = &quot;GMT&quot;): unknown timezone
-## &#39;zone/tz/2017c.1.0/zoneinfo/America/New_York&#39;</code></pre>
 <p>The second line we’ll add will actually plot the data. There are shorter ways to write this out, but let’s go with this:</p>
-<pre class="r"><code>plot(x = ga_data$date, y = ga_data$sessions, type = &quot;l&quot;)</code></pre>
+<pre><code>plot(x = ga_data$date, y = ga_data$sessions, type = &quot;l&quot;)</code></pre>
 <p>Now, you can either highlight just the two new rows and click <strong>Run</strong>, or you can click <strong>Source</strong> to run the entire script. The end result will be a barely-formatted, ugly label line chart:</p>
-<p><img src="exercise1-thebasics_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<p>Don’t judge a platform by your first visualisation. Even with the basics of <code>plot()</code>, this chart can be a lot better, but we’re actually going to primarily focus on <code>ggplot2()</code> when it comes to visualisations. So, let’s call this initial exercise a wrap! Congratulations! You’ve loaded, manipulated, and plotted data with R!</p>
+<p><img src="exercise1-thebasics_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>Don’t judge a platform by your first visualisation. Even with the basics of <code>plot()</code>, this chart can be a lot better, but we’re actually going to primarily focus on <strong>ggplot</strong> when it comes to visualisations. So, let’s call this initial exercise a wrap! Congratulations! You’ve loaded, manipulated, and plotted data with R!</p>
 </div>
 
 
@@ -678,13 +710,56 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
