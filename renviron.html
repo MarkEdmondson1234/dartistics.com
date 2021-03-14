@@ -1,79 +1,68 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
 <title>.Renviron</title>
 
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -81,58 +70,68 @@ h6 {
   margin-left: auto;
   margin-right: auto;
 }
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
 }
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 60px;
-  padding-bottom: 40px;
+.dropdown-submenu {
+  position: relative;
 }
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
 }
-
-.section h2 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
 }
-.section h3 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
 }
-.section h4 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
 }
-.section h5 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu.pull-left {
+  float: none;
 }
-.section h6 {
-  padding-top: 65px;
-  margin-top: -65px;
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -143,54 +142,85 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
-
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -204,6 +234,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -239,8 +275,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -250,14 +284,24 @@ div.tocify {
 
 </style>
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
 
 
 
@@ -368,9 +412,6 @@ div.tocify {
     <li class="dropdown-header">WORKING WITH APIs</li>
     <li>
       <a href="api-google-analytics.html">Google Analytics</a>
-    </li>
-    <li>
-      <a href="api-adobe-analytics.html">Adobe Analytics</a>
     </li>
     <li>
       <a href="api-other.html">Other APIs</a>
@@ -522,7 +563,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-N4DF7T');</script>
 <!-- End Google Tag Manager -->
 
-<div class="fluid-row" id="header">
+
+<div id="header">
 
 
 
@@ -531,7 +573,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 
 
-<p>Once you start working with APIs, you will find yourself working with keys and tokens and shared secrets (shhhhh!!!) and the like. To the extent possible, you should <em>avoid putting those sorts of things directly in your code</em>. The reason is quite simple: depending on the platform and its API, those alphanumeric identifiers may very well unlock access to your data for anyone who comes into possession of them. Or, if not unlocking access to your data, they can enable others to use cloud-based resources (like the Google Cloud platform) that can cost you money!</p>
+<p>Once you start working with APIs, you will find yourself working with keys and tokens and shared secrets (shhhhh!!!) and the like. You should <em>never put these sorts of things directly in your code</em>. The reason is quite simple: depending on the platform and its API, those alphanumeric identifiers may very well unlock access to your accounts or your data for anyone who comes into possession of them. Or, if not unlocking access to your data, they can enable others to use cloud-based resources (like the Google Cloud platform) that can cost you money!</p>
 <p>R has a good way to drastically reduce the risk of this occurring. It’s up to you to take advantage of that mechanism, though.</p>
 <div id="r-startup-files" class="section level2">
 <h2>R Startup Files</h2>
@@ -549,30 +591,45 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <div id="r_home" class="section level3">
 <h3>R_HOME</h3>
 <p><code>R_HOME</code> is the directory in which R is installed. Enter <code>R.home()</code> to find out that location.</p>
-<p>There may be cases where you want to put the <code>.Renviron</code> file here…but generally not. It’s just cleaner to keep “the program itself” separate from “the configuration of the program.”</p>
+<p>There <em>may</em> be cases where you want to put the <code>.Renviron</code> file here…but generally not. It’s just cleaner to keep “the program itself” separate from “the configuration of the program.”</p>
 </div>
 <div id="home" class="section level3">
 <h3>HOME</h3>
-<p><code>HOME</code> is actually the user’s home directory. You can find out what your <code>HOME</code> directory is with <code>Sys.getenv(&quot;HOME&quot;)</code>. This <em>can</em> be a good place to locate your <code>.Renviron</code> file. It’s a good place <em>if</em> you are not setting any variables that you want to change from project to project.</p>
+<p><code>HOME</code> is actually the user’s home directory. You can find out what your <code>HOME</code> directory is with <code>Sys.getenv("HOME")</code> (or, in RStudio, in the <strong>Files</strong> pane, click on the word <strong>Home</strong> at the top of the pane; you can get back to your working directory by selecting <strong>More &gt; Go to Working Directory</strong>).</p>
+<p>This is where we <em>generally recommend</em> that you locate your <code>.Renviron</code> file.</p>
 </div>
 <div id="the-working-directory" class="section level3">
 <h3>The Working Directory</h3>
-<p>We touched on this earlier, and it’s generally set as the current project’s directory. You can find the current working directory with <code>getwd()</code>. If you have different credentials that you use with different projects, then you probably want to place your <code>.Renviron</code> file in the project directory.</p>
+<p>We touched on this earlier, and it’s generally set as the current project’s directory. You can find the current working directory with <code>getwd()</code>. If you have different credentials that you use with different projects, then you <em>might</em> want to place your <code>.Renviron</code> file in this directory.</p>
+<p>But, if you go this route, you can find yourself with a slew of <code>.Renviron</code> files scattered across your system and, since only a single <code>.Renviron</code> file can be used at a time, you may actually find yourself replicating some of the same auth credentials across multiple locations. Plus, if you’re being careful to <em>not</em> check these files in to any network locations, you can be in a world of hurt if you have a hardware failure, as you will have to recreate each individual <code>.Renviron</code> file for each project before you are able to use it.</p>
 </div>
+</div>
+<div id="two-types-of-environment-variables" class="section level2">
+<h2>Two Types of Environment Variables</h2>
+<p>Technically, all environment variables set in <code>.Renviron</code> are the same, in that they are simple key-value pair (which we’ll get to later). But, it is still useful to think of there being two types of variables:</p>
+<ul>
+<li><strong>Environment Variables That Packages Use</strong>–some packages squirrel away in their documentation that, if specific environment variables exist when the package loads or when certain functions run, the those variables will be used by default. Examples:
+<ul>
+<li>The <strong>googleAnalyticsR</strong> package will automatically use <a href="http://code.markedmondson.me/googleAnalyticsR/articles/setup.html#3-choose-authentication-method"><code>GAR_CLIENT_JSON</code> and <code>GARGLE_EMAIL</code></a> for authentication if they exist.</li>
+<li>The <strong>adobeanalyticsr</strong> package will automatically use <a href="https://adobeanalyticsr.com/reference/aw_token.html"><code>AW_CLIENT_ID</code> and <code>AW_CLIENT_SECRET</code></a> for authentication if they exist. And, many of the functions in the package will use <code>AW_COMPANY_ID</code> and <code>AW_REPORTSUITE_ID</code> for the company ID and report suite ID if they exist as environment variables (in both cases, though, these values can be specified or overridden within the functions themselves using the <code>company_id</code> and <code>rsid</code> function arguments)</li>
+<li>The <strong>install_github</strong> function in the <strong>remotes</strong> (and <strong>devtools</strong>) package uses the value of the <code>GITHUB_PAT</code> environment variable as the auth token for accessing GitHub if it exists.</li>
+</ul></li>
+<li><strong>Environment Variables That YOU Want to Look For</strong>–there may be non-auth-related values that you want to keep in a centralized location. For instance, if you are a consultant who works with multiple clients–<strong>X</strong>, <strong>Y</strong>, and <strong>Z</strong>–who use Google Analytics, and you would like to keep track of the main production view IDs for each of them so that you can use the same scripts with multiple clients, you could add multiple environment variables: <code>GA_VIEW_ID_X</code>, <code>GA_VIEW_ID_Y</code>, <code>GA_VIEW_ID_Z</code>. If you develop your scripts cleanly, you can have a single line of code to set the view ID to use throughout the script (e.g., “<code>ga_view &lt;- Sys.getenv("GA_VIEW_ID_X")</code>”–more on that specific syntax below) and then simply update that one line of code to reference the appropriate client whenever you want to use the script with a different account.</li>
+</ul>
 </div>
 <div id="renviron-file-structure" class="section level2">
 <h2>.Renviron File Structure</h2>
-<p>The structure of the <code>.Renviron</code> file is quite simple. It’s just a text file with one row for each variable you want to define. As an example, the following <code>.Renviron</code> file establishes two environment variables: <code>ADOBE_KEY</code> and <code>ADOBE_SECRET</code>. There is no magic to the naming – just make them clear (and ALL CAPS is a nice convention to use):</p>
-<pre><code>ADOBE_KEY=&quot;a7xxxxx639-iih-nordic-r&quot;
-ADOBE_SECRET=&quot;2eadxxxxx1495ea49&quot;</code></pre>
+<p>The structure of the <code>.Renviron</code> file is quite simple. It’s just a text file with one row for each variable you want to define. As an example, the following <code>.Renviron</code> file establishes two environment variables: <code>GAR_CLIENT_JSON</code> and <code>GA_VIEW_ID_Y</code>. As we discussed above, the first of these is an environment variable that the <strong>googleAnalyticsR</strong> checks for when performing authentication, while the second is just a convenience variable that is the view ID for our client, “<strong>Y</strong>”:</p>
+<pre><code># Google Analytics Values
+GAR_CLIENT_JSON = &quot;/Users/gilligan/Documents/R Projects/ga-client.json&quot;
+GA_VIEW_ID_Y = &quot;ga:XXXX1474&quot;</code></pre>
+<p>Note that you can also include comments in the <code>.Renviron</code> file just as you would include comments in R script–by starting the line with a <code>#</code>.</p>
 </div>
 <div id="accessing-the-variables" class="section level2">
 <h2>Accessing the Variables</h2>
 <p>Environment variables are accessed using the <code>Sys.getenv()</code> command.</p>
-<p>Consider the above example. Let’s say that we’re writing a script that uses <code>RSiteCatalyst</code> and needs to use the API username and secret. In the script, we could create two new objects, and then set them to be the values from the environment variables:</p>
-<pre><code>adobe_key &lt;- Sys.getenv(&quot;ADOBE_KEY&quot;)
-adobe_secret &lt;- Sys.getenv(&quot;ADOBE SECRET&quot;)</code></pre>
-<p>From that point onward, I can use <code>adobe_key</code> and <code>adobe_secret</code>. In this case, the objects created in the script were just lowercase forms of the actual environment variable. <em>This is not a requirement</em>. But, if what you’re storing is something where that sort of consistency makes sense, then it’s one approach for making things clear and consistent.</p>
+<p>Consider the above example. Let’s say that we’re writing a script that uses <code>googleAnaltyicsR</code>. In the script, we could create an object called <code>ga_view_di</code> that establishes what we’ll use for the <code>viewId</code> argument throughout the function calls used in our script:</p>
+<pre><code>ga_view_id &lt;- Sys.getenv(&quot;GA_VIEW_ID_Y&quot;)</code></pre>
 </div>
 <div id="avoiding-sharing-.renviron" class="section level2">
 <h2>Avoiding Sharing .Renviron</h2>
@@ -580,6 +637,7 @@ adobe_secret &lt;- Sys.getenv(&quot;ADOBE SECRET&quot;)</code></pre>
 <pre><code># Environment file
 .Renviron</code></pre>
 <p>The <code>.gitignore</code> file specifies which files to <em>not</em> include when checking updates into a repository. You may also want to include data files in the <code>.gitignore</code> file…but that’s a topic for another page.</p>
+<p><em>This doesn’t mean that you shouldn’t be backing up your <code>.Renviron</code> file(s). <strong>You absolutely should be!</strong></em> But, this is a key reason that we recommend using a single, master <code>.Renviron</code> file that lives in your home directory (the second of the three options described above). While that directory may only contain locally-stored files, any time you update your <code>.Renviron</code>, you can get in the habit of backing it up to a secure, but non-local location: be that Goole Drive, OneDrive, Dropbox, or even as a document within your password manager.</p>
 </div>
 
 
@@ -593,13 +651,56 @@ adobe_secret &lt;- Sys.getenv(&quot;ADOBE SECRET&quot;)</code></pre>
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

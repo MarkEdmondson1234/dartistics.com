@@ -1,6 +1,10 @@
 h2 {font-size: 1.7em;
 }
 
+h3 {font-size: 1.3em;
+font-style: italic;
+}
+
 .section {
   margin-top: 1.5em;
 }
