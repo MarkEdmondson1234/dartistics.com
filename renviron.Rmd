@@ -7,7 +7,7 @@ output:
 
 ---
 
-Once you start working with APIs, you will find yourself working with keys and tokens and shared secrets (shhhhh!!!) and the like. To the extent possible, you should _avoid putting those sorts of things directly in your code_. The reason is quite simple: depending on the platform and its API, those alphanumeric identifiers may very well unlock access to your data for anyone who comes into possession of them. Or, if not unlocking access to your data, they can enable others to use cloud-based resources (like the Google Cloud platform) that can cost you money!
+Once you start working with APIs, you will find yourself working with keys and tokens and shared secrets (shhhhh!!!) and the like. You should _never put these sorts of things directly in your code_. The reason is quite simple: depending on the platform and its API, those alphanumeric identifiers may very well unlock access to your accounts or your data for anyone who comes into possession of them. Or, if not unlocking access to your data, they can enable others to use cloud-based resources (like the Google Cloud platform) that can cost you money!
 
 R has a good way to drastically reduce the risk of this occurring. It's up to you to take advantage of that mechanism, though.
 
@@ -28,39 +28,54 @@ These startup files can be located in three different locations, but only _one_ 
 
 ### R_HOME
 
-`R_HOME` is the directory in which R is installed. Enter `R.home()` to find out that location. 
+`R_HOME` is the directory in which R is installed. Enter `R.home()` to find out that location.
 
-There may be cases where you want to put the `.Renviron` file here...but generally not. It's just cleaner to keep "the program itself" separate from "the configuration of the program."
+There _may_ be cases where you want to put the `.Renviron` file here...but generally not. It's just cleaner to keep "the program itself" separate from "the configuration of the program."
 
 ### HOME
 
-`HOME` is actually the user's home directory. You can find out what your `HOME` directory is with `Sys.getenv("HOME")`. This _can_ be a good place to locate your `.Renviron` file. It's a good place _if_ you are not setting any variables that you want to change from project to project.
+`HOME` is actually the user's home directory. You can find out what your `HOME` directory is with `Sys.getenv("HOME")` (or, in RStudio, in the **Files** pane, click on the word **Home** at the top of the pane; you can get back to your working directory by selecting **More > Go to Working Directory**).
+
+This is where we _generally recommend_ that you locate your `.Renviron` file.
 
 ### The Working Directory
 
-We touched on this earlier, and it's generally set as the current project's directory. You can find the current working directory with `getwd()`. If you have different credentials that you use with different projects, then you probably want to place your `.Renviron` file in the project directory.
+We touched on this earlier, and it's generally set as the current project's directory. You can find the current working directory with `getwd()`. If you have different credentials that you use with different projects, then you _might_ want to place your `.Renviron` file in this directory.
+
+But, if you go this route, you can find yourself with a slew of `.Renviron` files scattered across your system and, since only a single `.Renviron` file can be used at a time, you may actually find yourself replicating some of the same auth credentials across multiple locations. Plus, if you're being careful to _not_ check these files in to any network locations, you can be in a world of hurt if you have a hardware failure, as you will have to recreate each individual `.Renviron` file for each project before you are able to use it.
+
+## Two Types of Environment Variables
+
+Technically, all environment variables set in `.Renviron` are the same, in that they are simple key-value pair (which we'll get to later). But, it is still useful to think of there being two types of variables:
+
+* **Environment Variables That Packages Use**--some packages squirrel away in their documentation that, if specific environment variables exist when the package loads or when certain functions run, the those variables will be used by default. Examples:
+  - The **googleAnalyticsR** package will automatically use [`GAR_CLIENT_JSON` and `GARGLE_EMAIL`](http://code.markedmondson.me/googleAnalyticsR/articles/setup.html#3-choose-authentication-method) for authentication if they exist.
+  - The **adobeanalyticsr** package will automatically use [`AW_CLIENT_ID` and `AW_CLIENT_SECRET`](https://adobeanalyticsr.com/reference/aw_token.html) for authentication if they exist. And, many of the functions in the package will use `AW_COMPANY_ID` and `AW_REPORTSUITE_ID` for the company ID and report suite ID if they exist as environment variables (in both cases, though, these values can be specified or overridden within the functions themselves using the `company_id` and `rsid` function arguments)
+  - The **install_github** function in the **remotes** (and **devtools**) package uses the value of the `GITHUB_PAT` environment variable as the auth token for accessing GitHub if it exists.
+
+* **Environment Variables That YOU Want to Look For**--there may be non-auth-related values that you want to keep in a centralized location. For instance, if you are a consultant who works with multiple clients--**X**, **Y**, and **Z**--who use Google Analytics, and you would like to keep track of the main production view IDs for each of them so that you can use the same scripts with multiple clients, you could add multiple environment variables: `GA_VIEW_ID_X`, `GA_VIEW_ID_Y`, `GA_VIEW_ID_Z`. If you develop your scripts cleanly, you can have a single line of code to set the view ID to use throughout the script (e.g., "`ga_view <- Sys.getenv("GA_VIEW_ID_X")`"--more on that specific syntax below) and then simply update that one line of code to reference the appropriate client whenever you want to use the script with a different account.
 
 ## .Renviron File Structure
 
-The structure of the `.Renviron` file is quite simple. It's just a text file with one row for each variable you want to define. As an example, the following `.Renviron` file establishes two environment variables: `ADOBE_KEY` and `ADOBE_SECRET`. There is no magic to the naming -- just make them clear (and ALL CAPS is a nice convention to use):
+The structure of the `.Renviron` file is quite simple. It's just a text file with one row for each variable you want to define. As an example, the following `.Renviron` file establishes two environment variables: `GAR_CLIENT_JSON` and `GA_VIEW_ID_Y`. As we discussed above, the first of these is an environment variable that the **googleAnalyticsR** checks for when performing authentication, while the second is just a convenience variable that is the view ID for our client, "**Y**":
 
 ```
-ADOBE_KEY="a7xxxxx639-iih-nordic-r"
-ADOBE_SECRET="2eadxxxxx1495ea49"
+# Google Analytics Values
+GAR_CLIENT_JSON = "/Users/gilligan/Documents/R Projects/ga-client.json"
+GA_VIEW_ID_Y = "ga:XXXX1474"
 ```
+
+Note that you can also include comments in the `.Renviron` file just as you would include comments in R script--by starting the line with a `#`.
 
 ## Accessing the Variables
 
 Environment variables are accessed using the `Sys.getenv()` command. 
 
-Consider the above example. Let's say that we're writing a script that uses `RSiteCatalyst` and needs to use the API username and secret. In the script, we could create two new objects, and then set them to be the values from the environment variables:
+Consider the above example. Let's say that we're writing a script that uses `googleAnaltyicsR`. In the script, we could create an object called `ga_view_di` that establishes what we'll use for the `viewId` argument throughout the function calls used in our script:
 
 ```
-adobe_key <- Sys.getenv("ADOBE_KEY")
-adobe_secret <- Sys.getenv("ADOBE SECRET")
+ga_view_id <- Sys.getenv("GA_VIEW_ID_Y")
 ```
-
-From that point onward, I can use `adobe_key` and `adobe_secret`. In this case, the objects created in the script were just lowercase forms of the actual environment variable. _This is not a requirement_. But, if what you're storing is something where that sort of consistency makes sense, then it's one approach for making things clear and consistent.
 
 ## Avoiding Sharing .Renviron
 
@@ -72,4 +87,6 @@ We'll cover Github later, but, if you're using Github to manage your projects (a
 ```
 
 The `.gitignore` file specifies which files to _not_ include when checking updates into a repository. You may also want to include data files in the `.gitignore` file...but that's a topic for another page.
+
+_This doesn't mean that you shouldn't be backing up your `.Renviron` file(s). **You absolutely should be!**_ But, this is a key reason that we recommend using a single, master `.Renviron` file that lives in your home directory (the second of the three options described above). While that directory may only contain locally-stored files, any time you update your `.Renviron`, you can get in the habit of backing it up to a secure, but non-local location: be that Goole Drive, OneDrive, Dropbox, or even as a document within your password manager.
 
